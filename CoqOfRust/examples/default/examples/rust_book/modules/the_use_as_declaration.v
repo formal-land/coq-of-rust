@@ -32,8 +32,14 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "called `function()`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "called `function()`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -41,9 +47,9 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -87,6 +93,10 @@ Module deeply.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "called `deeply::nested::function()`
 " |) ]
@@ -98,9 +108,9 @@ Module deeply.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -165,8 +175,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "Entering block
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "Entering block
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -174,7 +190,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -205,8 +221,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "Leaving block
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Leaving block
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -214,9 +236,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -224,7 +246,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (| "the_use_as_declaration::function", [], [] |),
             []
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

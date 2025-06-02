@@ -13,8 +13,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A2 ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -80,8 +88,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A1 ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A2 ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -162,8 +178,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -232,8 +259,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -317,8 +355,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -387,8 +436,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -473,8 +533,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -543,8 +614,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -628,8 +710,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -698,8 +791,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -782,8 +886,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -849,8 +961,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -930,8 +1050,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -997,8 +1125,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1079,8 +1215,24 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1166,8 +1318,24 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1268,8 +1436,27 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1358,8 +1545,27 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1464,8 +1670,27 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1554,8 +1779,27 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1666,8 +1910,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1739,8 +1991,16 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1827,8 +2087,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1903,8 +2174,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|

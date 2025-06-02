@@ -89,8 +89,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "31 days
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "31 days
+" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -100,6 +106,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -121,7 +131,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -145,6 +155,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Alice, this is Bob. Bob, this is Alice
 " |) ]
                             |)
@@ -157,6 +171,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -178,7 +196,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -202,6 +220,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "the quick brown fox jumps over the lazy dog
 " |) ]
@@ -215,6 +237,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -236,7 +262,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -260,6 +286,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Base 10:               69420
 " |) ]
                             |)
@@ -272,6 +302,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -293,7 +327,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -317,6 +351,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "Base 2 (binary):       " |); mk_str (| "
 " |) ]
@@ -330,6 +368,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -346,7 +388,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| Value.Integer IntegerKind.I32 69420 |)
+                                            M.alloc (|
+                                              Ty.path "i32",
+                                              Value.Integer IntegerKind.I32 69420
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -361,7 +406,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -385,6 +430,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "Base 8 (octal):        " |); mk_str (| "
 " |) ]
@@ -398,6 +447,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -414,7 +467,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| Value.Integer IntegerKind.I32 69420 |)
+                                            M.alloc (|
+                                              Ty.path "i32",
+                                              Value.Integer IntegerKind.I32 69420
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -429,7 +485,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -453,6 +509,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "Base 16 (hexadecimal): " |); mk_str (| "
 " |) ]
@@ -466,6 +526,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -482,7 +546,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| Value.Integer IntegerKind.I32 69420 |)
+                                            M.alloc (|
+                                              Ty.path "i32",
+                                              Value.Integer IntegerKind.I32 69420
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -497,7 +564,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -521,6 +588,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "Base 16 (hexadecimal): " |); mk_str (| "
 " |) ]
@@ -534,6 +605,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -550,7 +625,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| Value.Integer IntegerKind.I32 69420 |)
+                                            M.alloc (|
+                                              Ty.path "i32",
+                                              Value.Integer IntegerKind.I32 69420
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -565,7 +643,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -590,8 +668,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                              |)
                             |)
                           |)
                         |));
@@ -603,6 +687,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -619,7 +707,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Integer IntegerKind.I32 1 |)
+                                              M.alloc (|
+                                                Ty.path "i32",
+                                                Value.Integer IntegerKind.I32 1
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -638,6 +729,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -684,7 +779,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -709,8 +804,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                              |)
                             |)
                           |)
                         |));
@@ -722,6 +823,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -738,7 +843,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Integer IntegerKind.I32 1 |)
+                                              M.alloc (|
+                                                Ty.path "i32",
+                                                Value.Integer IntegerKind.I32 1
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -757,6 +865,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -799,7 +911,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -824,8 +936,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                              |)
                             |)
                           |)
                         |));
@@ -837,6 +955,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -853,7 +975,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Integer IntegerKind.I32 1 |)
+                                              M.alloc (|
+                                                Ty.path "i32",
+                                                Value.Integer IntegerKind.I32 1
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -873,7 +998,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Integer IntegerKind.Usize 5 |)
+                                              M.alloc (|
+                                                Ty.path "usize",
+                                                Value.Integer IntegerKind.Usize 5
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -892,6 +1020,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -938,7 +1070,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -962,6 +1094,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "My name is Bond, James Bond
 " |) ]
                             |)
@@ -974,6 +1110,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -995,7 +1135,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ number : Ty.path "f64" := M.read (| UnsupportedLiteral |) in
         let~ width : Ty.path "usize" := Value.Integer IntegerKind.Usize 5 in
@@ -1022,8 +1162,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                              |)
                             |)
                           |)
                         |));
@@ -1035,6 +1181,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -1080,6 +1230,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -1126,9 +1280,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

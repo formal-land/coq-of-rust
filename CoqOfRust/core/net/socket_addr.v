@@ -47,7 +47,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::net::socket_addr::SocketAddr",
@@ -95,8 +99,16 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -119,6 +131,7 @@ Module net.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -129,7 +142,20 @@ Module net.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::net::socket_addr::SocketAddr" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -142,7 +168,14 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -150,8 +183,16 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -188,7 +229,14 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -196,8 +244,16 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -226,6 +282,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -264,7 +321,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -275,7 +336,7 @@ Module net.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -301,8 +362,12 @@ Module net.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -347,8 +412,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -375,8 +448,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -417,8 +498,16 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -442,7 +531,14 @@ Module net.
                 |) in
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -455,7 +551,14 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ2_0
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -463,8 +566,19 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ2_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -496,7 +610,14 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ2_0
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -504,8 +625,19 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ2_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -529,6 +661,10 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -578,8 +714,16 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -604,6 +748,7 @@ Module net.
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -633,7 +778,20 @@ Module net.
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         Ty.path "core::cmp::Ordering",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::net::socket_addr::SocketAddr" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::net::socket_addr::SocketAddr" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -646,7 +804,14 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -654,8 +819,16 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V4",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -690,7 +863,14 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -698,8 +878,16 @@ Module net.
                                   "core::net::socket_addr::SocketAddr::V6",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -726,6 +914,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -738,7 +927,7 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -783,7 +972,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::net::socket_addr::SocketAddrV4",
@@ -823,7 +1016,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -834,7 +1031,7 @@ Module net.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -872,8 +1069,16 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                other
+              |) in
             LogicalOp.and (|
               M.call_closure (|
                 Ty.path "bool",
@@ -947,12 +1152,21 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -999,6 +1213,7 @@ Module net.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.alloc (|
+                        Ty.path "core::cmp::Ordering",
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
@@ -1042,7 +1257,7 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -1067,12 +1282,21 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                     M.get_trait_method (|
@@ -1125,6 +1349,10 @@ Module net.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1171,7 +1399,14 @@ Module net.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
+                          γ
+                        |) in
                       cmp))
                 ]
               |)
@@ -1196,8 +1431,12 @@ Module net.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -1229,6 +1468,7 @@ Module net.
                   ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -1305,7 +1545,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::net::socket_addr::SocketAddrV6",
@@ -1353,7 +1597,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -1370,7 +1618,10 @@ Module net.
                               (M.match_operator (|
                                 Ty.tuple [],
                                 Value.DeclaredButUndefined,
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                ]
                               |)))
                         ]
                       |)))
@@ -1410,8 +1661,16 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
@@ -1531,12 +1790,21 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -1585,6 +1853,7 @@ Module net.
                       M.match_operator (|
                         Ty.path "core::cmp::Ordering",
                         M.alloc (|
+                          Ty.path "core::cmp::Ordering",
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
                             M.get_trait_method (|
@@ -1633,6 +1902,7 @@ Module net.
                               M.match_operator (|
                                 Ty.path "core::cmp::Ordering",
                                 M.alloc (|
+                                  Ty.path "core::cmp::Ordering",
                                   M.call_closure (|
                                     Ty.path "core::cmp::Ordering",
                                     M.get_trait_method (|
@@ -1680,6 +1950,7 @@ Module net.
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                                       M.alloc (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
@@ -1723,19 +1994,19 @@ Module net.
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let cmp := M.copy (| γ |) in
+                                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                                       cmp))
                                 ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let cmp := M.copy (| γ |) in
+                              (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                               cmp))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -1760,12 +2031,21 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                     M.get_trait_method (|
@@ -1823,6 +2103,10 @@ Module net.
                           []
                           [ Ty.path "core::cmp::Ordering" ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -1883,6 +2167,10 @@ Module net.
                                   []
                                   [ Ty.path "core::cmp::Ordering" ],
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1942,6 +2230,10 @@ Module net.
                                           "core::cmp::Ordering::Equal"
                                         |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1988,19 +2280,40 @@ Module net.
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let cmp := M.copy (| γ |) in
+                                      (let cmp :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::cmp::Ordering" ],
+                                          γ
+                                        |) in
                                       cmp))
                                 ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let cmp := M.copy (| γ |) in
+                              (let cmp :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
+                                  γ
+                                |) in
                               cmp))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
+                          γ
+                        |) in
                       cmp))
                 ]
               |)
@@ -2025,8 +2338,12 @@ Module net.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -2116,6 +2433,7 @@ Module net.
                   ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -2173,8 +2491,8 @@ Module net.
         match ε, τ, α with
         | [], [], [ ip; port ] =>
           ltac:(M.monadic
-            (let ip := M.alloc (| ip |) in
-            let port := M.alloc (| port |) in
+            (let ip := M.alloc (| Ty.path "core::net::ip_addr::IpAddr", ip |) in
+            let port := M.alloc (| Ty.path "u16", port |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::net::socket_addr::SocketAddr",
@@ -2188,8 +2506,9 @@ Module net.
                           "core::net::ip_addr::IpAddr::V4",
                           0
                         |) in
-                      let a := M.copy (| γ0_0 |) in
+                      let a := M.copy (| Ty.path "core::net::ip_addr::Ipv4Addr", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "core::net::socket_addr::SocketAddr",
                         Value.StructTuple
                           "core::net::socket_addr::SocketAddr::V4"
                           []
@@ -2215,8 +2534,9 @@ Module net.
                           "core::net::ip_addr::IpAddr::V6",
                           0
                         |) in
-                      let a := M.copy (| γ0_0 |) in
+                      let a := M.copy (| Ty.path "core::net::ip_addr::Ipv6Addr", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "core::net::socket_addr::SocketAddr",
                         Value.StructTuple
                           "core::net::socket_addr::SocketAddr::V6"
                           []
@@ -2261,7 +2581,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::net::ip_addr::IpAddr",
@@ -2275,8 +2599,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "core::net::ip_addr::IpAddr",
                         Value.StructTuple
                           "core::net::ip_addr::IpAddr::V4"
                           []
@@ -2309,8 +2641,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "core::net::ip_addr::IpAddr",
                         Value.StructTuple
                           "core::net::ip_addr::IpAddr::V6"
                           []
@@ -2359,12 +2699,23 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_ip ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_ip := M.alloc (| new_ip |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let new_ip := M.alloc (| Ty.path "core::net::ip_addr::IpAddr", new_ip |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| new_ip |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddr" ];
+                      Ty.path "core::net::ip_addr::IpAddr"
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| new_ip |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -2377,15 +2728,23 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let a := M.alloc (| γ2_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ2_0
+                        |) in
                       let γ1_0 :=
                         M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::ip_addr::IpAddr::V4",
                           0
                         |) in
-                      let new_ip := M.copy (| γ1_0 |) in
+                      let new_ip := M.copy (| Ty.path "core::net::ip_addr::Ipv4Addr", γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_associated_function (|
@@ -2411,15 +2770,23 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let a := M.alloc (| γ2_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ2_0
+                        |) in
                       let γ1_0 :=
                         M.SubPointer.get_struct_tuple_field (|
                           γ0_1,
                           "core::net::ip_addr::IpAddr::V6",
                           0
                         |) in
-                      let new_ip := M.copy (| γ1_0 |) in
+                      let new_ip := M.copy (| Ty.path "core::net::ip_addr::Ipv6Addr", γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_associated_function (|
@@ -2438,9 +2805,17 @@ Module net.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let self_ := M.copy (| γ0_0 |) in
-                      let new_ip := M.copy (| γ0_1 |) in
+                      let self_ :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                          γ0_0
+                        |) in
+                      let new_ip := M.copy (| Ty.path "core::net::ip_addr::IpAddr", γ0_1 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.write (|
                           M.deref (| M.read (| self_ |) |),
                           M.call_closure (|
@@ -2490,7 +2865,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "u16",
@@ -2504,8 +2883,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "u16",
                         M.call_closure (|
                           Ty.path "u16",
                           M.get_associated_function (|
@@ -2525,8 +2912,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "u16",
                         M.call_closure (|
                           Ty.path "u16",
                           M.get_associated_function (|
@@ -2560,8 +2955,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_port ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_port := M.alloc (| new_port |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let new_port := M.alloc (| Ty.path "u16", new_port |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -2575,8 +2974,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_associated_function (|
@@ -2599,8 +3006,16 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_associated_function (|
@@ -2635,7 +3050,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -2649,8 +3068,8 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -2670,7 +3089,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -2684,8 +3107,8 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -2709,8 +3132,8 @@ Module net.
         match ε, τ, α with
         | [], [], [ ip; port ] =>
           ltac:(M.monadic
-            (let ip := M.alloc (| ip |) in
-            let port := M.alloc (| port |) in
+            (let ip := M.alloc (| Ty.path "core::net::ip_addr::Ipv4Addr", ip |) in
+            let port := M.alloc (| Ty.path "u16", port |) in
             Value.StructRecord
               "core::net::socket_addr::SocketAddrV4"
               []
@@ -2732,7 +3155,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2762,8 +3189,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_ip ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_ip := M.alloc (| new_ip |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let new_ip := M.alloc (| Ty.path "core::net::ip_addr::Ipv4Addr", new_ip |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2774,7 +3205,7 @@ Module net.
                   |),
                   M.read (| new_ip |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2792,7 +3223,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -2816,8 +3251,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_port ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_port := M.alloc (| new_port |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let new_port := M.alloc (| Ty.path "u16", new_port |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2828,7 +3267,7 @@ Module net.
                   |),
                   M.read (| new_port |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2851,10 +3290,10 @@ Module net.
         match ε, τ, α with
         | [], [], [ ip; port; flowinfo; scope_id ] =>
           ltac:(M.monadic
-            (let ip := M.alloc (| ip |) in
-            let port := M.alloc (| port |) in
-            let flowinfo := M.alloc (| flowinfo |) in
-            let scope_id := M.alloc (| scope_id |) in
+            (let ip := M.alloc (| Ty.path "core::net::ip_addr::Ipv6Addr", ip |) in
+            let port := M.alloc (| Ty.path "u16", port |) in
+            let flowinfo := M.alloc (| Ty.path "u32", flowinfo |) in
+            let scope_id := M.alloc (| Ty.path "u32", scope_id |) in
             Value.StructRecord
               "core::net::socket_addr::SocketAddrV6"
               []
@@ -2881,7 +3320,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2911,8 +3354,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_ip ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_ip := M.alloc (| new_ip |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let new_ip := M.alloc (| Ty.path "core::net::ip_addr::Ipv6Addr", new_ip |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2923,7 +3370,7 @@ Module net.
                   |),
                   M.read (| new_ip |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2941,7 +3388,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -2965,8 +3416,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_port ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_port := M.alloc (| new_port |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let new_port := M.alloc (| Ty.path "u16", new_port |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2977,7 +3432,7 @@ Module net.
                   |),
                   M.read (| new_port |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2996,7 +3451,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -3021,8 +3480,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_flowinfo ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_flowinfo := M.alloc (| new_flowinfo |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let new_flowinfo := M.alloc (| Ty.path "u32", new_flowinfo |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3033,7 +3496,7 @@ Module net.
                   |),
                   M.read (| new_flowinfo |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3052,7 +3515,11 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -3077,8 +3544,12 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; new_scope_id ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let new_scope_id := M.alloc (| new_scope_id |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let new_scope_id := M.alloc (| Ty.path "u32", new_scope_id |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3089,7 +3560,7 @@ Module net.
                   |),
                   M.read (| new_scope_id |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3112,7 +3583,7 @@ Module net.
         match ε, τ, α with
         | [], [], [ sock4 ] =>
           ltac:(M.monadic
-            (let sock4 := M.alloc (| sock4 |) in
+            (let sock4 := M.alloc (| Ty.path "core::net::socket_addr::SocketAddrV4", sock4 |) in
             Value.StructTuple
               "core::net::socket_addr::SocketAddr::V4"
               []
@@ -3142,7 +3613,7 @@ Module net.
         match ε, τ, α with
         | [], [], [ sock6 ] =>
           ltac:(M.monadic
-            (let sock6 := M.alloc (| sock6 |) in
+            (let sock6 := M.alloc (| Ty.path "core::net::socket_addr::SocketAddrV6", sock6 |) in
             Value.StructTuple
               "core::net::socket_addr::SocketAddr::V6"
               []
@@ -3173,7 +3644,7 @@ Module net.
         match ε, τ, α with
         | [], [], [ pieces ] =>
           ltac:(M.monadic
-            (let pieces := M.alloc (| pieces |) in
+            (let pieces := M.alloc (| Ty.tuple [ I; Ty.path "u16" ], pieces |) in
             M.call_closure (|
               Ty.path "core::net::socket_addr::SocketAddr",
               M.get_associated_function (|
@@ -3227,8 +3698,13 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -3245,8 +3721,19 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V4",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -3275,8 +3762,19 @@ Module net.
                           "core::net::socket_addr::SocketAddr::V6",
                           0
                         |) in
-                      let a := M.alloc (| γ0_0 |) in
+                      let a :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -3324,8 +3822,13 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; fmt ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let fmt := M.alloc (| fmt |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddr" ],
+                self
+              |) in
+            let fmt :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3381,21 +3884,27 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.and (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -3409,6 +3918,10 @@ Module net.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3447,6 +3960,10 @@ Module net.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -3473,6 +3990,10 @@ Module net.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -3504,6 +4025,10 @@ Module net.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "" |); mk_str (| ":" |) ]
                                       |)
                                     |)
@@ -3515,6 +4040,10 @@ Module net.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -3537,6 +4066,11 @@ Module net.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [ Ty.path "core::net::ip_addr::Ipv4Addr"
+                                                          ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -3578,6 +4112,7 @@ Module net.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.path "u16",
                                                         M.call_closure (|
                                                           Ty.path "u16",
                                                           M.get_associated_function (|
@@ -3683,6 +4218,10 @@ Module net.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 2 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array [ mk_str (| "" |); mk_str (| ":" |) ]
                                           |)
                                         |)
@@ -3694,6 +4233,10 @@ Module net.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 2 ]
+                                              [ Ty.path "core::fmt::rt::Argument" ],
                                             Value.Array
                                               [
                                                 M.call_closure (|
@@ -3716,6 +4259,13 @@ Module net.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "core::net::ip_addr::Ipv4Addr"
+                                                              ],
                                                             M.call_closure (|
                                                               Ty.apply
                                                                 (Ty.path "&")
@@ -3759,6 +4309,7 @@ Module net.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
+                                                            Ty.path "u16",
                                                             M.call_closure (|
                                                               Ty.path "u16",
                                                               M.get_associated_function (|
@@ -3793,6 +4344,10 @@ Module net.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -3854,8 +4409,13 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; fmt ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let fmt := M.alloc (| fmt |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV4" ],
+                self
+              |) in
+            let fmt :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3919,21 +4479,27 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.and (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -3947,6 +4513,10 @@ Module net.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3985,6 +4555,10 @@ Module net.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -4016,6 +4590,7 @@ Module net.
                           []
                           [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.alloc (|
+                          Ty.path "u32",
                           M.call_closure (|
                             Ty.path "u32",
                             M.get_associated_function (|
@@ -4036,6 +4611,10 @@ Module net.
                                   Value.Integer IntegerKind.U32 0
                                 |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -4070,6 +4649,10 @@ Module net.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array [ mk_str (| "[" |); mk_str (| "]:" |) ]
                                               |)
                                             |)
@@ -4081,6 +4664,10 @@ Module net.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
@@ -4104,6 +4691,13 @@ Module net.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::net::ip_addr::Ipv6Addr"
+                                                                  ],
                                                                 M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "&")
@@ -4149,6 +4743,7 @@ Module net.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.path "u16",
                                                                 M.call_closure (|
                                                                   Ty.path "u16",
                                                                   M.get_associated_function (|
@@ -4185,8 +4780,12 @@ Module net.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let scope_id := M.copy (| γ |) in
+                              (let scope_id := M.copy (| Ty.path "u32", γ |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -4221,6 +4820,10 @@ Module net.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array
                                                   [
                                                     mk_str (| "[" |);
@@ -4237,6 +4840,10 @@ Module net.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
@@ -4260,6 +4867,13 @@ Module net.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::net::ip_addr::Ipv6Addr"
+                                                                  ],
                                                                 M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "&")
@@ -4325,6 +4939,7 @@ Module net.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.path "u16",
                                                                 M.call_closure (|
                                                                   Ty.path "u16",
                                                                   M.get_associated_function (|
@@ -4404,6 +5019,7 @@ Module net.
                                   []
                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.alloc (|
+                                  Ty.path "u32",
                                   M.call_closure (|
                                     Ty.path "u32",
                                     M.get_associated_function (|
@@ -4429,6 +5045,10 @@ Module net.
                                           Value.Integer IntegerKind.U32 0
                                         |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -4466,6 +5086,15 @@ Module net.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [ mk_str (| "[" |); mk_str (| "]:" |) ]
                                                       |)
@@ -4478,6 +5107,10 @@ Module net.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -4503,6 +5136,13 @@ Module net.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::net::ip_addr::Ipv6Addr"
+                                                                          ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path "&")
@@ -4548,6 +5188,7 @@ Module net.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path "u16",
                                                                         M.call_closure (|
                                                                           Ty.path "u16",
                                                                           M.get_associated_function (|
@@ -4584,8 +5225,12 @@ Module net.
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let scope_id := M.copy (| γ |) in
+                                      (let scope_id := M.copy (| Ty.path "u32", γ |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -4623,6 +5268,15 @@ Module net.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [
                                                             mk_str (| "[" |);
@@ -4639,6 +5293,10 @@ Module net.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -4664,6 +5322,13 @@ Module net.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::net::ip_addr::Ipv6Addr"
+                                                                          ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path "&")
@@ -4729,6 +5394,7 @@ Module net.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path "u16",
                                                                         M.call_closure (|
                                                                           Ty.path "u16",
                                                                           M.get_associated_function (|
@@ -4769,6 +5435,10 @@ Module net.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -4830,8 +5500,13 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; fmt ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let fmt := M.alloc (| fmt |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::net::socket_addr::SocketAddrV6" ],
+                self
+              |) in
+            let fmt :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")

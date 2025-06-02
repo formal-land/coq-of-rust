@@ -21,7 +21,7 @@ Module underscore.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "const_underscore_expression::Bar", self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,

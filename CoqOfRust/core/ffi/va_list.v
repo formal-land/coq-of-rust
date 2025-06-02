@@ -35,8 +35,13 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -124,6 +129,20 @@ Module ffi.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::marker::PhantomData")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_void" ] ]
+                                ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -174,8 +193,13 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::va_list::VaList" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -215,6 +239,20 @@ Module ffi.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::marker::PhantomData")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.path "core::ffi::va_list::VaListImpl" ]
+                                ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -253,7 +291,11 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                self
+              |) in
             Value.StructRecord
               "core::ffi::va_list::VaList"
               []
@@ -284,7 +326,11 @@ Module ffi.
         match ε, τ, α with
         | [], [ T ], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                self
+              |) in
             M.call_closure (|
               T,
               M.get_function (| "core::ffi::va_list::va_arg", [], [ T ] |),
@@ -315,8 +361,12 @@ Module ffi.
         match ε, τ, α with
         | [], [ F; R ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                self
+              |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               let~ ap : Ty.path "core::ffi::va_list::VaListImpl" :=
                 M.call_closure (|
@@ -374,7 +424,7 @@ Module ffi.
                         |)
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                 |) in
               ret
             |)))
@@ -402,7 +452,11 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::va_list::VaList" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -445,7 +499,11 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::va_list::VaList" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -661,7 +719,11 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                self
+              |) in
             M.read (|
               let~ dest :
                   Ty.apply
@@ -706,6 +768,7 @@ Module ffi.
                   ]
                 |) in
               M.alloc (|
+                Ty.path "core::ffi::va_list::VaListImpl",
                 M.call_closure (|
                   Ty.path "core::ffi::va_list::VaListImpl",
                   M.get_associated_function (|
@@ -754,7 +817,11 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

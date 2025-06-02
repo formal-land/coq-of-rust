@@ -90,8 +90,8 @@ Module extension.
         match ε, τ, α with
         | [], [], [ real; imag ] =>
           ltac:(M.monadic
-            (let real := M.alloc (| real |) in
-            let imag := M.alloc (| imag |) in
+            (let real := M.alloc (| R, real |) in
+            let imag := M.alloc (| R, imag |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -127,7 +127,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ real ] =>
           ltac:(M.monadic
-            (let real := M.alloc (| real |) in
+            (let real := M.alloc (| R, real |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -166,7 +166,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ imag ] =>
           ltac:(M.monadic
-            (let imag := M.alloc (| imag |) in
+            (let imag := M.alloc (| R, imag |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -205,7 +205,19 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ R; R ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               R,
               M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
@@ -242,7 +254,19 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ R; R ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               R,
               M.get_trait_method (| "core::clone::Clone", R, [], [], "clone", [], [] |),
@@ -279,7 +303,19 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ R; R ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -349,7 +385,19 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ R; R ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               R,
               M.get_trait_method (| "core::ops::arith::Add", R, [], [ R ], "add", [], [] |),
@@ -369,6 +417,7 @@ Module extension.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        R,
                         M.call_closure (|
                           R,
                           M.get_associated_function (|
@@ -402,6 +451,7 @@ Module extension.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        R,
                         M.call_closure (|
                           R,
                           M.get_associated_function (|
@@ -441,7 +491,19 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ R; R ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ R ],
               M.get_trait_method (|
@@ -486,8 +548,32 @@ Module extension.
         match ε, τ, α with
         | [], [ Ext ], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ R; R ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                      [ Value.Integer IntegerKind.Usize 2 ]
+                      [ Ext; Ext ]
+                  ],
+                rhs
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
@@ -838,7 +924,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ bits ] =>
           ltac:(M.monadic
-            (let bits := M.alloc (| bits |) in
+            (let bits := M.alloc (| Ty.path "usize", bits |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "array")

@@ -74,8 +74,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -91,6 +99,7 @@ Module sync.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.call_closure (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
@@ -135,7 +144,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ t ] =>
           ltac:(M.monadic
-            (let t := M.alloc (| t |) in
+            (let t := M.alloc (| T, t |) in
             Value.StructRecord
               "core::sync::exclusive::Exclusive"
               []
@@ -160,7 +169,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ], self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 self,
@@ -186,7 +196,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -226,7 +243,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
               M.get_associated_function (|
@@ -294,7 +323,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ r ] =>
           ltac:(M.monadic
-            (let r := M.alloc (| r |) in
+            (let r := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], r |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -315,6 +344,7 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply (Ty.path "*mut") [] [ T ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| r |) |)
@@ -355,7 +385,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ r ] =>
           ltac:(M.monadic
-            (let r := M.alloc (| r |) in
+            (let r :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                r
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::pin::Pin")
@@ -445,7 +479,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ t ] =>
           ltac:(M.monadic
-            (let t := M.alloc (| t |) in
+            (let t := M.alloc (| T, t |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ],
               M.get_associated_function (|
@@ -492,8 +526,9 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; args ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let args := M.alloc (| args |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ], self |) in
+            let args := M.alloc (| Args, args |) in
             M.call_closure (|
               Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
               M.get_trait_method (|
@@ -555,8 +590,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; args ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let args := M.alloc (| args |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ F ] ],
+                self
+              |) in
+            let args := M.alloc (| Args, args |) in
             M.call_closure (|
               Ty.associated_in_trait "core::ops::function::FnOnce" [] [ Args ] F "Output",
               M.get_trait_method (|
@@ -618,8 +660,24 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -676,8 +734,20 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; arg ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let arg := M.alloc (| arg |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::exclusive::Exclusive") [] [ G ] ]
+                  ],
+                self
+              |) in
+            let arg := M.alloc (| R, arg |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::ops::coroutine::CoroutineState")

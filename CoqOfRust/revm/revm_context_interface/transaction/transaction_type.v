@@ -72,7 +72,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -108,8 +116,17 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -132,6 +149,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Legacy" |) |) |)
                           |)));
                       fun γ =>
@@ -143,6 +161,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip2930" |) |) |)
                           |)));
                       fun γ =>
@@ -154,6 +173,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip1559" |) |) |)
                           |)));
                       fun γ =>
@@ -165,6 +185,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip4844" |) |) |)
                           |)));
                       fun γ =>
@@ -176,6 +197,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |)
                           |)));
                       fun γ =>
@@ -187,6 +209,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |)
                           |)))
                     ]
@@ -228,8 +251,24 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -258,6 +297,7 @@ Module transaction.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   BinOp.eq,
@@ -291,7 +331,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -315,8 +363,16 @@ Module transaction.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_context_interface::transaction::transaction_type::TransactionType"
+                  ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -332,6 +388,7 @@ Module transaction.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|

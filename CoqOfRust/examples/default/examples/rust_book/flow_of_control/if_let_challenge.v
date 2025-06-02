@@ -38,7 +38,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           Value.StructTuple "if_let_challenge::Foo::Bar" [] [] [] in
         M.match_operator (|
           Ty.tuple [],
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
           [
             fun γ =>
               ltac:(M.monadic
@@ -65,8 +65,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "a is foobar
-" |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "a is foobar
+" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -74,10 +80,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
-            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))

@@ -54,6 +54,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Entered the outer loop
 " |) ]
                                     |)
@@ -64,7 +68,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.never_to_any (|
@@ -94,6 +98,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array
                                                   [ mk_str (| "Entered the inner loop
 " |) ]
@@ -105,7 +113,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |) in
                           M.break (||)))
                       |)
@@ -133,6 +141,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "This point will never be reached
 " |) ]
@@ -144,9 +156,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -170,8 +182,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "Exited the outer loop
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "Exited the outer loop
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -179,9 +197,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

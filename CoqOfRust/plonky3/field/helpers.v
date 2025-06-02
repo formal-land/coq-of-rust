@@ -15,8 +15,8 @@ Module helpers.
     match ε, τ, α with
     | [], [ F ], [ log_n; x ] =>
       ltac:(M.monadic
-        (let log_n := M.alloc (| log_n |) in
-        let x := M.alloc (| x |) in
+        (let log_n := M.alloc (| Ty.path "usize", log_n |) in
+        let x := M.alloc (| F, x |) in
         M.call_closure (|
           F,
           M.get_trait_method (| "core::ops::arith::Sub", F, [], [ F ], "sub", [], [] |),
@@ -60,9 +60,9 @@ Module helpers.
     match ε, τ, α with
     | [], [ F ], [ log_n; shift; x ] =>
       ltac:(M.monadic
-        (let log_n := M.alloc (| log_n |) in
-        let shift := M.alloc (| shift |) in
-        let x := M.alloc (| x |) in
+        (let log_n := M.alloc (| Ty.path "usize", log_n |) in
+        let shift := M.alloc (| F, shift |) in
+        let x := M.alloc (| F, x |) in
         M.call_closure (|
           F,
           M.get_trait_method (| "core::ops::arith::Sub", F, [], [ F ], "sub", [], [] |),
@@ -121,8 +121,8 @@ Module helpers.
     match ε, τ, α with
     | [], [ F ], [ generator; order ] =>
       ltac:(M.monadic
-        (let generator := M.alloc (| generator |) in
-        let order := M.alloc (| order |) in
+        (let generator := M.alloc (| F, generator |) in
+        let order := M.alloc (| Ty.path "usize", order |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::iter::adapters::take::Take")
@@ -179,9 +179,9 @@ Module helpers.
     match ε, τ, α with
     | [], [ F ], [ generator; shift; order ] =>
       ltac:(M.monadic
-        (let generator := M.alloc (| generator |) in
-        let shift := M.alloc (| shift |) in
-        let order := M.alloc (| order |) in
+        (let generator := M.alloc (| F, generator |) in
+        let shift := M.alloc (| F, shift |) in
+        let order := M.alloc (| Ty.path "usize", order |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::iter::adapters::take::Take")
@@ -232,8 +232,12 @@ Module helpers.
     match ε, τ, α with
     | [], [ F ], [ s; vec ] =>
       ltac:(M.monadic
-        (let s := M.alloc (| s |) in
-        let vec := M.alloc (| vec |) in
+        (let s := M.alloc (| F, s |) in
+        let vec :=
+          M.alloc (|
+            Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ],
+            vec
+          |) in
         M.call_closure (|
           Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ],
           M.get_trait_method (|
@@ -303,11 +307,11 @@ Module helpers.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Ty.function [ Ty.tuple [ F ] ] F,
-                            M.alloc (| α0 |),
+                            M.alloc (| F, α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
+                                  (let x := M.copy (| F, γ |) in
                                   M.call_closure (|
                                     F,
                                     M.get_trait_method (|
@@ -349,12 +353,29 @@ Module helpers.
     match ε, τ, α with
     | [], [ F ], [ s; slice ] =>
       ltac:(M.monadic
-        (let s := M.alloc (| s |) in
-        let slice := M.alloc (| slice |) in
+        (let s := M.alloc (| F, s |) in
+        let slice :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+            slice
+          |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
             M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
+                    ];
+                  Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ]
+                ],
               M.call_closure (|
                 Ty.tuple
                   [
@@ -386,8 +407,24 @@ Module helpers.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let packed := M.copy (| γ0_0 |) in
-                  let sfx := M.copy (| γ0_1 |) in
+                  let packed :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "slice")
+                            []
+                            [ Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
+                        ],
+                      γ0_0
+                    |) in
+                  let sfx :=
+                    M.copy (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                      γ0_1
+                    |) in
                   let~ packed_s :
                       Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" :=
                     M.call_closure (|
@@ -482,11 +519,38 @@ Module helpers.
                                           ]
                                       ]
                                       (Ty.tuple []),
-                                    M.alloc (| α0 |),
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "p3_field::field::Field"
+                                            []
+                                            []
+                                            F
+                                            "Packing"
+                                        ],
+                                      α0
+                                    |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
+                                          (let x :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [
+                                                  Ty.associated_in_trait
+                                                    "p3_field::field::Field"
+                                                    []
+                                                    []
+                                                    F
+                                                    "Packing"
+                                                ],
+                                              γ
+                                            |) in
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_trait_method (|
@@ -561,11 +625,12 @@ Module helpers.
                                     Ty.function
                                       [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
                                       (Ty.tuple []),
-                                    M.alloc (| α0 |),
+                                    M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
+                                          (let x :=
+                                            M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ |) in
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_trait_method (|
@@ -591,7 +656,7 @@ Module helpers.
                               end))
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -617,9 +682,10 @@ Module helpers.
     match ε, τ, α with
     | [], [ F; Y ], [ x; y; s ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
-        let s := M.alloc (| s |) in
+        (let x :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ], x |) in
+        let y := M.alloc (| Y, y |) in
+        let s := M.alloc (| F, s |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -679,14 +745,15 @@ Module helpers.
                             Ty.function
                               [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
                               (Ty.tuple []),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let x_i := M.copy (| γ0_0 |) in
-                                  let y_i := M.copy (| γ0_1 |) in
+                                  let x_i :=
+                                    M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ0_0 |) in
+                                  let y_i := M.copy (| F, γ0_1 |) in
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_trait_method (|
@@ -724,7 +791,7 @@ Module helpers.
                       end))
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -750,7 +817,7 @@ Module helpers.
     match ε, τ, α with
     | [ D ], [ R ], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| R, x |) in
         M.read (|
           let~ arr :
               Ty.apply
@@ -788,13 +855,14 @@ Module helpers.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (| Ty.path "bool", BinOp.lt, [ M.read (| i |); D ] |)
                               |)) in
                           let _ :=
@@ -833,15 +901,16 @@ Module helpers.
                                 [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -850,6 +919,7 @@ Module helpers.
               |)
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "array") [ D ] [ R ],
             M.call_closure (|
               Ty.apply (Ty.path "array") [ D ] [ R ],
               M.get_function (|
@@ -887,7 +957,7 @@ Module helpers.
     match ε, τ, α with
     | [ P ], [], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| Ty.path "u32", x |) in
         M.read (|
           let~ shift : Ty.path "u32" :=
             M.call_closure (|
@@ -910,13 +980,14 @@ Module helpers.
             |) in
           M.match_operator (|
             Ty.path "u32",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -935,6 +1006,7 @@ Module helpers.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.path "u32",
                     M.call_closure (|
                       Ty.path "u32",
                       BinOp.Wrap.add,
@@ -963,7 +1035,7 @@ Module helpers.
     match ε, τ, α with
     | [ P ], [], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| Ty.path "u64", x |) in
         M.read (|
           let~ shift : Ty.path "u64" :=
             M.call_closure (|
@@ -986,13 +1058,14 @@ Module helpers.
             |) in
           M.match_operator (|
             Ty.path "u64",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -1011,6 +1084,7 @@ Module helpers.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.path "u64",
                     M.call_closure (|
                       Ty.path "u64",
                       BinOp.Wrap.add,
@@ -1041,7 +1115,8 @@ Module helpers.
     match ε, τ, α with
     | [], [ SF; TF ], [ vals ] =>
       ltac:(M.monadic
-        (let vals := M.alloc (| vals |) in
+        (let vals :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ SF ] ], vals |) in
         M.read (|
           let~ base : TF :=
             M.call_closure (|
@@ -1064,6 +1139,7 @@ Module helpers.
               ]
             |) in
           M.alloc (|
+            TF,
             M.call_closure (|
               TF,
               M.get_trait_method (|
@@ -1117,20 +1193,21 @@ Module helpers.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Ty.function [ Ty.tuple [ TF; Ty.apply (Ty.path "&") [] [ SF ] ] ] TF,
-                            M.alloc (| α0 |),
+                            M.alloc (| TF, α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let acc := M.copy (| γ |) in
+                                  (let acc := M.copy (| TF, γ |) in
                                   M.match_operator (|
                                     Ty.function
                                       [ Ty.tuple [ TF; Ty.apply (Ty.path "&") [] [ SF ] ] ]
                                       TF,
-                                    M.alloc (| α1 |),
+                                    M.alloc (| Ty.apply (Ty.path "&") [] [ SF ], α1 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let val := M.copy (| γ |) in
+                                          (let val :=
+                                            M.copy (| Ty.apply (Ty.path "&") [] [ SF ], γ |) in
                                           M.call_closure (|
                                             TF,
                                             M.get_trait_method (|
@@ -1227,8 +1304,8 @@ Module helpers.
     match ε, τ, α with
     | [], [ SF; TF ], [ val; n ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
-        let n := M.alloc (| n |) in
+        (let val := M.alloc (| SF, val |) in
+        let n := M.alloc (| Ty.path "usize", n |) in
         M.read (|
           let~ result :
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ TF; Ty.path "alloc::alloc::Global" ] :=
@@ -1328,6 +1405,10 @@ Module helpers.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u64"; Ty.path "alloc::alloc::Global" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -1343,6 +1424,7 @@ Module helpers.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.path "num_bigint::biguint::BigUint",
                                                 M.call_closure (|
                                                   Ty.path "num_bigint::biguint::BigUint",
                                                   M.get_trait_method (|
@@ -1381,11 +1463,15 @@ Module helpers.
                                 Ty.function
                                   [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ] ]
                                   TF,
-                                M.alloc (| α0 |),
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let d := M.copy (| γ |) in
+                                      (let d :=
+                                        M.copy (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                          γ
+                                        |) in
                                       M.call_closure (|
                                         TF,
                                         M.get_trait_method (|
@@ -1427,7 +1513,7 @@ Module helpers.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Ty.function [ Ty.tuple [] ] TF,
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1468,8 +1554,8 @@ Module helpers.
     match ε, τ, α with
     | [], [ _ as S; LI; RI ], [ li; ri ] =>
       ltac:(M.monadic
-        (let li := M.alloc (| li |) in
-        let ri := M.alloc (| ri |) in
+        (let li := M.alloc (| LI, li |) in
+        let ri := M.alloc (| RI, ri |) in
         M.call_closure (|
           S,
           M.get_trait_method (|
@@ -1699,14 +1785,49 @@ Module helpers.
                                   LI
                                   "Item")
                                 "Output"),
-                            M.alloc (| α0 |),
+                            M.alloc (|
+                              Ty.tuple
+                                [
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    LI
+                                    "Item";
+                                  Ty.associated_in_trait
+                                    "core::iter::traits::iterator::Iterator"
+                                    []
+                                    []
+                                    RI
+                                    "Item"
+                                ],
+                              α0
+                            |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let l := M.copy (| γ0_0 |) in
-                                  let r := M.copy (| γ0_1 |) in
+                                  let l :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        LI
+                                        "Item",
+                                      γ0_0
+                                    |) in
+                                  let r :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "core::iter::traits::iterator::Iterator"
+                                        []
+                                        []
+                                        RI
+                                        "Item",
+                                      γ0_1
+                                    |) in
                                   M.call_closure (|
                                     Ty.associated_in_trait
                                       "core::ops::arith::Mul"

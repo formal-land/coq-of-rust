@@ -32,7 +32,11 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "returning_traits_with_dyn::Sheep" ],
+            self
+          |) in
         mk_str (| "baaaaah!" |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -58,7 +62,11 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "returning_traits_with_dyn::Cow" ],
+            self
+          |) in
         mk_str (| "moooooo!" |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -85,7 +93,7 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   match ε, τ, α with
   | [], [], [ random_number ] =>
     ltac:(M.monadic
-      (let random_number := M.alloc (| random_number |) in
+      (let random_number := M.alloc (| Ty.path "f64", random_number |) in
       (* Unsize *)
       M.pointer_coercion
         (* Unsize *)
@@ -99,13 +107,14 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
                   Ty.path "alloc::alloc::Global"
                 ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.lt,
@@ -114,6 +123,13 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       (* Unsize *)
                       M.pointer_coercion
                         (* Unsize *)
@@ -144,6 +160,13 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [
+                          Ty.dyn [ ("returning_traits_with_dyn::Animal::Trait", []) ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       (* Unsize *)
                       M.pointer_coercion
                         (M.call_closure (|
@@ -237,6 +260,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "You've randomly chosen an animal, and it says " |);
@@ -253,6 +280,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -270,6 +301,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_trait_method (|
@@ -307,9 +339,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

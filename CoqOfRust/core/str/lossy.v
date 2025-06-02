@@ -15,7 +15,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                self
+              |) in
             Value.StructRecord
               "core::str::lossy::Utf8Chunks"
               []
@@ -51,7 +55,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                self
+              |) in
             Value.StructRecord
               "core::str::lossy::Utf8Chunk"
               []
@@ -150,8 +158,13 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -191,6 +204,15 @@ Module str.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -237,8 +259,16 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                other
+              |) in
             LogicalOp.and (|
               M.call_closure (|
                 Ty.path "bool",
@@ -327,7 +357,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -338,7 +372,7 @@ Module str.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -368,7 +402,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -392,7 +430,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -456,8 +498,10 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Debug" ], self |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -466,12 +510,29 @@ Module str.
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "core::fmt::Error"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -533,8 +594,19 @@ Module str.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::fmt::Error"
+                                        ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -577,7 +649,7 @@ Module str.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   val))
                             ]
                           |)
@@ -588,6 +660,7 @@ Module str.
                             (M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.path "core::str::lossy::Utf8Chunks",
                                 M.call_closure (|
                                   Ty.path "core::str::lossy::Utf8Chunks",
                                   M.get_trait_method (|
@@ -629,7 +702,8 @@ Module str.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let iter := M.copy (| γ |) in
+                                    (let iter :=
+                                      M.copy (| Ty.path "core::str::lossy::Utf8Chunks", γ |) in
                                     M.loop (|
                                       Ty.tuple [],
                                       ltac:(M.monadic
@@ -638,6 +712,10 @@ Module str.
                                             M.match_operator (|
                                               Ty.tuple [],
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::str::lossy::Utf8Chunk" ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -671,6 +749,7 @@ Module str.
                                                         "core::option::Option::None"
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.never_to_any (| M.read (| M.break (||) |) |)
                                                     |)));
                                                 fun γ =>
@@ -681,7 +760,11 @@ Module str.
                                                         "core::option::Option::Some",
                                                         0
                                                       |) in
-                                                    let chunk := M.copy (| γ0_0 |) in
+                                                    let chunk :=
+                                                      M.copy (|
+                                                        Ty.path "core::str::lossy::Utf8Chunk",
+                                                        γ0_0
+                                                      |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.read (|
                                                         let~ valid :
@@ -711,6 +794,8 @@ Module str.
                                                               (M.match_operator (|
                                                                 Ty.tuple [],
                                                                 M.alloc (|
+                                                                  Ty.path
+                                                                    "core::str::iter::CharIndices",
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::str::iter::CharIndices",
@@ -749,7 +834,12 @@ Module str.
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
-                                                                      (let iter := M.copy (| γ |) in
+                                                                      (let iter :=
+                                                                        M.copy (|
+                                                                          Ty.path
+                                                                            "core::str::iter::CharIndices",
+                                                                          γ
+                                                                        |) in
                                                                       M.loop (|
                                                                         Ty.tuple [],
                                                                         ltac:(M.monadic
@@ -758,6 +848,19 @@ Module str.
                                                                               M.match_operator (|
                                                                                 Ty.tuple [],
                                                                                 M.alloc (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "usize";
+                                                                                          Ty.path
+                                                                                            "char"
+                                                                                        ]
+                                                                                    ],
                                                                                   M.call_closure (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -804,6 +907,7 @@ Module str.
                                                                                           "core::option::Option::None"
                                                                                         |) in
                                                                                       M.alloc (|
+                                                                                        Ty.tuple [],
                                                                                         M.never_to_any (|
                                                                                           M.read (|
                                                                                             M.break (||)
@@ -830,10 +934,14 @@ Module str.
                                                                                         |) in
                                                                                       let i :=
                                                                                         M.copy (|
+                                                                                          Ty.path
+                                                                                            "usize",
                                                                                           γ1_0
                                                                                         |) in
                                                                                       let c :=
                                                                                         M.copy (|
+                                                                                          Ty.path
+                                                                                            "char",
                                                                                           γ1_1
                                                                                         |) in
                                                                                       let~ esc :
@@ -858,6 +966,8 @@ Module str.
                                                                                       M.match_operator (|
                                                                                         Ty.tuple [],
                                                                                         M.alloc (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           Value.Tuple
                                                                                             []
                                                                                         |),
@@ -868,6 +978,8 @@ Module str.
                                                                                                     γ :=
                                                                                                 M.use
                                                                                                   (M.alloc (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.call_closure (|
                                                                                                       Ty.path
                                                                                                         "bool",
@@ -917,6 +1029,24 @@ Module str.
                                                                                                     Ty.tuple
                                                                                                       [],
                                                                                                     M.alloc (|
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "core::ops::control_flow::ControlFlow")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "core::result::Result")
+                                                                                                            []
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::convert::Infallible";
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::Error"
+                                                                                                            ];
+                                                                                                          Ty.tuple
+                                                                                                            []
+                                                                                                        ],
                                                                                                       M.call_closure (|
                                                                                                         Ty.apply
                                                                                                           (Ty.path
@@ -1067,9 +1197,21 @@ Module str.
                                                                                                           let
                                                                                                                 residual :=
                                                                                                             M.copy (|
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "core::result::Result")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "core::convert::Infallible";
+                                                                                                                  Ty.path
+                                                                                                                    "core::fmt::Error"
+                                                                                                                ],
                                                                                                               γ0_0
                                                                                                             |) in
                                                                                                           M.alloc (|
+                                                                                                            Ty.tuple
+                                                                                                              [],
                                                                                                             M.never_to_any (|
                                                                                                               M.read (|
                                                                                                                 M.return_ (|
@@ -1136,6 +1278,8 @@ Module str.
                                                                                                           let
                                                                                                                 val :=
                                                                                                             M.copy (|
+                                                                                                              Ty.tuple
+                                                                                                                [],
                                                                                                               γ0_0
                                                                                                             |) in
                                                                                                           val))
@@ -1152,6 +1296,8 @@ Module str.
                                                                                                       Ty.tuple
                                                                                                         [],
                                                                                                       M.alloc (|
+                                                                                                        Ty.path
+                                                                                                          "core::char::EscapeDebug",
                                                                                                         M.call_closure (|
                                                                                                           Ty.path
                                                                                                             "core::char::EscapeDebug",
@@ -1179,6 +1325,8 @@ Module str.
                                                                                                             (let
                                                                                                                   iter :=
                                                                                                               M.copy (|
+                                                                                                                Ty.path
+                                                                                                                  "core::char::EscapeDebug",
                                                                                                                 γ
                                                                                                               |) in
                                                                                                             M.loop (|
@@ -1194,6 +1342,14 @@ Module str.
                                                                                                                       Ty.tuple
                                                                                                                         [],
                                                                                                                       M.alloc (|
+                                                                                                                        Ty.apply
+                                                                                                                          (Ty.path
+                                                                                                                            "core::option::Option")
+                                                                                                                          []
+                                                                                                                          [
+                                                                                                                            Ty.path
+                                                                                                                              "char"
+                                                                                                                          ],
                                                                                                                         M.call_closure (|
                                                                                                                           Ty.apply
                                                                                                                             (Ty.path
@@ -1237,6 +1393,8 @@ Module str.
                                                                                                                                 "core::option::Option::None"
                                                                                                                               |) in
                                                                                                                             M.alloc (|
+                                                                                                                              Ty.tuple
+                                                                                                                                [],
                                                                                                                               M.never_to_any (|
                                                                                                                                 M.read (|
                                                                                                                                   M.break (||)
@@ -1256,6 +1414,8 @@ Module str.
                                                                                                                             let
                                                                                                                                   c :=
                                                                                                                               M.copy (|
+                                                                                                                                Ty.path
+                                                                                                                                  "char",
                                                                                                                                 γ0_0
                                                                                                                               |) in
                                                                                                                             let~
@@ -1267,6 +1427,24 @@ Module str.
                                                                                                                                   Ty.tuple
                                                                                                                                     [],
                                                                                                                                   M.alloc (|
+                                                                                                                                    Ty.apply
+                                                                                                                                      (Ty.path
+                                                                                                                                        "core::ops::control_flow::ControlFlow")
+                                                                                                                                      []
+                                                                                                                                      [
+                                                                                                                                        Ty.apply
+                                                                                                                                          (Ty.path
+                                                                                                                                            "core::result::Result")
+                                                                                                                                          []
+                                                                                                                                          [
+                                                                                                                                            Ty.path
+                                                                                                                                              "core::convert::Infallible";
+                                                                                                                                            Ty.path
+                                                                                                                                              "core::fmt::Error"
+                                                                                                                                          ];
+                                                                                                                                        Ty.tuple
+                                                                                                                                          []
+                                                                                                                                      ],
                                                                                                                                     M.call_closure (|
                                                                                                                                       Ty.apply
                                                                                                                                         (Ty.path
@@ -1357,9 +1535,21 @@ Module str.
                                                                                                                                         let
                                                                                                                                               residual :=
                                                                                                                                           M.copy (|
+                                                                                                                                            Ty.apply
+                                                                                                                                              (Ty.path
+                                                                                                                                                "core::result::Result")
+                                                                                                                                              []
+                                                                                                                                              [
+                                                                                                                                                Ty.path
+                                                                                                                                                  "core::convert::Infallible";
+                                                                                                                                                Ty.path
+                                                                                                                                                  "core::fmt::Error"
+                                                                                                                                              ],
                                                                                                                                             γ0_0
                                                                                                                                           |) in
                                                                                                                                         M.alloc (|
+                                                                                                                                          Ty.tuple
+                                                                                                                                            [],
                                                                                                                                           M.never_to_any (|
                                                                                                                                             M.read (|
                                                                                                                                               M.return_ (|
@@ -1426,6 +1616,8 @@ Module str.
                                                                                                                                         let
                                                                                                                                               val :=
                                                                                                                                           M.copy (|
+                                                                                                                                            Ty.tuple
+                                                                                                                                              [],
                                                                                                                                             γ0_0
                                                                                                                                           |) in
                                                                                                                                         val))
@@ -1433,6 +1625,8 @@ Module str.
                                                                                                                                 |)
                                                                                                                               |) in
                                                                                                                             M.alloc (|
+                                                                                                                              Ty.tuple
+                                                                                                                                [],
                                                                                                                               Value.Tuple
                                                                                                                                 []
                                                                                                                             |)))
@@ -1440,6 +1634,8 @@ Module str.
                                                                                                                     |)
                                                                                                                   |) in
                                                                                                                 M.alloc (|
+                                                                                                                  Ty.tuple
+                                                                                                                    [],
                                                                                                                   Value.Tuple
                                                                                                                     []
                                                                                                                 |)))
@@ -1481,12 +1677,16 @@ Module str.
                                                                                                   |)
                                                                                                 |) in
                                                                                               M.alloc (|
+                                                                                                Ty.tuple
+                                                                                                  [],
                                                                                                 Value.Tuple
                                                                                                   []
                                                                                               |)));
                                                                                           fun γ =>
                                                                                             ltac:(M.monadic
                                                                                               (M.alloc (|
+                                                                                                Ty.tuple
+                                                                                                  [],
                                                                                                 Value.Tuple
                                                                                                   []
                                                                                               |)))
@@ -1496,6 +1696,7 @@ Module str.
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |)))
                                                                       |)))
@@ -1507,6 +1708,22 @@ Module str.
                                                             M.match_operator (|
                                                               Ty.tuple [],
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::control_flow::ControlFlow")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::convert::Infallible";
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ];
+                                                                    Ty.tuple []
+                                                                  ],
                                                                 M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1637,8 +1854,21 @@ Module str.
                                                                         0
                                                                       |) in
                                                                     let residual :=
-                                                                      M.copy (| γ0_0 |) in
+                                                                      M.copy (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        γ0_0
+                                                                      |) in
                                                                     M.alloc (|
+                                                                      Ty.tuple [],
                                                                       M.never_to_any (|
                                                                         M.read (|
                                                                           M.return_ (|
@@ -1698,17 +1928,25 @@ Module str.
                                                                         "core::ops::control_flow::ControlFlow::Continue",
                                                                         0
                                                                       |) in
-                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    let val :=
+                                                                      M.copy (|
+                                                                        Ty.tuple [],
+                                                                        γ0_0
+                                                                      |) in
                                                                     val))
                                                               ]
                                                             |)
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                                       |) in
                                                     M.use
                                                       (M.match_operator (|
                                                         Ty.tuple [],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::Iter")
+                                                            []
+                                                            [ Ty.path "u8" ],
                                                           M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path "core::slice::iter::Iter")
@@ -1762,7 +2000,15 @@ Module str.
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (let iter := M.copy (| γ |) in
+                                                              (let iter :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::slice::iter::Iter")
+                                                                    []
+                                                                    [ Ty.path "u8" ],
+                                                                  γ
+                                                                |) in
                                                               M.loop (|
                                                                 Ty.tuple [],
                                                                 ltac:(M.monadic
@@ -1771,6 +2017,16 @@ Module str.
                                                                       M.match_operator (|
                                                                         Ty.tuple [],
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::option::Option")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u8" ]
+                                                                            ],
                                                                           M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1817,6 +2073,7 @@ Module str.
                                                                                   "core::option::Option::None"
                                                                                 |) in
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 M.never_to_any (|
                                                                                   M.read (|
                                                                                     M.break (||)
@@ -1834,13 +2091,34 @@ Module str.
                                                                               let γ0_0 :=
                                                                                 M.read (| γ0_0 |) in
                                                                               let b :=
-                                                                                M.copy (| γ0_0 |) in
+                                                                                M.copy (|
+                                                                                  Ty.path "u8",
+                                                                                  γ0_0
+                                                                                |) in
                                                                               let~ _ :
                                                                                   Ty.tuple [] :=
                                                                                 M.read (|
                                                                                   M.match_operator (|
                                                                                     Ty.tuple [],
                                                                                     M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::ops::control_flow::ControlFlow")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::result::Result")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::convert::Infallible";
+                                                                                              Ty.path
+                                                                                                "core::fmt::Error"
+                                                                                            ];
+                                                                                          Ty.tuple
+                                                                                            []
+                                                                                        ],
                                                                                       M.call_closure (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -1925,6 +2203,24 @@ Module str.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "array")
+                                                                                                              [
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  1
+                                                                                                              ]
+                                                                                                              [
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "&")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "str"
+                                                                                                                  ]
+                                                                                                              ],
                                                                                                             Value.Array
                                                                                                               [
                                                                                                                 mk_str (|
@@ -1943,6 +2239,18 @@ Module str.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "array")
+                                                                                                              [
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  1
+                                                                                                              ]
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "core::fmt::rt::Argument"
+                                                                                                              ],
                                                                                                             Value.Array
                                                                                                               [
                                                                                                                 M.call_closure (|
@@ -1983,6 +2291,18 @@ Module str.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "array")
+                                                                                                              [
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  1
+                                                                                                              ]
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "core::fmt::rt::Placeholder"
+                                                                                                              ],
                                                                                                             Value.Array
                                                                                                               [
                                                                                                                 M.call_closure (|
@@ -2062,9 +2382,21 @@ Module str.
                                                                                           let
                                                                                                 residual :=
                                                                                             M.copy (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "core::result::Result")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "core::convert::Infallible";
+                                                                                                  Ty.path
+                                                                                                    "core::fmt::Error"
+                                                                                                ],
                                                                                               γ0_0
                                                                                             |) in
                                                                                           M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             M.never_to_any (|
                                                                                               M.read (|
                                                                                                 M.return_ (|
@@ -2129,6 +2461,8 @@ Module str.
                                                                                             |) in
                                                                                           let val :=
                                                                                             M.copy (|
+                                                                                              Ty.tuple
+                                                                                                [],
                                                                                               γ0_0
                                                                                             |) in
                                                                                           val))
@@ -2136,24 +2470,32 @@ Module str.
                                                                                   |)
                                                                                 |) in
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |)))
                                                                         ]
                                                                       |)
                                                                     |) in
-                                                                  M.alloc (| Value.Tuple [] |)))
+                                                                  M.alloc (|
+                                                                    Ty.tuple [],
+                                                                    Value.Tuple []
+                                                                  |)))
                                                               |)))
                                                         ]
                                                       |))))
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     |)))
                               ]
                             |))
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -2208,7 +2550,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunks" ],
+                self
+              |) in
             Value.StructRecord
               "core::str::lossy::Utf8Chunks"
               []
@@ -2278,7 +2624,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunks" ],
+                self
+              |) in
             Value.StructTuple
               "core::str::lossy::Debug"
               []
@@ -2410,7 +2760,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::str::lossy::Utf8Chunks" ],
+                self
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -2419,18 +2773,23 @@ Module str.
                   [ Ty.path "core::str::lossy::Utf8Chunk" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "core::str::lossy::Utf8Chunk" ],
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           M.get_associated_function (|
@@ -2461,6 +2820,7 @@ Module str.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2473,7 +2833,7 @@ Module str.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -2486,13 +2846,14 @@ Module str.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.lt,
@@ -2572,13 +2933,14 @@ Module str.
                                         M.read (|
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
+                                                        Ty.path "bool",
                                                         M.call_closure (|
                                                           Ty.path "bool",
                                                           BinOp.lt,
@@ -2593,7 +2955,7 @@ Module str.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let~ w : Ty.path "usize" :=
@@ -2621,13 +2983,17 @@ Module str.
                                                             M.read (|
                                                               M.match_operator (|
                                                                 Ty.tuple [],
-                                                                M.alloc (| Value.Tuple [] |),
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |),
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
+                                                                            Ty.path "bool",
                                                                             M.call_closure (|
                                                                               Ty.path "bool",
                                                                               BinOp.ne,
@@ -2686,6 +3052,7 @@ Module str.
                                                                           Value.Bool true
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -2693,6 +3060,7 @@ Module str.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)))
                                                                 ]
@@ -2711,7 +3079,10 @@ Module str.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let _ :=
@@ -2724,6 +3095,8 @@ Module str.
                                                               M.match_operator (|
                                                                 Ty.tuple [],
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [ Ty.path "u8"; Ty.path "u8" ],
                                                                   Value.Tuple
                                                                     [
                                                                       M.read (| byte |);
@@ -2778,6 +3151,7 @@ Module str.
                                                                             224
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -2793,6 +3167,7 @@ Module str.
                                                                           1
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -2815,6 +3190,7 @@ Module str.
                                                                             237
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -2830,11 +3206,13 @@ Module str.
                                                                           1
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -2859,13 +3237,17 @@ Module str.
                                                             M.read (|
                                                               M.match_operator (|
                                                                 Ty.tuple [],
-                                                                M.alloc (| Value.Tuple [] |),
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |),
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
+                                                                            Ty.path "bool",
                                                                             M.call_closure (|
                                                                               Ty.path "bool",
                                                                               BinOp.ne,
@@ -2924,6 +3306,7 @@ Module str.
                                                                           Value.Bool true
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -2931,6 +3314,7 @@ Module str.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)))
                                                                 ]
@@ -2949,7 +3333,10 @@ Module str.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let _ :=
@@ -2962,6 +3349,8 @@ Module str.
                                                               M.match_operator (|
                                                                 Ty.tuple [],
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [ Ty.path "u8"; Ty.path "u8" ],
                                                                   Value.Tuple
                                                                     [
                                                                       M.read (| byte |);
@@ -3016,6 +3405,7 @@ Module str.
                                                                             240
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -3031,6 +3421,7 @@ Module str.
                                                                           1
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -3053,11 +3444,13 @@ Module str.
                                                                             244
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -3082,13 +3475,17 @@ Module str.
                                                             M.read (|
                                                               M.match_operator (|
                                                                 Ty.tuple [],
-                                                                M.alloc (| Value.Tuple [] |),
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |),
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
+                                                                            Ty.path "bool",
                                                                             M.call_closure (|
                                                                               Ty.path "bool",
                                                                               BinOp.ne,
@@ -3147,6 +3544,7 @@ Module str.
                                                                           Value.Bool true
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -3154,6 +3552,7 @@ Module str.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)))
                                                                 ]
@@ -3176,13 +3575,17 @@ Module str.
                                                             M.read (|
                                                               M.match_operator (|
                                                                 Ty.tuple [],
-                                                                M.alloc (| Value.Tuple [] |),
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |),
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
+                                                                            Ty.path "bool",
                                                                             M.call_closure (|
                                                                               Ty.path "bool",
                                                                               BinOp.ne,
@@ -3241,6 +3644,7 @@ Module str.
                                                                           Value.Bool true
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |)
@@ -3248,6 +3652,7 @@ Module str.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)))
                                                                 ]
@@ -3266,10 +3671,14 @@ Module str.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (| M.break (||) |)
                                                             |)
@@ -3281,15 +3690,16 @@ Module str.
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.write (| valid_up_to, M.read (| i |) |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -3303,6 +3713,17 @@ Module str.
                           []
                           [ Ty.path "core::str::lossy::Utf8Chunk" ],
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -3343,8 +3764,22 @@ Module str.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let inspected := M.copy (| γ0_0 |) in
-                              let remaining := M.copy (| γ0_1 |) in
+                              let inspected :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  γ0_0
+                                |) in
+                              let remaining :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                  γ0_1
+                                |) in
                               let~ _ : Ty.tuple [] :=
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
@@ -3363,6 +3798,17 @@ Module str.
                                   []
                                   [ Ty.path "core::str::lossy::Utf8Chunk" ],
                                 M.alloc (|
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                    ],
                                   M.call_closure (|
                                     Ty.tuple
                                       [
@@ -3395,9 +3841,27 @@ Module str.
                                     ltac:(M.monadic
                                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let valid := M.copy (| γ0_0 |) in
-                                      let invalid := M.copy (| γ0_1 |) in
+                                      let valid :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          γ0_0
+                                        |) in
+                                      let invalid :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                          γ0_1
+                                        |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::str::lossy::Utf8Chunk" ],
                                         Value.StructTuple
                                           "core::option::Option::Some"
                                           []
@@ -3480,8 +3944,13 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunks" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3509,6 +3978,7 @@ Module str.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.path "core::fmt::builders::DebugStruct",
                             M.call_closure (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               M.get_associated_function (|
@@ -3536,6 +4006,7 @@ Module str.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "core::str::lossy::Debug",
                                   M.call_closure (|
                                     Ty.path "core::str::lossy::Debug",
                                     M.get_associated_function (|

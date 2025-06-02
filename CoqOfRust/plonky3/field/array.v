@@ -26,7 +26,14 @@ Module array.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
           Value.StructTuple
             "p3_field::array::FieldArray"
             [ N ]
@@ -103,8 +110,16 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -127,6 +142,7 @@ Module array.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ F ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -170,12 +186,19 @@ Module array.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -222,8 +245,22 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -290,7 +327,14 @@ Module array.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
           M.read (|
             let~ result : Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] :=
               M.call_closure (|
@@ -353,11 +397,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ F ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| F, α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| F, γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -448,7 +492,7 @@ Module array.
       match ε, τ, α with
       | [], [], [ val ] =>
         ltac:(M.monadic
-          (let val := M.alloc (| val |) in
+          (let val := M.alloc (| F, val |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -495,7 +539,7 @@ Module array.
       match ε, τ, α with
       | [], [], [ arr ] =>
         ltac:(M.monadic
-          (let arr := M.alloc (| arr |) in
+          (let arr := M.alloc (| Ty.apply (Ty.path "array") [ N ] [ F ], arr |) in
           Value.StructTuple "p3_field::array::FieldArray" [ N ] [ F ] [ M.read (| arr |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -530,6 +574,7 @@ Module array.
       let Self : Ty.t := Self N F in
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
           Value.StructTuple
             "p3_field::array::FieldArray"
             [ N ]
@@ -554,6 +599,7 @@ Module array.
       let Self : Ty.t := Self N F in
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
           Value.StructTuple
             "p3_field::array::FieldArray"
             [ N ]
@@ -578,6 +624,7 @@ Module array.
       let Self : Ty.t := Self N F in
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
           Value.StructTuple
             "p3_field::array::FieldArray"
             [ N ]
@@ -602,6 +649,7 @@ Module array.
       let Self : Ty.t := Self N F in
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
           Value.StructTuple
             "p3_field::array::FieldArray"
             [ N ]
@@ -632,7 +680,16 @@ Module array.
       match ε, τ, α with
       | [], [], [ f ] =>
         ltac:(M.monadic
-          (let f := M.alloc (| f |) in
+          (let f :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "p3_field::field::PrimeCharacteristicRing"
+                []
+                []
+                (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
+                "PrimeSubfield",
+              f
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -712,7 +769,7 @@ Module array.
         (α : list Value.t)
         : M :=
       let Self : Ty.t := Self N F in
-      ltac:(M.monadic (M.alloc (| N |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "usize", N |))).
     
     (*
         fn from_slice(slice: &[Self::Value]) -> &Self {
@@ -731,18 +788,43 @@ Module array.
       match ε, τ, α with
       | [], [], [ slice ] =>
         ltac:(M.monadic
-          (let slice := M.alloc (| slice |) in
+          (let slice :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "p3_field::packed::PackedValue"
+                        []
+                        []
+                        (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
+                        "Value"
+                    ]
+                ],
+              slice
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_associated_function (|
@@ -766,17 +848,20 @@ Module array.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -794,6 +879,7 @@ Module array.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -803,6 +889,7 @@ Module array.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -841,13 +928,17 @@ Module array.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -904,7 +995,26 @@ Module array.
       match ε, τ, α with
       | [], [], [ slice ] =>
         ltac:(M.monadic
-          (let slice := M.alloc (| slice |) in
+          (let slice :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "p3_field::packed::PackedValue"
+                        []
+                        []
+                        (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ])
+                        "Value"
+                    ]
+                ],
+              slice
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -914,11 +1024,17 @@ Module array.
                     M.match_operator (|
                       Ty.tuple [],
                       M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                          ],
                         Value.Tuple
                           [
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.path "usize",
                                 M.call_closure (|
                                   Ty.path "usize",
                                   M.get_associated_function (|
@@ -950,17 +1066,20 @@ Module array.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let left_val := M.copy (| γ0_0 |) in
-                            let right_val := M.copy (| γ0_1 |) in
+                            let left_val :=
+                              M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                            let right_val :=
+                              M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -978,6 +1097,7 @@ Module array.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -987,6 +1107,7 @@ Module array.
                                               []
                                               [] in
                                           M.alloc (|
+                                            Ty.path "never",
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (|
@@ -1025,13 +1146,18 @@ Module array.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)))
                       ]
                     |)
                   |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.deref (|
@@ -1102,7 +1228,7 @@ Module array.
       match ε, τ, α with
       | [], [ Fn ], [ f ] =>
         ltac:(M.monadic
-          (let f := M.alloc (| f |) in
+          (let f := M.alloc (| Fn, f |) in
           Value.StructTuple
             "p3_field::array::FieldArray"
             [ N ]
@@ -1133,7 +1259,14 @@ Module array.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
           (* Unsize *)
           M.pointer_coercion
             (M.borrow (|
@@ -1168,7 +1301,14 @@ Module array.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1235,8 +1375,10 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -1265,11 +1407,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let i := M.copy (| γ |) in
+                                    (let i := M.copy (| Ty.path "usize", γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -1351,8 +1493,9 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -1385,11 +1528,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ F ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| F, α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| F, γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -1445,8 +1588,16 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1529,14 +1680,15 @@ Module array.
                               Ty.function
                                 [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let x := M.copy (| γ0_0 |) in
-                                    let y := M.copy (| γ0_1 |) in
+                                    let x :=
+                                      M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ0_0 |) in
+                                    let y := M.copy (| F, γ0_1 |) in
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -1562,7 +1714,7 @@ Module array.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1598,8 +1750,15 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1645,11 +1804,11 @@ Module array.
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ |) in
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -1675,7 +1834,7 @@ Module array.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1714,8 +1873,10 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -1744,11 +1905,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let i := M.copy (| γ |) in
+                                    (let i := M.copy (| Ty.path "usize", γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -1830,8 +1991,9 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -1864,11 +2026,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ F ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| F, α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| F, γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -1924,8 +2086,16 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2008,14 +2178,15 @@ Module array.
                               Ty.function
                                 [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let x := M.copy (| γ0_0 |) in
-                                    let y := M.copy (| γ0_1 |) in
+                                    let x :=
+                                      M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ0_0 |) in
+                                    let y := M.copy (| F, γ0_1 |) in
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -2041,7 +2212,7 @@ Module array.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2077,8 +2248,15 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2124,11 +2302,11 @@ Module array.
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ |) in
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -2154,7 +2332,7 @@ Module array.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2193,7 +2371,8 @@ Module array.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -2226,11 +2405,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ F ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| F, α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| F, γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -2290,8 +2469,10 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -2320,11 +2501,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ Ty.path "usize" ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.path "usize", α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let i := M.copy (| γ |) in
+                                    (let i := M.copy (| Ty.path "usize", γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -2406,8 +2587,9 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_trait_method (|
@@ -2440,11 +2622,11 @@ Module array.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.function [ Ty.tuple [ F ] ] F,
-                              M.alloc (| α0 |),
+                              M.alloc (| F, α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| F, γ |) in
                                     M.call_closure (|
                                       F,
                                       M.get_trait_method (|
@@ -2500,8 +2682,16 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2584,14 +2774,15 @@ Module array.
                               Ty.function
                                 [ Ty.tuple [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ] ] ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ]; F ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let x := M.copy (| γ0_0 |) in
-                                    let y := M.copy (| γ0_1 |) in
+                                    let x :=
+                                      M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ0_0 |) in
+                                    let y := M.copy (| F, γ0_1 |) in
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -2617,7 +2808,7 @@ Module array.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2653,8 +2844,15 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ] ],
+              self
+            |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2700,11 +2898,11 @@ Module array.
                               Ty.function
                                 [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ F ] ] ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| Ty.apply (Ty.path "&mut") [] [ F ], γ |) in
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -2730,7 +2928,7 @@ Module array.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2770,8 +2968,9 @@ Module array.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ], self |) in
+          let rhs := M.alloc (| F, rhs |) in
           M.read (|
             let~ rhs_inv : F :=
               M.call_closure (|
@@ -2780,6 +2979,7 @@ Module array.
                 [ M.borrow (| Pointer.Kind.Ref, rhs |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
               M.call_closure (|
                 Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
                 M.get_trait_method (|
@@ -2829,7 +3029,7 @@ Module array.
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| I, iter |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_associated_function (|
@@ -2884,11 +3084,21 @@ Module array.
                                     ]
                                 ]
                                 (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let lhs := M.copy (| γ |) in
+                                    (let lhs :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "p3_field::array::FieldArray")
+                                          [ N ]
+                                          [ F ],
+                                        γ
+                                      |) in
                                     M.match_operator (|
                                       Ty.function
                                         [
@@ -2908,11 +3118,24 @@ Module array.
                                           (Ty.path "p3_field::array::FieldArray")
                                           [ N ]
                                           [ F ]),
-                                      M.alloc (| α1 |),
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "p3_field::array::FieldArray")
+                                          [ N ]
+                                          [ F ],
+                                        α1
+                                      |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let rhs := M.copy (| γ |) in
+                                            (let rhs :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path "p3_field::array::FieldArray")
+                                                  [ N ]
+                                                  [ F ],
+                                                γ
+                                              |) in
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "p3_field::array::FieldArray")
@@ -2987,7 +3210,7 @@ Module array.
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| I, iter |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
             M.get_associated_function (|
@@ -3042,11 +3265,21 @@ Module array.
                                     ]
                                 ]
                                 (Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ]),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply (Ty.path "p3_field::array::FieldArray") [ N ] [ F ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let lhs := M.copy (| γ |) in
+                                    (let lhs :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "p3_field::array::FieldArray")
+                                          [ N ]
+                                          [ F ],
+                                        γ
+                                      |) in
                                     M.match_operator (|
                                       Ty.function
                                         [
@@ -3066,11 +3299,24 @@ Module array.
                                           (Ty.path "p3_field::array::FieldArray")
                                           [ N ]
                                           [ F ]),
-                                      M.alloc (| α1 |),
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "p3_field::array::FieldArray")
+                                          [ N ]
+                                          [ F ],
+                                        α1
+                                      |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let rhs := M.copy (| γ |) in
+                                            (let rhs :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path "p3_field::array::FieldArray")
+                                                  [ N ]
+                                                  [ F ],
+                                                γ
+                                              |) in
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "p3_field::array::FieldArray")

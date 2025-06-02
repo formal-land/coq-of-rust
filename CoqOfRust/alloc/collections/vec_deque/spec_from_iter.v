@@ -33,7 +33,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [ iterator ] =>
             ltac:(M.monadic
-              (let iterator := M.alloc (| iterator |) in
+              (let iterator := M.alloc (| I, iterator |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -104,7 +104,14 @@ Module collections.
           match ε, τ, α with
           | [], [], [ iterator ] =>
             ltac:(M.monadic
-              (let iterator := M.alloc (| iterator |) in
+              (let iterator :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                    []
+                    [ T; Ty.path "alloc::alloc::Global" ],
+                  iterator
+                |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -163,7 +170,14 @@ Module collections.
           match ε, τ, α with
           | [], [], [ iterator ] =>
             ltac:(M.monadic
-              (let iterator := M.alloc (| iterator |) in
+              (let iterator :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::vec_deque::into_iter::IntoIter")
+                    []
+                    [ T; Ty.path "alloc::alloc::Global" ],
+                  iterator
+                |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::collections::vec_deque::VecDeque")

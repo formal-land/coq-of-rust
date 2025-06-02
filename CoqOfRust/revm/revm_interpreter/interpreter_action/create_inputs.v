@@ -31,7 +31,14 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                self
+              |) in
             Value.StructRecord
               "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
               []
@@ -205,8 +212,16 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -294,6 +309,7 @@ Module interpreter_action.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -342,8 +358,22 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
@@ -531,7 +561,14 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -562,7 +599,8 @@ Module interpreter_action.
                                                 Value.DeclaredButUndefined,
                                                 [
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)))
                                         ]
@@ -596,8 +634,15 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -719,6 +764,7 @@ Module interpreter_action.
                   ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -779,8 +825,15 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; nonce ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let nonce := M.alloc (| nonce |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
+                self
+              |) in
+            let nonce := M.alloc (| Ty.path "u64", nonce |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::bits::address::Address",
@@ -798,6 +851,7 @@ Module interpreter_action.
                           "revm_context_interface::cfg::CreateScheme::Create"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::bits::address::Address",
                         M.call_closure (|
                           Ty.path "alloy_primitives::bits::address::Address",
                           M.get_associated_function (|
@@ -827,8 +881,17 @@ Module interpreter_action.
                           "revm_context_interface::cfg::CreateScheme::Create2",
                           "salt"
                         |) in
-                      let salt := M.copy (| γ0_0 |) in
+                      let salt :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::bits::address::Address",
                         M.call_closure (|
                           Ty.path "alloy_primitives::bits::address::Address",
                           M.get_associated_function (|

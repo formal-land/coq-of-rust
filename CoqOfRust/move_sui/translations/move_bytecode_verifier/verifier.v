@@ -11,7 +11,11 @@ Module verifier.
     match ε, τ, α with
     | [], [], [ module ] =>
       ltac:(M.monadic
-        (let module := M.alloc (| module |) in
+        (let module :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+            module
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -29,6 +33,7 @@ Module verifier.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "move_vm_config::verifier::VerifierConfig",
                     M.call_closure (|
                       Ty.path "move_vm_config::verifier::VerifierConfig",
                       M.get_trait_method (|
@@ -100,10 +105,19 @@ Module verifier.
     match ε, τ, α with
     | [], [ impl_Meter__plus___Sized ], [ name; config; module; meter ] =>
       ltac:(M.monadic
-        (let name := M.alloc (| name |) in
-        let config := M.alloc (| config |) in
-        let module := M.alloc (| module |) in
-        let meter := M.alloc (| meter |) in
+        (let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
+        let config :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_vm_config::verifier::VerifierConfig" ],
+            config
+          |) in
+        let module :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+            module
+          |) in
+        let meter :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
         M.read (|
           let~ bytes :
               Ty.apply
@@ -211,6 +225,10 @@ Module verifier.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 5 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [
                                       mk_str (| "--> " |);
@@ -232,6 +250,10 @@ Module verifier.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -264,6 +286,7 @@ Module verifier.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.path "f64",
                                                   M.call_closure (|
                                                     Ty.path "f64",
                                                     BinOp.Wrap.div,
@@ -282,6 +305,7 @@ Module verifier.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.path "core::time::Duration",
                                                                 M.call_closure (|
                                                                   Ty.path "core::time::Duration",
                                                                   M.get_associated_function (|
@@ -326,12 +350,25 @@ Module verifier.
                                                 Pointer.Kind.Ref,
                                                 M.match_operator (|
                                                   Ty.path "alloc::string::String",
-                                                  M.alloc (| Value.Tuple [] |),
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ :=
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::VMError"
+                                                                  ]
+                                                              ],
                                                             M.borrow (| Pointer.Kind.Ref, result |)
                                                           |) in
                                                         let γ := M.read (| γ |) in
@@ -341,8 +378,19 @@ Module verifier.
                                                             "core::result::Result::Err",
                                                             0
                                                           |) in
-                                                        let e := M.alloc (| γ1_0 |) in
+                                                        let e :=
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::errors::VMError"
+                                                              ],
+                                                            γ1_0
+                                                          |) in
                                                         M.alloc (|
+                                                          Ty.path "alloc::string::String",
                                                           M.call_closure (|
                                                             Ty.path "alloc::string::String",
                                                             M.get_function (|
@@ -387,6 +435,24 @@ Module verifier.
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
                                                                                 M.alloc (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "array")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        1
+                                                                                    ]
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "str"
+                                                                                        ]
+                                                                                    ],
                                                                                   Value.Array
                                                                                     [
                                                                                       mk_str (|
@@ -403,6 +469,18 @@ Module verifier.
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
                                                                                 M.alloc (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "array")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        1
+                                                                                    ]
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument"
+                                                                                    ],
                                                                                   Value.Array
                                                                                     [
                                                                                       M.call_closure (|
@@ -425,6 +503,8 @@ Module verifier.
                                                                                               M.borrow (|
                                                                                                 Pointer.Kind.Ref,
                                                                                                 M.alloc (|
+                                                                                                  Ty.path
+                                                                                                    "move_core_types::vm_status::StatusCode",
                                                                                                   M.call_closure (|
                                                                                                     Ty.path
                                                                                                       "move_core_types::vm_status::StatusCode",
@@ -469,6 +549,7 @@ Module verifier.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (M.alloc (|
+                                                          Ty.path "alloc::string::String",
                                                           M.call_closure (|
                                                             Ty.path "alloc::string::String",
                                                             M.get_trait_method (|
@@ -510,6 +591,7 @@ Module verifier.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.path "usize",
                                                   M.call_closure (|
                                                     Ty.path "usize",
                                                     BinOp.Wrap.div,
@@ -552,6 +634,10 @@ Module verifier.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.path "core::fmt::rt::Placeholder" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -673,19 +759,20 @@ Module verifier.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -716,6 +803,7 @@ Module verifier.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -739,6 +827,10 @@ Module verifier.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 3 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           Value.Array
                                             [
                                               mk_str (| "test module exceeds size limit " |);
@@ -755,6 +847,10 @@ Module verifier.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 2 ]
+                                            [ Ty.path "core::fmt::rt::Argument" ],
                                           Value.Array
                                             [
                                               M.call_closure (|
@@ -795,6 +891,7 @@ Module verifier.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.path "usize",
                                                           M.call_closure (|
                                                             Ty.path "usize",
                                                             M.get_associated_function (|
@@ -829,7 +926,7 @@ Module verifier.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -847,7 +944,7 @@ Module verifier.
   
   Module verify_module_with_config_for_test.
     Definition value_MAX_MODULE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 65355 |))).
     
     Global Instance Instance_IsConstant_value_MAX_MODULE_SIZE :
       M.IsFunction.C
@@ -890,9 +987,18 @@ Module verifier.
     match ε, τ, α with
     | [], [ impl_Meter__plus___Sized ], [ config; module; meter ] =>
       ltac:(M.monadic
-        (let config := M.alloc (| config |) in
-        let module := M.alloc (| module |) in
-        let meter := M.alloc (| meter |) in
+        (let config :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_vm_config::verifier::VerifierConfig" ],
+            config
+          |) in
+        let module :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+            module
+          |) in
+        let meter :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -901,12 +1007,29 @@ Module verifier.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -997,11 +1120,20 @@ Module verifier.
                                                     ]
                                                 ]
                                                 (Ty.path "move_binary_format::errors::VMError"),
-                                              M.alloc (| α0 |),
+                                              M.alloc (|
+                                                Ty.path
+                                                  "move_binary_format::errors::PartialVMError",
+                                                α0
+                                              |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let e := M.copy (| γ |) in
+                                                    (let e :=
+                                                      M.copy (|
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError",
+                                                        γ
+                                                      |) in
                                                     M.call_closure (|
                                                       Ty.path "move_binary_format::errors::VMError",
                                                       M.get_associated_function (|
@@ -1038,8 +1170,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1088,7 +1231,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1098,6 +1241,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1156,8 +1312,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1206,7 +1373,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1216,6 +1383,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1270,8 +1450,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1320,7 +1511,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1330,6 +1521,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1383,8 +1587,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1433,7 +1648,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1443,6 +1658,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1497,8 +1725,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1547,7 +1786,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1557,6 +1796,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1609,8 +1861,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1659,7 +1922,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1669,6 +1932,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1721,8 +1997,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1771,7 +2058,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1781,6 +2068,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1833,8 +2133,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1883,7 +2194,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1893,6 +2204,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1947,8 +2271,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1997,7 +2332,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -2007,6 +2342,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2061,8 +2409,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -2111,7 +2470,7 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -2121,6 +2480,19 @@ Module verifier.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::VMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2187,8 +2559,19 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::VMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -2237,12 +2620,16 @@ Module verifier.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::VMError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -2295,8 +2682,16 @@ Module verifier.
     match ε, τ, α with
     | [], [], [ config; module ] =>
       ltac:(M.monadic
-        (let config := M.alloc (| config |) in
-        let module := M.alloc (| module |) in
+        (let config :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_vm_config::verifier::VerifierConfig" ],
+            config
+          |) in
+        let module :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+            module
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -2316,6 +2711,7 @@ Module verifier.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "move_bytecode_verifier_meter::dummy::DummyMeter",
                     Value.StructTuple "move_bytecode_verifier_meter::dummy::DummyMeter" [] [] []
                   |)
                 |)

@@ -69,6 +69,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "immutable_box contains " |); mk_str (| "
 " |) ]
@@ -82,6 +86,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -113,7 +121,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ mutable_box :
             Ty.apply
@@ -143,6 +151,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "mutable_box contains " |); mk_str (| "
 " |) ]
                             |)
@@ -155,6 +167,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -186,7 +202,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.write (| M.deref (| M.read (| mutable_box |) |), Value.Integer IntegerKind.U32 4 |) in
@@ -212,6 +228,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "mutable_box now contains " |); mk_str (| "
 " |) ]
@@ -225,6 +245,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -256,9 +280,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -20,8 +20,16 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -57,7 +65,14 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
               Value.Tuple []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -92,8 +107,22 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self; other ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
+              let other :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  other
+                |) in
               Value.Bool true))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -116,8 +145,22 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self; other ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
+              let other :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  other
+                |) in
               Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -139,8 +182,22 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self; other ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
+              let other :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  other
+                |) in
               Value.StructTuple
                 "core::option::Option::Some"
                 []
@@ -167,8 +224,15 @@ Module collections.
           match ε, τ, α with
           | [], [ __H ], [ self; state ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let state := M.alloc (| state |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
+              let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
               Value.Tuple []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -190,7 +254,14 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                  self
+                |) in
               Value.StructTuple "alloc::collections::btree::set_val::SetValZST" [] [] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

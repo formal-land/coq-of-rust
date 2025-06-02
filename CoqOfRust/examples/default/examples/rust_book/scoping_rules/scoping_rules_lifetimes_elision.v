@@ -10,7 +10,7 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -34,6 +34,10 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "`elided_input`: " |); mk_str (| "
 " |) ]
                             |)
@@ -46,6 +50,10 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -72,9 +80,9 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -93,7 +101,7 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -117,6 +125,10 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "`annotated_input`: " |); mk_str (| "
 " |) ]
                             |)
@@ -129,6 +141,10 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -155,9 +171,9 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -176,7 +192,7 @@ Definition elided_pass (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
       M.read (| x |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -195,7 +211,7 @@ Definition annotated_pass (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
       M.read (| x |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -256,6 +272,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "`elided_pass`: " |); mk_str (| "
 " |) ]
                             |)
@@ -268,6 +288,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -285,6 +309,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                                                 M.get_function (|
@@ -314,7 +339,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -338,6 +363,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "`annotated_pass`: " |); mk_str (| "
 " |) ]
                             |)
@@ -350,6 +379,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -367,6 +400,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                                                 M.get_function (|
@@ -396,9 +430,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

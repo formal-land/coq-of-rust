@@ -28,6 +28,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Fn" |) |) |) ]
           |) in
         M.alloc (|
+          Ty.function [ Ty.tuple [] ] (Ty.tuple []),
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -36,7 +37,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -64,6 +65,10 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array
                                                   [ mk_str (| "This is a: " |); mk_str (| "
 " |) ]
@@ -77,6 +82,10 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
@@ -105,7 +114,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                     |)
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)))
                       ]
                     |)))
@@ -148,6 +157,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FnMut" |) |) |) ]
           |) in
         M.alloc (|
+          Ty.function [ Ty.tuple [] ] (Ty.tuple []),
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -156,7 +166,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -184,6 +194,10 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array
                                                   [ mk_str (| "This is a: " |); mk_str (| "
 " |) ]
@@ -197,6 +211,10 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
@@ -225,7 +243,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                     |)
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)))
                       ]
                     |)))
@@ -268,6 +286,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FnOnce" |) |) |) ]
           |) in
         M.alloc (|
+          Ty.function [ Ty.tuple [] ] (Ty.tuple []),
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -276,7 +295,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -304,6 +323,10 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array
                                                   [ mk_str (| "This is a: " |); mk_str (| "
 " |) ]
@@ -317,6 +340,10 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
@@ -345,7 +372,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                     |)
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)))
                       ]
                     |)))
@@ -437,7 +464,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.read (| fn_once |); Value.Tuple [] ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

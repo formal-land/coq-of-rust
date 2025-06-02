@@ -803,7 +803,11 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -829,7 +833,11 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -864,8 +872,16 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "u8" :=
                 M.call_closure (|
@@ -888,6 +904,7 @@ Module ascii.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   BinOp.eq,
@@ -915,8 +932,16 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "u8" :=
                 M.call_closure (|
@@ -939,6 +964,7 @@ Module ascii.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
@@ -975,8 +1001,16 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "u8" :=
                 M.call_closure (|
@@ -999,6 +1033,7 @@ Module ascii.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1043,8 +1078,12 @@ Module ascii.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "u8" :=
                 M.call_closure (|
@@ -1057,6 +1096,7 @@ Module ascii.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -1107,20 +1147,21 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ b ] =>
           ltac:(M.monadic
-            (let b := M.alloc (| b |) in
+            (let b := M.alloc (| Ty.path "u8", b |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -1129,6 +1170,10 @@ Module ascii.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1149,6 +1194,10 @@ Module ascii.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -1175,7 +1224,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ b ] =>
           ltac:(M.monadic
-            (let b := M.alloc (| b |) in
+            (let b := M.alloc (| Ty.path "u8", b |) in
             M.call_closure (|
               Ty.path "core::ascii::ascii_char::AsciiChar",
               M.get_function (|
@@ -1207,20 +1256,21 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ d ] =>
           ltac:(M.monadic
-            (let d := M.alloc (| d |) in
+            (let d := M.alloc (| Ty.path "u8", d |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.lt,
@@ -1229,6 +1279,10 @@ Module ascii.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1249,6 +1303,10 @@ Module ascii.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -1286,19 +1344,20 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ d ] =>
           ltac:(M.monadic
-            (let d := M.alloc (| d |) in
+            (let d := M.alloc (| Ty.path "u8", d |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -1318,8 +1377,8 @@ Module ascii.
                               |),
                               [ M.read (| d |) ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -1330,6 +1389,7 @@ Module ascii.
                   [ M.read (| UnsupportedLiteral |); M.read (| d |) ]
                 |) in
               M.alloc (|
+                Ty.path "core::ascii::ascii_char::AsciiChar",
                 M.call_closure (|
                   Ty.path "core::ascii::ascii_char::AsciiChar",
                   M.get_associated_function (|
@@ -1359,7 +1419,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", self |) in
             M.cast (Ty.path "u8") (M.read (| self |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1377,7 +1437,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", self |) in
             M.cast (Ty.path "char") (M.cast (Ty.path "u8") (M.read (| self |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1395,7 +1455,11 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1454,8 +1518,10 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ chr ] =>
           ltac:(M.monadic
-            (let chr := M.alloc (| chr |) in
-            M.read (| M.use (M.alloc (| M.cast (Ty.path "u8") (M.read (| chr |)) |)) |)))
+            (let chr := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", chr |) in
+            M.read (|
+              M.use (M.alloc (| Ty.path "u8", M.cast (Ty.path "u8") (M.read (| chr |)) |))
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1480,7 +1546,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ chr ] =>
           ltac:(M.monadic
-            (let chr := M.alloc (| chr |) in
+            (let chr := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", chr |) in
             M.cast (Ty.path "u16") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1506,7 +1572,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ chr ] =>
           ltac:(M.monadic
-            (let chr := M.alloc (| chr |) in
+            (let chr := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", chr |) in
             M.cast (Ty.path "u32") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1532,7 +1598,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ chr ] =>
           ltac:(M.monadic
-            (let chr := M.alloc (| chr |) in
+            (let chr := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", chr |) in
             M.cast (Ty.path "u64") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1558,7 +1624,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ chr ] =>
           ltac:(M.monadic
-            (let chr := M.alloc (| chr |) in
+            (let chr := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", chr |) in
             M.cast (Ty.path "u128") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1584,7 +1650,7 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ chr ] =>
           ltac:(M.monadic
-            (let chr := M.alloc (| chr |) in
+            (let chr := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", chr |) in
             M.cast (Ty.path "char") (M.cast (Ty.path "u8") (M.read (| chr |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1615,7 +1681,15 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ],
+                self
+              |) in
             M.read (|
               let~ ascii_ptr :
                   Ty.apply
@@ -1629,6 +1703,7 @@ Module ascii.
                   (Ty.apply (Ty.path "*const") [] [ Ty.path "str" ])
                   (M.read (| ascii_ptr |)) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| str_ptr |) |) |) |)
@@ -1651,7 +1726,15 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1702,8 +1785,13 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1777,8 +1865,13 @@ Module ascii.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1802,6 +1895,14 @@ Module ascii.
                         let _ :=
                           M.is_struct_tuple (| γ, "core::ascii::ascii_char::AsciiChar::Null" |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -1830,6 +1931,14 @@ Module ascii.
                             "core::ascii::ascii_char::AsciiChar::CharacterTabulation"
                           |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -1858,6 +1967,14 @@ Module ascii.
                             "core::ascii::ascii_char::AsciiChar::CarriageReturn"
                           |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -1886,6 +2003,14 @@ Module ascii.
                             "core::ascii::ascii_char::AsciiChar::LineFeed"
                           |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -1914,6 +2039,14 @@ Module ascii.
                             "core::ascii::ascii_char::AsciiChar::ReverseSolidus"
                           |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -1942,6 +2075,14 @@ Module ascii.
                             "core::ascii::ascii_char::AsciiChar::Apostrophe"
                           |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           M.call_closure (|
                             Ty.tuple
                               [
@@ -1965,6 +2106,7 @@ Module ascii.
                       ltac:(M.monadic
                         (let γ :=
                           M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_associated_function (|
@@ -1977,6 +2119,7 @@ Module ascii.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.path "u8",
                                     M.call_closure (|
                                       Ty.path "u8",
                                       M.get_associated_function (|
@@ -2067,6 +2210,14 @@ Module ascii.
                             |)
                           |) in
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           Value.Tuple
                             [
                               Value.Array
@@ -2100,6 +2251,14 @@ Module ascii.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                                [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                              Ty.path "usize"
+                            ],
                           Value.Tuple
                             [
                               Value.Array
@@ -2141,9 +2300,20 @@ Module ascii.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let buf := M.copy (| γ0_0 |) in
-                      let len := M.copy (| γ0_1 |) in
+                      let buf :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 6 ]
+                            [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                          γ0_0
+                        |) in
+                      let len := M.copy (| Ty.path "usize", γ0_1 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")

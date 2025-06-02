@@ -21,7 +21,14 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_PhoneNumber
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "unpacking_options_via_question_mark::PhoneNumber",
@@ -84,7 +91,11 @@ Module Impl_core_clone_Clone_for_unpacking_options_via_question_mark_Job.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "unpacking_options_via_question_mark::Job" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "unpacking_options_via_question_mark::Job",
@@ -146,16 +157,31 @@ Module Impl_unpacking_options_via_question_mark_Person.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "unpacking_options_via_question_mark::Person" ],
+            self
+          |) in
         M.read (|
           M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.match_operator (|
                       Ty.path "unpacking_options_via_question_mark::PhoneNumber",
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "core::convert::Infallible" ];
+                            Ty.path "unpacking_options_via_question_mark::PhoneNumber"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
@@ -185,6 +211,16 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                 M.match_operator (|
                                   Ty.path "unpacking_options_via_question_mark::Job",
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::convert::Infallible" ];
+                                        Ty.path "unpacking_options_via_question_mark::Job"
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -228,8 +264,16 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::convert::Infallible" ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.path "unpacking_options_via_question_mark::Job",
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -269,7 +313,11 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val :=
+                                          M.copy (|
+                                            Ty.path "unpacking_options_via_question_mark::Job",
+                                            γ0_0
+                                          |) in
                                         val))
                                   ]
                                 |),
@@ -289,8 +337,16 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
                               |) in
-                            let residual := M.copy (| γ0_0 |) in
+                            let residual :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::convert::Infallible" ],
+                                γ0_0
+                              |) in
                             M.alloc (|
+                              Ty.path "unpacking_options_via_question_mark::PhoneNumber",
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
@@ -327,7 +383,11 @@ Module Impl_unpacking_options_via_question_mark_Person.
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
                               |) in
-                            let val := M.copy (| γ0_0 |) in
+                            let val :=
+                              M.copy (|
+                                Ty.path "unpacking_options_via_question_mark::PhoneNumber",
+                                γ0_0
+                              |) in
                             val))
                       ]
                     |),
@@ -411,11 +471,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ];
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ]
+                  ],
                 Value.Tuple
                   [
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                         M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                           M.get_associated_function (|
@@ -431,6 +503,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -445,17 +518,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val := M.copy (| γ0_0 |) in
-                    let right_val := M.copy (| γ0_1 |) in
+                    let left_val :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ],
+                        γ0_0
+                      |) in
+                    let right_val :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ],
+                        γ0_1
+                      |) in
                     M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   UnOp.not (|
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -492,11 +580,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
+                              Ty.tuple [],
                               M.never_to_any (|
                                 M.read (|
                                   let~ kind : Ty.path "core::panicking::AssertKind" :=
                                     Value.StructTuple "core::panicking::AssertKind::Eq" [] [] [] in
                                   M.alloc (|
+                                    Ty.path "never",
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (|
@@ -544,13 +634,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ]
                     |)))
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

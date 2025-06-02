@@ -16,18 +16,19 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   match ε, τ, α with
   | [], [], [ dividend; divisor ] =>
     ltac:(M.monadic
-      (let dividend := M.alloc (| dividend |) in
-      let divisor := M.alloc (| divisor |) in
+      (let dividend := M.alloc (| Ty.path "i32", dividend |) in
+      let divisor := M.alloc (| Ty.path "i32", divisor |) in
       M.read (|
         M.match_operator (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
                   M.use
                     (M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         BinOp.eq,
@@ -36,11 +37,13 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                   Value.StructTuple "core::option::Option::None" [] [ Ty.path "i32" ] []
                 |)));
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                   Value.StructTuple
                     "core::option::Option::Some"
                     []
@@ -79,12 +82,13 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   match ε, τ, α with
   | [], [], [ dividend; divisor ] =>
     ltac:(M.monadic
-      (let dividend := M.alloc (| dividend |) in
-      let divisor := M.alloc (| divisor |) in
+      (let dividend := M.alloc (| Ty.path "i32", dividend |) in
+      let divisor := M.alloc (| Ty.path "i32", divisor |) in
       M.read (|
         M.match_operator (|
           Ty.tuple [],
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
               M.get_function (| "option::checked_division", [], [] |),
@@ -115,6 +119,10 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "" |); mk_str (| " / " |); mk_str (| " failed!
 " |)
@@ -129,6 +137,10 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -170,12 +182,12 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let quotient := M.copy (| γ0_0 |) in
+                let quotient := M.copy (| Ty.path "i32", γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -196,6 +208,10 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [
                                       mk_str (| "" |);
@@ -214,6 +230,10 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -270,7 +290,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))
@@ -353,6 +373,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "" |); mk_str (| " unwraps to " |); mk_str (| "
 " |) ]
@@ -366,6 +390,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -405,6 +433,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "f32",
                                               M.call_closure (|
                                                 Ty.path "f32",
                                                 M.get_associated_function (|
@@ -433,7 +462,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -457,6 +486,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "" |); mk_str (| " unwraps to " |); mk_str (| "
 " |) ]
@@ -470,6 +503,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -507,6 +544,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "i32",
                                               M.call_closure (|
                                                 Ty.path "i32",
                                                 M.get_associated_function (|
@@ -535,9 +573,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

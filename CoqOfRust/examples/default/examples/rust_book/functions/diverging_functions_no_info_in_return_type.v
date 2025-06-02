@@ -54,6 +54,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [ mk_str (| "This function returns and you can see this line.
 " |) ]
@@ -65,7 +69,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -29,7 +29,11 @@ Module Impl_generics_implementation_Val.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "generics_implementation::Val" ],
+            self
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -65,7 +69,14 @@ Module Impl_generics_implementation_GenVal_T.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "generics_implementation::GenVal") [] [ T ] ],
+            self
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -136,6 +147,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "" |); mk_str (| ", " |); mk_str (| "
 " |) ]
                             |)
@@ -148,6 +163,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -165,6 +184,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "f64" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "f64" ],
                                                 M.get_associated_function (|
@@ -196,6 +216,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                                                 M.get_associated_function (|
@@ -224,9 +245,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

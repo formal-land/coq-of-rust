@@ -22,8 +22,13 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorDescription" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -63,6 +68,7 @@ Module errmap.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -97,7 +103,11 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorDescription" ],
+              self
+            |) in
           Value.StructRecord
             "move_core_types::errmap::ErrorDescription"
             []
@@ -181,8 +191,12 @@ Module errmap.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorDescription" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -194,6 +208,13 @@ Module errmap.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -211,6 +232,18 @@ Module errmap.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -268,7 +301,16 @@ Module errmap.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -278,8 +320,23 @@ Module errmap.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -313,6 +370,13 @@ Module errmap.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -371,7 +435,7 @@ Module errmap.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -381,8 +445,18 @@ Module errmap.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -416,6 +490,13 @@ Module errmap.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -474,7 +555,7 @@ Module errmap.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -484,8 +565,18 @@ Module errmap.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -515,6 +606,13 @@ Module errmap.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -563,7 +661,7 @@ Module errmap.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -637,8 +735,12 @@ Module errmap.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -650,6 +752,13 @@ Module errmap.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -667,6 +776,18 @@ Module errmap.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -724,7 +845,16 @@ Module errmap.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -734,8 +864,23 @@ Module errmap.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -769,6 +914,13 @@ Module errmap.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -836,7 +988,7 @@ Module errmap.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -846,8 +998,18 @@ Module errmap.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -881,6 +1043,13 @@ Module errmap.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -955,7 +1124,7 @@ Module errmap.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -965,8 +1134,18 @@ Module errmap.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -996,6 +1175,13 @@ Module errmap.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1044,7 +1230,7 @@ Module errmap.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1156,8 +1342,13 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1197,6 +1388,26 @@ Module errmap.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_core_types::language_storage::ModuleId";
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                  []
+                                  [
+                                    Ty.path "u64";
+                                    Ty.path "move_core_types::errmap::ErrorDescription";
+                                    Ty.path "alloc::alloc::Global"
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1231,7 +1442,11 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+              self
+            |) in
           Value.StructRecord
             "move_core_types::errmap::ErrorMapping"
             []
@@ -1468,9 +1683,14 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self; category_id; description ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let category_id := M.alloc (| category_id |) in
-          let description := M.alloc (| description |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+              self
+            |) in
+          let category_id := M.alloc (| Ty.path "u64", category_id |) in
+          let description :=
+            M.alloc (| Ty.path "move_core_types::errmap::ErrorDescription", description |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1479,17 +1699,25 @@ Module errmap.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "move_core_types::errmap::ErrorDescription" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -1528,8 +1756,13 @@ Module errmap.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let previous_entry := M.copy (| γ0_0 |) in
+                                let previous_entry :=
+                                  M.copy (|
+                                    Ty.path "move_core_types::errmap::ErrorDescription",
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1544,6 +1777,7 @@ Module errmap.
                                                   M.match_operator (|
                                                     Ty.path "anyhow::Error",
                                                     M.alloc (|
+                                                      Ty.path "alloc::string::String",
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
                                                         M.get_function (|
@@ -1581,6 +1815,22 @@ Module errmap.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      2
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "str"
+                                                                                      ]
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     mk_str (|
@@ -1602,6 +1852,17 @@ Module errmap.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      2
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument"
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
@@ -1667,6 +1928,17 @@ Module errmap.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      2
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Placeholder"
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
@@ -1770,8 +2042,13 @@ Module errmap.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let error := M.copy (| γ |) in
+                                                          (let error :=
+                                                            M.copy (|
+                                                              Ty.path "alloc::string::String",
+                                                              γ
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.path "anyhow::Error",
                                                             M.call_closure (|
                                                               Ty.path "anyhow::Error",
                                                               M.get_associated_function (|
@@ -1802,6 +2079,13 @@ Module errmap.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloc::string::String"
+                                                                          ],
                                                                         M.borrow (|
                                                                           Pointer.Kind.Ref,
                                                                           error
@@ -1824,11 +2108,15 @@ Module errmap.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1868,10 +2156,16 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self; module_id; abort_code; description ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
-          let abort_code := M.alloc (| abort_code |) in
-          let description := M.alloc (| description |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+              self
+            |) in
+          let module_id :=
+            M.alloc (| Ty.path "move_core_types::language_storage::ModuleId", module_id |) in
+          let abort_code := M.alloc (| Ty.path "u64", abort_code |) in
+          let description :=
+            M.alloc (| Ty.path "move_core_types::errmap::ErrorDescription", description |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1880,6 +2174,10 @@ Module errmap.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ module_error_map :
                         Ty.apply
@@ -1996,12 +2294,16 @@ Module errmap.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "move_core_types::errmap::ErrorDescription" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -2036,8 +2338,13 @@ Module errmap.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let previous_entry := M.copy (| γ0_0 |) in
+                                let previous_entry :=
+                                  M.copy (|
+                                    Ty.path "move_core_types::errmap::ErrorDescription",
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -2052,6 +2359,7 @@ Module errmap.
                                                   M.match_operator (|
                                                     Ty.path "anyhow::Error",
                                                     M.alloc (|
+                                                      Ty.path "alloc::string::String",
                                                       M.call_closure (|
                                                         Ty.path "alloc::string::String",
                                                         M.get_function (|
@@ -2089,6 +2397,22 @@ Module errmap.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      3
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "str"
+                                                                                      ]
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     mk_str (|
@@ -2113,6 +2437,17 @@ Module errmap.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      3
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument"
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
@@ -2203,6 +2538,17 @@ Module errmap.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      3
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Placeholder"
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     M.call_closure (|
@@ -2342,8 +2688,13 @@ Module errmap.
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let error := M.copy (| γ |) in
+                                                          (let error :=
+                                                            M.copy (|
+                                                              Ty.path "alloc::string::String",
+                                                              γ
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.path "anyhow::Error",
                                                             M.call_closure (|
                                                               Ty.path "anyhow::Error",
                                                               M.get_associated_function (|
@@ -2374,6 +2725,13 @@ Module errmap.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "alloc::string::String"
+                                                                          ],
                                                                         M.borrow (|
                                                                           Pointer.Kind.Ref,
                                                                           error
@@ -2396,11 +2754,15 @@ Module errmap.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -2430,7 +2792,7 @@ Module errmap.
       match ε, τ, α with
       | [], [ P ], [ path ] =>
         ltac:(M.monadic
-          (let path := M.alloc (| path |) in
+          (let path := M.alloc (| P, path |) in
           M.read (|
             let~ bytes :
                 Ty.apply
@@ -2484,6 +2846,7 @@ Module errmap.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.alloc (|
+                          Ty.path "std::fs::File",
                           M.call_closure (|
                             Ty.path "std::fs::File",
                             M.get_associated_function (|
@@ -2522,6 +2885,7 @@ Module errmap.
                 ]
               |) in
             M.alloc (|
+              Ty.path "move_core_types::errmap::ErrorMapping",
               M.call_closure (|
                 Ty.path "move_core_types::errmap::ErrorMapping",
                 M.get_associated_function (|
@@ -2601,8 +2965,12 @@ Module errmap.
       match ε, τ, α with
       | [], [ P ], [ self; path ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let path := M.alloc (| path |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+              self
+            |) in
+          let path := M.alloc (| P, path |) in
           M.read (|
             let~ bytes :
                 Ty.apply
@@ -2735,7 +3103,7 @@ Module errmap.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2755,9 +3123,17 @@ Module errmap.
       match ε, τ, α with
       | [], [], [ self; module; output_code ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module := M.alloc (| module |) in
-          let output_code := M.alloc (| output_code |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
+              self
+            |) in
+          let module :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module
+            |) in
+          let output_code := M.alloc (| Ty.path "u64", output_code |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -2893,11 +3269,42 @@ Module errmap.
                               (Ty.path "core::option::Option")
                               []
                               [ Ty.path "move_core_types::errmap::ErrorDescription" ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                  []
+                                  [
+                                    Ty.path "u64";
+                                    Ty.path "move_core_types::errmap::ErrorDescription";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let module_map := M.copy (| γ |) in
+                                (let module_map :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                          []
+                                          [
+                                            Ty.path "u64";
+                                            Ty.path "move_core_types::errmap::ErrorDescription";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")

@@ -54,6 +54,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Tell me about " |); mk_str (| "
 " |) ]
                             |)
@@ -66,6 +70,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -92,7 +100,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         M.match_operator (|
           Ty.tuple [],
@@ -108,8 +116,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 0
                   |) in
-                let y := M.copy (| γ0_1 |) in
-                let z := M.copy (| γ0_2 |) in
+                let y := M.copy (| Ty.path "i32", γ0_1 |) in
+                let z := M.copy (| Ty.path "i32", γ0_2 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -130,6 +138,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [
                                       mk_str (| "First is `0`, `y` is " |);
@@ -147,6 +159,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -188,7 +204,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -219,6 +235,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "First is `1` and the rest doesn't matter
 " |) ]
@@ -230,7 +250,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -261,6 +281,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "last is `2` and the rest doesn't matter
 " |) ]
@@ -272,7 +296,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -308,6 +332,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [
                                       mk_str (|
@@ -323,7 +351,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let~ _ : Ty.tuple [] :=
@@ -346,6 +374,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "It doesn't matter what they are
 " |) ]
                                 |)
@@ -356,7 +388,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))

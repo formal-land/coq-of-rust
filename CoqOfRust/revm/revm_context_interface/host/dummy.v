@@ -74,7 +74,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
             Value.StructRecord
               "revm_context_interface::host::dummy::DummyHost"
               []
@@ -331,8 +343,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               let~ names :
                   Ty.apply
@@ -350,6 +375,10 @@ Module host.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 6 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         Value.Array
                           [
                             mk_str (| "tx" |);
@@ -384,6 +413,15 @@ Module host.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 6 ]
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                            ],
                           Value.Array
                             [
                               (* Unsize *)
@@ -469,6 +507,21 @@ Module host.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::log::Log")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::log::LogData" ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ],
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.SubPointer.get_struct_record_field (|
@@ -487,6 +540,10 @@ Module host.
                     |)
                   |)) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -744,8 +801,8 @@ Module host.
         match ε, τ, α with
         | [], [], [ tx; block ] =>
           ltac:(M.monadic
-            (let tx := M.alloc (| tx |) in
-            let block := M.alloc (| block |) in
+            (let tx := M.alloc (| TX, tx |) in
+            let block := M.alloc (| BLOCK, block |) in
             Value.StructRecord
               "revm_context_interface::host::dummy::DummyHost"
               []
@@ -910,7 +967,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -975,7 +1044,7 @@ Module host.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1009,7 +1078,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1062,7 +1143,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1115,7 +1208,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1165,8 +1270,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -1204,8 +1322,20 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _number ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _number := M.alloc (| _number |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _number := M.alloc (| Ty.path "u64", _number |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -1248,8 +1378,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -1313,8 +1456,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -1363,8 +1519,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -1442,9 +1611,29 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1462,6 +1651,21 @@ Module host.
                       ]
                   ],
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "hashbrown::map::Entry")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [];
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [];
+                      Ty.path "foldhash::seed::fast::RandomState";
+                      Ty.path "hashbrown::raw::alloc::inner::Global"
+                    ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "hashbrown::map::Entry")
@@ -1522,8 +1726,49 @@ Module host.
                           "hashbrown::map::Entry::Occupied",
                           0
                         |) in
-                      let entry := M.copy (| γ0_0 |) in
+                      let entry :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "hashbrown::map::OccupiedEntry")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "foldhash::seed::fast::RandomState";
+                              Ty.path "hashbrown::raw::alloc::inner::Global"
+                            ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1631,7 +1876,31 @@ Module host.
                           "hashbrown::map::Entry::Vacant",
                           0
                         |) in
-                      let entry := M.copy (| γ0_0 |) in
+                      let entry :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "hashbrown::map::VacantEntry")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                [];
+                              Ty.path "foldhash::seed::fast::RandomState";
+                              Ty.path "hashbrown::raw::alloc::inner::Global"
+                            ],
+                          γ0_0
+                        |) in
                       let~ _ :
                           Ty.apply
                             (Ty.path "&mut")
@@ -1708,6 +1977,23 @@ Module host.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1815,10 +2101,37 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address; index; value ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
-            let index := M.alloc (| index |) in
-            let value := M.alloc (| value |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             M.read (|
               let~ present :
                   Ty.apply
@@ -1874,6 +2187,15 @@ Module host.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::journaled_state::StateLoad")
+                      []
+                      [ Ty.path "revm_context_interface::host::SStoreResult" ]
+                  ],
                 Value.StructTuple
                   "core::option::Option::Some"
                   []
@@ -2013,9 +2335,29 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -2156,10 +2498,37 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address; index; value ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
-            let index := M.alloc (| index |) in
-            let value := M.alloc (| value |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             M.read (|
               let~ _ :
                   Ty.apply
@@ -2214,7 +2583,7 @@ Module host.
                     M.read (| value |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2234,8 +2603,27 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; log ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let log := M.alloc (| log |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let log :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::log::Log")
+                  []
+                  [ Ty.path "alloy_primitives::log::LogData" ],
+                log
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_associated_function (|
@@ -2287,9 +2675,23 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; _address; _target ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _address := M.alloc (| _address |) in
-            let _target := M.alloc (| _target |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "revm_context_interface::host::dummy::DummyHost")
+                      []
+                      [ BLOCK; TX; CFG ]
+                  ],
+                self
+              |) in
+            let _address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _address |) in
+            let _target :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", _target |) in
             Value.StructTuple
               "core::option::Option::Some"
               []

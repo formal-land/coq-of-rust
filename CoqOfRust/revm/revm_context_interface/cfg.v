@@ -19,7 +19,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -47,7 +48,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
@@ -80,7 +82,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_trait_method (|
@@ -113,7 +116,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -146,7 +150,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -179,7 +184,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -212,7 +218,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -245,7 +252,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -278,7 +286,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -334,7 +343,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -362,7 +375,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
@@ -395,7 +412,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_trait_method (|
@@ -428,7 +449,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -461,7 +486,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -494,7 +523,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -527,7 +560,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -560,7 +597,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -593,7 +634,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -650,7 +695,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -678,7 +731,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
@@ -711,7 +772,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_trait_method (|
@@ -744,7 +813,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -777,7 +854,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -810,7 +895,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -843,7 +936,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -876,7 +977,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -909,7 +1018,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -966,7 +1083,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -1011,7 +1136,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.associated_in_trait "revm_context_interface::cfg::Cfg" [] [] T "Spec",
               M.get_trait_method (|
@@ -1061,7 +1194,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_trait_method (|
@@ -1111,7 +1252,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1161,7 +1310,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1211,7 +1368,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1261,7 +1426,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1311,7 +1484,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1361,7 +1542,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1434,7 +1623,8 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1488,7 +1678,11 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1543,7 +1737,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1598,7 +1800,15 @@ Module cfg.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1693,7 +1903,11 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_context_interface::cfg::AnalysisKind",
@@ -1705,6 +1919,7 @@ Module cfg.
                     let _ :=
                       M.is_struct_tuple (| γ, "revm_context_interface::cfg::AnalysisKind::Raw" |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::cfg::AnalysisKind",
                       Value.StructTuple "revm_context_interface::cfg::AnalysisKind::Raw" [] [] []
                     |)));
                 fun γ =>
@@ -1716,6 +1931,7 @@ Module cfg.
                         "revm_context_interface::cfg::AnalysisKind::Analyse"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::cfg::AnalysisKind",
                       Value.StructTuple
                         "revm_context_interface::cfg::AnalysisKind::Analyse"
                         []
@@ -1766,8 +1982,13 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1790,6 +2011,7 @@ Module cfg.
                             "revm_context_interface::cfg::AnalysisKind::Raw"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Raw" |) |) |)
                         |)));
                     fun γ =>
@@ -1801,6 +2023,7 @@ Module cfg.
                             "revm_context_interface::cfg::AnalysisKind::Analyse"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Analyse" |) |) |)
                         |)))
                   ]
@@ -1832,7 +2055,11 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1867,8 +2094,16 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1891,6 +2126,7 @@ Module cfg.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -1918,8 +2154,12 @@ Module cfg.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::AnalysisKind" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1932,6 +2172,7 @@ Module cfg.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -2009,7 +2250,11 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_context_interface::cfg::CreateScheme",
@@ -2049,8 +2294,13 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2068,6 +2318,10 @@ Module cfg.
                         "revm_context_interface::cfg::CreateScheme::Create"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -2094,8 +2348,27 @@ Module cfg.
                         "revm_context_interface::cfg::CreateScheme::Create2",
                         "salt"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -2147,12 +2420,16 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2188,8 +2465,16 @@ Module cfg.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2212,6 +2497,7 @@ Module cfg.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -2222,7 +2508,20 @@ Module cfg.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::cfg::CreateScheme" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -2235,7 +2534,22 @@ Module cfg.
                                 "revm_context_interface::cfg::CreateScheme::Create2",
                                 "salt"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -2243,8 +2557,24 @@ Module cfg.
                                 "revm_context_interface::cfg::CreateScheme::Create2",
                                 "salt"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -2286,7 +2616,7 @@ Module cfg.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -2313,8 +2643,12 @@ Module cfg.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2359,8 +2693,24 @@ Module cfg.
                         "revm_context_interface::cfg::CreateScheme::Create2",
                         "salt"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -2382,7 +2732,7 @@ Module cfg.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))

@@ -36,7 +36,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (|
@@ -71,7 +71,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (|
@@ -106,7 +106,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (|
@@ -141,7 +141,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (|
@@ -176,7 +176,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_function (|
@@ -211,7 +211,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (|
@@ -246,7 +246,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (|
@@ -281,7 +281,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (|
@@ -316,7 +316,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (|
@@ -351,7 +351,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (|
@@ -386,7 +386,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "i128",
               M.get_function (|
@@ -421,7 +421,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (|
@@ -468,7 +468,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (|
@@ -503,7 +503,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (|
@@ -538,7 +538,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (|
@@ -573,7 +573,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (|
@@ -608,7 +608,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_function (|
@@ -643,7 +643,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (|
@@ -678,7 +678,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (|
@@ -713,7 +713,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (|
@@ -748,7 +748,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (|
@@ -783,7 +783,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (|
@@ -818,7 +818,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "i128",
               M.get_function (|
@@ -853,7 +853,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (|
@@ -900,7 +900,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (|
@@ -935,7 +935,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (|
@@ -970,7 +970,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (|
@@ -1005,7 +1005,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (|
@@ -1040,7 +1040,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_function (|
@@ -1075,7 +1075,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (|
@@ -1110,7 +1110,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (|
@@ -1145,7 +1145,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (|
@@ -1180,7 +1180,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (|
@@ -1215,7 +1215,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (|
@@ -1250,7 +1250,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "i128",
               M.get_function (|
@@ -1285,7 +1285,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (|
@@ -1332,7 +1332,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (|
@@ -1367,7 +1367,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (|
@@ -1402,7 +1402,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (|
@@ -1437,7 +1437,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (|
@@ -1472,7 +1472,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_function (|
@@ -1507,7 +1507,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (|
@@ -1542,7 +1542,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (|
@@ -1577,7 +1577,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (|
@@ -1612,7 +1612,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (|
@@ -1647,7 +1647,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (|
@@ -1682,7 +1682,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "i128",
               M.get_function (|
@@ -1717,7 +1717,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (|
@@ -1751,7 +1751,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "u8") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1777,7 +1777,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "u16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1803,7 +1803,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1829,7 +1829,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1855,7 +1855,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1881,7 +1881,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1907,7 +1907,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "i8") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1933,7 +1933,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1959,7 +1959,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1985,7 +1985,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2011,7 +2011,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2037,7 +2037,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2063,7 +2063,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "u16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2089,7 +2089,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2115,7 +2115,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2141,7 +2141,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2167,7 +2167,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2193,7 +2193,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "u32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2219,7 +2219,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2245,7 +2245,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2271,7 +2271,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u32", small |) in
             M.cast (Ty.path "u64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2297,7 +2297,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u32", small |) in
             M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2323,7 +2323,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u64", small |) in
             M.cast (Ty.path "u128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2349,7 +2349,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2375,7 +2375,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2401,7 +2401,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2427,7 +2427,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2453,7 +2453,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2479,7 +2479,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i16", small |) in
             M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2505,7 +2505,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i16", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2531,7 +2531,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i16", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2557,7 +2557,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i32", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2583,7 +2583,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i32", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2609,7 +2609,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i64", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2635,7 +2635,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "i16") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2661,7 +2661,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2687,7 +2687,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2713,7 +2713,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2739,7 +2739,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "i32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2765,7 +2765,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2791,7 +2791,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2817,7 +2817,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u32", small |) in
             M.cast (Ty.path "i64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2843,7 +2843,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u32", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2869,7 +2869,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u64", small |) in
             M.cast (Ty.path "i128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2895,7 +2895,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "usize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2921,7 +2921,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2947,7 +2947,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i16", small |) in
             M.cast (Ty.path "isize") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2973,7 +2973,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2999,7 +2999,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i8", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3025,7 +3025,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i16", small |) in
             M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3051,7 +3051,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i16", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3077,7 +3077,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "i32", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3103,7 +3103,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3129,7 +3129,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u8", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3155,7 +3155,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "f32") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3181,7 +3181,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u16", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3207,7 +3207,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "u32", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3233,7 +3233,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "f16", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3259,7 +3259,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "f16", small |) in
             M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3285,7 +3285,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "f32", small |) in
             M.cast (Ty.path "f64") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3311,7 +3311,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "f32", small |) in
             M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3337,7 +3337,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "f64", small |) in
             M.cast (Ty.path "f128") (M.read (| small |))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3363,7 +3363,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "f32") (M.cast (Ty.path "u8") (M.read (| small |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3389,7 +3389,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small := M.alloc (| Ty.path "bool", small |) in
             M.cast (Ty.path "f64") (M.cast (Ty.path "u8") (M.read (| small |)))))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3422,20 +3422,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3451,6 +3452,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3466,6 +3471,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -3507,20 +3516,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3536,6 +3546,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3551,6 +3565,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -3592,20 +3610,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3625,6 +3644,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3640,6 +3663,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -3681,20 +3708,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3710,6 +3738,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3725,6 +3757,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -3766,20 +3802,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3799,6 +3836,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3814,6 +3855,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -3855,20 +3900,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3888,6 +3934,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3903,6 +3953,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -3944,20 +3998,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -3973,6 +4028,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3988,6 +4047,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4029,20 +4092,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -4062,6 +4126,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4077,6 +4145,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4118,20 +4190,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -4151,6 +4224,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4166,6 +4243,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4207,20 +4288,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -4240,6 +4322,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4255,6 +4341,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4298,7 +4388,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i16", u |) in
             M.read (|
               let~ min : Ty.path "i16" :=
                 M.cast
@@ -4313,13 +4403,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4336,6 +4427,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4351,6 +4446,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4394,7 +4493,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               let~ min : Ty.path "i32" :=
                 M.cast
@@ -4409,13 +4508,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4432,6 +4532,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4447,6 +4551,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4490,7 +4598,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               let~ min : Ty.path "i32" :=
                 M.cast
@@ -4509,13 +4617,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4532,6 +4641,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4547,6 +4660,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4590,7 +4707,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               let~ min : Ty.path "i64" :=
                 M.cast
@@ -4605,13 +4722,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4628,6 +4746,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4643,6 +4765,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4686,7 +4812,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               let~ min : Ty.path "i64" :=
                 M.cast
@@ -4705,13 +4831,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4728,6 +4855,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4743,6 +4874,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4786,7 +4921,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               let~ min : Ty.path "i64" :=
                 M.cast
@@ -4805,13 +4940,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4828,6 +4964,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4843,6 +4983,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4886,7 +5030,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -4901,13 +5045,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -4924,6 +5069,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -4939,6 +5088,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -4982,7 +5135,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -5001,13 +5154,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -5024,6 +5178,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5039,6 +5197,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5082,7 +5244,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -5101,13 +5263,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -5124,6 +5287,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5139,6 +5306,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5182,7 +5353,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -5201,13 +5372,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -5224,6 +5396,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5239,6 +5415,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5280,20 +5460,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u8", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5309,6 +5490,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5324,6 +5509,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5365,20 +5554,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5394,6 +5584,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5409,6 +5603,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5450,20 +5648,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5483,6 +5682,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5498,6 +5701,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5539,20 +5746,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5568,6 +5776,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5583,6 +5795,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5624,20 +5840,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5657,6 +5874,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5672,6 +5893,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5713,20 +5938,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5746,6 +5972,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5761,6 +5991,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5802,20 +6036,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5831,6 +6066,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5846,6 +6085,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5887,20 +6130,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -5920,6 +6164,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5935,6 +6183,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5976,20 +6228,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6009,6 +6262,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6024,6 +6281,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6065,20 +6326,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6098,6 +6360,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6113,6 +6379,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6154,20 +6424,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6183,6 +6454,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6198,6 +6473,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6239,20 +6518,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6272,6 +6552,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6287,6 +6571,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6328,20 +6616,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6361,6 +6650,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6376,6 +6669,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6417,20 +6714,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6450,6 +6748,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6465,6 +6767,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6506,20 +6812,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "u128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -6539,6 +6846,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6554,6 +6865,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6595,20 +6910,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i8", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -6617,6 +6933,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6626,6 +6946,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6673,20 +6997,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i8", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -6695,6 +7020,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6704,6 +7033,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6751,20 +7084,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i8", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -6773,6 +7107,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6782,6 +7120,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6829,20 +7171,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i8", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -6851,6 +7194,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6860,6 +7207,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6907,20 +7258,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i8", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -6929,6 +7281,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -6938,6 +7294,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6987,7 +7347,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i16", u |) in
             M.read (|
               let~ min : Ty.path "i16" :=
                 M.cast
@@ -7002,13 +7362,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -7025,6 +7386,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7040,6 +7405,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7081,20 +7450,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7103,6 +7473,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7112,6 +7486,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7159,20 +7537,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7181,6 +7560,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7190,6 +7573,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7237,20 +7624,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7259,6 +7647,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7268,6 +7660,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7315,20 +7711,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i16", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7337,6 +7734,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7346,6 +7747,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7395,7 +7800,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               let~ min : Ty.path "i32" :=
                 M.cast
@@ -7410,13 +7815,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -7433,6 +7839,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7448,6 +7858,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7491,7 +7905,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               let~ min : Ty.path "i32" :=
                 M.cast
@@ -7510,13 +7924,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -7533,6 +7948,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7548,6 +7967,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7589,20 +8012,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7611,6 +8035,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7620,6 +8048,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7667,20 +8099,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7689,6 +8122,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7698,6 +8135,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7745,20 +8186,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i32", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -7767,6 +8209,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7776,6 +8222,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7825,7 +8275,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               let~ min : Ty.path "i64" :=
                 M.cast
@@ -7840,13 +8290,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -7863,6 +8314,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7878,6 +8333,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7921,7 +8380,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               let~ min : Ty.path "i64" :=
                 M.cast
@@ -7940,13 +8399,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -7963,6 +8423,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -7978,6 +8442,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8021,7 +8489,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               let~ min : Ty.path "i64" :=
                 M.cast
@@ -8040,13 +8508,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -8063,6 +8532,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8078,6 +8551,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8119,20 +8596,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -8141,6 +8619,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8150,6 +8632,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8197,20 +8683,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i64", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -8219,6 +8706,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8228,6 +8719,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8277,7 +8772,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -8292,13 +8787,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -8315,6 +8811,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8330,6 +8830,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8373,7 +8877,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -8392,13 +8896,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -8415,6 +8920,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8430,6 +8939,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8473,7 +8986,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -8492,13 +9005,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -8515,6 +9029,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8530,6 +9048,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8573,7 +9095,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               let~ min : Ty.path "i128" :=
                 M.cast
@@ -8592,13 +9114,14 @@ Module convert.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             LogicalOp.or (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -8615,6 +9138,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8630,6 +9157,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8671,20 +9202,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "i128", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -8693,6 +9225,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8702,6 +9238,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8749,20 +9289,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "usize", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.gt,
@@ -8782,6 +9323,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8797,6 +9342,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8838,20 +9387,21 @@ Module convert.
         match ε, τ, α with
         | [], [], [ u ] =>
           ltac:(M.monadic
-            (let u := M.alloc (| u |) in
+            (let u := M.alloc (| Ty.path "isize", u |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -8860,6 +9410,10 @@ Module convert.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -8869,6 +9423,10 @@ Module convert.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8917,20 +9475,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -8950,6 +9509,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -8965,6 +9528,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9006,20 +9573,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -9039,6 +9607,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9054,6 +9626,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9095,20 +9671,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -9128,6 +9705,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9143,6 +9724,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9180,7 +9765,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "usize", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -9214,7 +9799,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "usize", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -9252,20 +9837,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -9285,6 +9871,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9300,6 +9890,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9341,20 +9935,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -9374,6 +9969,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9389,6 +9988,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9430,20 +10033,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -9463,6 +10067,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9478,6 +10086,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9519,20 +10131,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "usize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -9552,6 +10165,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9567,6 +10184,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i64"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9604,7 +10225,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "usize", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -9644,7 +10265,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 let~ min : Ty.path "isize" :=
                   M.cast
@@ -9663,13 +10284,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -9686,6 +10308,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9701,6 +10327,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9744,7 +10374,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 let~ min : Ty.path "isize" :=
                   M.cast
@@ -9763,13 +10393,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -9786,6 +10417,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9801,6 +10436,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9844,7 +10483,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 let~ min : Ty.path "isize" :=
                   M.cast
@@ -9863,13 +10502,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -9886,6 +10526,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -9901,6 +10545,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9942,20 +10590,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.ge,
@@ -9964,6 +10613,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -9973,6 +10626,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u64"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10020,20 +10677,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.ge,
@@ -10042,6 +10700,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10051,6 +10713,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u128"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10100,7 +10766,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 let~ min : Ty.path "isize" :=
                   M.cast
@@ -10119,13 +10785,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -10142,6 +10809,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10157,6 +10828,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i8"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10200,7 +10875,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 let~ min : Ty.path "isize" :=
                   M.cast
@@ -10219,13 +10894,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -10242,6 +10918,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10257,6 +10937,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i16"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10300,7 +10984,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "isize", u |) in
               M.read (|
                 let~ min : Ty.path "isize" :=
                   M.cast
@@ -10319,13 +11003,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -10342,6 +11027,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10357,6 +11046,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "i32"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10394,7 +11087,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "isize", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -10428,7 +11121,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "isize", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -10462,7 +11155,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "u32", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -10496,7 +11189,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "u64", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -10534,20 +11227,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "u128", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -10567,6 +11261,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10582,6 +11280,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10623,20 +11325,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "i8", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.ge,
@@ -10645,6 +11348,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10654,6 +11361,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10701,20 +11412,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "i16", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.ge,
@@ -10723,6 +11435,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10732,6 +11448,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10779,20 +11499,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "i32", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.ge,
@@ -10801,6 +11522,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10810,6 +11535,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10857,20 +11586,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "i64", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.ge,
@@ -10879,6 +11609,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -10888,6 +11622,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10937,7 +11675,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "i128", u |) in
               M.read (|
                 let~ min : Ty.path "i128" :=
                   M.cast
@@ -10956,13 +11694,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -10979,6 +11718,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -10994,6 +11737,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -11031,7 +11778,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "u16", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -11065,7 +11812,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "u32", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -11103,20 +11850,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "u64", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -11136,6 +11884,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -11151,6 +11903,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -11192,20 +11948,21 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "u128", u |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -11225,6 +11982,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -11240,6 +12001,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -11277,7 +12042,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "i32", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -11311,7 +12076,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ value ] =>
             ltac:(M.monadic
-              (let value := M.alloc (| value |) in
+              (let value := M.alloc (| Ty.path "i64", value |) in
               Value.StructTuple
                 "core::result::Result::Ok"
                 []
@@ -11351,7 +12116,7 @@ Module convert.
           match ε, τ, α with
           | [], [], [ u ] =>
             ltac:(M.monadic
-              (let u := M.alloc (| u |) in
+              (let u := M.alloc (| Ty.path "i128", u |) in
               M.read (|
                 let~ min : Ty.path "i128" :=
                   M.cast
@@ -11370,13 +12135,14 @@ Module convert.
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.or (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -11393,6 +12159,10 @@ Module convert.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -11408,6 +12178,10 @@ Module convert.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "isize"; Ty.path "core::num::error::TryFromIntError" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -11445,7 +12219,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
               M.get_associated_function (|
@@ -11508,7 +12286,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
@@ -11571,7 +12353,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
@@ -11634,7 +12420,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
@@ -11697,7 +12487,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
@@ -11760,7 +12554,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
               M.get_associated_function (|
@@ -11823,7 +12621,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
@@ -11886,7 +12688,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
@@ -11949,7 +12755,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
               M.get_associated_function (|
@@ -12012,7 +12822,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
               M.get_associated_function (|
@@ -12075,7 +12889,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
@@ -12138,7 +12956,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
               M.get_associated_function (|
@@ -12201,7 +13023,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
@@ -12264,7 +13090,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
@@ -12327,7 +13157,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -12390,7 +13224,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -12453,7 +13291,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
@@ -12516,7 +13358,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
@@ -12579,7 +13425,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -12642,7 +13492,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -12705,7 +13559,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
@@ -12768,7 +13626,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -12831,7 +13693,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -12894,7 +13760,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -12957,7 +13827,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
               M.get_associated_function (|
@@ -13020,7 +13894,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
@@ -13083,7 +13961,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -13146,7 +14028,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -13209,7 +14095,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
               M.get_associated_function (|
@@ -13272,7 +14162,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
               M.get_associated_function (|
@@ -13335,7 +14229,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -13398,7 +14296,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -13461,7 +14363,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -13524,7 +14430,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -13587,7 +14497,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ small ] =>
           ltac:(M.monadic
-            (let small := M.alloc (| small |) in
+            (let small :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                small
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
               M.get_associated_function (|
@@ -13652,7 +14566,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u8", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -13716,7 +14630,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u16", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -13780,7 +14694,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u32", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -13844,7 +14758,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u64", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -13908,7 +14822,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u128", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -13972,7 +14886,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "usize", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14036,7 +14950,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i8", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14100,7 +15014,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i16", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14164,7 +15078,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i32", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14228,7 +15142,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i64", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14292,7 +15206,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i128", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14356,7 +15270,7 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "isize", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14421,7 +15335,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -14438,6 +15356,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -14459,6 +15389,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -14532,8 +15475,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -14588,7 +15542,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -14630,7 +15584,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -14647,6 +15605,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -14668,6 +15638,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -14741,8 +15724,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -14797,7 +15791,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -14839,7 +15833,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -14856,6 +15854,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -14877,6 +15887,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -14950,8 +15973,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -15006,7 +16040,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -15048,7 +16082,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -15065,6 +16103,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -15086,6 +16136,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -15161,8 +16224,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -15217,7 +16291,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -15259,7 +16333,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -15276,6 +16354,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -15297,6 +16387,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -15370,8 +16473,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -15426,7 +16540,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -15468,7 +16582,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -15485,6 +16603,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -15506,6 +16636,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -15579,8 +16722,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -15635,7 +16789,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -15677,7 +16831,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -15694,6 +16852,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -15715,6 +16885,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -15788,8 +16971,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -15844,7 +17038,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -15886,7 +17080,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -15903,6 +17101,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -15924,6 +17134,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -15999,8 +17222,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -16055,7 +17289,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -16097,7 +17331,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -16114,6 +17352,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -16135,6 +17385,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -16208,8 +17471,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -16264,7 +17538,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -16306,7 +17580,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -16323,6 +17601,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -16344,6 +17634,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -16417,8 +17720,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -16473,7 +17787,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -16515,7 +17829,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -16532,6 +17850,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -16553,6 +17883,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -16626,8 +17969,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -16682,7 +18036,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -16724,7 +18078,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -16741,6 +18099,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -16762,6 +18132,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -16835,8 +18218,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -16891,7 +18285,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -16933,7 +18327,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -16950,6 +18348,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -16971,6 +18381,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -17046,8 +18469,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -17102,7 +18536,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -17144,7 +18578,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -17161,6 +18599,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -17182,6 +18633,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -17255,8 +18719,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -17311,7 +18786,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -17353,7 +18828,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -17370,6 +18849,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -17391,6 +18883,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -17464,8 +18969,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -17520,7 +19036,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -17562,7 +19078,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -17579,6 +19099,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -17600,6 +19133,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -17673,8 +19219,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -17729,7 +19286,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -17771,7 +19328,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -17788,6 +19349,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -17809,6 +19383,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -17882,8 +19469,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -17938,7 +19536,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -17980,7 +19578,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -17997,6 +19599,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -18018,6 +19633,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -18093,8 +19721,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -18149,7 +19788,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -18191,7 +19830,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -18208,6 +19851,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -18229,6 +19884,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -18302,8 +19970,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -18358,7 +20037,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -18400,7 +20079,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -18417,6 +20100,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -18438,6 +20133,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -18511,8 +20219,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -18567,7 +20286,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -18609,7 +20328,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -18626,6 +20349,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -18647,6 +20382,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -18720,8 +20468,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -18776,7 +20535,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -18818,7 +20577,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -18835,6 +20598,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -18856,6 +20631,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -18931,8 +20719,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -18987,7 +20786,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -19029,7 +20828,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -19046,6 +20849,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -19067,6 +20882,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -19140,8 +20968,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -19196,7 +21035,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -19238,7 +21077,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -19255,6 +21098,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -19276,6 +21131,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -19349,8 +21217,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -19405,7 +21284,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -19447,7 +21326,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -19464,6 +21347,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -19485,6 +21380,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -19558,8 +21466,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -19614,7 +21533,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -19656,7 +21575,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -19673,6 +21596,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -19694,6 +21629,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -19769,8 +21717,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -19825,7 +21784,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -19867,7 +21826,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -19884,6 +21847,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -19905,6 +21880,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -19978,8 +21966,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -20034,7 +22033,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -20076,7 +22075,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -20093,6 +22096,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -20114,6 +22129,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -20187,8 +22215,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -20243,7 +22282,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -20285,7 +22324,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -20302,6 +22345,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -20323,6 +22378,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -20396,8 +22464,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -20452,7 +22531,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -20494,7 +22573,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -20511,6 +22594,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -20532,6 +22627,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -20605,8 +22713,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -20661,7 +22780,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -20703,7 +22822,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -20720,6 +22843,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -20741,6 +22876,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -20816,8 +22964,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -20872,7 +23031,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -20914,7 +23073,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -20931,6 +23094,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -20952,6 +23128,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -21025,8 +23214,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -21081,7 +23281,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -21123,7 +23323,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -21140,6 +23344,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -21161,6 +23378,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -21234,8 +23464,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -21290,7 +23531,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -21332,7 +23573,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -21349,6 +23594,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -21370,6 +23628,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -21443,8 +23714,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -21499,7 +23781,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -21541,7 +23823,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -21558,6 +23844,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -21579,6 +23878,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -21652,8 +23964,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -21708,7 +24031,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -21750,7 +24073,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -21767,6 +24094,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -21788,6 +24128,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -21863,8 +24216,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -21919,7 +24283,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -21961,7 +24325,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -21978,6 +24346,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -21999,6 +24379,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -22072,8 +24465,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -22128,7 +24532,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -22170,7 +24574,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -22187,6 +24595,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -22208,6 +24628,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -22281,8 +24714,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -22337,7 +24781,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -22379,7 +24823,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -22396,6 +24844,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -22417,6 +24877,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -22490,8 +24963,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -22546,7 +25030,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -22588,7 +25072,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -22605,6 +25093,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -22626,6 +25126,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -22701,8 +25214,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -22757,7 +25281,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -22799,7 +25323,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -22816,6 +25344,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -22837,6 +25377,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -22910,8 +25463,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -22966,7 +25530,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -23008,7 +25572,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -23025,6 +25593,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -23046,6 +25626,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -23119,8 +25712,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -23175,7 +25779,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -23217,7 +25821,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -23234,6 +25842,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -23255,6 +25875,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -23328,8 +25961,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -23384,7 +26028,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -23426,7 +26070,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -23443,6 +26091,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -23464,6 +26124,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -23539,8 +26212,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -23595,7 +26279,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -23637,7 +26321,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -23654,6 +26342,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -23675,6 +26375,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -23748,8 +26461,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -23804,7 +26528,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -23846,7 +26570,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -23863,6 +26591,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -23884,6 +26624,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -23957,8 +26710,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -24013,7 +26777,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -24055,7 +26819,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -24072,6 +26840,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -24093,6 +26873,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -24166,8 +26959,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -24222,7 +27026,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -24264,7 +27068,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -24281,6 +27089,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -24302,6 +27122,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -24375,8 +27208,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -24431,7 +27275,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -24473,7 +27317,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -24490,6 +27338,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -24511,6 +27371,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -24586,8 +27459,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -24642,7 +27526,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -24684,7 +27568,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -24701,6 +27589,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -24722,6 +27622,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -24795,8 +27708,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -24851,7 +27775,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -24893,7 +27817,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -24910,6 +27838,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -24931,6 +27871,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -25004,8 +27957,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -25060,7 +28024,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -25102,7 +28066,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -25119,6 +28087,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -25140,6 +28120,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -25213,8 +28206,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -25269,7 +28273,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -25311,7 +28315,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -25328,6 +28336,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -25349,6 +28369,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -25422,8 +28455,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -25478,7 +28522,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -25520,7 +28564,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -25537,6 +28585,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -25558,6 +28618,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -25633,8 +28706,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -25689,7 +28773,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -25731,7 +28815,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -25748,6 +28836,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -25769,6 +28869,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -25844,8 +28957,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -25900,7 +29024,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -25942,7 +29066,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -25959,6 +29087,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -25980,6 +29121,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -26053,8 +29207,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -26109,7 +29274,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -26151,7 +29316,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -26168,6 +29337,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -26189,6 +29371,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -26262,8 +29457,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -26318,7 +29524,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -26360,7 +29566,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -26377,6 +29587,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -26398,6 +29621,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -26471,8 +29707,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -26527,7 +29774,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -26569,7 +29816,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -26586,6 +29837,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -26607,6 +29871,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -26680,8 +29957,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -26736,7 +30024,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -26778,7 +30066,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -26795,6 +30087,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -26816,6 +30121,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "i128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "i128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -26891,8 +30209,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "i128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -26947,7 +30276,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "i128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -26989,7 +30318,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -27006,6 +30339,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -27027,6 +30373,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "isize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "isize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -27102,8 +30461,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "isize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -27158,7 +30528,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "isize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -27200,7 +30570,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -27217,6 +30591,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -27238,6 +30624,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -27311,8 +30710,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -27367,7 +30777,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -27409,7 +30819,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -27426,6 +30840,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -27447,6 +30873,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -27520,8 +30959,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -27576,7 +31026,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -27618,7 +31068,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -27635,6 +31089,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -27656,6 +31122,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -27729,8 +31208,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -27785,7 +31275,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -27827,7 +31317,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -27844,6 +31338,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -27865,6 +31371,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -27938,8 +31457,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -27994,7 +31524,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -28036,7 +31566,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -28053,6 +31587,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -28074,6 +31620,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -28149,8 +31708,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -28205,7 +31775,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -28247,7 +31817,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -28264,6 +31838,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -28285,6 +31871,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -28360,8 +31959,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -28416,7 +32026,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -28458,7 +32068,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -28475,6 +32089,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -28496,6 +32122,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -28569,8 +32208,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -28625,7 +32275,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -28667,7 +32317,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -28684,6 +32338,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -28705,6 +32371,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -28778,8 +32457,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -28834,7 +32524,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -28876,7 +32566,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -28893,6 +32587,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -28914,6 +32620,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -28987,8 +32706,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -29043,7 +32773,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -29085,7 +32815,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -29102,6 +32836,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -29123,6 +32869,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -29196,8 +32955,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -29252,7 +33022,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -29294,7 +33064,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -29311,6 +33085,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -29332,6 +33118,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -29407,8 +33206,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -29463,7 +33273,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -29505,7 +33315,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -29522,6 +33336,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -29543,6 +33369,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -29618,8 +33457,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -29674,7 +33524,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -29716,7 +33566,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -29733,6 +33587,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -29754,6 +33620,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -29827,8 +33706,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -29883,7 +33773,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -29925,7 +33815,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -29942,6 +33836,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -29963,6 +33869,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -30036,8 +33955,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -30092,7 +34022,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -30134,7 +34064,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -30151,6 +34085,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -30172,6 +34118,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -30245,8 +34204,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -30301,7 +34271,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -30343,7 +34313,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -30360,6 +34334,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -30381,6 +34367,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -30454,8 +34453,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -30510,7 +34520,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -30552,7 +34562,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -30569,6 +34583,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -30590,6 +34616,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -30665,8 +34704,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -30721,7 +34771,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -30763,7 +34813,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -30780,6 +34834,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -30801,6 +34867,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -30876,8 +34955,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -30932,7 +35022,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -30974,7 +35064,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -30991,6 +35085,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -31012,6 +35118,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -31085,8 +35204,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -31141,7 +35271,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -31183,7 +35313,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -31200,6 +35334,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -31221,6 +35367,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -31294,8 +35453,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -31350,7 +35520,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -31392,7 +35562,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -31409,6 +35583,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -31430,6 +35616,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -31503,8 +35702,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -31559,7 +35769,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -31601,7 +35811,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -31618,6 +35832,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -31639,6 +35865,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -31712,8 +35951,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -31768,7 +36018,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -31810,7 +36060,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -31827,6 +36081,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -31848,6 +36114,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -31923,8 +36202,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -31979,7 +36269,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -32021,7 +36311,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -32038,6 +36332,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -32059,6 +36365,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -32134,8 +36453,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -32190,7 +36520,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -32232,7 +36562,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -32249,6 +36583,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -32270,6 +36616,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -32343,8 +36702,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -32399,7 +36769,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -32441,7 +36811,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -32458,6 +36832,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -32479,6 +36865,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -32552,8 +36951,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -32608,7 +37018,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -32650,7 +37060,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -32667,6 +37081,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -32688,6 +37114,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -32761,8 +37200,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -32817,7 +37267,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -32859,7 +37309,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -32876,6 +37330,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -32897,6 +37363,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -32970,8 +37449,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -33026,7 +37516,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -33068,7 +37558,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -33085,6 +37579,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -33106,6 +37612,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -33181,8 +37700,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -33237,7 +37767,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -33279,7 +37809,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -33296,6 +37830,18 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -33317,6 +37863,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -33392,8 +37951,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -33448,7 +38018,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -33490,7 +38060,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -33507,6 +38081,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -33528,6 +38115,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u8",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u8"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -33601,8 +38201,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -33657,7 +38268,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -33699,7 +38310,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -33716,6 +38331,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -33737,6 +38365,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u16",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u16"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -33810,8 +38451,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u16",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -33866,7 +38518,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -33908,7 +38560,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -33925,6 +38581,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -33946,6 +38615,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u32",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u32"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -34019,8 +38701,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u32",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -34075,7 +38768,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u32", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -34117,7 +38810,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -34134,6 +38831,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -34155,6 +38865,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u64",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u64"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -34228,8 +38951,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -34284,7 +39018,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u64", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -34326,7 +39060,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -34343,6 +39081,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -34364,6 +39115,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "u128",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "u128"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -34439,8 +39203,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "u128",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -34495,7 +39270,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "u128", γ0_0 |) in
                                       val))
                                 ]
                               |)
@@ -34537,7 +39312,11 @@ Module convert.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                value
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -34554,6 +39333,19 @@ Module convert.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ];
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                          ]
+                          (Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
+                          "Error"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -34575,6 +39367,19 @@ Module convert.
                               M.match_operator (|
                                 Ty.path "usize",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "core::num::error::TryFromIntError"
+                                        ];
+                                      Ty.path "usize"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -34650,8 +39455,19 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "core::num::error::TryFromIntError"
+                                            ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "usize",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -34706,7 +39522,7 @@ Module convert.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                       val))
                                 ]
                               |)

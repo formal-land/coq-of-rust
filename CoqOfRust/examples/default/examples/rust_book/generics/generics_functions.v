@@ -30,7 +30,7 @@ Definition reg_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   match ε, τ, α with
   | [], [], [ _s ] =>
     ltac:(M.monadic
-      (let _s := M.alloc (| _s |) in
+      (let _s := M.alloc (| Ty.path "generics_functions::S", _s |) in
       Value.Tuple []))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -44,7 +44,11 @@ Definition gen_spec_t (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   match ε, τ, α with
   | [], [], [ _s ] =>
     ltac:(M.monadic
-      (let _s := M.alloc (| _s |) in
+      (let _s :=
+        M.alloc (|
+          Ty.apply (Ty.path "generics_functions::SGen") [] [ Ty.path "generics_functions::A" ],
+          _s
+        |) in
       Value.Tuple []))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -59,7 +63,8 @@ Definition gen_spec_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   match ε, τ, α with
   | [], [], [ _s ] =>
     ltac:(M.monadic
-      (let _s := M.alloc (| _s |) in
+      (let _s :=
+        M.alloc (| Ty.apply (Ty.path "generics_functions::SGen") [] [ Ty.path "i32" ], _s |) in
       Value.Tuple []))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -74,7 +79,7 @@ Definition generic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   match ε, τ, α with
   | [], [ T ], [ _s ] =>
     ltac:(M.monadic
-      (let _s := M.alloc (| _s |) in
+      (let _s := M.alloc (| Ty.apply (Ty.path "generics_functions::SGen") [] [ T ], _s |) in
       Value.Tuple []))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -162,7 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Value.UnicodeChar 99 ]
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

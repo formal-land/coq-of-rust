@@ -147,7 +147,11 @@ Module Impl_core_clone_Clone_for_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
         M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -169,8 +173,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -187,6 +195,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ModuleHandle" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleHandle" |) |) |)
                       |)));
                   fun γ =>
@@ -195,6 +204,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::StructHandle" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructHandle" |) |) |)
                       |)));
                   fun γ =>
@@ -206,6 +216,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FunctionHandle"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FunctionHandle" |) |) |)
                       |)));
                   fun γ =>
@@ -214,6 +225,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::FieldHandle" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FieldHandle" |) |) |)
                       |)));
                   fun γ =>
@@ -225,6 +237,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FriendDeclaration"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "FriendDeclaration" |) |)
@@ -239,6 +252,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FunctionInstantiation"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "FunctionInstantiation" |) |)
@@ -253,6 +267,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FieldInstantiation"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "FieldInstantiation" |) |)
@@ -267,6 +282,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::StructDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "StructDefinition" |) |)
@@ -281,6 +297,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::StructDefInstantiation"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "StructDefInstantiation" |) |)
@@ -295,6 +312,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FunctionDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "FunctionDefinition" |) |)
@@ -309,6 +327,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FieldDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "FieldDefinition" |) |)
@@ -320,6 +339,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Signature" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signature" |) |) |)
                       |)));
                   fun γ =>
@@ -328,6 +348,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Identifier" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Identifier" |) |) |)
                       |)));
                   fun γ =>
@@ -339,6 +360,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::AddressIdentifier"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "AddressIdentifier" |) |)
@@ -350,6 +372,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ConstantPool" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ConstantPool" |) |) |)
                       |)));
                   fun γ =>
@@ -358,6 +381,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::LocalPool" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LocalPool" |) |) |)
                       |)));
                   fun γ =>
@@ -369,6 +393,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::CodeDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CodeDefinition" |) |) |)
                       |)));
                   fun γ =>
@@ -377,6 +402,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::TypeParameter" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypeParameter" |) |) |)
                       |)));
                   fun γ =>
@@ -385,6 +411,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::MemberCount" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemberCount" |) |) |)
                       |)))
                 ]
@@ -416,7 +443,11 @@ Module Impl_core_cmp_Eq_for_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -439,8 +470,12 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let state := M.alloc (| state |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
+        let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -453,6 +488,7 @@ Module Impl_core_hash_Hash_for_move_binary_format_IndexKind.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -494,8 +530,16 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -518,6 +562,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_IndexKind.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "core::cmp::Ordering",
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -566,8 +611,16 @@ Module Impl_core_cmp_PartialEq_move_binary_format_IndexKind_for_move_binary_form
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -590,6 +643,7 @@ Module Impl_core_cmp_PartialEq_move_binary_format_IndexKind_for_move_binary_form
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -617,8 +671,16 @@ Module Impl_core_cmp_PartialOrd_move_binary_format_IndexKind_for_move_binary_for
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -641,6 +703,7 @@ Module Impl_core_cmp_PartialOrd_move_binary_format_IndexKind_for_move_binary_for
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -719,6 +782,10 @@ Module Impl_move_binary_format_IndexKind.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 18 ]
+                    [ Ty.path "move_binary_format::IndexKind" ],
                   Value.Array
                     [
                       Value.StructTuple "move_binary_format::IndexKind::ModuleHandle" [] [] [];
@@ -804,8 +871,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::IndexKind" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.read (|
           let~ desc : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.read (|
@@ -818,13 +889,17 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ModuleHandle" |) in
-                      M.alloc (| mk_str (| "module handle" |) |)));
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                        mk_str (| "module handle" |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::StructHandle" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "struct handle" |) |) |)
                       |)));
                   fun γ =>
@@ -836,6 +911,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FunctionHandle"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "function handle" |) |)
@@ -847,6 +923,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::FieldHandle" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "field handle" |) |) |)
                       |)));
                   fun γ =>
@@ -858,6 +935,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FriendDeclaration"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "friend declaration" |) |)
@@ -872,6 +950,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::StructDefInstantiation"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "struct instantiation" |) |)
@@ -886,6 +965,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FunctionInstantiation"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "function instantiation" |) |)
@@ -900,6 +980,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FieldInstantiation"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "field instantiation" |) |)
@@ -914,6 +995,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::StructDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "struct definition" |) |)
@@ -928,6 +1010,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FunctionDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "function definition" |) |)
@@ -942,6 +1025,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::FieldDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "field definition" |) |)
@@ -953,6 +1037,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Signature" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "signature" |) |) |)
                       |)));
                   fun γ =>
@@ -961,6 +1046,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::Identifier" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "identifier" |) |) |)
                       |)));
                   fun γ =>
@@ -972,6 +1058,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::AddressIdentifier"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "address identifier" |) |)
@@ -983,6 +1070,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::ConstantPool" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "constant pool" |) |) |)
                       |)));
                   fun γ =>
@@ -991,6 +1079,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::LocalPool" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "local pool" |) |) |)
                       |)));
                   fun γ =>
@@ -1002,6 +1091,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                           "move_binary_format::IndexKind::CodeDefinition"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "code definition pool" |) |)
@@ -1013,6 +1103,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::TypeParameter" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type parameter" |) |) |)
                       |)));
                   fun γ =>
@@ -1021,12 +1112,17 @@ Module Impl_core_fmt_Display_for_move_binary_format_IndexKind.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_binary_format::IndexKind::MemberCount" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "field offset" |) |) |)
                       |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1102,7 +1198,11 @@ Module Impl_core_clone_Clone_for_move_binary_format_SignatureTokenKind.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
         M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1124,8 +1224,12 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -1145,6 +1249,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
                           "move_binary_format::SignatureTokenKind::Value"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Value" |) |) |)
                       |)));
                   fun γ =>
@@ -1156,6 +1261,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
                           "move_binary_format::SignatureTokenKind::Reference"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reference" |) |) |)
                       |)));
                   fun γ =>
@@ -1167,6 +1273,7 @@ Module Impl_core_fmt_Debug_for_move_binary_format_SignatureTokenKind.
                           "move_binary_format::SignatureTokenKind::MutableReference"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "MutableReference" |) |)
@@ -1201,7 +1308,11 @@ Module Impl_core_cmp_Eq_for_move_binary_format_SignatureTokenKind.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1224,8 +1335,16 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -1248,6 +1367,7 @@ Module Impl_core_cmp_Ord_for_move_binary_format_SignatureTokenKind.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "core::cmp::Ordering",
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -1296,8 +1416,16 @@ Module Impl_core_cmp_PartialEq_move_binary_format_SignatureTokenKind_for_move_bi
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -1320,6 +1448,7 @@ Module Impl_core_cmp_PartialEq_move_binary_format_SignatureTokenKind_for_move_bi
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -1347,8 +1476,16 @@ Module Impl_core_cmp_PartialOrd_move_binary_format_SignatureTokenKind_for_move_b
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -1371,6 +1508,7 @@ Module Impl_core_cmp_PartialOrd_move_binary_format_SignatureTokenKind_for_move_b
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -1427,8 +1565,12 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::SignatureTokenKind" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.read (|
           let~ desc : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.read (|
@@ -1444,7 +1586,10 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
                           γ,
                           "move_binary_format::SignatureTokenKind::Value"
                         |) in
-                      M.alloc (| mk_str (| "value" |) |)));
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                        mk_str (| "value" |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -1454,6 +1599,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
                           "move_binary_format::SignatureTokenKind::Reference"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reference" |) |) |)
                       |)));
                   fun γ =>
@@ -1465,6 +1611,7 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
                           "move_binary_format::SignatureTokenKind::MutableReference"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "mutable reference" |) |)
@@ -1474,6 +1621,10 @@ Module Impl_core_fmt_Display_for_move_binary_format_SignatureTokenKind.
               |)
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")

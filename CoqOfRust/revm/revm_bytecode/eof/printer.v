@@ -48,7 +48,11 @@ Module eof.
       match ε, τ, α with
       | [], [], [ code ] =>
         ltac:(M.monadic
-          (let code := M.alloc (| code |) in
+          (let code :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              code
+            |) in
           M.read (|
             let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
             M.loop (|
@@ -56,13 +60,14 @@ Module eof.
               ltac:(M.monadic
                 (M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.lt,
@@ -135,18 +140,26 @@ Module eof.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let opcode := M.alloc (| γ1_0 |) in
+                                let opcode :=
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+                                    γ1_0
+                                  |) in
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     BinOp.ne,
@@ -178,13 +191,14 @@ Module eof.
                                               |) in
                                             M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
+                                                          Ty.path "bool",
                                                           M.call_closure (|
                                                             Ty.path "bool",
                                                             BinOp.ge,
@@ -243,6 +257,7 @@ Module eof.
                                                         Value.Bool true
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.never_to_any (|
                                                         M.read (|
                                                           let~ _ : Ty.tuple [] :=
@@ -277,6 +292,22 @@ Module eof.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "str"
+                                                                                      ]
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     mk_str (|
@@ -292,17 +323,23 @@ Module eof.
                                                                     |)
                                                                   ]
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)
                                                             |) in
                                                           M.break (||)
                                                         |)
                                                       |)
                                                     |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)
                                   |) in
@@ -330,7 +367,18 @@ Module eof.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                                                    M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
+                                                      Value.Array [ mk_str (| "" |) ]
+                                                    |)
                                                   |)
                                                 |)
                                               |);
@@ -340,6 +388,10 @@ Module eof.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [ Ty.path "core::fmt::rt::Argument" ],
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
@@ -362,6 +414,10 @@ Module eof.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ],
                                                                       M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -398,19 +454,20 @@ Module eof.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                   |) in
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     BinOp.ne,
@@ -566,6 +623,19 @@ Module eof.
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ]
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ]
+                                                                    ],
                                                                   Value.Array
                                                                     [ mk_str (| " : 0x" |) ]
                                                                 |)
@@ -578,6 +648,17 @@ Module eof.
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "array")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ]
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument"
+                                                                    ],
                                                                   Value.Array
                                                                     [
                                                                       M.call_closure (|
@@ -600,6 +681,8 @@ Module eof.
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
                                                                                 M.alloc (|
+                                                                                  Ty.path
+                                                                                    "alloc::string::String",
                                                                                   M.call_closure (|
                                                                                     Ty.path
                                                                                       "alloc::string::String",
@@ -644,17 +727,18 @@ Module eof.
                                                       |)
                                                     ]
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                               |) in
                                             M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
+                                                          Ty.path "bool",
                                                           M.call_closure (|
                                                             Ty.path "bool",
                                                             BinOp.eq,
@@ -719,6 +803,19 @@ Module eof.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                2
+                                                                            ]
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "str" ]
+                                                                            ],
                                                                           Value.Array
                                                                             [
                                                                               mk_str (| " (" |);
@@ -734,6 +831,17 @@ Module eof.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "array")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                1
+                                                                            ]
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::fmt::rt::Argument"
+                                                                            ],
                                                                           Value.Array
                                                                             [
                                                                               M.call_closure (|
@@ -753,6 +861,8 @@ Module eof.
                                                                                       M.borrow (|
                                                                                         Pointer.Kind.Ref,
                                                                                         M.alloc (|
+                                                                                          Ty.path
+                                                                                            "i16",
                                                                                           M.call_closure (|
                                                                                             Ty.path
                                                                                               "i16",
@@ -889,14 +999,17 @@ Module eof.
                                                               |)
                                                             ]
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)));
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)
                                   |) in
@@ -921,8 +1034,19 @@ Module eof.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (| Value.Array [ mk_str (| "
-" |) ] |)
+                                                    M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
+                                                      Value.Array [ mk_str (| "
+" |) ]
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -930,7 +1054,7 @@ Module eof.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                   |) in
                                 let~ rjumpv_additional_immediates : Ty.path "usize" :=
                                   Value.Integer IntegerKind.Usize 0 in
@@ -977,17 +1101,18 @@ Module eof.
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.read (|
                               let~ _ : Ty.tuple [] :=
                                 M.never_to_any (| M.read (| M.break (||) |) |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)
                           |)
                         |)))

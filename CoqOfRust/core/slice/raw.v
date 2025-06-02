@@ -27,20 +27,21 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ data; len ] =>
         ltac:(M.monadic
-          (let data := M.alloc (| data |) in
-          let len := M.alloc (| len |) in
+          (let data := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], data |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -73,12 +74,13 @@ Module slice.
                               M.read (| len |)
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -128,8 +130,8 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ data; len ] =>
         ltac:(M.monadic
-          (let data := M.alloc (| data |) in
-          let len := M.alloc (| len |) in
+          (let data := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], data |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -141,13 +143,14 @@ Module slice.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_function (|
@@ -188,12 +191,13 @@ Module slice.
                                       M.read (| len |)
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.deref (|
@@ -239,7 +243,7 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
-          (let s := M.alloc (| s |) in
+          (let s := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], s |) in
           (* Unsize *)
           M.pointer_coercion
             (M.borrow (|
@@ -272,7 +276,7 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
-          (let s := M.alloc (| s |) in
+          (let s := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], s |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -311,7 +315,14 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ range ] =>
         ltac:(M.monadic
-          (let range := M.alloc (| range |) in
+          (let range :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::ops::range::Range")
+                []
+                [ Ty.apply (Ty.path "*const") [] [ T ] ],
+              range
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -373,7 +384,14 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ range ] =>
         ltac:(M.monadic
-          (let range := M.alloc (| range |) in
+          (let range :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::ops::range::Range")
+                []
+                [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+              range
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|

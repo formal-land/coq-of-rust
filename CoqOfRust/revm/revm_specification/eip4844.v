@@ -5,6 +5,7 @@ Module eip4844.
   Definition value_GAS_PER_BLOB (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.shl,
@@ -22,7 +23,7 @@ Module eip4844.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3 |))).
   
   Global Instance Instance_IsConstant_value_TARGET_BLOB_NUMBER_PER_BLOCK :
     M.IsFunction.C
@@ -38,6 +39,7 @@ Module eip4844.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.mul,
@@ -67,6 +69,7 @@ Module eip4844.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.mul,
@@ -98,6 +101,7 @@ Module eip4844.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "u64",
         M.call_closure (|
           Ty.path "u64",
           BinOp.Wrap.mul,
@@ -123,7 +127,7 @@ Module eip4844.
   Global Typeclasses Opaque value_TARGET_BLOB_GAS_PER_BLOCK.
   
   Definition value_MIN_BLOB_GASPRICE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
   
   Global Instance Instance_IsConstant_value_MIN_BLOB_GASPRICE :
     M.IsFunction.C "revm_specification::eip4844::MIN_BLOB_GASPRICE" value_MIN_BLOB_GASPRICE.
@@ -135,7 +139,7 @@ Module eip4844.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3338477 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3338477 |))).
   
   Global Instance Instance_IsConstant_value_BLOB_GASPRICE_UPDATE_FRACTION :
     M.IsFunction.C
@@ -149,7 +153,7 @@ Module eip4844.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 1 |))).
   
   Global Instance Instance_IsConstant_value_VERSIONED_HASH_VERSION_KZG :
     M.IsFunction.C

@@ -18,7 +18,7 @@ Module file_format_common.
     (*     pub const MOVE_MAGIC_SIZE: usize = 4; *)
     (* Ty.path "usize" *)
     Definition value_MOVE_MAGIC_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 4 |))).
     
     Global Instance AssociatedConstant_value_MOVE_MAGIC_SIZE :
       M.IsAssociatedFunction.C Self "MOVE_MAGIC_SIZE" value_MOVE_MAGIC_SIZE.
@@ -36,6 +36,7 @@ Module file_format_common.
     Definition value_MOVE_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
           Value.Array
             [
               Value.Integer IntegerKind.U8 161;
@@ -55,6 +56,7 @@ Module file_format_common.
     Definition value_HEADER_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "usize",
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.add,
@@ -81,6 +83,7 @@ Module file_format_common.
     Definition value_TABLE_HEADER_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u8",
           M.call_closure (|
             Ty.path "u8",
             BinOp.Wrap.add,
@@ -111,7 +114,7 @@ Module file_format_common.
   End Impl_move_binary_format_file_format_common_BinaryConstants.
   
   Definition value_TABLE_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_TABLE_COUNT_MAX :
     M.IsFunction.C "move_binary_format::file_format_common::TABLE_COUNT_MAX" value_TABLE_COUNT_MAX.
@@ -119,7 +122,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_TABLE_COUNT_MAX.
   
   Definition value_TABLE_OFFSET_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 4294967295 |))).
   
   Global Instance Instance_IsConstant_value_TABLE_OFFSET_MAX :
     M.IsFunction.C
@@ -129,7 +132,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_TABLE_OFFSET_MAX.
   
   Definition value_TABLE_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 4294967295 |))).
   
   Global Instance Instance_IsConstant_value_TABLE_SIZE_MAX :
     M.IsFunction.C "move_binary_format::file_format_common::TABLE_SIZE_MAX" value_TABLE_SIZE_MAX.
@@ -141,7 +144,7 @@ Module file_format_common.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4294967295 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 4294967295 |))).
   
   Global Instance Instance_IsConstant_value_TABLE_CONTENT_SIZE_MAX :
     M.IsFunction.C
@@ -151,7 +154,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_TABLE_CONTENT_SIZE_MAX.
   
   Definition value_TABLE_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65535 |))).
   
   Global Instance Instance_IsConstant_value_TABLE_INDEX_MAX :
     M.IsFunction.C "move_binary_format::file_format_common::TABLE_INDEX_MAX" value_TABLE_INDEX_MAX.
@@ -351,7 +354,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_CONSTANT_INDEX_MAX.
   
   Definition value_BYTECODE_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65535 |))).
   
   Global Instance Instance_IsConstant_value_BYTECODE_COUNT_MAX :
     M.IsFunction.C
@@ -361,7 +364,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_BYTECODE_COUNT_MAX.
   
   Definition value_BYTECODE_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65535 |))).
   
   Global Instance Instance_IsConstant_value_BYTECODE_INDEX_MAX :
     M.IsFunction.C
@@ -371,7 +374,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_BYTECODE_INDEX_MAX.
   
   Definition value_LOCAL_INDEX_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_LOCAL_INDEX_MAX :
     M.IsFunction.C "move_binary_format::file_format_common::LOCAL_INDEX_MAX" value_LOCAL_INDEX_MAX.
@@ -379,7 +382,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_LOCAL_INDEX_MAX.
   
   Definition value_IDENTIFIER_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65535 |))).
   
   Global Instance Instance_IsConstant_value_IDENTIFIER_SIZE_MAX :
     M.IsFunction.C
@@ -389,7 +392,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_IDENTIFIER_SIZE_MAX.
   
   Definition value_CONSTANT_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65535 |))).
   
   Global Instance Instance_IsConstant_value_CONSTANT_SIZE_MAX :
     M.IsFunction.C
@@ -403,7 +406,7 @@ Module file_format_common.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1023 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1023 |))).
   
   Global Instance Instance_IsConstant_value_METADATA_KEY_SIZE_MAX :
     M.IsFunction.C
@@ -417,7 +420,7 @@ Module file_format_common.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65535 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65535 |))).
   
   Global Instance Instance_IsConstant_value_METADATA_VALUE_SIZE_MAX :
     M.IsFunction.C
@@ -427,7 +430,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_METADATA_VALUE_SIZE_MAX.
   
   Definition value_SIGNATURE_SIZE_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_SIGNATURE_SIZE_MAX :
     M.IsFunction.C
@@ -437,7 +440,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_SIGNATURE_SIZE_MAX.
   
   Definition value_ACQUIRES_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_ACQUIRES_COUNT_MAX :
     M.IsFunction.C
@@ -447,7 +450,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_ACQUIRES_COUNT_MAX.
   
   Definition value_FIELD_COUNT_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_FIELD_COUNT_MAX :
     M.IsFunction.C "move_binary_format::file_format_common::FIELD_COUNT_MAX" value_FIELD_COUNT_MAX.
@@ -455,7 +458,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_FIELD_COUNT_MAX.
   
   Definition value_FIELD_OFFSET_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_FIELD_OFFSET_MAX :
     M.IsFunction.C
@@ -469,7 +472,7 @@ Module file_format_common.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 255 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 255 |))).
   
   Global Instance Instance_IsConstant_value_TYPE_PARAMETER_COUNT_MAX :
     M.IsFunction.C
@@ -483,7 +486,7 @@ Module file_format_common.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 65536 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 65536 |))).
   
   Global Instance Instance_IsConstant_value_TYPE_PARAMETER_INDEX_MAX :
     M.IsFunction.C
@@ -497,7 +500,7 @@ Module file_format_common.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 256 |))).
   
   Global Instance Instance_IsConstant_value_SIGNATURE_TOKEN_DEPTH_MAX :
     M.IsFunction.C
@@ -616,7 +619,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::TableType" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -650,8 +660,16 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::TableType" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -674,6 +692,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::MODULE_HANDLES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MODULE_HANDLES" |) |)
@@ -688,6 +707,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::STRUCT_HANDLES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "STRUCT_HANDLES" |) |)
@@ -702,6 +722,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FUNCTION_HANDLES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FUNCTION_HANDLES" |) |)
@@ -716,6 +737,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FUNCTION_INST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FUNCTION_INST" |) |)
@@ -730,6 +752,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::SIGNATURES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SIGNATURES" |) |) |)
                         |)));
                     fun γ =>
@@ -741,6 +764,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::CONSTANT_POOL"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CONSTANT_POOL" |) |)
@@ -755,6 +779,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::IDENTIFIERS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IDENTIFIERS" |) |) |)
                         |)));
                     fun γ =>
@@ -766,6 +791,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::ADDRESS_IDENTIFIERS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ADDRESS_IDENTIFIERS" |) |)
@@ -780,6 +806,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::STRUCT_DEFS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT_DEFS" |) |) |)
                         |)));
                     fun γ =>
@@ -791,6 +818,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::STRUCT_DEF_INST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "STRUCT_DEF_INST" |) |)
@@ -805,6 +833,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FUNCTION_DEFS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FUNCTION_DEFS" |) |)
@@ -819,6 +848,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FIELD_HANDLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FIELD_HANDLE" |) |) |)
                         |)));
                     fun γ =>
@@ -830,6 +860,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FIELD_INST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FIELD_INST" |) |) |)
                         |)));
                     fun γ =>
@@ -841,6 +872,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::FRIEND_DECLS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FRIEND_DECLS" |) |) |)
                         |)));
                     fun γ =>
@@ -852,6 +884,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::TableType::METADATA"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "METADATA" |) |) |)
                         |)))
                   ]
@@ -883,7 +916,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::TableType" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -906,8 +946,15 @@ Module file_format_common.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::TableType" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -920,6 +967,7 @@ Module file_format_common.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -973,8 +1021,22 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::TableType" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::TableType" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -997,6 +1059,7 @@ Module file_format_common.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -1127,7 +1190,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::SerializedType" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1161,8 +1231,16 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::SerializedType" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1185,6 +1263,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::BOOL"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BOOL" |) |) |)
                         |)));
                     fun γ =>
@@ -1196,6 +1275,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U8"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |)
                         |)));
                     fun γ =>
@@ -1207,6 +1287,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U64"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |)
                         |)));
                     fun γ =>
@@ -1218,6 +1299,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U128"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |)
                         |)));
                     fun γ =>
@@ -1229,6 +1311,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::ADDRESS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADDRESS" |) |) |)
                         |)));
                     fun γ =>
@@ -1240,6 +1323,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::REFERENCE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "REFERENCE" |) |) |)
                         |)));
                     fun γ =>
@@ -1251,6 +1335,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::MUTABLE_REFERENCE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MUTABLE_REFERENCE" |) |)
@@ -1265,6 +1350,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::STRUCT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT" |) |) |)
                         |)));
                     fun γ =>
@@ -1276,6 +1362,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::TYPE_PARAMETER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TYPE_PARAMETER" |) |)
@@ -1290,6 +1377,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::VECTOR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VECTOR" |) |) |)
                         |)));
                     fun γ =>
@@ -1301,6 +1389,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::STRUCT_INST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "STRUCT_INST" |) |) |)
                         |)));
                     fun γ =>
@@ -1312,6 +1401,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::SIGNER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SIGNER" |) |) |)
                         |)));
                     fun γ =>
@@ -1323,6 +1413,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U16"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |)
                         |)));
                     fun γ =>
@@ -1334,6 +1425,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U32"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |)
                         |)));
                     fun γ =>
@@ -1345,6 +1437,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedType::U256"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |)
                         |)))
                   ]
@@ -1399,7 +1492,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::SerializedNativeStructFlag" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1435,8 +1535,16 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::SerializedNativeStructFlag" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1459,6 +1567,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::NATIVE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NATIVE" |) |) |)
                         |)));
                     fun γ =>
@@ -1470,6 +1579,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::SerializedNativeStructFlag::DECLARED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DECLARED" |) |) |)
                         |)))
                   ]
@@ -1985,7 +2095,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::Opcodes" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2019,8 +2136,16 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::Opcodes" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2043,6 +2168,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::POP"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "POP" |) |) |)
                         |)));
                     fun γ =>
@@ -2054,6 +2180,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::RET"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RET" |) |) |)
                         |)));
                     fun γ =>
@@ -2065,6 +2192,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BR_TRUE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BR_TRUE" |) |) |)
                         |)));
                     fun γ =>
@@ -2076,6 +2204,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BR_FALSE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BR_FALSE" |) |) |)
                         |)));
                     fun γ =>
@@ -2087,6 +2216,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BRANCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BRANCH" |) |) |)
                         |)));
                     fun γ =>
@@ -2098,6 +2228,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U64"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U64" |) |) |)
                         |)));
                     fun γ =>
@@ -2109,6 +2240,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_CONST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_CONST" |) |) |)
                         |)));
                     fun γ =>
@@ -2120,6 +2252,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_TRUE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_TRUE" |) |) |)
                         |)));
                     fun γ =>
@@ -2131,6 +2264,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_FALSE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_FALSE" |) |) |)
                         |)));
                     fun γ =>
@@ -2142,6 +2276,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::COPY_LOC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "COPY_LOC" |) |) |)
                         |)));
                     fun γ =>
@@ -2153,6 +2288,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOVE_LOC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MOVE_LOC" |) |) |)
                         |)));
                     fun γ =>
@@ -2164,6 +2300,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::ST_LOC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ST_LOC" |) |) |)
                         |)));
                     fun γ =>
@@ -2175,6 +2312,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MUT_BORROW_LOC" |) |)
@@ -2189,6 +2327,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "IMM_BORROW_LOC" |) |)
@@ -2203,6 +2342,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MUT_BORROW_FIELD" |) |)
@@ -2217,6 +2357,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "IMM_BORROW_FIELD" |) |)
@@ -2231,6 +2372,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CALL"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CALL" |) |) |)
                         |)));
                     fun γ =>
@@ -2242,6 +2384,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::PACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PACK" |) |) |)
                         |)));
                     fun γ =>
@@ -2253,6 +2396,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::UNPACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UNPACK" |) |) |)
                         |)));
                     fun γ =>
@@ -2264,6 +2408,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::READ_REF"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "READ_REF" |) |) |)
                         |)));
                     fun γ =>
@@ -2275,6 +2420,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::WRITE_REF"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "WRITE_REF" |) |) |)
                         |)));
                     fun γ =>
@@ -2286,6 +2432,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::ADD"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |)
                         |)));
                     fun γ =>
@@ -2297,6 +2444,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::SUB"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SUB" |) |) |)
                         |)));
                     fun γ =>
@@ -2308,6 +2456,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUL"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MUL" |) |) |)
                         |)));
                     fun γ =>
@@ -2319,6 +2468,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOD"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MOD" |) |) |)
                         |)));
                     fun γ =>
@@ -2330,6 +2480,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::DIV"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DIV" |) |) |)
                         |)));
                     fun γ =>
@@ -2341,6 +2492,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BIT_OR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BIT_OR" |) |) |)
                         |)));
                     fun γ =>
@@ -2352,6 +2504,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::BIT_AND"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BIT_AND" |) |) |)
                         |)));
                     fun γ =>
@@ -2363,6 +2516,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::XOR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "XOR" |) |) |)
                         |)));
                     fun γ =>
@@ -2374,6 +2528,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::OR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OR" |) |) |)
                         |)));
                     fun γ =>
@@ -2385,6 +2540,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::AND"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AND" |) |) |)
                         |)));
                     fun γ =>
@@ -2396,6 +2552,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::NOT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NOT" |) |) |)
                         |)));
                     fun γ =>
@@ -2407,6 +2564,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::EQ"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EQ" |) |) |)
                         |)));
                     fun γ =>
@@ -2418,6 +2576,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::NEQ"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NEQ" |) |) |)
                         |)));
                     fun γ =>
@@ -2429,6 +2588,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LT" |) |) |)
                         |)));
                     fun γ =>
@@ -2440,6 +2600,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::GT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GT" |) |) |)
                         |)));
                     fun γ =>
@@ -2451,6 +2612,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LE" |) |) |)
                         |)));
                     fun γ =>
@@ -2462,6 +2624,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::GE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GE" |) |) |)
                         |)));
                     fun γ =>
@@ -2473,6 +2636,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::ABORT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ABORT" |) |) |)
                         |)));
                     fun γ =>
@@ -2484,6 +2648,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::NOP"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NOP" |) |) |)
                         |)));
                     fun γ =>
@@ -2495,6 +2660,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::FREEZE_REF"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FREEZE_REF" |) |) |)
                         |)));
                     fun γ =>
@@ -2506,6 +2672,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::SHL"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHL" |) |) |)
                         |)));
                     fun γ =>
@@ -2517,6 +2684,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::SHR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHR" |) |) |)
                         |)));
                     fun γ =>
@@ -2528,6 +2696,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U8"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U8" |) |) |)
                         |)));
                     fun γ =>
@@ -2539,6 +2708,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U128"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U128" |) |) |)
                         |)));
                     fun γ =>
@@ -2550,6 +2720,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U8"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U8" |) |) |)
                         |)));
                     fun γ =>
@@ -2561,6 +2732,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U64"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U64" |) |) |)
                         |)));
                     fun γ =>
@@ -2572,6 +2744,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U128"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U128" |) |) |)
                         |)));
                     fun γ =>
@@ -2583,6 +2756,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MUT_BORROW_FIELD_GENERIC" |) |)
@@ -2597,6 +2771,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "IMM_BORROW_FIELD_GENERIC" |) |)
@@ -2611,6 +2786,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CALL_GENERIC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CALL_GENERIC" |) |) |)
                         |)));
                     fun γ =>
@@ -2622,6 +2798,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::PACK_GENERIC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PACK_GENERIC" |) |) |)
                         |)));
                     fun γ =>
@@ -2633,6 +2810,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNPACK_GENERIC" |) |)
@@ -2647,6 +2825,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_PACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_PACK" |) |) |)
                         |)));
                     fun γ =>
@@ -2658,6 +2837,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_LEN"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_LEN" |) |) |)
                         |)));
                     fun γ =>
@@ -2669,6 +2849,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VEC_IMM_BORROW" |) |)
@@ -2683,6 +2864,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VEC_MUT_BORROW" |) |)
@@ -2697,6 +2879,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VEC_PUSH_BACK" |) |)
@@ -2711,6 +2894,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_POP_BACK" |) |) |)
                         |)));
                     fun γ =>
@@ -2722,6 +2906,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_UNPACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_UNPACK" |) |) |)
                         |)));
                     fun γ =>
@@ -2733,6 +2918,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::VEC_SWAP"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VEC_SWAP" |) |) |)
                         |)));
                     fun γ =>
@@ -2744,6 +2930,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U16"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U16" |) |) |)
                         |)));
                     fun γ =>
@@ -2755,6 +2942,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U32"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U32" |) |) |)
                         |)));
                     fun γ =>
@@ -2766,6 +2954,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::LD_U256"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LD_U256" |) |) |)
                         |)));
                     fun γ =>
@@ -2777,6 +2966,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U16"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U16" |) |) |)
                         |)));
                     fun γ =>
@@ -2788,6 +2978,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U32"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U32" |) |) |)
                         |)));
                     fun γ =>
@@ -2799,6 +2990,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::CAST_U256"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CAST_U256" |) |) |)
                         |)));
                     fun γ =>
@@ -2810,6 +3002,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EXISTS_DEPRECATED" |) |)
@@ -2824,6 +3017,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MUT_BORROW_GLOBAL_DEPRECATED" |) |)
@@ -2838,6 +3032,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "IMM_BORROW_GLOBAL_DEPRECATED" |) |)
@@ -2852,6 +3047,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVE_FROM_DEPRECATED" |) |)
@@ -2866,6 +3062,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVE_TO_DEPRECATED" |) |)
@@ -2880,6 +3077,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EXISTS_GENERIC_DEPRECATED" |) |)
@@ -2894,6 +3092,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MUT_BORROW_GLOBAL_GENERIC_DEPRECATED" |) |)
@@ -2908,6 +3107,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "IMM_BORROW_GLOBAL_GENERIC_DEPRECATED" |) |)
@@ -2922,6 +3122,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVE_FROM_GENERIC_DEPRECATED" |) |)
@@ -2936,6 +3137,7 @@ Module file_format_common.
                             "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVE_TO_GENERIC_DEPRECATED" |) |)
@@ -2961,6 +3163,7 @@ Module file_format_common.
   Definition value_BINARY_SIZE_LIMIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "usize",
         M.call_closure (|
           Ty.path "usize",
           M.get_associated_function (| Ty.path "usize", "max_value", [], [] |),
@@ -3044,8 +3247,16 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3069,6 +3280,15 @@ Module file_format_common.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -3148,7 +3368,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3200,7 +3427,8 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "move_binary_format::file_format_common::BinaryData", self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,
@@ -3234,8 +3462,15 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; item ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let item := M.alloc (| item |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
+          let item := M.alloc (| Ty.path "u8", item |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3244,18 +3479,23 @@ Module file_format_common.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_associated_function (|
@@ -3271,6 +3511,10 @@ Module file_format_common.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3336,10 +3580,11 @@ Module file_format_common.
                                       M.read (| item |)
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3393,6 +3638,19 @@ Module file_format_common.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
+                                                                          ]
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             mk_str (|
@@ -3413,6 +3671,17 @@ Module file_format_common.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
@@ -3432,6 +3701,8 @@ Module file_format_common.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.path
+                                                                                          "usize",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "usize",
@@ -3509,6 +3780,10 @@ Module file_format_common.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3546,8 +3821,19 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self; vec ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let vec := M.alloc (| vec |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
+          let vec :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              vec
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3556,6 +3842,10 @@ Module file_format_common.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ vec_len : Ty.path "usize" :=
                       M.call_closure (|
@@ -3572,13 +3862,14 @@ Module file_format_common.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_associated_function (|
@@ -3594,6 +3885,10 @@ Module file_format_common.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3667,10 +3962,11 @@ Module file_format_common.
                                       M.read (| vec |)
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3724,6 +4020,19 @@ Module file_format_common.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              4
+                                                                          ]
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             mk_str (|
@@ -3745,6 +4054,17 @@ Module file_format_common.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              3
+                                                                          ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
@@ -3764,6 +4084,8 @@ Module file_format_common.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.path
+                                                                                          "usize",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "usize",
@@ -3808,6 +4130,8 @@ Module file_format_common.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.path
+                                                                                          "usize",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "usize",
@@ -3891,6 +4215,10 @@ Module file_format_common.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3917,7 +4245,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_associated_function (|
@@ -3956,7 +4291,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -3995,7 +4337,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -4020,7 +4369,7 @@ Module file_format_common.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4042,7 +4391,14 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [ vec ] =>
         ltac:(M.monadic
-          (let vec := M.alloc (| vec |) in
+          (let vec :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              vec
+            |) in
           Value.StructRecord
             "move_binary_format::file_format_common::BinaryData"
             []
@@ -4080,8 +4436,15 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ binary; val ] =>
       ltac:(M.monadic
-        (let binary := M.alloc (| binary |) in
-        let val := M.alloc (| val |) in
+        (let binary :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+            binary
+          |) in
+        let val := M.alloc (| Ty.path "u64", val |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -4090,6 +4453,10 @@ Module file_format_common.
               [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
@@ -4104,13 +4471,14 @@ Module file_format_common.
                             |) in
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.ne,
@@ -4127,6 +4495,19 @@ Module file_format_common.
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "anyhow::Error"
+                                                ];
+                                              Ty.tuple []
+                                            ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -4195,8 +4576,19 @@ Module file_format_common.
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
                                                 |) in
-                                              let residual := M.copy (| γ0_0 |) in
+                                              let residual :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path "anyhow::Error"
+                                                    ],
+                                                  γ0_0
+                                                |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -4240,7 +4632,7 @@ Module file_format_common.
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
                                                 |) in
-                                              let val := M.copy (| γ0_0 |) in
+                                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                               val))
                                         ]
                                       |)
@@ -4255,10 +4647,11 @@ Module file_format_common.
                                         [ M.read (| β |); Value.Integer IntegerKind.I32 7 ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         let~ _ : Ty.tuple [] :=
@@ -4266,6 +4659,19 @@ Module file_format_common.
                                             M.match_operator (|
                                               Ty.tuple [],
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path "anyhow::Error"
+                                                      ];
+                                                    Ty.tuple []
+                                                  ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::ops::control_flow::ControlFlow")
@@ -4325,8 +4731,19 @@ Module file_format_common.
                                                         "core::ops::control_flow::ControlFlow::Break",
                                                         0
                                                       |) in
-                                                    let residual := M.copy (| γ0_0 |) in
+                                                    let residual :=
+                                                      M.copy (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
+                                                          []
+                                                          [
+                                                            Ty.path "core::convert::Infallible";
+                                                            Ty.path "anyhow::Error"
+                                                          ],
+                                                        γ0_0
+                                                      |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.never_to_any (|
                                                         M.read (|
                                                           M.return_ (|
@@ -4376,7 +4793,7 @@ Module file_format_common.
                                                         "core::ops::control_flow::ControlFlow::Continue",
                                                         0
                                                       |) in
-                                                    let val := M.copy (| γ0_0 |) in
+                                                    let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                                     val))
                                               ]
                                             |)
@@ -4390,6 +4807,10 @@ Module file_format_common.
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "anyhow::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -4419,8 +4840,15 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ binary; value ] =>
       ltac:(M.monadic
-        (let binary := M.alloc (| binary |) in
-        let value := M.alloc (| value |) in
+        (let binary :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+            binary
+          |) in
+        let value := M.alloc (| Ty.path "u16", value |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
@@ -4439,6 +4867,10 @@ Module file_format_common.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -4470,8 +4902,15 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ binary; value ] =>
       ltac:(M.monadic
-        (let binary := M.alloc (| binary |) in
-        let value := M.alloc (| value |) in
+        (let binary :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+            binary
+          |) in
+        let value := M.alloc (| Ty.path "u32", value |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
@@ -4490,6 +4929,10 @@ Module file_format_common.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -4521,8 +4964,15 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ binary; value ] =>
       ltac:(M.monadic
-        (let binary := M.alloc (| binary |) in
-        let value := M.alloc (| value |) in
+        (let binary :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+            binary
+          |) in
+        let value := M.alloc (| Ty.path "u64", value |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
@@ -4541,6 +4991,10 @@ Module file_format_common.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 8 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -4572,8 +5026,15 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ binary; value ] =>
       ltac:(M.monadic
-        (let binary := M.alloc (| binary |) in
-        let value := M.alloc (| value |) in
+        (let binary :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+            binary
+          |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
@@ -4592,6 +5053,10 @@ Module file_format_common.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -4626,8 +5091,15 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ binary; value ] =>
       ltac:(M.monadic
-        (let binary := M.alloc (| binary |) in
-        let value := M.alloc (| value |) in
+        (let binary :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_binary_format::file_format_common::BinaryData" ],
+            binary
+          |) in
+        let value := M.alloc (| Ty.path "move_core_types::u256::U256", value |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
           M.get_associated_function (|
@@ -4646,6 +5118,10 @@ Module file_format_common.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -4684,7 +5160,19 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ cursor ] =>
       ltac:(M.monadic
-        (let cursor := M.alloc (| cursor |) in
+        (let cursor :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "std::io::cursor::Cursor")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            cursor
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -4693,6 +5181,10 @@ Module file_format_common.
               [ Ty.path "u8"; Ty.path "anyhow::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                 M.read (|
                   let~ buf :
                       Ty.apply
@@ -4708,6 +5200,19 @@ Module file_format_common.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "std::io::error::Error"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -4782,8 +5287,19 @@ Module file_format_common.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "std::io::error::Error"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -4826,12 +5342,16 @@ Module file_format_common.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -4865,7 +5385,19 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ cursor ] =>
       ltac:(M.monadic
-        (let cursor := M.alloc (| cursor |) in
+        (let cursor :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "std::io::cursor::Cursor")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            cursor
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -4874,6 +5406,10 @@ Module file_format_common.
               [ Ty.path "u32"; Ty.path "anyhow::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                 M.read (|
                   let~ buf :
                       Ty.apply
@@ -4889,6 +5425,19 @@ Module file_format_common.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "std::io::error::Error"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -4963,8 +5512,19 @@ Module file_format_common.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "std::io::error::Error"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -5007,12 +5567,16 @@ Module file_format_common.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "u32"; Ty.path "anyhow::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -5067,7 +5631,19 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ cursor ] =>
       ltac:(M.monadic
-        (let cursor := M.alloc (| cursor |) in
+        (let cursor :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "std::io::cursor::Cursor")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ]
+              ],
+            cursor
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -5076,6 +5652,10 @@ Module file_format_common.
               [ Ty.path "u64"; Ty.path "anyhow::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "u64"; Ty.path "anyhow::Error" ],
                 M.never_to_any (|
                   M.read (|
                     let~ value : Ty.path "u64" := Value.Integer IntegerKind.U64 0 in
@@ -5087,12 +5667,16 @@ Module file_format_common.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "anyhow::Error" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::result::Result")
@@ -5117,7 +5701,7 @@ Module file_format_common.
                                         "core::result::Result::Ok",
                                         0
                                       |) in
-                                    let byte := M.copy (| γ0_0 |) in
+                                    let byte := M.copy (| Ty.path "u8", γ0_0 |) in
                                     let~ cur : Ty.path "u64" :=
                                       M.cast
                                         (Ty.path "u64")
@@ -5130,13 +5714,14 @@ Module file_format_common.
                                       M.read (|
                                         M.match_operator (|
                                           Ty.tuple [],
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
+                                                      Ty.path "bool",
                                                       M.call_closure (|
                                                         Ty.path "bool",
                                                         BinOp.ne,
@@ -5166,6 +5751,7 @@ Module file_format_common.
                                                     Value.Bool true
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -5206,6 +5792,22 @@ Module file_format_common.
                                                                             M.borrow (|
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "array")
+                                                                                  [
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Usize
+                                                                                      1
+                                                                                  ]
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "str"
+                                                                                      ]
+                                                                                  ],
                                                                                 Value.Array
                                                                                   [
                                                                                     mk_str (|
@@ -5227,7 +5829,9 @@ Module file_format_common.
                                                     |)
                                                   |)
                                                 |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
@@ -5252,13 +5856,14 @@ Module file_format_common.
                                       M.read (|
                                         M.match_operator (|
                                           Ty.tuple [],
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
+                                                      Ty.path "bool",
                                                       M.call_closure (|
                                                         Ty.path "bool",
                                                         BinOp.eq,
@@ -5281,19 +5886,24 @@ Module file_format_common.
                                                     Value.Bool true
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (|
                                                     M.read (|
                                                       let~ _ : Ty.tuple [] :=
                                                         M.read (|
                                                           M.match_operator (|
                                                             Ty.tuple [],
-                                                            M.alloc (| Value.Tuple [] |),
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
+                                                                        Ty.path "bool",
                                                                         LogicalOp.and (|
                                                                           M.call_closure (|
                                                                             Ty.path "bool",
@@ -5324,6 +5934,7 @@ Module file_format_common.
                                                                       Value.Bool true
                                                                     |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple [],
                                                                     M.never_to_any (|
                                                                       M.read (|
                                                                         M.return_ (|
@@ -5370,6 +5981,24 @@ Module file_format_common.
                                                                                               M.borrow (|
                                                                                                 Pointer.Kind.Ref,
                                                                                                 M.alloc (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "array")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        1
+                                                                                                    ]
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "&")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "str"
+                                                                                                        ]
+                                                                                                    ],
                                                                                                   Value.Array
                                                                                                     [
                                                                                                       mk_str (|
@@ -5393,7 +6022,10 @@ Module file_format_common.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                                  (M.alloc (|
+                                                                    Ty.tuple [],
+                                                                    Value.Tuple []
+                                                                  |)))
                                                             ]
                                                           |)
                                                         |) in
@@ -5407,7 +6039,9 @@ Module file_format_common.
                                                     |)
                                                   |)
                                                 |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
@@ -5423,13 +6057,14 @@ Module file_format_common.
                                       |) in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     BinOp.gt,
@@ -5451,19 +6086,23 @@ Module file_format_common.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
+                                              Ty.tuple [],
                                               M.never_to_any (| M.read (| M.break (||) |) |)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Value.Tuple [] |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                         |)
                                       |)
                                     |)))
@@ -5498,6 +6137,10 @@ Module file_format_common.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 1 ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                               Value.Array
                                                 [ mk_str (| "invalid ULEB128 repr for usize" |) ]
                                             |)
@@ -5528,7 +6171,7 @@ Module file_format_common.
   Global Typeclasses Opaque read_uleb128_as_u64.
   
   Definition value_VERSION_1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 1 |))).
   
   Global Instance Instance_IsConstant_value_VERSION_1 :
     M.IsFunction.C "move_binary_format::file_format_common::VERSION_1" value_VERSION_1.
@@ -5536,7 +6179,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_VERSION_1.
   
   Definition value_VERSION_2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 2 |))).
   
   Global Instance Instance_IsConstant_value_VERSION_2 :
     M.IsFunction.C "move_binary_format::file_format_common::VERSION_2" value_VERSION_2.
@@ -5544,7 +6187,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_VERSION_2.
   
   Definition value_VERSION_3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 3 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 3 |))).
   
   Global Instance Instance_IsConstant_value_VERSION_3 :
     M.IsFunction.C "move_binary_format::file_format_common::VERSION_3" value_VERSION_3.
@@ -5552,7 +6195,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_VERSION_3.
   
   Definition value_VERSION_4 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 4 |))).
   
   Global Instance Instance_IsConstant_value_VERSION_4 :
     M.IsFunction.C "move_binary_format::file_format_common::VERSION_4" value_VERSION_4.
@@ -5560,7 +6203,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_VERSION_4.
   
   Definition value_VERSION_5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 5 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 5 |))).
   
   Global Instance Instance_IsConstant_value_VERSION_5 :
     M.IsFunction.C "move_binary_format::file_format_common::VERSION_5" value_VERSION_5.
@@ -5568,7 +6211,7 @@ Module file_format_common.
   Global Typeclasses Opaque value_VERSION_5.
   
   Definition value_VERSION_6 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 6 |))).
   
   Global Instance Instance_IsConstant_value_VERSION_6 :
     M.IsFunction.C "move_binary_format::file_format_common::VERSION_6" value_VERSION_6.
@@ -5683,7 +6326,11 @@ Module file_format_common.
     match ε, τ, α with
     | [], [], [ instruction ] =>
       ltac:(M.monadic
-        (let instruction := M.alloc (| instruction |) in
+        (let instruction :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ],
+            instruction
+          |) in
         M.read (|
           let~ opcode : Ty.path "move_binary_format::file_format_common::Opcodes" :=
             M.read (|
@@ -5700,6 +6347,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Pop"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::POP"
                           []
@@ -5715,6 +6363,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Ret"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::RET"
                           []
@@ -5731,6 +6380,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BR_TRUE"
                           []
@@ -5747,6 +6397,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BR_FALSE"
                           []
@@ -5763,6 +6414,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BRANCH"
                           []
@@ -5779,6 +6431,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U8"
                           []
@@ -5795,6 +6448,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U64"
                           []
@@ -5811,6 +6465,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U128"
                           []
@@ -5826,6 +6481,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::CastU8"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U8"
                           []
@@ -5841,6 +6497,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::CastU64"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U64"
                           []
@@ -5856,6 +6513,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::CastU128"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U128"
                           []
@@ -5872,6 +6530,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_CONST"
                           []
@@ -5887,6 +6546,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::LdTrue"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_TRUE"
                           []
@@ -5902,6 +6562,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::LdFalse"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_FALSE"
                           []
@@ -5918,6 +6579,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::COPY_LOC"
                           []
@@ -5934,6 +6596,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_LOC"
                           []
@@ -5950,6 +6613,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::ST_LOC"
                           []
@@ -5966,6 +6630,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CALL"
                           []
@@ -5982,6 +6647,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CALL_GENERIC"
                           []
@@ -5998,6 +6664,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::PACK"
                           []
@@ -6014,6 +6681,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::PACK_GENERIC"
                           []
@@ -6030,6 +6698,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::UNPACK"
                           []
@@ -6046,6 +6715,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::UNPACK_GENERIC"
                           []
@@ -6061,6 +6731,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::ReadRef"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::READ_REF"
                           []
@@ -6076,6 +6747,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::WriteRef"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::WRITE_REF"
                           []
@@ -6091,6 +6763,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::FreezeRef"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::FREEZE_REF"
                           []
@@ -6107,6 +6780,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_LOC"
                           []
@@ -6123,6 +6797,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_LOC"
                           []
@@ -6139,6 +6814,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD"
                           []
@@ -6155,6 +6831,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_FIELD_GENERIC"
                           []
@@ -6171,6 +6848,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD"
                           []
@@ -6187,6 +6865,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_FIELD_GENERIC"
                           []
@@ -6202,6 +6881,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Add"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::ADD"
                           []
@@ -6217,6 +6897,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Sub"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::SUB"
                           []
@@ -6232,6 +6913,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Mul"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUL"
                           []
@@ -6247,6 +6929,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Mod"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOD"
                           []
@@ -6262,6 +6945,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Div"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::DIV"
                           []
@@ -6277,6 +6961,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::BitOr"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BIT_OR"
                           []
@@ -6292,6 +6977,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::BitAnd"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::BIT_AND"
                           []
@@ -6307,6 +6993,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Xor"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::XOR"
                           []
@@ -6322,6 +7009,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Shl"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::SHL"
                           []
@@ -6337,6 +7025,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Shr"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::SHR"
                           []
@@ -6352,6 +7041,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Or"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::OR"
                           []
@@ -6367,6 +7057,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::And"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::AND"
                           []
@@ -6382,6 +7073,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Not"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::NOT"
                           []
@@ -6397,6 +7089,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Eq"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::EQ"
                           []
@@ -6412,6 +7105,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Neq"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::NEQ"
                           []
@@ -6427,6 +7121,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Lt"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LT"
                           []
@@ -6442,6 +7137,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Gt"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::GT"
                           []
@@ -6457,6 +7153,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Le"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LE"
                           []
@@ -6472,6 +7169,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Ge"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::GE"
                           []
@@ -6487,6 +7185,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Abort"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::ABORT"
                           []
@@ -6502,6 +7201,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::Nop"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::NOP"
                           []
@@ -6517,6 +7217,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::VecPack"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_PACK"
                           []
@@ -6533,6 +7234,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_LEN"
                           []
@@ -6549,6 +7251,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_IMM_BORROW"
                           []
@@ -6565,6 +7268,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_MUT_BORROW"
                           []
@@ -6581,6 +7285,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_PUSH_BACK"
                           []
@@ -6597,6 +7302,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_POP_BACK"
                           []
@@ -6612,6 +7318,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::VecUnpack"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_UNPACK"
                           []
@@ -6628,6 +7335,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::VEC_SWAP"
                           []
@@ -6644,6 +7352,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U16"
                           []
@@ -6660,6 +7369,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U32"
                           []
@@ -6676,6 +7386,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::LD_U256"
                           []
@@ -6691,6 +7402,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::CastU16"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U16"
                           []
@@ -6706,6 +7418,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::CastU32"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U32"
                           []
@@ -6721,6 +7434,7 @@ Module file_format_common.
                           "move_binary_format::file_format::Bytecode::CastU256"
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::CAST_U256"
                           []
@@ -6737,6 +7451,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::EXISTS_DEPRECATED"
                           []
@@ -6753,6 +7468,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::EXISTS_GENERIC_DEPRECATED"
                           []
@@ -6769,6 +7485,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_FROM_DEPRECATED"
                           []
@@ -6785,6 +7502,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_FROM_GENERIC_DEPRECATED"
                           []
@@ -6801,6 +7519,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_TO_DEPRECATED"
                           []
@@ -6817,6 +7536,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MOVE_TO_GENERIC_DEPRECATED"
                           []
@@ -6833,6 +7553,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_DEPRECATED"
                           []
@@ -6849,6 +7570,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::MUT_BORROW_GLOBAL_GENERIC_DEPRECATED"
                           []
@@ -6865,6 +7587,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_DEPRECATED"
                           []
@@ -6881,6 +7604,7 @@ Module file_format_common.
                           0
                         |) in
                       M.alloc (|
+                        Ty.path "move_binary_format::file_format_common::Opcodes",
                         Value.StructTuple
                           "move_binary_format::file_format_common::Opcodes::IMM_BORROW_GLOBAL_GENERIC_DEPRECATED"
                           []
@@ -6890,7 +7614,7 @@ Module file_format_common.
                 ]
               |)
             |) in
-          M.alloc (| M.cast (Ty.path "u8") (M.read (| opcode |)) |)
+          M.alloc (| Ty.path "u8", M.cast (Ty.path "u8") (M.read (| opcode |)) |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

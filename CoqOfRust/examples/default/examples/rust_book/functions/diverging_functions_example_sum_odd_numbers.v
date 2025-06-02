@@ -53,6 +53,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "Sum of odd numbers up to 9 (excluding): " |);
@@ -69,6 +73,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -86,6 +94,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "u32",
                                               M.call_closure (|
                                                 Ty.path "u32",
                                                 M.get_function (|
@@ -110,9 +119,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -146,7 +155,7 @@ Module main.
     match ε, τ, α with
     | [], [], [ up_to ] =>
       ltac:(M.monadic
-        (let up_to := M.alloc (| up_to |) in
+        (let up_to := M.alloc (| Ty.path "u32", up_to |) in
         M.read (|
           let~ acc : Ty.path "u32" := Value.Integer IntegerKind.U32 0 in
           let~ _ : Ty.tuple [] :=
@@ -155,6 +164,7 @@ Module main.
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                       M.get_trait_method (|
@@ -179,7 +189,11 @@ Module main.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -188,6 +202,7 @@ Module main.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -219,6 +234,7 @@ Module main.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -229,12 +245,13 @@ Module main.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let i := M.copy (| γ0_0 |) in
+                                        let i := M.copy (| Ty.path "u32", γ0_0 |) in
                                         let~ addition : Ty.path "u32" :=
                                           M.read (|
                                             M.match_operator (|
                                               Ty.path "u32",
                                               M.alloc (|
+                                                Ty.path "bool",
                                                 M.call_closure (|
                                                   Ty.path "bool",
                                                   BinOp.eq,
@@ -268,6 +285,7 @@ Module main.
                                                         Value.Bool false
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.path "u32",
                                                       M.never_to_any (|
                                                         M.read (| M.continue (||) |)
                                                       |)
@@ -285,11 +303,11 @@ Module main.
                                               [ M.read (| β |); M.read (| addition |) ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))

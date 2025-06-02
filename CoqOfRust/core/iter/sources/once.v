@@ -13,7 +13,7 @@ Module iter.
         match ε, τ, α with
         | [], [ T ], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| T, value |) in
             Value.StructRecord
               "core::iter::sources::once::Once"
               []
@@ -61,7 +61,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ] ],
+                  self
+                |) in
               Value.StructRecord
                 "core::iter::sources::once::Once"
                 []
@@ -119,8 +126,16 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ] ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -144,6 +159,10 @@ Module iter.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::option::IntoIter") [] [ T ] ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_struct_record_field (|
@@ -188,7 +207,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 M.get_trait_method (|
@@ -224,7 +250,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.tuple
                   [
@@ -283,7 +316,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 M.get_trait_method (|
@@ -333,7 +373,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ T ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.path "usize",
                 M.get_trait_method (|

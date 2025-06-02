@@ -5,6 +5,10 @@ Module eip2.
   Definition value_SECP256K1N_HALF (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "ruint::Uint")
+          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+          [],
         M.call_closure (|
           Ty.apply
             (Ty.path "ruint::Uint")

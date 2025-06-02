@@ -82,8 +82,12 @@ Module Impl_dns_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "dns::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -110,8 +114,12 @@ Module Impl_dns_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "dns::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -138,9 +146,13 @@ Module Impl_dns_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key; _value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
-        let _value := M.alloc (| _value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "dns::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
+        let _value := M.alloc (| V, _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -193,8 +205,12 @@ Module Impl_dns_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "dns::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -221,8 +237,12 @@ Module Impl_dns_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "dns::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -249,8 +269,12 @@ Module Impl_dns_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "dns::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -323,7 +347,7 @@ Module Impl_core_clone_Clone_for_dns_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "dns::AccountId",
@@ -375,8 +399,8 @@ Module Impl_core_cmp_PartialEq_dns_AccountId_for_dns_AccountId.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::AccountId" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::AccountId" ], other |) in
         M.call_closure (|
           Ty.path "bool",
           BinOp.eq,
@@ -421,7 +445,11 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
     match ε, τ, α with
     | [], [], [ _value ] =>
       ltac:(M.monadic
-        (let _value := M.alloc (| _value |) in
+        (let _value :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            _value
+          |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -538,7 +566,7 @@ Module Impl_dns_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::Env" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -562,8 +590,8 @@ Module Impl_dns_Env.
     match ε, τ, α with
     | [], [], [ self; _event ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _event := M.alloc (| _event |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::Env" ], self |) in
+        let _event := M.alloc (| Ty.path "dns::Event", _event |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -829,6 +857,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
               ]
             |) in
           M.alloc (|
+            Ty.path "dns::DomainNameService",
             Value.StructRecord
               "dns::DomainNameService"
               []
@@ -899,8 +928,8 @@ Module Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::Error" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::Error" ], other |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -923,6 +952,7 @@ Module Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -954,7 +984,7 @@ Module Impl_core_cmp_Eq_for_dns_Error.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::Error" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1009,7 +1039,8 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::DomainNameService" ], self |) in
         M.call_closure (|
           Ty.path "dns::Env",
           M.get_associated_function (| Ty.path "dns::DomainNameService", "init_env", [], [] |),
@@ -1069,13 +1100,19 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ],
                 M.read (|
                   let~ caller : Ty.path "dns::AccountId" :=
                     M.call_closure (|
@@ -1085,6 +1122,7 @@ Module Impl_dns_DomainNameService.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "dns::Env",
                             M.call_closure (|
                               Ty.path "dns::Env",
                               M.get_associated_function (|
@@ -1103,13 +1141,14 @@ Module Impl_dns_DomainNameService.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_associated_function (|
@@ -1146,6 +1185,7 @@ Module Impl_dns_DomainNameService.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1159,7 +1199,7 @@ Module Impl_dns_DomainNameService.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1202,6 +1242,7 @@ Module Impl_dns_DomainNameService.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "dns::Env",
                             M.call_closure (|
                               Ty.path "dns::Env",
                               M.get_associated_function (|
@@ -1228,6 +1269,10 @@ Module Impl_dns_DomainNameService.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "dns::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1256,8 +1301,13 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
         M.call_closure (|
           Ty.path "dns::AccountId",
           M.get_associated_function (|
@@ -1337,14 +1387,20 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name; new_address ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
-        let new_address := M.alloc (| new_address |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
+        let new_address := M.alloc (| Ty.path "dns::AccountId", new_address |) in
         M.read (|
           M.catch_return
             (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ],
                 M.read (|
                   let~ caller : Ty.path "dns::AccountId" :=
                     M.call_closure (|
@@ -1354,6 +1410,7 @@ Module Impl_dns_DomainNameService.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "dns::Env",
                             M.call_closure (|
                               Ty.path "dns::Env",
                               M.get_associated_function (|
@@ -1386,13 +1443,14 @@ Module Impl_dns_DomainNameService.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -1413,6 +1471,7 @@ Module Impl_dns_DomainNameService.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1426,7 +1485,7 @@ Module Impl_dns_DomainNameService.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1503,6 +1562,7 @@ Module Impl_dns_DomainNameService.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "dns::Env",
                             M.call_closure (|
                               Ty.path "dns::Env",
                               M.get_associated_function (|
@@ -1534,6 +1594,10 @@ Module Impl_dns_DomainNameService.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "dns::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1577,14 +1641,20 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name; to ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
-        let to := M.alloc (| to |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
+        let to := M.alloc (| Ty.path "dns::AccountId", to |) in
         M.read (|
           M.catch_return
             (Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "dns::Error" ],
                 M.read (|
                   let~ caller : Ty.path "dns::AccountId" :=
                     M.call_closure (|
@@ -1594,6 +1664,7 @@ Module Impl_dns_DomainNameService.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "dns::Env",
                             M.call_closure (|
                               Ty.path "dns::Env",
                               M.get_associated_function (|
@@ -1626,13 +1697,14 @@ Module Impl_dns_DomainNameService.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -1653,6 +1725,7 @@ Module Impl_dns_DomainNameService.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1666,7 +1739,7 @@ Module Impl_dns_DomainNameService.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1743,6 +1816,7 @@ Module Impl_dns_DomainNameService.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "dns::Env",
                             M.call_closure (|
                               Ty.path "dns::Env",
                               M.get_associated_function (|
@@ -1774,6 +1848,10 @@ Module Impl_dns_DomainNameService.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "dns::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1802,8 +1880,13 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
         M.call_closure (|
           Ty.path "dns::AccountId",
           M.get_associated_function (|
@@ -1868,8 +1951,13 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
         M.call_closure (|
           Ty.path "dns::AccountId",
           M.get_associated_function (|
@@ -1897,8 +1985,13 @@ Module Impl_dns_DomainNameService.
     match ε, τ, α with
     | [], [], [ self; name ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "dns::DomainNameService" ], self |) in
+        let name :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            name
+          |) in
         M.call_closure (|
           Ty.path "dns::AccountId",
           M.get_associated_function (|

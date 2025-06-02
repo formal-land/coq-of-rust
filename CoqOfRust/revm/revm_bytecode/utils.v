@@ -11,7 +11,7 @@ Module utils.
     match ε, τ, α with
     | [], [], [ ptr ] =>
       ltac:(M.monadic
-        (let ptr := M.alloc (| ptr |) in
+        (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], ptr |) in
         M.call_closure (|
           Ty.path "i16",
           M.get_associated_function (| Ty.path "i16", "from_be_bytes", [], [] |),
@@ -100,7 +100,7 @@ Module utils.
     match ε, τ, α with
     | [], [], [ ptr ] =>
       ltac:(M.monadic
-        (let ptr := M.alloc (| ptr |) in
+        (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], ptr |) in
         M.call_closure (|
           Ty.path "u16",
           M.get_associated_function (| Ty.path "u16", "from_be_bytes", [], [] |),

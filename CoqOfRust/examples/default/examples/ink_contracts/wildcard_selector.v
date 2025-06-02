@@ -62,11 +62,20 @@ Module Impl_wildcard_selector_WildcardSelector.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "wildcard_selector::WildcardSelector" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
             M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ];
+                  Ty.path "alloc::string::String"
+                ],
               M.call_closure (|
                 Ty.tuple
                   [
@@ -135,8 +144,15 @@ Module Impl_wildcard_selector_WildcardSelector.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let _selector := M.copy (| γ0_0 |) in
-                  let _message := M.copy (| γ0_1 |) in
+                  let _selector :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "u8" ],
+                      γ0_0
+                    |) in
+                  let _message := M.copy (| Ty.path "alloc::string::String", γ0_1 |) in
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       let~ _ : Ty.tuple [] :=
@@ -162,6 +178,10 @@ Module Impl_wildcard_selector_WildcardSelector.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (| "Wildcard selector: " |);
@@ -179,6 +199,10 @@ Module Impl_wildcard_selector_WildcardSelector.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -229,9 +253,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -251,8 +275,12 @@ Module Impl_wildcard_selector_WildcardSelector.
     match ε, τ, α with
     | [], [], [ self; _message ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _message := M.alloc (| _message |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "wildcard_selector::WildcardSelector" ],
+            self
+          |) in
+        let _message := M.alloc (| Ty.path "alloc::string::String", _message |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -276,6 +304,10 @@ Module Impl_wildcard_selector_WildcardSelector.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [ mk_str (| "Wildcard complement message: " |); mk_str (| "
 " |) ]
@@ -289,6 +321,10 @@ Module Impl_wildcard_selector_WildcardSelector.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -315,9 +351,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

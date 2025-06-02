@@ -19,7 +19,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
           Value.StructRecord
             "core::range::Range"
             []
@@ -154,8 +158,16 @@ Module range.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -230,12 +242,16 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -261,8 +277,12 @@ Module range.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -286,6 +306,7 @@ Module range.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
@@ -337,8 +358,13 @@ Module range.
       match ε, τ, α with
       | [], [], [ self; fmt ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fmt := M.alloc (| fmt |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
+          let fmt :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -347,12 +373,27 @@ Module range.
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -421,8 +462,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -465,7 +517,7 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -475,6 +527,17 @@ Module range.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -532,7 +595,13 @@ Module range.
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                                Value.Array [ mk_str (| ".." |) ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -552,8 +621,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -596,7 +676,7 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -606,6 +686,17 @@ Module range.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -674,8 +765,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -718,12 +820,16 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -760,7 +866,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::range::iter::IterRange") [] [ Idx ],
             M.get_trait_method (|
@@ -810,8 +920,12 @@ Module range.
       match ε, τ, α with
       | [], [ U ], [ self; item ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let item := M.alloc (| item |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
+          let item := M.alloc (| Ty.apply (Ty.path "&") [] [ U ], item |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -847,7 +961,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
+              self
+            |) in
           UnOp.not (|
             M.call_closure (|
               Ty.path "bool",
@@ -896,7 +1014,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -929,7 +1051,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Excluded"
             []
@@ -980,7 +1106,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -1012,7 +1145,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Excluded"
             []
@@ -1061,7 +1201,7 @@ Module range.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ T ], value |) in
           Value.StructRecord
             "core::ops::range::Range"
             []
@@ -1102,7 +1242,8 @@ Module range.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.apply (Ty.path "core::ops::range::Range") [] [ T ], value |) in
           Value.StructRecord
             "core::range::Range"
             []
@@ -1152,7 +1293,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
           Value.StructRecord
             "core::range::RangeInclusive"
             []
@@ -1250,8 +1398,22 @@ Module range.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -1328,12 +1490,19 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1360,8 +1529,15 @@ Module range.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1385,6 +1561,7 @@ Module range.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
@@ -1437,8 +1614,16 @@ Module range.
       match ε, τ, α with
       | [], [], [ self; fmt ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fmt := M.alloc (| fmt |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
+          let fmt :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1447,12 +1632,27 @@ Module range.
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1521,8 +1721,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1565,7 +1776,7 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -1575,6 +1786,17 @@ Module range.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1632,7 +1854,13 @@ Module range.
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Array [ mk_str (| "..=" |) ] |)
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                                Value.Array [ mk_str (| "..=" |) ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -1652,8 +1880,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1696,7 +1935,7 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -1706,6 +1945,17 @@ Module range.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1774,8 +2024,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1818,12 +2079,16 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1865,8 +2130,15 @@ Module range.
       match ε, τ, α with
       | [], [ U ], [ self; item ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let item := M.alloc (| item |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
+          let item := M.alloc (| Ty.apply (Ty.path "&") [] [ U ], item |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1902,7 +2174,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
           UnOp.not (|
             M.call_closure (|
               Ty.path "bool",
@@ -1945,7 +2224,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::range::iter::IterRangeInclusive") [] [ Idx ],
             M.get_trait_method (|
@@ -1997,7 +2283,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+              self
+            |) in
           Value.StructRecord
             "core::range::Range"
             []
@@ -2049,7 +2339,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -2082,7 +2379,14 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -2133,7 +2437,19 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::range::RangeInclusive")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ T ] ]
+                ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -2165,7 +2481,19 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::range::RangeInclusive")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ T ] ]
+                ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -2215,7 +2543,8 @@ Module range.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ], value |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ T ],
             M.get_associated_function (|
@@ -2273,19 +2602,21 @@ Module range.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ T ], value |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 UnOp.not (|
                                   M.read (|
@@ -2300,6 +2631,7 @@ Module range.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -2320,6 +2652,10 @@ Module range.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array
                                               [
                                                 mk_str (|
@@ -2336,13 +2672,14 @@ Module range.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ],
               M.alloc (|
+                Ty.tuple [ T; T ],
                 M.call_closure (|
                   Ty.tuple [ T; T ],
                   M.get_associated_function (|
@@ -2359,9 +2696,10 @@ Module range.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let start := M.copy (| γ0_0 |) in
-                    let end_ := M.copy (| γ0_1 |) in
+                    let start := M.copy (| T, γ0_0 |) in
+                    let end_ := M.copy (| T, γ0_1 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ],
                       Value.StructRecord
                         "core::range::RangeInclusive"
                         []
@@ -2402,7 +2740,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
           Value.StructRecord
             "core::range::RangeFrom"
             []
@@ -2477,8 +2819,16 @@ Module range.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", Idx, [], [ Idx ], "eq", [], [] |),
@@ -2528,12 +2878,16 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2559,8 +2913,12 @@ Module range.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (| "core::hash::Hash", Idx, [], [], "hash", [], [ __H ] |),
@@ -2609,8 +2967,13 @@ Module range.
       match ε, τ, α with
       | [], [], [ self; fmt ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fmt := M.alloc (| fmt |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
+          let fmt :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -2619,12 +2982,27 @@ Module range.
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2693,8 +3071,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -2737,7 +3126,7 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -2747,6 +3136,17 @@ Module range.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2804,7 +3204,13 @@ Module range.
                                           M.deref (|
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                                Value.Array [ mk_str (| ".." |) ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -2824,8 +3230,19 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -2868,12 +3285,16 @@ Module range.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -2910,7 +3331,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::range::iter::IterRangeFrom") [] [ Idx ],
             M.get_trait_method (|
@@ -2960,8 +3385,12 @@ Module range.
       match ε, τ, α with
       | [], [ U ], [ self; item ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let item := M.alloc (| item |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
+              self
+            |) in
+          let item := M.alloc (| Ty.apply (Ty.path "&") [] [ U ], item |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -3002,7 +3431,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -3035,7 +3468,11 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Unbounded"
             []
@@ -3072,7 +3509,15 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Included"
             []
@@ -3104,7 +3549,15 @@ Module range.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                ],
+              self
+            |) in
           Value.StructTuple
             "core::ops::range::Bound::Unbounded"
             []
@@ -3140,7 +3593,7 @@ Module range.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.apply (Ty.path "core::range::RangeFrom") [] [ T ], value |) in
           Value.StructRecord
             "core::ops::range::RangeFrom"
             []
@@ -3181,7 +3634,8 @@ Module range.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ T ], value |) in
           Value.StructRecord
             "core::range::RangeFrom"
             []

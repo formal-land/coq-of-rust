@@ -50,7 +50,14 @@ Module signature.
       match ε, τ, α with
       | [], [], [ module ] =>
         ltac:(M.monadic
-          (let module := M.alloc (| module |) in
+          (let module :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+              module
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -94,11 +101,15 @@ Module signature.
                           Ty.function
                             [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
                             (Ty.path "move_binary_format::errors::VMError"),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
+                                (let e :=
+                                  M.copy (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
@@ -163,7 +174,14 @@ Module signature.
       match ε, τ, α with
       | [], [], [ module ] =>
         ltac:(M.monadic
-          (let module := M.alloc (| module |) in
+          (let module :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+              module
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -172,6 +190,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ sig_check :
                         Ty.path "move_bytecode_verifier::signature::SignatureChecker" :=
@@ -236,6 +258,19 @@ Module signature.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -328,8 +363,19 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -379,7 +425,7 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -389,6 +435,19 @@ Module signature.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -481,8 +540,19 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -532,7 +602,7 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -542,6 +612,19 @@ Module signature.
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -634,8 +717,19 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -685,12 +779,16 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -782,8 +880,27 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; signatures ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let signatures := M.alloc (| signatures |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let signatures :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Signature" ]
+                ],
+              signatures
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -792,6 +909,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -799,6 +920,7 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -847,7 +969,14 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -856,6 +985,10 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -892,6 +1025,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -902,10 +1036,25 @@ Module signature.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let i := M.copy (| γ0_0 |) in
+                                                  let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -990,8 +1139,21 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -1047,19 +1209,24 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (| Ty.tuple [], γ0_0 |) in
                                                           val))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1106,8 +1273,27 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; function_handles ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let function_handles := M.alloc (| function_handles |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let function_handles :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                ],
+              function_handles
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1116,6 +1302,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ err_handler :
                         Ty.function
@@ -1143,11 +1333,18 @@ Module signature.
                                         ]
                                     ]
                                     (Ty.path "move_binary_format::errors::PartialVMError"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    α0
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let err := M.copy (| γ |) in
+                                        (let err :=
+                                          M.copy (|
+                                            Ty.path "move_binary_format::errors::PartialVMError",
+                                            γ
+                                          |) in
                                         M.match_operator (|
                                           Ty.function
                                             [
@@ -1159,11 +1356,11 @@ Module signature.
                                                 ]
                                             ]
                                             (Ty.path "move_binary_format::errors::PartialVMError"),
-                                          M.alloc (| α1 |),
+                                          M.alloc (| Ty.path "usize", α1 |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let idx := M.copy (| γ |) in
+                                                (let idx := M.copy (| Ty.path "usize", γ |) in
                                                 M.call_closure (|
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError",
@@ -1215,6 +1412,15 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -1306,7 +1512,22 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionHandle"
+                                            ]
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -1315,6 +1536,22 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionHandle"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -1372,6 +1609,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -1386,13 +1624,39 @@ Module signature.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let idx := M.copy (| γ1_0 |) in
-                                                  let fh := M.copy (| γ1_1 |) in
+                                                  let idx := M.copy (| Ty.path "usize", γ1_0 |) in
+                                                  let fh :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionHandle"
+                                                        ],
+                                                      γ1_1
+                                                    |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.read (|
                                                       M.match_operator (|
                                                         Ty.tuple [],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path
@@ -1571,12 +1835,18 @@ Module signature.
                                                                                 ]
                                                                                 (Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"),
-                                                                              M.alloc (| α0 |),
+                                                                              M.alloc (|
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError",
+                                                                                α0
+                                                                              |),
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let err :=
                                                                                       M.copy (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
                                                                                         γ
                                                                                       |) in
                                                                                     M.call_closure (|
@@ -1646,8 +1916,21 @@ Module signature.
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
                                                                 |) in
-                                                              let residual := M.copy (| γ0_0 |) in
+                                                              let residual :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
+                                                                  γ0_0
+                                                                |) in
                                                               M.alloc (|
+                                                                Ty.tuple [],
                                                                 M.never_to_any (|
                                                                   M.read (|
                                                                     M.return_ (|
@@ -1703,7 +1986,8 @@ Module signature.
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
                                                                 |) in
-                                                              let val := M.copy (| γ0_0 |) in
+                                                              let val :=
+                                                                M.copy (| Ty.tuple [], γ0_0 |) in
                                                               val))
                                                         ]
                                                       |)
@@ -1713,6 +1997,22 @@ Module signature.
                                                       M.match_operator (|
                                                         Ty.tuple [],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.tuple []
+                                                            ],
                                                           M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path
@@ -1891,12 +2191,18 @@ Module signature.
                                                                                 ]
                                                                                 (Ty.path
                                                                                   "move_binary_format::errors::PartialVMError"),
-                                                                              M.alloc (| α0 |),
+                                                                              M.alloc (|
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError",
+                                                                                α0
+                                                                              |),
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let err :=
                                                                                       M.copy (|
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError",
                                                                                         γ
                                                                                       |) in
                                                                                     M.call_closure (|
@@ -1966,8 +2272,21 @@ Module signature.
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
                                                                 |) in
-                                                              let residual := M.copy (| γ0_0 |) in
+                                                              let residual :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
+                                                                  γ0_0
+                                                                |) in
                                                               M.alloc (|
+                                                                Ty.tuple [],
                                                                 M.never_to_any (|
                                                                   M.read (|
                                                                     M.return_ (|
@@ -2023,20 +2342,22 @@ Module signature.
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
                                                                 |) in
-                                                              let val := M.copy (| γ0_0 |) in
+                                                              let val :=
+                                                                M.copy (| Ty.tuple [], γ0_0 |) in
                                                               val))
                                                         ]
                                                       |)
                                                     |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
+                                                                Ty.path "bool",
                                                                 UnOp.not (|
                                                                   M.call_closure (|
                                                                     Ty.path "bool",
@@ -2074,21 +2395,31 @@ Module signature.
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          (M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -2142,8 +2473,27 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; struct_defs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let struct_defs := M.alloc (| struct_defs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let struct_defs :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                ],
+              struct_defs
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -2152,6 +2502,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -2159,6 +2513,15 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::StructDefinition" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -2255,7 +2618,22 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::StructDefinition"
+                                            ]
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -2264,6 +2642,22 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefinition"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -2321,6 +2715,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -2335,8 +2730,19 @@ Module signature.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let struct_def_idx := M.copy (| γ1_0 |) in
-                                                  let struct_def := M.copy (| γ1_1 |) in
+                                                  let struct_def_idx :=
+                                                    M.copy (| Ty.path "usize", γ1_0 |) in
+                                                  let struct_def :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::StructDefinition"
+                                                        ],
+                                                      γ1_1
+                                                    |) in
                                                   let~ fields :
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -2367,6 +2773,13 @@ Module signature.
                                                               ]
                                                           ],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::StructFieldInformation"
+                                                            ],
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_struct_record_field (|
@@ -2386,6 +2799,20 @@ Module signature.
                                                                   "move_binary_format::file_format::StructFieldInformation::Native"
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FieldDefinition";
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ]
+                                                                  ],
                                                                 M.never_to_any (|
                                                                   M.read (| M.continue (||) |)
                                                                 |)
@@ -2399,7 +2826,24 @@ Module signature.
                                                                   "move_binary_format::file_format::StructFieldInformation::Declared",
                                                                   0
                                                                 |) in
-                                                              let fields := M.alloc (| γ1_0 |) in
+                                                              let fields :=
+                                                                M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FieldDefinition";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ]
+                                                                    ],
+                                                                  γ1_0
+                                                                |) in
                                                               fields))
                                                         ]
                                                       |)
@@ -2479,11 +2923,20 @@ Module signature.
                                                                   ]
                                                                   (Ty.path
                                                                     "move_binary_format::errors::PartialVMError"),
-                                                                M.alloc (| α0 |),
+                                                                M.alloc (|
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError",
+                                                                  α0
+                                                                |),
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
-                                                                      (let err := M.copy (| γ |) in
+                                                                      (let err :=
+                                                                        M.copy (|
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError",
+                                                                          γ
+                                                                        |) in
                                                                       M.match_operator (|
                                                                         Ty.function
                                                                           [
@@ -2496,12 +2949,18 @@ Module signature.
                                                                           ]
                                                                           (Ty.path
                                                                             "move_binary_format::errors::PartialVMError"),
-                                                                        M.alloc (| α1 |),
+                                                                        M.alloc (|
+                                                                          Ty.path "usize",
+                                                                          α1
+                                                                        |),
                                                                         [
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let idx :=
-                                                                                M.copy (| γ |) in
+                                                                                M.copy (|
+                                                                                  Ty.path "usize",
+                                                                                  γ
+                                                                                |) in
                                                                               M.call_closure (|
                                                                                 Ty.path
                                                                                   "move_binary_format::errors::PartialVMError",
@@ -2563,6 +3022,19 @@ Module signature.
                                                     (M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::iter::adapters::enumerate::Enumerate")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::slice::iter::Iter")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::FieldDefinition"
+                                                              ]
+                                                          ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path
@@ -2709,7 +3181,24 @@ Module signature.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let iter := M.copy (| γ |) in
+                                                            (let iter :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::iter::adapters::enumerate::Enumerate")
+                                                                  []
+                                                                  [
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::slice::iter::Iter")
+                                                                      []
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_binary_format::file_format::FieldDefinition"
+                                                                      ]
+                                                                  ],
+                                                                γ
+                                                              |) in
                                                             M.loop (|
                                                               Ty.tuple [],
                                                               ltac:(M.monadic
@@ -2718,6 +3207,23 @@ Module signature.
                                                                     M.match_operator (|
                                                                       Ty.tuple [],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.path "usize";
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FieldDefinition"
+                                                                                  ]
+                                                                              ]
+                                                                          ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2780,6 +3286,7 @@ Module signature.
                                                                                 "core::option::Option::None"
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -2805,14 +3312,43 @@ Module signature.
                                                                                 1
                                                                               |) in
                                                                             let field_offset :=
-                                                                              M.copy (| γ1_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.path "usize",
+                                                                                γ1_0
+                                                                              |) in
                                                                             let field_def :=
-                                                                              M.copy (| γ1_1 |) in
+                                                                              M.copy (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_binary_format::file_format::FieldDefinition"
+                                                                                  ],
+                                                                                γ1_1
+                                                                              |) in
                                                                             let~ _ : Ty.tuple [] :=
                                                                               M.read (|
                                                                                 M.match_operator (|
                                                                                   Ty.tuple [],
                                                                                   M.alloc (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::ops::control_flow::ControlFlow")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::result::Result")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                          ];
+                                                                                        Ty.tuple []
+                                                                                      ],
                                                                                     M.call_closure (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -2964,6 +3500,8 @@ Module signature.
                                                                                                           (Ty.path
                                                                                                             "move_binary_format::errors::PartialVMError"),
                                                                                                         M.alloc (|
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                                           α0
                                                                                                         |),
                                                                                                         [
@@ -2973,6 +3511,8 @@ Module signature.
                                                                                                               (let
                                                                                                                     err :=
                                                                                                                 M.copy (|
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                                                   γ
                                                                                                                 |) in
                                                                                                               M.call_closure (|
@@ -3045,9 +3585,21 @@ Module signature.
                                                                                         let
                                                                                               residual :=
                                                                                           M.copy (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::result::Result")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "core::convert::Infallible";
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ],
                                                                                             γ0_0
                                                                                           |) in
                                                                                         M.alloc (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           M.never_to_any (|
                                                                                             M.read (|
                                                                                               M.return_ (|
@@ -3111,6 +3663,8 @@ Module signature.
                                                                                           |) in
                                                                                         let val :=
                                                                                           M.copy (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             γ0_0
                                                                                           |) in
                                                                                         val))
@@ -3188,6 +3742,23 @@ Module signature.
                                                                                 M.match_operator (|
                                                                                   Ty.tuple [],
                                                                                   M.alloc (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::ops::control_flow::ControlFlow")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::result::Result")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                          ];
+                                                                                        Ty.tuple []
+                                                                                      ],
                                                                                     M.call_closure (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -3389,6 +3960,8 @@ Module signature.
                                                                                                           (Ty.path
                                                                                                             "move_binary_format::errors::PartialVMError"),
                                                                                                         M.alloc (|
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                                           α0
                                                                                                         |),
                                                                                                         [
@@ -3398,6 +3971,8 @@ Module signature.
                                                                                                               (let
                                                                                                                     err :=
                                                                                                                 M.copy (|
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                                                   γ
                                                                                                                 |) in
                                                                                                               M.call_closure (|
@@ -3470,9 +4045,21 @@ Module signature.
                                                                                         let
                                                                                               residual :=
                                                                                           M.copy (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::result::Result")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "core::convert::Infallible";
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ],
                                                                                             γ0_0
                                                                                           |) in
                                                                                         M.alloc (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           M.never_to_any (|
                                                                                             M.read (|
                                                                                               M.return_ (|
@@ -3536,6 +4123,8 @@ Module signature.
                                                                                           |) in
                                                                                         let val :=
                                                                                           M.copy (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             γ0_0
                                                                                           |) in
                                                                                         val))
@@ -3547,6 +4136,23 @@ Module signature.
                                                                                 M.match_operator (|
                                                                                   Ty.tuple [],
                                                                                   M.alloc (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::ops::control_flow::ControlFlow")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::result::Result")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                          ];
+                                                                                        Ty.tuple []
+                                                                                      ],
                                                                                     M.call_closure (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -3758,6 +4364,8 @@ Module signature.
                                                                                                           (Ty.path
                                                                                                             "move_binary_format::errors::PartialVMError"),
                                                                                                         M.alloc (|
+                                                                                                          Ty.path
+                                                                                                            "move_binary_format::errors::PartialVMError",
                                                                                                           α0
                                                                                                         |),
                                                                                                         [
@@ -3767,6 +4375,8 @@ Module signature.
                                                                                                               (let
                                                                                                                     err :=
                                                                                                                 M.copy (|
+                                                                                                                  Ty.path
+                                                                                                                    "move_binary_format::errors::PartialVMError",
                                                                                                                   γ
                                                                                                                 |) in
                                                                                                               M.call_closure (|
@@ -3839,9 +4449,21 @@ Module signature.
                                                                                         let
                                                                                               residual :=
                                                                                           M.copy (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "core::result::Result")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "core::convert::Infallible";
+                                                                                                Ty.path
+                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                              ],
                                                                                             γ0_0
                                                                                           |) in
                                                                                         M.alloc (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           M.never_to_any (|
                                                                                             M.read (|
                                                                                               M.return_ (|
@@ -3905,6 +4527,8 @@ Module signature.
                                                                                           |) in
                                                                                         let val :=
                                                                                           M.copy (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             γ0_0
                                                                                           |) in
                                                                                         val))
@@ -3912,24 +4536,32 @@ Module signature.
                                                                                 |)
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                             |)))
                                                       ]
                                                     |))))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3974,9 +4606,40 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; function_handles; function_defs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let function_handles := M.alloc (| function_handles |) in
-          let function_defs := M.alloc (| function_defs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let function_handles :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
+                ],
+              function_handles
+            |) in
+          let function_defs :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                ],
+              function_defs
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3985,6 +4648,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -3992,6 +4659,16 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -4090,7 +4767,22 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
+                                            ]
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -4099,6 +4791,22 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionDefinition"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -4156,6 +4864,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -4170,8 +4879,19 @@ Module signature.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let func_def_idx := M.copy (| γ1_0 |) in
-                                                  let func_def := M.copy (| γ1_1 |) in
+                                                  let func_def_idx :=
+                                                    M.copy (| Ty.path "usize", γ1_0 |) in
+                                                  let func_def :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::FunctionDefinition"
+                                                        ],
+                                                      γ1_1
+                                                    |) in
                                                   let~ code :
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -4190,6 +4910,18 @@ Module signature.
                                                               "move_binary_format::file_format::CodeUnit"
                                                           ],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::CodeUnit"
+                                                                ]
+                                                            ],
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
                                                             M.SubPointer.get_struct_record_field (|
@@ -4209,7 +4941,17 @@ Module signature.
                                                                   "core::option::Option::Some",
                                                                   0
                                                                 |) in
-                                                              let code := M.alloc (| γ1_0 |) in
+                                                              let code :=
+                                                                M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::CodeUnit"
+                                                                    ],
+                                                                  γ1_0
+                                                                |) in
                                                               code));
                                                           fun γ =>
                                                             ltac:(M.monadic
@@ -4220,6 +4962,13 @@ Module signature.
                                                                   "core::option::Option::None"
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::file_format::CodeUnit"
+                                                                  ],
                                                                 M.never_to_any (|
                                                                   M.read (| M.continue (||) |)
                                                                 |)
@@ -4257,6 +5006,21 @@ Module signature.
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -4426,12 +5190,20 @@ Module signature.
                                                                             ]
                                                                             (Ty.path
                                                                               "move_binary_format::errors::PartialVMError"),
-                                                                          M.alloc (| α0 |),
+                                                                          M.alloc (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            α0
+                                                                          |),
                                                                           [
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let err :=
-                                                                                  M.copy (| γ |) in
+                                                                                  M.copy (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
+                                                                                    γ
+                                                                                  |) in
                                                                                 M.call_closure (|
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
@@ -4512,8 +5284,21 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -4569,19 +5354,24 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (| Ty.tuple [], γ0_0 |) in
                                                           val))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -4748,9 +5538,32 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; code; type_parameters ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let code := M.alloc (| code |) in
-          let type_parameters := M.alloc (| type_parameters |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let code :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CodeUnit" ],
+              code
+            |) in
+          let type_parameters :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                ],
+              type_parameters
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -4759,12 +5572,29 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -4839,8 +5669,19 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -4890,7 +5731,7 @@ Module signature.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -4901,6 +5742,15 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -5022,7 +5872,19 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -5031,6 +5893,22 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -5088,6 +5966,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -5102,8 +5981,19 @@ Module signature.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let offset := M.copy (| γ1_0 |) in
-                                                  let instr := M.copy (| γ1_1 |) in
+                                                  let offset :=
+                                                    M.copy (| Ty.path "usize", γ1_0 |) in
+                                                  let instr :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
+                                                        ],
+                                                      γ1_1
+                                                    |) in
                                                   let~ result :
                                                       Ty.apply
                                                         (Ty.path "core::result::Result")
@@ -5134,7 +6024,17 @@ Module signature.
                                                                   "move_binary_format::file_format::Bytecode::CallGeneric",
                                                                   0
                                                                 |) in
-                                                              let idx := M.alloc (| γ1_0 |) in
+                                                              let idx :=
+                                                                M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::FunctionInstantiationIndex"
+                                                                    ],
+                                                                  γ1_0
+                                                                |) in
                                                               let~ func_inst :
                                                                   Ty.apply
                                                                     (Ty.path "&")
@@ -5301,6 +6201,23 @@ Module signature.
                                                                   M.match_operator (|
                                                                     Ty.tuple [],
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::ops::control_flow::ControlFlow")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ];
+                                                                          Ty.tuple []
+                                                                        ],
                                                                       M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -5424,8 +6341,21 @@ Module signature.
                                                                               0
                                                                             |) in
                                                                           let residual :=
-                                                                            M.copy (| γ0_0 |) in
+                                                                            M.copy (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ],
+                                                                              γ0_0
+                                                                            |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             M.never_to_any (|
                                                                               M.read (|
                                                                                 M.return_ (|
@@ -5487,12 +6417,23 @@ Module signature.
                                                                               0
                                                                             |) in
                                                                           let val :=
-                                                                            M.copy (| γ0_0 |) in
+                                                                            M.copy (|
+                                                                              Ty.tuple [],
+                                                                              γ0_0
+                                                                            |) in
                                                                           val))
                                                                     ]
                                                                   |)
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.tuple [];
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
                                                                 M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path "core::result::Result")
@@ -5725,8 +6666,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -5739,8 +6699,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -5753,8 +6732,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -5767,8 +6765,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -5781,8 +6798,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -5795,8 +6831,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -5809,8 +6864,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::StructDefInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)))
                                                                 ],
@@ -6047,6 +7121,23 @@ Module signature.
                                                                             M.match_operator (|
                                                                               Ty.tuple [],
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::control_flow::ControlFlow")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::convert::Infallible";
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ];
+                                                                                    Ty.tuple []
+                                                                                  ],
                                                                                 M.call_closure (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -6175,9 +7266,20 @@ Module signature.
                                                                                       |) in
                                                                                     let residual :=
                                                                                       M.copy (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::result::Result")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                          ],
                                                                                         γ0_0
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       M.never_to_any (|
                                                                                         M.read (|
                                                                                           M.return_ (|
@@ -6241,6 +7343,7 @@ Module signature.
                                                                                       |) in
                                                                                     let val :=
                                                                                       M.copy (|
+                                                                                        Ty.tuple [],
                                                                                         γ0_0
                                                                                       |) in
                                                                                     val))
@@ -6248,6 +7351,15 @@ Module signature.
                                                                             |)
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -6383,8 +7495,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FieldInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FieldInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -6397,8 +7528,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::FieldInstantiationIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::FieldInstantiationIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)))
                                                                 ],
@@ -6688,6 +7838,23 @@ Module signature.
                                                                             M.match_operator (|
                                                                               Ty.tuple [],
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::control_flow::ControlFlow")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::convert::Infallible";
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ];
+                                                                                    Ty.tuple []
+                                                                                  ],
                                                                                 M.call_closure (|
                                                                                   Ty.apply
                                                                                     (Ty.path
@@ -6816,9 +7983,20 @@ Module signature.
                                                                                       |) in
                                                                                     let residual :=
                                                                                       M.copy (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::result::Result")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "core::convert::Infallible";
+                                                                                            Ty.path
+                                                                                              "move_binary_format::errors::PartialVMError"
+                                                                                          ],
                                                                                         γ0_0
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       M.never_to_any (|
                                                                                         M.read (|
                                                                                           M.return_ (|
@@ -6882,6 +8060,7 @@ Module signature.
                                                                                       |) in
                                                                                     let val :=
                                                                                       M.copy (|
+                                                                                        Ty.tuple [],
                                                                                         γ0_0
                                                                                       |) in
                                                                                     val))
@@ -6889,6 +8068,15 @@ Module signature.
                                                                             |)
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -7030,8 +8218,27 @@ Module signature.
                                                                           1
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7044,8 +8251,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7058,8 +8284,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7072,8 +8317,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7086,8 +8350,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7100,8 +8383,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7120,8 +8422,27 @@ Module signature.
                                                                           1
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)));
                                                                   fun γ =>
@@ -7134,8 +8455,27 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       let idx :=
-                                                                        M.alloc (| γ1_0 |) in
+                                                                        M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureIndex"
+                                                                            ],
+                                                                          γ1_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureIndex"
+                                                                              ]
+                                                                          ],
                                                                         Value.Tuple [ idx ]
                                                                       |)))
                                                                 ],
@@ -7215,6 +8555,7 @@ Module signature.
                                                                             M.match_operator (|
                                                                               Ty.tuple [],
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |),
                                                                               [
@@ -7223,6 +8564,8 @@ Module signature.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
+                                                                                          Ty.path
+                                                                                            "bool",
                                                                                           M.call_closure (|
                                                                                             Ty.path
                                                                                               "bool",
@@ -7272,6 +8615,7 @@ Module signature.
                                                                                           true
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       M.never_to_any (|
                                                                                         M.read (|
                                                                                           M.return_ (|
@@ -7364,6 +8708,24 @@ Module signature.
                                                                                                                         M.borrow (|
                                                                                                                           Pointer.Kind.Ref,
                                                                                                                           M.alloc (|
+                                                                                                                            Ty.apply
+                                                                                                                              (Ty.path
+                                                                                                                                "array")
+                                                                                                                              [
+                                                                                                                                Value.Integer
+                                                                                                                                  IntegerKind.Usize
+                                                                                                                                  1
+                                                                                                                              ]
+                                                                                                                              [
+                                                                                                                                Ty.apply
+                                                                                                                                  (Ty.path
+                                                                                                                                    "&")
+                                                                                                                                  []
+                                                                                                                                  [
+                                                                                                                                    Ty.path
+                                                                                                                                      "str"
+                                                                                                                                  ]
+                                                                                                                              ],
                                                                                                                             Value.Array
                                                                                                                               [
                                                                                                                                 mk_str (|
@@ -7380,6 +8742,18 @@ Module signature.
                                                                                                                         M.borrow (|
                                                                                                                           Pointer.Kind.Ref,
                                                                                                                           M.alloc (|
+                                                                                                                            Ty.apply
+                                                                                                                              (Ty.path
+                                                                                                                                "array")
+                                                                                                                              [
+                                                                                                                                Value.Integer
+                                                                                                                                  IntegerKind.Usize
+                                                                                                                                  1
+                                                                                                                              ]
+                                                                                                                              [
+                                                                                                                                Ty.path
+                                                                                                                                  "core::fmt::rt::Argument"
+                                                                                                                              ],
                                                                                                                             Value.Array
                                                                                                                               [
                                                                                                                                 M.call_closure (|
@@ -7402,6 +8776,8 @@ Module signature.
                                                                                                                                         M.borrow (|
                                                                                                                                           Pointer.Kind.Ref,
                                                                                                                                           M.alloc (|
+                                                                                                                                            Ty.path
+                                                                                                                                              "usize",
                                                                                                                                             M.call_closure (|
                                                                                                                                               Ty.path
                                                                                                                                                 "usize",
@@ -7460,12 +8836,22 @@ Module signature.
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       Value.Tuple []
                                                                                     |)))
                                                                               ]
                                                                             |)
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -7560,6 +8946,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Pop"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7571,6 +8958,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Ret"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7583,6 +8971,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7595,6 +8984,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7607,6 +8997,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7619,6 +9010,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7631,6 +9023,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7643,6 +9036,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7655,6 +9049,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7667,6 +9062,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7679,6 +9075,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7691,6 +9088,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7702,6 +9100,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::CastU8"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7713,6 +9112,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::CastU16"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7724,6 +9124,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::CastU32"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7735,6 +9136,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::CastU64"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7746,6 +9148,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::CastU128"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7757,6 +9160,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::CastU256"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7768,6 +9172,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::LdTrue"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7779,6 +9184,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::LdFalse"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7791,6 +9197,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7803,6 +9210,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7815,6 +9223,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7826,6 +9235,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::ReadRef"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7837,6 +9247,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::WriteRef"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7848,6 +9259,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::FreezeRef"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7859,6 +9271,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Add"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7870,6 +9283,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Sub"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7881,6 +9295,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Mul"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7892,6 +9307,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Mod"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7903,6 +9319,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Div"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7914,6 +9331,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::BitOr"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7925,6 +9343,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::BitAnd"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7936,6 +9355,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Xor"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7947,6 +9367,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Shl"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7958,6 +9379,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Shr"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7969,6 +9391,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Or"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7980,6 +9403,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::And"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -7991,6 +9415,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Not"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8002,6 +9427,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Eq"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8013,6 +9439,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Neq"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8024,6 +9451,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Lt"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8035,6 +9463,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Gt"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8046,6 +9475,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Le"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8057,6 +9487,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Ge"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8069,6 +9500,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8081,6 +9513,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8093,6 +9526,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8105,6 +9539,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8117,6 +9552,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8129,6 +9565,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8141,6 +9578,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8153,6 +9591,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8165,6 +9604,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8177,6 +9617,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8189,6 +9630,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8201,6 +9643,7 @@ Module signature.
                                                                           0
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8212,6 +9655,7 @@ Module signature.
                                                                           "move_binary_format::file_format::Bytecode::Abort"
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)));
                                                                   fun γ =>
@@ -8222,7 +9666,10 @@ Module signature.
                                                                           γ,
                                                                           "move_binary_format::file_format::Bytecode::Nop"
                                                                         |) in
-                                                                      M.alloc (| Value.Tuple [] |)))
+                                                                      M.alloc (|
+                                                                        Ty.tuple [],
+                                                                        Value.Tuple []
+                                                                      |)))
                                                                 ],
                                                                 fun γ =>
                                                                   ltac:(M.monadic
@@ -8230,6 +9677,15 @@ Module signature.
                                                                     | [] =>
                                                                       ltac:(M.monadic
                                                                         (M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::PartialVMError"
+                                                                            ],
                                                                           Value.StructTuple
                                                                             "core::result::Result::Ok"
                                                                             []
@@ -8251,6 +9707,21 @@ Module signature.
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -8338,12 +9809,20 @@ Module signature.
                                                                             ]
                                                                             (Ty.path
                                                                               "move_binary_format::errors::PartialVMError"),
-                                                                          M.alloc (| α0 |),
+                                                                          M.alloc (|
+                                                                            Ty.path
+                                                                              "move_binary_format::errors::PartialVMError",
+                                                                            α0
+                                                                          |),
                                                                           [
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let err :=
-                                                                                  M.copy (| γ |) in
+                                                                                  M.copy (|
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError",
+                                                                                    γ
+                                                                                  |) in
                                                                                 M.call_closure (|
                                                                                   Ty.path
                                                                                     "move_binary_format::errors::PartialVMError",
@@ -8409,6 +9888,24 @@ Module signature.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "array")
+                                                                                                              [
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  2
+                                                                                                              ]
+                                                                                                              [
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "&")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "str"
+                                                                                                                  ]
+                                                                                                              ],
                                                                                                             Value.Array
                                                                                                               [
                                                                                                                 mk_str (|
@@ -8428,6 +9925,18 @@ Module signature.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "array")
+                                                                                                              [
+                                                                                                                Value.Integer
+                                                                                                                  IntegerKind.Usize
+                                                                                                                  1
+                                                                                                              ]
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "core::fmt::rt::Argument"
+                                                                                                              ],
                                                                                                             Value.Array
                                                                                                               [
                                                                                                                 M.call_closure (|
@@ -8490,8 +9999,21 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -8547,19 +10069,24 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (| Ty.tuple [], γ0_0 |) in
                                                           val))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8629,10 +10156,36 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; ty; is_phantom_pos; type_parameters ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let ty := M.alloc (| ty |) in
-          let is_phantom_pos := M.alloc (| is_phantom_pos |) in
-          let type_parameters := M.alloc (| type_parameters |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let ty :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
+              ty
+            |) in
+          let is_phantom_pos := M.alloc (| Ty.path "bool", is_phantom_pos |) in
+          let type_parameters :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
+                ],
+              type_parameters
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -8641,6 +10194,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -8657,10 +10214,39 @@ Module signature.
                                     "move_binary_format::file_format::SignatureToken::Vector",
                                     0
                                   |) in
-                                let ty := M.alloc (| γ1_0 |) in
+                                let ty :=
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::SignatureToken";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
+                                    γ1_0
+                                  |) in
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "move_binary_format::errors::PartialVMError"
+                                          ];
+                                        Ty.tuple []
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -8736,8 +10322,19 @@ Module signature.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "move_binary_format::errors::PartialVMError"
+                                              ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -8789,7 +10386,7 @@ Module signature.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                         val))
                                   ]
                                 |)));
@@ -8802,10 +10399,55 @@ Module signature.
                                     "move_binary_format::file_format::SignatureToken::StructInstantiation",
                                     0
                                   |) in
-                                let struct_inst := M.alloc (| γ1_0 |) in
+                                let struct_inst :=
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructHandleIndex";
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
+                                    γ1_0
+                                  |) in
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path
+                                              "move_binary_format::file_format::StructHandleIndex";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::SignatureToken";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.deref (|
@@ -8819,8 +10461,34 @@ Module signature.
                                         (let γ := M.read (| γ |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let idx := M.alloc (| γ1_0 |) in
-                                        let type_arguments := M.alloc (| γ1_1 |) in
+                                        let idx :=
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::StructHandleIndex"
+                                              ],
+                                            γ1_0
+                                          |) in
+                                        let type_arguments :=
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ]
+                                              ],
+                                            γ1_1
+                                          |) in
                                         let~ sh :
                                             Ty.apply
                                               (Ty.path "&")
@@ -8864,6 +10532,19 @@ Module signature.
                                           (M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::iter::adapters::enumerate::Enumerate")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path
@@ -9004,7 +10685,23 @@ Module signature.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let iter := M.copy (| γ |) in
+                                                  (let iter :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::iter::adapters::enumerate::Enumerate")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::slice::iter::Iter")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken"
+                                                            ]
+                                                        ],
+                                                      γ
+                                                    |) in
                                                   M.loop (|
                                                     Ty.tuple [],
                                                     ltac:(M.monadic
@@ -9013,6 +10710,22 @@ Module signature.
                                                           M.match_operator (|
                                                             Ty.tuple [],
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.path "usize";
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::SignatureToken"
+                                                                        ]
+                                                                    ]
+                                                                ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -9074,6 +10787,7 @@ Module signature.
                                                                       "core::option::Option::None"
                                                                     |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple [],
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)
@@ -9096,13 +10810,44 @@ Module signature.
                                                                       γ0_0,
                                                                       1
                                                                     |) in
-                                                                  let i := M.copy (| γ1_0 |) in
-                                                                  let ty := M.copy (| γ1_1 |) in
+                                                                  let i :=
+                                                                    M.copy (|
+                                                                      Ty.path "usize",
+                                                                      γ1_0
+                                                                    |) in
+                                                                  let ty :=
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::SignatureToken"
+                                                                        ],
+                                                                      γ1_1
+                                                                    |) in
                                                                   let~ _ : Ty.tuple [] :=
                                                                     M.read (|
                                                                       M.match_operator (|
                                                                         Ty.tuple [],
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ];
+                                                                              Ty.tuple []
+                                                                            ],
                                                                           M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -9252,8 +10997,21 @@ Module signature.
                                                                                   0
                                                                                 |) in
                                                                               let residual :=
-                                                                                M.copy (| γ0_0 |) in
+                                                                                M.copy (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ],
+                                                                                  γ0_0
+                                                                                |) in
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 M.never_to_any (|
                                                                                   M.read (|
                                                                                     M.return_ (|
@@ -9316,16 +11074,22 @@ Module signature.
                                                                                   0
                                                                                 |) in
                                                                               let val :=
-                                                                                M.copy (| γ0_0 |) in
+                                                                                M.copy (|
+                                                                                  Ty.tuple [],
+                                                                                  γ0_0
+                                                                                |) in
                                                                               val))
                                                                         ]
                                                                       |)
                                                                     |) in
-                                                                  M.alloc (| Value.Tuple [] |)))
+                                                                  M.alloc (|
+                                                                    Ty.tuple [],
+                                                                    Value.Tuple []
+                                                                  |)))
                                                             ]
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)))
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   |)))
                                             ]
                                           |))))
@@ -9340,16 +11104,18 @@ Module signature.
                                     "move_binary_format::file_format::SignatureToken::TypeParameter",
                                     0
                                   |) in
-                                let idx := M.alloc (| γ1_0 |) in
+                                let idx :=
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], γ1_0 |) in
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               LogicalOp.and (|
                                                 M.read (|
                                                   M.SubPointer.get_struct_record_field (|
@@ -9375,6 +11141,7 @@ Module signature.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -9445,7 +11212,8 @@ Module signature.
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)));
                             fun γ =>
@@ -9462,7 +11230,7 @@ Module signature.
                                             "move_binary_format::file_format::SignatureToken::Struct",
                                             0
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9472,7 +11240,7 @@ Module signature.
                                             "move_binary_format::file_format::SignatureToken::Reference",
                                             0
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9482,7 +11250,7 @@ Module signature.
                                             "move_binary_format::file_format::SignatureToken::MutableReference",
                                             0
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9491,7 +11259,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::Bool"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9500,7 +11268,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::U8"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9509,7 +11277,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::U16"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9518,7 +11286,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::U32"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9527,7 +11295,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::U64"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9536,7 +11304,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::U128"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9545,7 +11313,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::U256"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9554,7 +11322,7 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::Address"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
@@ -9563,12 +11331,13 @@ Module signature.
                                             γ,
                                             "move_binary_format::file_format::SignatureToken::Signer"
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ],
                                   fun γ =>
                                     ltac:(M.monadic
                                       match γ with
-                                      | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      | [] =>
+                                        ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       | _ => M.impossible "wrong number of arguments"
                                       end)
                                 |)))
@@ -9576,6 +11345,10 @@ Module signature.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9611,8 +11384,15 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; idx ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let idx := M.alloc (| idx |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let idx := M.alloc (| Ty.path "move_binary_format::file_format::SignatureIndex", idx |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -9621,6 +11401,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -9628,6 +11412,10 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::slice::iter::Iter")
@@ -9698,7 +11486,15 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -9707,6 +11503,18 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -9754,6 +11562,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -9764,7 +11573,17 @@ Module signature.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let token := M.copy (| γ0_0 |) in
+                                                  let token :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
+                                                      γ0_0
+                                                    |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     token,
@@ -9800,8 +11619,44 @@ Module signature.
                                                                       "move_binary_format::file_format::SignatureToken::Reference",
                                                                       0
                                                                     |) in
-                                                                  let inner := M.alloc (| γ1_0 |) in
+                                                                  let inner :=
+                                                                    M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::boxed::Box")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      γ1_0
+                                                                    |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::boxed::Box")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ]
+                                                                      ],
                                                                     Value.Tuple [ inner ]
                                                                   |)));
                                                               fun γ =>
@@ -9813,8 +11668,44 @@ Module signature.
                                                                       "move_binary_format::file_format::SignatureToken::MutableReference",
                                                                       0
                                                                     |) in
-                                                                  let inner := M.alloc (| γ1_0 |) in
+                                                                  let inner :=
+                                                                    M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::boxed::Box")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::file_format::SignatureToken";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      γ1_0
+                                                                    |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::boxed::Box")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_binary_format::file_format::SignatureToken";
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ]
+                                                                          ]
+                                                                      ],
                                                                     Value.Tuple [ inner ]
                                                                   |)))
                                                             ],
@@ -9826,6 +11717,23 @@ Module signature.
                                                                     (M.match_operator (|
                                                                       Ty.tuple [],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::ops::control_flow::ControlFlow")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ];
+                                                                            Ty.tuple []
+                                                                          ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -9915,8 +11823,21 @@ Module signature.
                                                                                 0
                                                                               |) in
                                                                             let residual :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::convert::Infallible";
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
+                                                                                γ0_0
+                                                                              |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.return_ (|
@@ -9979,7 +11900,10 @@ Module signature.
                                                                                 0
                                                                               |) in
                                                                             let val :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.tuple [],
+                                                                                γ0_0
+                                                                              |) in
                                                                             val))
                                                                       ]
                                                                     |)))
@@ -9993,6 +11917,22 @@ Module signature.
                                                           (M.match_operator (|
                                                             Ty.tuple [],
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ];
+                                                                  Ty.tuple []
+                                                                ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -10073,8 +12013,21 @@ Module signature.
                                                                       0
                                                                     |) in
                                                                   let residual :=
-                                                                    M.copy (| γ0_0 |) in
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
+                                                                      γ0_0
+                                                                    |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple [],
                                                                     M.never_to_any (|
                                                                       M.read (|
                                                                         M.return_ (|
@@ -10131,7 +12084,11 @@ Module signature.
                                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                                       0
                                                                     |) in
-                                                                  let val := M.copy (| γ0_0 |) in
+                                                                  let val :=
+                                                                    M.copy (|
+                                                                      Ty.tuple [],
+                                                                      γ0_0
+                                                                    |) in
                                                                   val))
                                                             ]
                                                           |)))
@@ -10140,12 +12097,16 @@ Module signature.
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -10176,8 +12137,27 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; tys ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let tys := M.alloc (| tys |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let tys :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                ],
+              tys
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -10186,6 +12166,10 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -10193,6 +12177,10 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::slice::iter::Iter")
@@ -10222,7 +12210,15 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -10231,6 +12227,18 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -10278,6 +12286,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -10288,10 +12297,35 @@ Module signature.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let ty := M.copy (| γ0_0 |) in
+                                                  let ty :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
+                                                      γ0_0
+                                                    |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -10364,8 +12398,21 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -10421,19 +12468,24 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (| Ty.tuple [], γ0_0 |) in
                                                           val))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -10476,8 +12528,22 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; ty ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let ty := M.alloc (| ty |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let ty :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
+              ty
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -10499,7 +12565,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U8"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10508,7 +12574,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U16"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10517,7 +12583,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U32"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10526,7 +12592,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U64"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10535,7 +12601,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U128"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10544,7 +12610,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U256"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10553,7 +12619,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::Bool"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10562,7 +12628,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::Address"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10571,7 +12637,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::Signer"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10581,7 +12647,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::Struct",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10591,7 +12657,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::TypeParameter",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -10599,6 +12665,13 @@ Module signature.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ],
                                 Value.StructTuple
                                   "core::result::Result::Ok"
                                   []
@@ -10625,7 +12698,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::Reference",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -10635,7 +12708,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::MutableReference",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -10643,6 +12716,13 @@ Module signature.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ],
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   []
@@ -10710,8 +12790,27 @@ Module signature.
                         "move_binary_format::file_format::SignatureToken::Vector",
                         0
                       |) in
-                    let ty := M.alloc (| γ1_0 |) in
+                    let ty :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path "move_binary_format::file_format::SignatureToken";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10741,13 +12840,54 @@ Module signature.
                         "move_binary_format::file_format::SignatureToken::StructInstantiation",
                         0
                       |) in
-                    let struct_inst := M.alloc (| γ1_0 |) in
+                    let struct_inst :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "move_binary_format::file_format::StructHandleIndex";
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::SignatureToken";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.match_operator (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
                         [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::StructHandleIndex";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::SignatureToken";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| M.read (| M.deref (| M.read (| struct_inst |) |) |) |)
@@ -10759,8 +12899,28 @@ Module signature.
                             (let γ := M.read (| γ |) in
                             let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let type_arguments := M.alloc (| γ1_1 |) in
+                            let type_arguments :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::SignatureToken";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ1_1
+                              |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -10857,9 +13017,28 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; idx; type_parameters ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let idx := M.alloc (| idx |) in
-          let type_parameters := M.alloc (| type_parameters |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let idx := M.alloc (| Ty.path "move_binary_format::file_format::SignatureIndex", idx |) in
+          let type_parameters :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                ],
+              type_parameters
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -10868,17 +13047,45 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "std::collections::hash::set::HashSet")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ];
+                                                Ty.path "std::hash::random::RandomState"
+                                              ]
+                                          ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -10954,16 +13161,39 @@ Module signature.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let checked_abilities := M.copy (| γ0_0 |) in
+                                let checked_abilities :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "std::collections::hash::set::HashSet")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet";
+                                                Ty.path "alloc::alloc::Global"
+                                              ];
+                                            Ty.path "std::hash::random::RandomState"
+                                          ]
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               M.call_closure (|
                                                 Ty.path "bool",
                                                 M.get_associated_function (|
@@ -11011,6 +13241,7 @@ Module signature.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -11027,10 +13258,11 @@ Module signature.
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -11040,6 +13272,10 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::slice::iter::Iter")
@@ -11110,7 +13346,15 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "move_binary_format::file_format::SignatureToken"
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -11119,6 +13363,18 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken"
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -11166,6 +13422,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -11176,10 +13433,35 @@ Module signature.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let ty := M.copy (| γ0_0 |) in
+                                                  let ty :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
+                                                      γ0_0
+                                                    |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -11258,8 +13540,21 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -11315,14 +13610,15 @@ Module signature.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (| Ty.tuple [], γ0_0 |) in
                                                           val))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -11502,6 +13798,10 @@ Module signature.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -11541,9 +13841,35 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; s; type_parameters ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let s := M.alloc (| s |) in
-          let type_parameters := M.alloc (| type_parameters |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let s :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
+              s
+            |) in
+          let type_parameters :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                ],
+              type_parameters
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -11552,19 +13878,24 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     M.match_operator (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
                         [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     BinOp.ge,
@@ -11609,6 +13940,8 @@ Module signature.
                                   (M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.path
+                                        "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
                                       M.call_closure (|
                                         Ty.path
                                           "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
@@ -11646,7 +13979,12 @@ Module signature.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let iter := M.copy (| γ |) in
+                                          (let iter :=
+                                            M.copy (|
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureTokenPreorderTraversalIter",
+                                              γ
+                                            |) in
                                           M.loop (|
                                             Ty.tuple [],
                                             ltac:(M.monadic
@@ -11655,6 +13993,18 @@ Module signature.
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::SignatureToken"
+                                                            ]
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -11700,6 +14050,7 @@ Module signature.
                                                               "core::option::Option::None"
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (| M.break (||) |)
                                                             |)
@@ -11712,10 +14063,36 @@ Module signature.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let ty := M.copy (| γ0_0 |) in
+                                                          let ty :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::SignatureToken"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.match_operator (|
                                                             Ty.tuple [],
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ];
+                                                                  Ty.tuple []
+                                                                ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -11804,8 +14181,21 @@ Module signature.
                                                                       0
                                                                     |) in
                                                                   let residual :=
-                                                                    M.copy (| γ0_0 |) in
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "move_binary_format::errors::PartialVMError"
+                                                                        ],
+                                                                      γ0_0
+                                                                    |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple [],
                                                                     M.never_to_any (|
                                                                       M.read (|
                                                                         M.return_ (|
@@ -11862,19 +14252,28 @@ Module signature.
                                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                                       0
                                                                     |) in
-                                                                  let val := M.copy (| γ0_0 |) in
+                                                                  let val :=
+                                                                    M.copy (|
+                                                                      Ty.tuple [],
+                                                                      γ0_0
+                                                                    |) in
                                                                   val))
                                                             ]
                                                           |)))
                                                     ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           |)))
                                     ]
                                   |))
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               Value.StructTuple
                                 "core::result::Result::Ok"
                                 []
@@ -11885,6 +14284,11 @@ Module signature.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -11968,9 +14372,35 @@ Module signature.
       match ε, τ, α with
       | [], [], [ self; s; type_parameters ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let s := M.alloc (| s |) in
-          let type_parameters := M.alloc (| type_parameters |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let s :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
+              s
+            |) in
+          let type_parameters :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                ],
+              type_parameters
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -11988,13 +14418,54 @@ Module signature.
                         "move_binary_format::file_format::SignatureToken::StructInstantiation",
                         0
                       |) in
-                    let struct_inst := M.alloc (| γ1_0 |) in
+                    let struct_inst :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "move_binary_format::file_format::StructHandleIndex";
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::SignatureToken";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.match_operator (|
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
                         [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::StructHandleIndex";
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.path "move_binary_format::file_format::SignatureToken";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| M.read (| M.deref (| M.read (| struct_inst |) |) |) |)
@@ -12006,8 +14477,30 @@ Module signature.
                             (let γ := M.read (| γ |) in
                             let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let idx := M.alloc (| γ1_0 |) in
-                            let type_arguments := M.alloc (| γ1_1 |) in
+                            let idx :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::StructHandleIndex" ],
+                                γ1_0
+                              |) in
+                            let type_arguments :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.path "move_binary_format::file_format::SignatureToken";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ1_1
+                              |) in
                             let~ sh :
                                 Ty.apply
                                   (Ty.path "&")
@@ -12041,6 +14534,11 @@ Module signature.
                                 ]
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -12132,7 +14630,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::Reference",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12142,7 +14640,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::MutableReference",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12152,7 +14650,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::Vector",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12162,7 +14660,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::TypeParameter",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12172,7 +14670,7 @@ Module signature.
                                 "move_binary_format::file_format::SignatureToken::Struct",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12181,7 +14679,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::Bool"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12190,7 +14688,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U8"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12199,7 +14697,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U16"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12208,7 +14706,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U32"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12217,7 +14715,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U64"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12226,7 +14724,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U128"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12235,7 +14733,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::U256"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12244,7 +14742,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::Address"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -12253,7 +14751,7 @@ Module signature.
                                 γ,
                                 "move_binary_format::file_format::SignatureToken::Signer"
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -12261,6 +14759,13 @@ Module signature.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.tuple [];
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ],
                                 Value.StructTuple
                                   "core::result::Result::Ok"
                                   []
@@ -12323,10 +14828,41 @@ Module signature.
           [ impl_ExactSizeIterator_Item___AbilitySet_ ],
           [ self; type_arguments; constraints; global_abilities ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let type_arguments := M.alloc (| type_arguments |) in
-          let constraints := M.alloc (| constraints |) in
-          let global_abilities := M.alloc (| global_abilities |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::signature::SignatureChecker" ],
+              self
+            |) in
+          let type_arguments :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                ],
+              type_arguments
+            |) in
+          let constraints := M.alloc (| impl_ExactSizeIterator_Item___AbilitySet_, constraints |) in
+          let global_abilities :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                ],
+              global_abilities
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -12335,18 +14871,23 @@ Module signature.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ne,
@@ -12394,6 +14935,7 @@ Module signature.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -12469,6 +15011,19 @@ Module signature.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             mk_str (|
@@ -12488,6 +15043,17 @@ Module signature.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
@@ -12507,6 +15073,8 @@ Module signature.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.path
+                                                                                          "usize",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "usize",
@@ -12549,6 +15117,8 @@ Module signature.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.path
+                                                                                          "usize",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "usize",
@@ -12602,7 +15172,7 @@ Module signature.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -12612,6 +15182,16 @@ Module signature.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::zip::Zip")
+                                []
+                                [
+                                  impl_ExactSizeIterator_Item___AbilitySet_;
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::iter::adapters::zip::Zip")
@@ -12702,7 +15282,23 @@ Module signature.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::zip::Zip")
+                                        []
+                                        [
+                                          impl_ExactSizeIterator_Item___AbilitySet_;
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -12711,6 +15307,23 @@ Module signature.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet";
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ]
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -12769,6 +15382,7 @@ Module signature.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -12783,8 +15397,23 @@ Module signature.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let constraint := M.copy (| γ1_0 |) in
-                                                  let ty := M.copy (| γ1_1 |) in
+                                                  let constraint :=
+                                                    M.copy (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet",
+                                                      γ1_0
+                                                    |) in
+                                                  let ty :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::SignatureToken"
+                                                        ],
+                                                      γ1_1
+                                                    |) in
                                                   let~ given :
                                                       Ty.path
                                                         "move_binary_format::file_format::AbilitySet" :=
@@ -12793,6 +15422,23 @@ Module signature.
                                                         Ty.path
                                                           "move_binary_format::file_format::AbilitySet",
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ];
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet"
+                                                            ],
                                                           M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path
@@ -12885,8 +15531,22 @@ Module signature.
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
                                                                 |) in
-                                                              let residual := M.copy (| γ0_0 |) in
+                                                              let residual :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "move_binary_format::errors::PartialVMError"
+                                                                    ],
+                                                                  γ0_0
+                                                                |) in
                                                               M.alloc (|
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet",
                                                                 M.never_to_any (|
                                                                   M.read (|
                                                                     M.return_ (|
@@ -12942,20 +15602,26 @@ Module signature.
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
                                                                 |) in
-                                                              let val := M.copy (| γ0_0 |) in
+                                                              let val :=
+                                                                M.copy (|
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::AbilitySet",
+                                                                  γ0_0
+                                                                |) in
                                                               val))
                                                         ]
                                                       |)
                                                     |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
-                                                    M.alloc (| Value.Tuple [] |),
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
+                                                                Ty.path "bool",
                                                                 UnOp.not (|
                                                                   M.call_closure (|
                                                                     Ty.path "bool",
@@ -12979,6 +15645,7 @@ Module signature.
                                                               Value.Bool true
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -13069,6 +15736,24 @@ Module signature.
                                                                                               M.borrow (|
                                                                                                 Pointer.Kind.Ref,
                                                                                                 M.alloc (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "array")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ]
+                                                                                                    [
+                                                                                                      Ty.apply
+                                                                                                        (Ty.path
+                                                                                                          "&")
+                                                                                                        []
+                                                                                                        [
+                                                                                                          Ty.path
+                                                                                                            "str"
+                                                                                                        ]
+                                                                                                    ],
                                                                                                   Value.Array
                                                                                                     [
                                                                                                       mk_str (|
@@ -13091,6 +15776,18 @@ Module signature.
                                                                                               M.borrow (|
                                                                                                 Pointer.Kind.Ref,
                                                                                                 M.alloc (|
+                                                                                                  Ty.apply
+                                                                                                    (Ty.path
+                                                                                                      "array")
+                                                                                                    [
+                                                                                                      Value.Integer
+                                                                                                        IntegerKind.Usize
+                                                                                                        3
+                                                                                                    ]
+                                                                                                    [
+                                                                                                      Ty.path
+                                                                                                        "core::fmt::rt::Argument"
+                                                                                                    ],
                                                                                                   Value.Array
                                                                                                     [
                                                                                                       M.call_closure (|
@@ -13196,18 +15893,25 @@ Module signature.
                                                           |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
+                                                          (M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []

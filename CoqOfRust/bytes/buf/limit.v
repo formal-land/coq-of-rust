@@ -20,8 +20,16 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -61,6 +69,7 @@ Module buf.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -97,8 +106,8 @@ Module buf.
       match ε, τ, α with
       | [], [ T ], [ inner; limit ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          let limit := M.alloc (| limit |) in
+          (let inner := M.alloc (| T, inner |) in
+          let limit := M.alloc (| Ty.path "usize", limit |) in
           Value.StructRecord
             "bytes::buf::limit::Limit"
             []
@@ -124,7 +133,8 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ], self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (| self, "bytes::buf::limit::Limit", "inner" |)
             |)))
@@ -147,7 +157,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -180,7 +197,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -218,7 +242,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -245,8 +276,15 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self; lim ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let lim := M.alloc (| lim |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
+            let lim := M.alloc (| Ty.path "usize", lim |) in
             M.write (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -283,7 +321,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
@@ -334,7 +379,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -394,6 +446,10 @@ Module buf.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "bytes::buf::uninit_slice::UninitSlice" ],
                     M.borrow (|
                       Pointer.Kind.MutRef,
                       M.deref (|
@@ -454,20 +510,28 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self; cnt ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cnt := M.alloc (| cnt |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::limit::Limit") [] [ T ] ],
+                self
+              |) in
+            let cnt := M.alloc (| Ty.path "usize", cnt |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 UnOp.not (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -488,6 +552,7 @@ Module buf.
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -496,7 +561,7 @@ Module buf.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -539,7 +604,7 @@ Module buf.
                     [ M.read (| β |); M.read (| cnt |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

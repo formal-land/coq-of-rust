@@ -21,8 +21,13 @@ Module bitrev.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::bitrev::BitReversalPerm" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -46,6 +51,7 @@ Module bitrev.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -91,7 +97,7 @@ Module bitrev.
       match ε, τ, α with
       | [], [ T; Inner ], [ inner ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
+          (let inner := M.alloc (| Inner, inner |) in
           Value.StructRecord
             "p3_matrix::row_index_mapped::RowIndexMappedView"
             []
@@ -146,7 +152,11 @@ Module bitrev.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::bitrev::BitReversalPerm" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.shl,
@@ -173,8 +183,12 @@ Module bitrev.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::bitrev::BitReversalPerm" ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_function (| "p3_util::reverse_bits_len", [], [] |),
@@ -206,8 +220,12 @@ Module bitrev.
       match ε, τ, α with
       | [], [ T; Inner ], [ self; inner ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let inner := M.alloc (| inner |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::bitrev::BitReversalPerm" ],
+              self
+            |) in
+          let inner := M.alloc (| Inner, inner |) in
           M.read (|
             let~ inner :
                 Ty.apply
@@ -304,7 +322,17 @@ Module bitrev.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                []
+                [
+                  Ty.path "p3_matrix::bitrev::BitReversalPerm";
+                  Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ]
+                ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,
@@ -358,7 +386,8 @@ Module bitrev.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")

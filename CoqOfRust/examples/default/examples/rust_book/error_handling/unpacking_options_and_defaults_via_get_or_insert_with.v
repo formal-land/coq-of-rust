@@ -51,8 +51,15 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -72,6 +79,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Apple"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Apple" |) |) |)
                       |)));
                   fun γ =>
@@ -83,6 +91,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Orange"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Orange" |) |) |)
                       |)));
                   fun γ =>
@@ -94,6 +103,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Banana"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Banana" |) |) |)
                       |)));
                   fun γ =>
@@ -105,6 +115,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Kiwi"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Kiwi" |) |) |)
                       |)));
                   fun γ =>
@@ -116,6 +127,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Lemon" |) |) |)
                       |)))
                 ]
@@ -188,7 +200,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Ty.function
                         [ Ty.tuple [] ]
                         (Ty.path "unpacking_options_and_defaults_via_get_or_insert_with::Fruit"),
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -215,6 +227,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [ mk_str (| "Providing lemon as fallback
 " |)
@@ -227,9 +244,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         |)
                                       ]
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |) in
                               M.alloc (|
+                                Ty.path
+                                  "unpacking_options_and_defaults_via_get_or_insert_with::Fruit",
                                 Value.StructTuple
                                   "unpacking_options_and_defaults_via_get_or_insert_with::Fruit::Lemon"
                                   []
@@ -288,6 +307,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "my_fruit is: " |); mk_str (| "
 " |) ]
                             |)
@@ -300,6 +323,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -336,7 +363,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -360,6 +387,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "first_available_fruit is: " |); mk_str (| "
 " |) ]
@@ -373,6 +404,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -409,7 +444,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ my_apple :
             Ty.apply
@@ -474,6 +509,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "should_be_apple is: " |); mk_str (| "
 " |) ]
                             |)
@@ -486,6 +525,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -522,7 +565,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -546,6 +589,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "my_apple is unchanged: " |); mk_str (| "
 " |) ]
@@ -559,6 +606,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -593,9 +644,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

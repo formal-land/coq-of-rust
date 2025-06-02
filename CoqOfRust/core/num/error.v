@@ -19,8 +19,13 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -43,6 +48,7 @@ Module num.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.tuple [] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|
@@ -89,7 +95,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::num::error::TryFromIntError",
@@ -129,8 +139,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -185,12 +203,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -219,8 +241,13 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; fmt ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let fmt := M.alloc (| fmt |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                self
+              |) in
+            let fmt :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -273,7 +300,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::TryFromIntError" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (| mk_str (| "out of range integral type conversion attempted" |) |)
@@ -302,7 +333,7 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.path "core::convert::Infallible", x |) in
             M.never_to_any (| M.read (| M.match_operator (| Ty.path "never", x, [] |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -331,7 +362,7 @@ Module num.
         match ε, τ, α with
         | [], [], [ never ] =>
           ltac:(M.monadic
-            (let never := M.alloc (| never |) in
+            (let never := M.alloc (| Ty.path "never", never |) in
             M.never_to_any (| M.read (| M.match_operator (| Ty.path "never", never, [] |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -361,8 +392,13 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -386,6 +422,7 @@ Module num.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::IntErrorKind" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -420,7 +457,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
             Value.StructRecord
               "core::num::error::ParseIntError"
               []
@@ -487,8 +528,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -543,12 +592,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -614,8 +667,13 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::IntErrorKind" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -635,6 +693,7 @@ Module num.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |)
                           |)));
                       fun γ =>
@@ -646,6 +705,7 @@ Module num.
                               "core::num::error::IntErrorKind::InvalidDigit"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| mk_str (| "InvalidDigit" |) |)
@@ -660,6 +720,7 @@ Module num.
                               "core::num::error::IntErrorKind::PosOverflow"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| mk_str (| "PosOverflow" |) |)
@@ -674,6 +735,7 @@ Module num.
                               "core::num::error::IntErrorKind::NegOverflow"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| mk_str (| "NegOverflow" |) |)
@@ -685,6 +747,7 @@ Module num.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
                           |)))
                     ]
@@ -712,7 +775,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::IntErrorKind" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::num::error::IntErrorKind",
@@ -723,6 +790,7 @@ Module num.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                       M.alloc (|
+                        Ty.path "core::num::error::IntErrorKind",
                         Value.StructTuple "core::num::error::IntErrorKind::Empty" [] [] []
                       |)));
                   fun γ =>
@@ -731,6 +799,7 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
                       M.alloc (|
+                        Ty.path "core::num::error::IntErrorKind",
                         Value.StructTuple "core::num::error::IntErrorKind::InvalidDigit" [] [] []
                       |)));
                   fun γ =>
@@ -739,6 +808,7 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
                       M.alloc (|
+                        Ty.path "core::num::error::IntErrorKind",
                         Value.StructTuple "core::num::error::IntErrorKind::PosOverflow" [] [] []
                       |)));
                   fun γ =>
@@ -747,6 +817,7 @@ Module num.
                       let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
                       M.alloc (|
+                        Ty.path "core::num::error::IntErrorKind",
                         Value.StructTuple "core::num::error::IntErrorKind::NegOverflow" [] [] []
                       |)));
                   fun γ =>
@@ -754,6 +825,7 @@ Module num.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                       M.alloc (|
+                        Ty.path "core::num::error::IntErrorKind",
                         Value.StructTuple "core::num::error::IntErrorKind::Zero" [] [] []
                       |)))
                 ]
@@ -791,8 +863,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::IntErrorKind" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::IntErrorKind" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -815,6 +895,7 @@ Module num.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   BinOp.eq,
@@ -846,7 +927,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::IntErrorKind" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -873,7 +958,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -908,8 +997,13 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -968,7 +1062,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -983,6 +1081,7 @@ Module num.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "cannot parse integer from empty string" |) |)
@@ -993,6 +1092,7 @@ Module num.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::InvalidDigit" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "invalid digit found in string" |) |)
@@ -1003,6 +1103,7 @@ Module num.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::PosOverflow" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "number too large to fit in target type" |) |)
@@ -1013,6 +1114,7 @@ Module num.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::NegOverflow" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "number too small to fit in target type" |) |)
@@ -1022,6 +1124,7 @@ Module num.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "number would be zero for non-zero type" |) |)

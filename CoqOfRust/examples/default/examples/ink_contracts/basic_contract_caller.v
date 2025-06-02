@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_basic_contract_caller_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "basic_contract_caller::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "basic_contract_caller::AccountId",
@@ -122,7 +126,7 @@ Module Impl_basic_contract_caller_OtherContract.
     match ε, τ, α with
     | [], [], [ init_value ] =>
       ltac:(M.monadic
-        (let init_value := M.alloc (| init_value |) in
+        (let init_value := M.alloc (| Ty.path "bool", init_value |) in
         Value.StructRecord
           "basic_contract_caller::OtherContract"
           []
@@ -144,7 +148,11 @@ Module Impl_basic_contract_caller_OtherContract.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "basic_contract_caller::OtherContract" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -163,7 +171,7 @@ Module Impl_basic_contract_caller_OtherContract.
                 |)
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -181,7 +189,11 @@ Module Impl_basic_contract_caller_OtherContract.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "basic_contract_caller::OtherContract" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -224,7 +236,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     match ε, τ, α with
     | [], [], [ other_contract_code_hash ] =>
       ltac:(M.monadic
-        (let other_contract_code_hash := M.alloc (| other_contract_code_hash |) in
+        (let other_contract_code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            other_contract_code_hash
+          |) in
         M.read (|
           let~ other_contract : Ty.path "basic_contract_caller::OtherContract" :=
             M.never_to_any (|
@@ -235,6 +251,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               |)
             |) in
           M.alloc (|
+            Ty.path "basic_contract_caller::BasicContractCaller",
             Value.StructRecord
               "basic_contract_caller::BasicContractCaller"
               []
@@ -259,7 +276,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "basic_contract_caller::BasicContractCaller" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -282,6 +303,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
               ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|

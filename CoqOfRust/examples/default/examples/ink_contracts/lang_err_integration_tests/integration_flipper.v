@@ -25,8 +25,12 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "integration_flipper::FlipperError" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -59,7 +63,7 @@ Module Impl_integration_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ init_value ] =>
       ltac:(M.monadic
-        (let init_value := M.alloc (| init_value |) in
+        (let init_value := M.alloc (| Ty.path "bool", init_value |) in
         Value.StructRecord
           "integration_flipper::Flipper"
           []
@@ -121,7 +125,7 @@ Module Impl_integration_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ succeed ] =>
       ltac:(M.monadic
-        (let succeed := M.alloc (| succeed |) in
+        (let succeed := M.alloc (| Ty.path "bool", succeed |) in
         M.read (|
           M.match_operator (|
             Ty.apply
@@ -129,13 +133,20 @@ Module Impl_integration_flipper_Flipper.
               []
               [ Ty.path "integration_flipper::Flipper"; Ty.path "integration_flipper::FlipperError"
               ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use succeed in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "integration_flipper::Flipper";
+                        Ty.path "integration_flipper::FlipperError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -159,6 +170,13 @@ Module Impl_integration_flipper_Flipper.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "integration_flipper::Flipper";
+                        Ty.path "integration_flipper::FlipperError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -187,7 +205,11 @@ Module Impl_integration_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "integration_flipper::Flipper" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -206,7 +228,7 @@ Module Impl_integration_flipper_Flipper.
                 |)
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -224,7 +246,11 @@ Module Impl_integration_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "integration_flipper::Flipper" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -249,7 +275,11 @@ Module Impl_integration_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "integration_flipper::Flipper" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -263,6 +293,7 @@ Module Impl_integration_flipper_Flipper.
               [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.tuple [] ],
             Value.StructTuple
               "core::result::Result::Err"
               []

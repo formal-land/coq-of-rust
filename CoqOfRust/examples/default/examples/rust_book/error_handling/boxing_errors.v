@@ -31,8 +31,9 @@ Module Impl_core_fmt_Debug_for_boxing_errors_EmptyVec.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "boxing_errors::EmptyVec" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -61,7 +62,8 @@ Module Impl_core_clone_Clone_for_boxing_errors_EmptyVec.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "boxing_errors::EmptyVec" ], self |) in
         Value.StructTuple "boxing_errors::EmptyVec" [] [] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -87,8 +89,9 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "boxing_errors::EmptyVec" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
@@ -108,7 +111,13 @@ Module Impl_core_fmt_Display_for_boxing_errors_EmptyVec.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ mk_str (| "invalid first item to double" |) ] |)
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ mk_str (| "invalid first item to double" |) ]
+                      |)
                     |)
                   |)
                 |)
@@ -155,7 +164,14 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   match ε, τ, α with
   | [], [], [ vec ] =>
     ltac:(M.monadic
-      (let vec := M.alloc (| vec |) in
+      (let vec :=
+        M.alloc (|
+          Ty.apply
+            (Ty.path "alloc::vec::Vec")
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
+          vec
+        |) in
       M.call_closure (|
         Ty.apply
           (Ty.path "core::result::Result")
@@ -295,7 +311,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                 Ty.dyn [ ("core::error::Error::Trait", []) ];
                                 Ty.path "alloc::alloc::Global"
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.tuple [], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -362,11 +378,21 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                 Ty.path "alloc::alloc::Global"
                               ]
                           ]),
-                      M.alloc (| α0 |),
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        α0
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let s := M.copy (| γ |) in
+                            (let s :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                γ
+                              |) in
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -482,11 +508,18 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                       Ty.dyn [ ("core::error::Error::Trait", []) ];
                                                       Ty.path "alloc::alloc::Global"
                                                     ]),
-                                                M.alloc (| α0 |),
+                                                M.alloc (|
+                                                  Ty.path "core::num::error::ParseIntError",
+                                                  α0
+                                                |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let e := M.copy (| γ |) in
+                                                      (let e :=
+                                                        M.copy (|
+                                                          Ty.path "core::num::error::ParseIntError",
+                                                          γ
+                                                        |) in
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "alloc::boxed::Box")
@@ -535,11 +568,11 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                             Ty.function
                                               [ Ty.tuple [ Ty.path "i32" ] ]
                                               (Ty.path "i32"),
-                                            M.alloc (| α0 |),
+                                            M.alloc (| Ty.path "i32", α0 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let i := M.copy (| γ |) in
+                                                  (let i := M.copy (| Ty.path "i32", γ |) in
                                                   M.call_closure (|
                                                     Ty.path "i32",
                                                     BinOp.Wrap.mul,
@@ -580,7 +613,20 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ result ] =>
     ltac:(M.monadic
-      (let result := M.alloc (| result |) in
+      (let result :=
+        M.alloc (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [
+              Ty.path "i32";
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global" ]
+            ],
+          result
+        |) in
       M.read (|
         M.match_operator (|
           Ty.tuple [],
@@ -590,7 +636,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let n := M.copy (| γ0_0 |) in
+                let n := M.copy (| Ty.path "i32", γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -611,6 +657,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "The first doubled is " |); mk_str (| "
 " |) ]
@@ -624,6 +674,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -650,12 +704,20 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let e := M.copy (| γ0_0 |) in
+                let e :=
+                  M.copy (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.dyn [ ("core::error::Error::Trait", []) ]; Ty.path "alloc::alloc::Global"
+                      ],
+                    γ0_0
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -676,6 +738,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "Error: " |); mk_str (| "
 " |) ]
                                 |)
@@ -688,6 +754,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -722,7 +792,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))
@@ -797,6 +867,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         Value.Array
                           [
                             mk_str (| "42" |);
@@ -878,6 +952,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         Value.Array
                           [
                             mk_str (| "tofu" |);
@@ -956,7 +1034,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

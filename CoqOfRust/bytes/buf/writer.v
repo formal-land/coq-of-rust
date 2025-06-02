@@ -20,8 +20,16 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::writer::Writer") [] [ B ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -45,6 +53,7 @@ Module buf.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ B ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -81,7 +90,7 @@ Module buf.
       match ε, τ, α with
       | [], [ B ], [ buf ] =>
         ltac:(M.monadic
-          (let buf := M.alloc (| buf |) in
+          (let buf := M.alloc (| B, buf |) in
           Value.StructRecord "bytes::buf::writer::Writer" [] [ B ] [ ("buf", M.read (| buf |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -103,7 +112,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::writer::Writer") [] [ B ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -136,7 +152,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::writer::Writer") [] [ B ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -174,7 +197,8 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "bytes::buf::writer::Writer") [] [ B ], self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (| self, "bytes::buf::writer::Writer", "buf" |)
             |)))
@@ -204,8 +228,19 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self; src ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let src := M.alloc (| src |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::writer::Writer") [] [ B ] ],
+                self
+              |) in
+            let src :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                src
+              |) in
             M.read (|
               let~ n : Ty.path "usize" :=
                 M.call_closure (|
@@ -301,6 +336,10 @@ Module buf.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                 Value.StructTuple
                   "core::result::Result::Ok"
                   []
@@ -321,7 +360,14 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "bytes::buf::writer::Writer") [] [ B ] ],
+                self
+              |) in
             Value.StructTuple
               "core::result::Result::Ok"
               []

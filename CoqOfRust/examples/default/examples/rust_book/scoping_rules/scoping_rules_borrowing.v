@@ -10,7 +10,14 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ boxed_i32 ] =>
     ltac:(M.monadic
-      (let boxed_i32 := M.alloc (| boxed_i32 |) in
+      (let boxed_i32 :=
+        M.alloc (|
+          Ty.apply
+            (Ty.path "alloc::boxed::Box")
+            []
+            [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+          boxed_i32
+        |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -34,6 +41,10 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "Destroying box that contains " |); mk_str (| "
 " |) ]
@@ -47,6 +58,10 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -78,9 +93,9 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -99,7 +114,8 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   match ε, τ, α with
   | [], [], [ borrowed_i32 ] =>
     ltac:(M.monadic
-      (let borrowed_i32 := M.alloc (| borrowed_i32 |) in
+      (let borrowed_i32 :=
+        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], borrowed_i32 |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -123,6 +139,10 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "This int is: " |); mk_str (| "
 " |) ]
                             |)
@@ -135,6 +155,10 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -161,9 +185,9 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -264,7 +288,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.get_function (| "scoping_rules_borrowing::borrow_i32", [], [] |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| _ref_to_i32 |) |) |) ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -272,7 +296,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (| "scoping_rules_borrowing::eat_box_i32", [], [] |),
             [ M.read (| boxed_i32 |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

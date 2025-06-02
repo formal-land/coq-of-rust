@@ -5,6 +5,7 @@ Module kzg_point_evaluation.
   Definition value_POINT_EVALUATION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "revm_precompile::PrecompileWithAddress",
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
           []
@@ -30,6 +31,7 @@ Module kzg_point_evaluation.
   Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "alloy_primitives::bits::address::Address",
         M.call_closure (|
           Ty.path "alloy_primitives::bits::address::Address",
           M.get_function (| "revm_precompile::u64_to_address", [], [] |),
@@ -43,7 +45,7 @@ Module kzg_point_evaluation.
   Global Typeclasses Opaque value_ADDRESS.
   
   Definition value_GAS_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 50000 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 50000 |))).
   
   Global Instance Instance_IsConstant_value_GAS_COST :
     M.IsFunction.C "revm_precompile::kzg_point_evaluation::GAS_COST" value_GAS_COST.
@@ -55,7 +57,7 @@ Module kzg_point_evaluation.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 1 |))).
   
   Global Instance Instance_IsConstant_value_VERSIONED_HASH_VERSION_KZG :
     M.IsFunction.C
@@ -67,6 +69,10 @@ Module kzg_point_evaluation.
   Definition value_RETURN_VALUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "&")
+          []
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ Ty.path "u8" ] ],
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -121,8 +127,12 @@ Module kzg_point_evaluation.
     match ε, τ, α with
     | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
-        (let input := M.alloc (| input |) in
-        let gas_limit := M.alloc (| gas_limit |) in
+        (let input :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+            input
+          |) in
+        let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -134,18 +144,26 @@ Module kzg_point_evaluation.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.lt,
@@ -163,6 +181,7 @@ Module kzg_point_evaluation.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -201,7 +220,7 @@ Module kzg_point_evaluation.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -209,13 +228,14 @@ Module kzg_point_evaluation.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.ne,
@@ -264,6 +284,7 @@ Module kzg_point_evaluation.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -302,7 +323,7 @@ Module kzg_point_evaluation.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -474,13 +495,14 @@ Module kzg_point_evaluation.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -504,6 +526,10 @@ Module kzg_point_evaluation.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [ Ty.path "u8" ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "array")
@@ -530,6 +556,7 @@ Module kzg_point_evaluation.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -568,7 +595,7 @@ Module kzg_point_evaluation.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -884,13 +911,14 @@ Module kzg_point_evaluation.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -923,6 +951,7 @@ Module kzg_point_evaluation.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -961,11 +990,18 @@ Module kzg_point_evaluation.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1057,7 +1093,11 @@ Module kzg_point_evaluation.
     match ε, τ, α with
     | [], [], [ commitment ] =>
       ltac:(M.monadic
-        (let commitment := M.alloc (| commitment |) in
+        (let commitment :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            commitment
+          |) in
         M.read (|
           let~ hash :
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] :=
@@ -1260,10 +1300,17 @@ Module kzg_point_evaluation.
     match ε, τ, α with
     | [], [], [ commitment; z; y; proof ] =>
       ltac:(M.monadic
-        (let commitment := M.alloc (| commitment |) in
-        let z := M.alloc (| z |) in
-        let y := M.alloc (| y |) in
-        let proof := M.alloc (| proof |) in
+        (let commitment :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ],
+            commitment
+          |) in
+        let z :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ], z |) in
+        let y :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes32" ], y |) in
+        let proof :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::Bytes48" ], proof |) in
         M.read (|
           let~ kzg_settings :
               Ty.apply (Ty.path "&") [] [ Ty.path "c_kzg::bindings::KZGSettings" ] :=
@@ -1273,6 +1320,7 @@ Module kzg_point_evaluation.
               []
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
@@ -1326,7 +1374,11 @@ Module kzg_point_evaluation.
     match ε, τ, α with
     | [ N ], [], [ bytes ] =>
       ltac:(M.monadic
-        (let bytes := M.alloc (| bytes |) in
+        (let bytes :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            bytes
+          |) in
         M.call_closure (|
           Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
           M.get_associated_function (|
@@ -1385,7 +1437,11 @@ Module kzg_point_evaluation.
     match ε, τ, α with
     | [], [], [ bytes ] =>
       ltac:(M.monadic
-        (let bytes := M.alloc (| bytes |) in
+        (let bytes :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            bytes
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -1461,7 +1517,11 @@ Module kzg_point_evaluation.
     match ε, τ, α with
     | [], [], [ bytes ] =>
       ltac:(M.monadic
-        (let bytes := M.alloc (| bytes |) in
+        (let bytes :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            bytes
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|

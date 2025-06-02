@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module constants.
   Definition value_STACK_LIMIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1024 |))).
   
   Global Instance Instance_IsConstant_value_STACK_LIMIT :
     M.IsFunction.C "revm_specification::constants::STACK_LIMIT" value_STACK_LIMIT.
@@ -11,7 +11,7 @@ Module constants.
   Global Typeclasses Opaque value_STACK_LIMIT.
   
   Definition value_MAX_CODE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 24576 |))).
   
   Global Instance Instance_IsConstant_value_MAX_CODE_SIZE :
     M.IsFunction.C "revm_specification::constants::MAX_CODE_SIZE" value_MAX_CODE_SIZE.
@@ -21,6 +21,7 @@ Module constants.
   Definition value_MAX_INITCODE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "usize",
         M.call_closure (|
           Ty.path "usize",
           BinOp.Wrap.mul,
@@ -39,7 +40,7 @@ Module constants.
   Global Typeclasses Opaque value_MAX_INITCODE_SIZE.
   
   Definition value_CALL_STACK_LIMIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
   
   Global Instance Instance_IsConstant_value_CALL_STACK_LIMIT :
     M.IsFunction.C "revm_specification::constants::CALL_STACK_LIMIT" value_CALL_STACK_LIMIT.

@@ -56,7 +56,8 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_ref::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "contract_ref::AccountId",
@@ -126,8 +127,9 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_ref::FlipperError" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -183,7 +185,8 @@ Module Impl_contract_ref_FlipperRef.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_ref::FlipperRef" ], self |) in
         M.call_closure (|
           Ty.path "contract_ref::Env",
           M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "init_env", [], [] |),
@@ -205,7 +208,7 @@ Module Impl_contract_ref_FlipperRef.
     match ε, τ, α with
     | [], [], [ init_value ] =>
       ltac:(M.monadic
-        (let init_value := M.alloc (| init_value |) in
+        (let init_value := M.alloc (| Ty.path "bool", init_value |) in
         Value.StructRecord "contract_ref::FlipperRef" [] [] [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -263,20 +266,24 @@ Module Impl_contract_ref_FlipperRef.
     match ε, τ, α with
     | [], [], [ succeed ] =>
       ltac:(M.monadic
-        (let succeed := M.alloc (| succeed |) in
+        (let succeed := M.alloc (| Ty.path "bool", succeed |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "core::result::Result")
               []
               [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use succeed in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -297,6 +304,10 @@ Module Impl_contract_ref_FlipperRef.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "contract_ref::FlipperRef"; Ty.path "contract_ref::FlipperError" ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -322,7 +333,8 @@ Module Impl_contract_ref_FlipperRef.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "contract_ref::FlipperRef" ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -341,7 +353,7 @@ Module Impl_contract_ref_FlipperRef.
                 |)
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -359,7 +371,8 @@ Module Impl_contract_ref_FlipperRef.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_ref::FlipperRef" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -402,8 +415,12 @@ Module Impl_contract_ref_ContractRef.
     match ε, τ, α with
     | [], [], [ version; flipper_code_hash ] =>
       ltac:(M.monadic
-        (let version := M.alloc (| version |) in
-        let flipper_code_hash := M.alloc (| flipper_code_hash |) in
+        (let version := M.alloc (| Ty.path "u32", version |) in
+        let flipper_code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            flipper_code_hash
+          |) in
         M.read (|
           let~ salt :
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
@@ -424,6 +441,7 @@ Module Impl_contract_ref_ContractRef.
               []
             |) in
           M.alloc (|
+            Ty.path "contract_ref::ContractRef",
             Value.StructRecord
               "contract_ref::ContractRef"
               []
@@ -460,9 +478,13 @@ Module Impl_contract_ref_ContractRef.
     match ε, τ, α with
     | [], [], [ version; flipper_code_hash; succeed ] =>
       ltac:(M.monadic
-        (let version := M.alloc (| version |) in
-        let flipper_code_hash := M.alloc (| flipper_code_hash |) in
-        let succeed := M.alloc (| succeed |) in
+        (let version := M.alloc (| Ty.path "u32", version |) in
+        let flipper_code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            flipper_code_hash
+          |) in
+        let succeed := M.alloc (| Ty.path "bool", succeed |) in
         M.read (|
           let~ salt :
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
@@ -500,6 +522,7 @@ Module Impl_contract_ref_ContractRef.
               ]
             |) in
           M.alloc (|
+            Ty.path "contract_ref::ContractRef",
             Value.StructRecord
               "contract_ref::ContractRef"
               []
@@ -523,7 +546,11 @@ Module Impl_contract_ref_ContractRef.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "contract_ref::ContractRef" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -540,7 +567,7 @@ Module Impl_contract_ref_ContractRef.
                 |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -558,7 +585,11 @@ Module Impl_contract_ref_ContractRef.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "contract_ref::ContractRef" ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "bool",
           M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "get", [], [] |),

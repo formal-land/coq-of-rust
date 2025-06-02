@@ -34,8 +34,14 @@ Module foo.
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "foo::gre::bar
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "foo::gre::bar
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -43,9 +49,9 @@ Module foo.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -88,8 +94,14 @@ Module foo.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "foo::bar
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "foo::bar
+" |) ]
+                              |)
                             |)
                           |)
                         |)
@@ -97,7 +109,7 @@ Module foo.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -105,7 +117,7 @@ Module foo.
               M.get_function (| "module_duplicate::foo::gre::f_foo_gre", [], [] |),
               []
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -131,7 +143,7 @@ Definition f (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (| "module_duplicate::foo::f_foo", [], [] |),
             []
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

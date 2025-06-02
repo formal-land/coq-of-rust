@@ -23,7 +23,14 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -34,7 +41,7 @@ Module instantiation_loops.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -72,8 +79,22 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -148,8 +169,15 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -181,6 +209,7 @@ Module instantiation_loops.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -243,7 +272,14 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_bytecode_verifier::instantiation_loops::Node",
@@ -368,7 +404,14 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ module ] =>
         ltac:(M.monadic
-          (let module := M.alloc (| module |) in
+          (let module :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+              module
+            |) in
           Value.StructRecord
             "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker"
             []
@@ -678,14 +721,37 @@ Module instantiation_loops.
                                           Ty.path
                                             "move_binary_format::file_format::FunctionDefinitionIndex"
                                         ]),
-                                    M.alloc (| α0 |),
+                                    M.alloc (|
+                                      Ty.tuple
+                                        [
+                                          Ty.path "usize";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
+                                            ]
+                                        ],
+                                      α0
+                                    |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                          let def_idx := M.copy (| γ0_0 |) in
-                                          let def := M.copy (| γ0_1 |) in
+                                          let def_idx := M.copy (| Ty.path "usize", γ0_0 |) in
+                                          let def :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ],
+                                              γ0_1
+                                            |) in
                                           Value.Tuple
                                             [
                                               M.read (|
@@ -733,7 +799,14 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ module ] =>
         ltac:(M.monadic
-          (let module := M.alloc (| module |) in
+          (let module :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+              module
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -777,11 +850,15 @@ Module instantiation_loops.
                           Ty.function
                             [ Ty.tuple [ Ty.path "move_binary_format::errors::PartialVMError" ] ]
                             (Ty.path "move_binary_format::errors::VMError"),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
+                                (let e :=
+                                  M.copy (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.path "move_binary_format::errors::VMError",
                                   M.get_associated_function (|
@@ -867,7 +944,14 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ module ] =>
         ltac:(M.monadic
-          (let module := M.alloc (| module |) in
+          (let module :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+              module
+            |) in
           M.read (|
             let~ checker :
                 Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" :=
@@ -966,6 +1050,34 @@ Module instantiation_loops.
                 []
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                              []
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::EdgeIndex")
+                              []
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ]
+                  ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -1037,6 +1149,10 @@ Module instantiation_loops.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1053,8 +1169,34 @@ Module instantiation_loops.
                       |) in
                     let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                     let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                    let nodes := M.copy (| γ1_0 |) in
-                    let edges := M.copy (| γ1_1 |) in
+                    let nodes :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                              []
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ1_0
+                      |) in
+                    let edges :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::EdgeIndex")
+                              []
+                              [ Ty.path "u32" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ1_1
+                      |) in
                     let~ msg_edges : Ty.path "alloc::string::String" :=
                       M.call_closure (|
                         Ty.path "alloc::string::String",
@@ -1097,6 +1239,13 @@ Module instantiation_loops.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "alloc::string::String";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
@@ -1272,11 +1421,26 @@ Module instantiation_loops.
                                                               (Ty.path "core::option::Option")
                                                               []
                                                               [ Ty.path "alloc::string::String" ]),
-                                                          M.alloc (| α0 |),
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ],
+                                                            α0
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (let edge_idx := M.copy (| γ |) in
+                                                                (let edge_idx :=
+                                                                  M.copy (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::EdgeIndex")
+                                                                      []
+                                                                      [ Ty.path "u32" ],
+                                                                    γ
+                                                                  |) in
                                                                 M.read (|
                                                                   M.match_operator (|
                                                                     Ty.apply
@@ -1288,6 +1452,13 @@ Module instantiation_loops.
                                                                           "alloc::string::String"
                                                                       ],
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::instantiation_loops::Edge"
+                                                                        ],
                                                                       M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path "&")
@@ -1374,6 +1545,14 @@ Module instantiation_loops.
                                                                               0
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "alloc::string::String"
+                                                                              ],
                                                                             Value.StructTuple
                                                                               "core::option::Option::Some"
                                                                               []
@@ -1407,6 +1586,14 @@ Module instantiation_loops.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (M.alloc (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::option::Option")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "alloc::string::String"
+                                                                              ],
                                                                             Value.StructTuple
                                                                               "core::option::Option::None"
                                                                               []
@@ -1478,6 +1665,13 @@ Module instantiation_loops.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "alloc::string::String";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::vec::Vec")
@@ -1640,11 +1834,26 @@ Module instantiation_loops.
                                                                 ]
                                                             ]
                                                             (Ty.path "alloc::string::String"),
-                                                          M.alloc (| α0 |),
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::NodeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ],
+                                                            α0
+                                                          |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (let node_idx := M.copy (| γ |) in
+                                                                (let node_idx :=
+                                                                  M.copy (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "petgraph::graph_impl::NodeIndex")
+                                                                      []
+                                                                      [ Ty.path "u32" ],
+                                                                    γ
+                                                                  |) in
                                                                 M.call_closure (|
                                                                   Ty.path "alloc::string::String",
                                                                   M.get_associated_function (|
@@ -1712,6 +1921,10 @@ Module instantiation_loops.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 3 ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                               Value.Array
                                                 [
                                                   mk_str (| "edges with constructors: [" |);
@@ -1728,6 +1941,10 @@ Module instantiation_loops.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "core::fmt::rt::Argument" ],
                                               Value.Array
                                                 [
                                                   M.call_closure (|
@@ -1778,6 +1995,10 @@ Module instantiation_loops.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -1840,12 +2061,27 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; node ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let node := M.alloc (| node |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let node :=
+            M.alloc (| Ty.path "move_bytecode_verifier::instantiation_loops::Node", node |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::Entry")
+                  []
+                  [
+                    Ty.path "move_bytecode_verifier::instantiation_loops::Node";
+                    Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ]
+                  ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "std::collections::hash::map::Entry")
@@ -1889,7 +2125,20 @@ Module instantiation_loops.
                         "std::collections::hash::map::Entry::Occupied",
                         0
                       |) in
-                    let entry := M.copy (| γ0_0 |) in
+                    let entry :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "std::collections::hash::map::OccupiedEntry")
+                          []
+                          [
+                            Ty.path "move_bytecode_verifier::instantiation_loops::Node";
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                              []
+                              [ Ty.path "u32" ]
+                          ],
+                        γ0_0
+                      |) in
                     M.deref (|
                       M.call_closure (|
                         Ty.apply
@@ -1927,7 +2176,20 @@ Module instantiation_loops.
                         "std::collections::hash::map::Entry::Vacant",
                         0
                       |) in
-                    let entry := M.copy (| γ0_0 |) in
+                    let entry :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "std::collections::hash::map::VacantEntry")
+                          []
+                          [
+                            Ty.path "move_bytecode_verifier::instantiation_loops::Node";
+                            Ty.apply
+                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                              []
+                              [ Ty.path "u32" ]
+                          ],
+                        γ0_0
+                      |) in
                     let~ idx :
                         Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ] :=
                       M.call_closure (|
@@ -2038,8 +2300,22 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; ty ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let ty := M.alloc (| ty |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let ty :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::SignatureToken" ],
+              ty
+            |) in
           M.read (|
             let~ type_params :
                 Ty.apply
@@ -2095,10 +2371,20 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; node_from; node_to; edge ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let node_from := M.alloc (| node_from |) in
-          let node_to := M.alloc (| node_to |) in
-          let edge := M.alloc (| edge |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let node_from :=
+            M.alloc (| Ty.path "move_bytecode_verifier::instantiation_loops::Node", node_from |) in
+          let node_to :=
+            M.alloc (| Ty.path "move_bytecode_verifier::instantiation_loops::Node", node_to |) in
+          let edge :=
+            M.alloc (| Ty.path "move_bytecode_verifier::instantiation_loops::Edge", edge |) in
           M.read (|
             let~ node_from_idx :
                 Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ] :=
@@ -2161,7 +2447,7 @@ Module instantiation_loops.
                   M.read (| edge |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2204,10 +2490,29 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; caller_idx; callee_idx; type_actuals_idx ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let caller_idx := M.alloc (| caller_idx |) in
-          let callee_idx := M.alloc (| callee_idx |) in
-          let type_actuals_idx := M.alloc (| type_actuals_idx |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let caller_idx :=
+            M.alloc (|
+              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+              caller_idx
+            |) in
+          let callee_idx :=
+            M.alloc (|
+              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+              callee_idx
+            |) in
+          let type_actuals_idx :=
+            M.alloc (|
+              Ty.path "move_binary_format::file_format::SignatureIndex",
+              type_actuals_idx
+            |) in
           M.read (|
             let~ type_actuals :
                 Ty.apply
@@ -2262,6 +2567,15 @@ Module instantiation_loops.
               (M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                    ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -2378,7 +2692,19 @@ Module instantiation_loops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
+                      (let iter :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                            ],
+                          γ
+                        |) in
                       M.loop (|
                         Ty.tuple [],
                         ltac:(M.monadic
@@ -2387,6 +2713,22 @@ Module instantiation_loops.
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.path "usize";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ]
+                                        ]
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -2438,6 +2780,7 @@ Module instantiation_loops.
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -2450,8 +2793,18 @@ Module instantiation_loops.
                                         |) in
                                       let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                      let formal_idx := M.copy (| γ1_0 |) in
-                                      let ty := M.copy (| γ1_1 |) in
+                                      let formal_idx := M.copy (| Ty.path "usize", γ1_0 |) in
+                                      let ty :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::SignatureToken"
+                                            ],
+                                          γ1_1
+                                        |) in
                                       let~ formal_idx : Ty.path "u16" :=
                                         M.cast (Ty.path "u16") (M.read (| formal_idx |)) in
                                       M.match_operator (|
@@ -2467,8 +2820,13 @@ Module instantiation_loops.
                                                   "move_binary_format::file_format::SignatureToken::TypeParameter",
                                                   0
                                                 |) in
-                                              let actual_idx := M.alloc (| γ1_0 |) in
+                                              let actual_idx :=
+                                                M.alloc (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                                  γ1_0
+                                                |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.call_closure (|
                                                   Ty.tuple [],
                                                   M.get_associated_function (|
@@ -2515,6 +2873,11 @@ Module instantiation_loops.
                                                 (M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "std::collections::hash::set::IntoIter")
+                                                      []
+                                                      [ Ty.path "u16" ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path
@@ -2572,7 +2935,15 @@ Module instantiation_loops.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let iter := M.copy (| γ |) in
+                                                        (let iter :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "std::collections::hash::set::IntoIter")
+                                                              []
+                                                              [ Ty.path "u16" ],
+                                                            γ
+                                                          |) in
                                                         M.loop (|
                                                           Ty.tuple [],
                                                           ltac:(M.monadic
@@ -2581,6 +2952,11 @@ Module instantiation_loops.
                                                                 M.match_operator (|
                                                                   Ty.tuple [],
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
                                                                     M.call_closure (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -2622,6 +2998,7 @@ Module instantiation_loops.
                                                                             "core::option::Option::None"
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           M.never_to_any (|
                                                                             M.read (|
                                                                               M.break (||)
@@ -2637,7 +3014,10 @@ Module instantiation_loops.
                                                                             0
                                                                           |) in
                                                                         let type_param :=
-                                                                          M.copy (| γ0_0 |) in
+                                                                          M.copy (|
+                                                                            Ty.path "u16",
+                                                                            γ0_0
+                                                                          |) in
                                                                         let~ _ : Ty.tuple [] :=
                                                                           M.call_closure (|
                                                                             Ty.tuple [],
@@ -2696,12 +3076,16 @@ Module instantiation_loops.
                                                                             ]
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |)))
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                         |)))
                                                   ]
                                                 |))))
@@ -2710,7 +3094,7 @@ Module instantiation_loops.
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       |)))
                 ]
               |))
@@ -2749,18 +3133,45 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; caller_idx; caller_def ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let caller_idx := M.alloc (| caller_idx |) in
-          let caller_def := M.alloc (| caller_def |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let caller_idx :=
+            M.alloc (|
+              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+              caller_idx
+            |) in
+          let caller_def :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
+              caller_def
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::CodeUnit" ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -2777,11 +3188,22 @@ Module instantiation_loops.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let code := M.alloc (| γ1_0 |) in
+                    let code :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::CodeUnit" ],
+                        γ1_0
+                      |) in
                     M.use
                       (M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::Bytecode" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::slice::iter::Iter")
@@ -2822,7 +3244,14 @@ Module instantiation_loops.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let iter := M.copy (| γ |) in
+                              (let iter :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                  γ
+                                |) in
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
@@ -2831,6 +3260,18 @@ Module instantiation_loops.
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ]
+                                            ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -2878,6 +3319,7 @@ Module instantiation_loops.
                                                   "core::option::Option::None"
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |)));
                                           fun γ =>
@@ -2888,10 +3330,20 @@ Module instantiation_loops.
                                                   "core::option::Option::Some",
                                                   0
                                                 |) in
-                                              let instr := M.copy (| γ0_0 |) in
+                                              let instr :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Bytecode"
+                                                    ],
+                                                  γ0_0
+                                                |) in
                                               M.match_operator (|
                                                 Ty.tuple [],
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -2903,7 +3355,17 @@ Module instantiation_loops.
                                                           "move_binary_format::file_format::Bytecode::CallGeneric",
                                                           0
                                                         |) in
-                                                      let callee_inst_idx := M.alloc (| γ1_0 |) in
+                                                      let callee_inst_idx :=
+                                                        M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::FunctionInstantiationIndex"
+                                                            ],
+                                                          γ1_0
+                                                        |) in
                                                       let~ callee_si :
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -2949,12 +3411,24 @@ Module instantiation_loops.
                                                         |) in
                                                       M.match_operator (|
                                                         Ty.tuple [],
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ :=
                                                                 M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::option::Option")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                        ]
+                                                                    ],
                                                                   M.call_closure (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -3026,7 +3500,17 @@ Module instantiation_loops.
                                                                   "core::option::Option::Some",
                                                                   0
                                                                 |) in
-                                                              let callee_idx := M.copy (| γ0_0 |) in
+                                                              let callee_idx :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                                    ],
+                                                                  γ0_0
+                                                                |) in
                                                               let~ callee_idx :
                                                                   Ty.path
                                                                     "move_binary_format::file_format::FunctionDefinitionIndex" :=
@@ -3036,6 +3520,7 @@ Module instantiation_loops.
                                                                   |)
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.tuple [],
                                                                 M.call_closure (|
                                                                   Ty.tuple [],
                                                                   M.get_associated_function (|
@@ -3068,21 +3553,25 @@ Module instantiation_loops.
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
+                                                              (M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)))
                                                         ]
                                                       |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)))
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               |)))
                         ]
                       |))));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -3111,12 +3600,56 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
           M.read (|
             M.use
               (M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::iter::adapters::filter::Filter")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
+                        ];
+                      Ty.function
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "usize";
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_binary_format::file_format::FunctionDefinition"
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                        (Ty.path "bool")
+                    ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::iter::adapters::filter::Filter")
@@ -3393,14 +3926,47 @@ Module instantiation_loops.
                                             ]
                                         ]
                                         (Ty.path "bool"),
-                                      M.alloc (| α0 |),
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.path "usize";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::FunctionDefinition"
+                                                  ]
+                                              ]
+                                          ],
+                                        α0
+                                      |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ := M.read (| γ |) in
                                             let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                             let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let def := M.alloc (| γ1_1 |) in
+                                            let def :=
+                                              M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::FunctionDefinition"
+                                                      ]
+                                                  ],
+                                                γ1_1
+                                              |) in
                                             UnOp.not (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -3433,7 +3999,48 @@ Module instantiation_loops.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
+                      (let iter :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::filter::Filter")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::slice::iter::Iter")
+                                    []
+                                    [ Ty.path "move_binary_format::file_format::FunctionDefinition"
+                                    ]
+                                ];
+                              Ty.function
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition"
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                                (Ty.path "bool")
+                            ],
+                          γ
+                        |) in
                       M.loop (|
                         Ty.tuple [],
                         ltac:(M.monadic
@@ -3442,6 +4049,22 @@ Module instantiation_loops.
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [
+                                      Ty.tuple
+                                        [
+                                          Ty.path "usize";
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
+                                            ]
+                                        ]
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -3521,6 +4144,7 @@ Module instantiation_loops.
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -3533,9 +4157,20 @@ Module instantiation_loops.
                                         |) in
                                       let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                       let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                      let def_idx := M.copy (| γ1_0 |) in
-                                      let func_def := M.copy (| γ1_1 |) in
+                                      let def_idx := M.copy (| Ty.path "usize", γ1_0 |) in
+                                      let func_def :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition"
+                                            ],
+                                          γ1_1
+                                        |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.call_closure (|
                                           Ty.tuple [],
                                           M.get_associated_function (|
@@ -3572,7 +4207,7 @@ Module instantiation_loops.
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       |)))
                 ]
               |))
@@ -3627,7 +4262,14 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -4052,11 +4694,36 @@ Module instantiation_loops.
                                           ]
                                       ]
                                   ]),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "petgraph::graph_impl::NodeIndex")
+                                      []
+                                      [ Ty.path "u32" ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let nodes := M.copy (| γ |) in
+                                    (let nodes :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "petgraph::graph_impl::NodeIndex")
+                                              []
+                                              [ Ty.path "u32" ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        γ
+                                      |) in
                                     M.read (|
                                       let~ node_set :
                                           Ty.apply
@@ -4739,11 +5406,36 @@ Module instantiation_loops.
                                                                           [ Ty.path "u32" ]
                                                                       ])
                                                                 ]),
-                                                            M.alloc (| α0 |),
+                                                            M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "petgraph::graph_impl::NodeIndex")
+                                                                    []
+                                                                    [ Ty.path "u32" ]
+                                                                ],
+                                                              α0
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (let node_idx := M.copy (| γ |) in
+                                                                  (let node_idx :=
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "petgraph::graph_impl::NodeIndex")
+                                                                            []
+                                                                            [ Ty.path "u32" ]
+                                                                        ],
+                                                                      γ
+                                                                    |) in
                                                                   M.call_closure (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -4925,12 +5617,34 @@ Module instantiation_loops.
                                                                                               "u32"
                                                                                           ]
                                                                                       ]),
-                                                                                  M.alloc (| α0 |),
+                                                                                  M.alloc (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "petgraph::graph_impl::EdgeReference")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                        Ty.path
+                                                                                          "u32"
+                                                                                      ],
+                                                                                    α0
+                                                                                  |),
                                                                                   [
                                                                                     fun γ =>
                                                                                       ltac:(M.monadic
                                                                                         (let edge :=
                                                                                           M.copy (|
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "petgraph::graph_impl::EdgeReference")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "move_bytecode_verifier::instantiation_loops::Edge";
+                                                                                                Ty.path
+                                                                                                  "u32"
+                                                                                              ],
                                                                                             γ
                                                                                           |) in
                                                                                         M.read (|
@@ -4950,6 +5664,8 @@ Module instantiation_loops.
                                                                                                   ]
                                                                                               ],
                                                                                             M.alloc (|
+                                                                                              Ty.tuple
+                                                                                                [],
                                                                                               Value.Tuple
                                                                                                 []
                                                                                             |),
@@ -4961,6 +5677,8 @@ Module instantiation_loops.
                                                                                                         γ :=
                                                                                                     M.use
                                                                                                       (M.alloc (|
+                                                                                                        Ty.path
+                                                                                                          "bool",
                                                                                                         M.call_closure (|
                                                                                                           Ty.path
                                                                                                             "bool",
@@ -5005,6 +5723,14 @@ Module instantiation_loops.
                                                                                                                 M.borrow (|
                                                                                                                   Pointer.Kind.Ref,
                                                                                                                   M.alloc (|
+                                                                                                                    Ty.apply
+                                                                                                                      (Ty.path
+                                                                                                                        "petgraph::graph_impl::NodeIndex")
+                                                                                                                      []
+                                                                                                                      [
+                                                                                                                        Ty.path
+                                                                                                                          "u32"
+                                                                                                                      ],
                                                                                                                     M.call_closure (|
                                                                                                                       Ty.apply
                                                                                                                         (Ty.path
@@ -5056,6 +5782,20 @@ Module instantiation_loops.
                                                                                                         true
                                                                                                     |) in
                                                                                                   M.alloc (|
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "core::option::Option")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "petgraph::graph_impl::EdgeIndex")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "u32"
+                                                                                                          ]
+                                                                                                      ],
                                                                                                     Value.StructTuple
                                                                                                       "core::option::Option::Some"
                                                                                                       []
@@ -5110,6 +5850,20 @@ Module instantiation_loops.
                                                                                                   γ =>
                                                                                                 ltac:(M.monadic
                                                                                                   (M.alloc (|
+                                                                                                    Ty.apply
+                                                                                                      (Ty.path
+                                                                                                        "core::option::Option")
+                                                                                                      []
+                                                                                                      [
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "petgraph::graph_impl::EdgeIndex")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "u32"
+                                                                                                          ]
+                                                                                                      ],
                                                                                                     Value.StructTuple
                                                                                                       "core::option::Option::None"
                                                                                                       []
@@ -5174,13 +5928,14 @@ Module instantiation_loops.
                                                   ]
                                               ]
                                           ],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     M.call_closure (|
                                                       Ty.path "bool",
                                                       M.get_trait_method (|
@@ -5223,6 +5978,16 @@ Module instantiation_loops.
                                                         M.borrow (|
                                                           Pointer.Kind.MutRef,
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "core::slice::iter::Iter")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "petgraph::graph_impl::EdgeIndex")
+                                                                  []
+                                                                  [ Ty.path "u32" ]
+                                                              ],
                                                             M.call_closure (|
                                                               Ty.apply
                                                                 (Ty.path "core::slice::iter::Iter")
@@ -5327,16 +6092,48 @@ Module instantiation_loops.
                                                                           ]
                                                                       ]
                                                                       (Ty.path "bool"),
-                                                                    M.alloc (| α0 |),
+                                                                    M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "petgraph::graph_impl::EdgeIndex")
+                                                                            []
+                                                                            [ Ty.path "u32" ]
+                                                                        ],
+                                                                      α0
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let edge_idx :=
-                                                                            M.copy (| γ |) in
+                                                                            M.copy (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "petgraph::graph_impl::EdgeIndex")
+                                                                                    []
+                                                                                    [ Ty.path "u32"
+                                                                                    ]
+                                                                                ],
+                                                                              γ
+                                                                            |) in
                                                                           M.read (|
                                                                             M.match_operator (|
                                                                               Ty.path "bool",
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "move_bytecode_verifier::instantiation_loops::Edge"
+                                                                                  ],
                                                                                 M.call_closure (|
                                                                                   Ty.apply
                                                                                     (Ty.path "&")
@@ -5437,6 +6234,8 @@ Module instantiation_loops.
                                                                                         "move_bytecode_verifier::instantiation_loops::Edge::Identity"
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.path
+                                                                                        "bool",
                                                                                       Value.Bool
                                                                                         false
                                                                                     |)));
@@ -5453,6 +6252,8 @@ Module instantiation_loops.
                                                                                         0
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.path
+                                                                                        "bool",
                                                                                       Value.Bool
                                                                                         true
                                                                                     |)))
@@ -5474,6 +6275,36 @@ Module instantiation_loops.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::NodeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ];
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ],
                                                 Value.StructTuple
                                                   "core::option::Option::Some"
                                                   []
@@ -5512,6 +6343,36 @@ Module instantiation_loops.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.tuple
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::NodeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ];
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "petgraph::graph_impl::EdgeIndex")
+                                                              []
+                                                              [ Ty.path "u32" ];
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ]
+                                                      ]
+                                                  ],
                                                 Value.StructTuple
                                                   "core::option::Option::None"
                                                   []
@@ -5573,12 +6434,27 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; node_idx ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let node_idx := M.alloc (| node_idx |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let node_idx :=
+            M.alloc (|
+              Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
+              node_idx
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "alloc::string::String",
               M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "&")
@@ -5654,9 +6530,18 @@ Module instantiation_loops.
                         "move_bytecode_verifier::instantiation_loops::Node",
                         1
                       |) in
-                    let def_idx := M.alloc (| γ1_0 |) in
-                    let param_idx := M.alloc (| γ1_1 |) in
+                    let def_idx :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
+                        γ1_0
+                      |) in
+                    let param_idx :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.path "alloc::string::String",
                       M.call_closure (|
                         Ty.path "alloc::string::String",
                         M.get_function (|
@@ -5689,6 +6574,10 @@ Module instantiation_loops.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                               Value.Array [ mk_str (| "f" |); mk_str (| "#" |) ]
                                             |)
                                           |)
@@ -5700,6 +6589,10 @@ Module instantiation_loops.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 2 ]
+                                                [ Ty.path "core::fmt::rt::Argument" ],
                                               Value.Array
                                                 [
                                                   M.call_closure (|
@@ -5786,12 +6679,28 @@ Module instantiation_loops.
       match ε, τ, α with
       | [], [], [ self; edge_idx ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let edge_idx := M.alloc (| edge_idx |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker" ],
+              self
+            |) in
+          let edge_idx :=
+            M.alloc (|
+              Ty.apply (Ty.path "petgraph::graph_impl::EdgeIndex") [] [ Ty.path "u32" ],
+              edge_idx
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "alloc::string::String",
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ];
+                    Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -5871,8 +6780,16 @@ Module instantiation_loops.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let node_idx_1 := M.copy (| γ0_0 |) in
-                    let node_idx_2 := M.copy (| γ0_1 |) in
+                    let node_idx_1 :=
+                      M.copy (|
+                        Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
+                        γ0_0
+                      |) in
+                    let node_idx_2 :=
+                      M.copy (|
+                        Ty.apply (Ty.path "petgraph::graph_impl::NodeIndex") [] [ Ty.path "u32" ],
+                        γ0_1
+                      |) in
                     let~ node_1 : Ty.path "alloc::string::String" :=
                       M.call_closure (|
                         Ty.path "alloc::string::String",
@@ -5906,6 +6823,10 @@ Module instantiation_loops.
                     M.match_operator (|
                       Ty.path "alloc::string::String",
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_bytecode_verifier::instantiation_loops::Edge" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "&")
@@ -5975,8 +6896,21 @@ Module instantiation_loops.
                                 "move_bytecode_verifier::instantiation_loops::Edge::TyConApp",
                                 0
                               |) in
-                            let ty := M.alloc (| γ1_0 |) in
+                            let ty :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::SignatureToken" ]
+                                  ],
+                                γ1_0
+                              |) in
                             M.alloc (|
+                              Ty.path "alloc::string::String",
                               M.call_closure (|
                                 Ty.path "alloc::string::String",
                                 M.get_function (|
@@ -6009,6 +6943,15 @@ Module instantiation_loops.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
                                                       Value.Array
                                                         [
                                                           mk_str (| "" |);
@@ -6025,6 +6968,10 @@ Module instantiation_loops.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                                        [ Ty.path "core::fmt::rt::Argument" ],
                                                       Value.Array
                                                         [
                                                           M.call_closure (|
@@ -6123,6 +7070,7 @@ Module instantiation_loops.
                                 "move_bytecode_verifier::instantiation_loops::Edge::Identity"
                               |) in
                             M.alloc (|
+                              Ty.path "alloc::string::String",
                               M.call_closure (|
                                 Ty.path "alloc::string::String",
                                 M.get_function (|
@@ -6155,6 +7103,15 @@ Module instantiation_loops.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
                                                       Value.Array
                                                         [ mk_str (| "" |); mk_str (| " ----> " |) ]
                                                     |)
@@ -6167,6 +7124,10 @@ Module instantiation_loops.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                                        [ Ty.path "core::fmt::rt::Argument" ],
                                                       Value.Array
                                                         [
                                                           M.call_closure (|

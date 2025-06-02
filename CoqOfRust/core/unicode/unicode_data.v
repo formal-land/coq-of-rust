@@ -56,15 +56,51 @@ Module unicode.
           [],
           [ needle; chunk_idx_map; bitset_chunk_idx; bitset_canonical; bitset_canonicalized ] =>
         ltac:(M.monadic
-          (let needle := M.alloc (| needle |) in
-          let chunk_idx_map := M.alloc (| chunk_idx_map |) in
-          let bitset_chunk_idx := M.alloc (| bitset_chunk_idx |) in
-          let bitset_canonical := M.alloc (| bitset_canonical |) in
-          let bitset_canonicalized := M.alloc (| bitset_canonicalized |) in
+          (let needle := M.alloc (| Ty.path "u32", needle |) in
+          let chunk_idx_map :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
+              chunk_idx_map
+            |) in
+          let bitset_chunk_idx :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ N1 ]
+                    [ Ty.apply (Ty.path "array") [ CHUNK_SIZE ] [ Ty.path "u8" ] ]
+                ],
+              bitset_chunk_idx
+            |) in
+          let bitset_canonical :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "array") [ CANONICAL ] [ Ty.path "u64" ] ],
+              bitset_canonical
+            |) in
+          let bitset_canonicalized :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [ CANONICALIZED ]
+                    [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ]
+                ],
+              bitset_canonicalized
+            |) in
           M.read (|
             M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "bool",
                   M.read (|
                     let~ bucket_idx : Ty.path "usize" :=
                       M.cast
@@ -90,13 +126,14 @@ Module unicode.
                       M.read (|
                         M.match_operator (|
                           Ty.path "u8",
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.lt,
@@ -134,6 +171,7 @@ Module unicode.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.path "u8",
                                   M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                                 |)))
                           ]
@@ -155,13 +193,14 @@ Module unicode.
                       M.read (|
                         M.match_operator (|
                           Ty.path "u64",
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.lt,
@@ -232,8 +271,8 @@ Module unicode.
                                       ltac:(M.monadic
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let real_idx := M.copy (| γ0_0 |) in
-                                        let mapping := M.copy (| γ0_1 |) in
+                                        let real_idx := M.copy (| Ty.path "u8", γ0_0 |) in
+                                        let mapping := M.copy (| Ty.path "u8", γ0_1 |) in
                                         let~ word : Ty.path "u64" :=
                                           M.read (|
                                             M.SubPointer.get_array_field (|
@@ -268,7 +307,7 @@ Module unicode.
                                           M.read (|
                                             M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -283,9 +322,10 @@ Module unicode.
                                                         word,
                                                         UnOp.not (| M.read (| word |) |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)));
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)
                                           |) in
@@ -316,13 +356,14 @@ Module unicode.
                                           M.read (|
                                             M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
+                                                          Ty.path "bool",
                                                           M.call_closure (|
                                                             Ty.path "bool",
                                                             BinOp.ne,
@@ -370,7 +411,7 @@ Module unicode.
                                                           ]
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)));
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let~ _ : Ty.tuple [] :=
@@ -392,7 +433,7 @@ Module unicode.
                                                           ]
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)
                                           |) in
@@ -403,6 +444,7 @@ Module unicode.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         BinOp.ne,
@@ -453,7 +495,7 @@ Module unicode.
       match ε, τ, α with
       | [], [], [ short_offset_run_header ] =>
         ltac:(M.monadic
-          (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
+          (let short_offset_run_header := M.alloc (| Ty.path "u32", short_offset_run_header |) in
           M.call_closure (|
             Ty.path "u32",
             BinOp.Wrap.bit_and,
@@ -490,7 +532,7 @@ Module unicode.
       match ε, τ, α with
       | [], [], [ short_offset_run_header ] =>
         ltac:(M.monadic
-          (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
+          (let short_offset_run_header := M.alloc (| Ty.path "u32", short_offset_run_header |) in
           M.cast
             (Ty.path "usize")
             (M.call_closure (|
@@ -551,15 +593,27 @@ Module unicode.
       match ε, τ, α with
       | [ SOR; OFFSETS ], [], [ needle; short_offset_runs; offsets ] =>
         ltac:(M.monadic
-          (let needle := M.alloc (| needle |) in
-          let short_offset_runs := M.alloc (| short_offset_runs |) in
-          let offsets := M.alloc (| offsets |) in
+          (let needle := M.alloc (| Ty.path "u32", needle |) in
+          let short_offset_runs :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ SOR ] [ Ty.path "u32" ] ],
+              short_offset_runs
+            |) in
+          let offsets :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ OFFSETS ] [ Ty.path "u8" ] ],
+              offsets
+            |) in
           M.read (|
             let~ last_idx : Ty.path "usize" :=
               M.read (|
                 M.match_operator (|
                   Ty.path "usize",
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "usize" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -589,6 +643,7 @@ Module unicode.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.path "u32",
                                 M.call_closure (|
                                   Ty.path "u32",
                                   BinOp.Wrap.shl,
@@ -608,11 +663,15 @@ Module unicode.
                                     Ty.function
                                       [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ] ]
                                       (Ty.path "u32"),
-                                    M.alloc (| α0 |),
+                                    M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let header := M.copy (| γ |) in
+                                          (let header :=
+                                            M.copy (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                              γ
+                                            |) in
                                           M.call_closure (|
                                             Ty.path "u32",
                                             M.get_trait_method (|
@@ -643,8 +702,9 @@ Module unicode.
                             "core::result::Result::Ok",
                             0
                           |) in
-                        let idx := M.copy (| γ0_0 |) in
+                        let idx := M.copy (| Ty.path "usize", γ0_0 |) in
                         M.alloc (|
+                          Ty.path "usize",
                           M.call_closure (|
                             Ty.path "usize",
                             BinOp.Wrap.add,
@@ -659,7 +719,7 @@ Module unicode.
                             "core::result::Result::Err",
                             0
                           |) in
-                        let idx := M.copy (| γ0_0 |) in
+                        let idx := M.copy (| Ty.path "usize", γ0_0 |) in
                         idx))
                   ]
                 |)
@@ -681,12 +741,16 @@ Module unicode.
               M.read (|
                 M.match_operator (|
                   Ty.path "usize",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
@@ -719,8 +783,10 @@ Module unicode.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let next := M.copy (| γ0_0 |) in
+                        let next :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], γ0_0 |) in
                         M.alloc (|
+                          Ty.path "usize",
                           M.call_closure (|
                             Ty.path "usize",
                             BinOp.Wrap.sub,
@@ -741,6 +807,7 @@ Module unicode.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.path "usize",
                           M.call_closure (|
                             Ty.path "usize",
                             BinOp.Wrap.sub,
@@ -802,11 +869,11 @@ Module unicode.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "u32"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let prev := M.copy (| γ |) in
+                                        (let prev := M.copy (| Ty.path "usize", γ |) in
                                         M.call_closure (|
                                           Ty.path "u32",
                                           M.get_function (|
@@ -845,6 +912,7 @@ Module unicode.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         M.get_trait_method (|
@@ -876,7 +944,11 @@ Module unicode.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -885,6 +957,10 @@ Module unicode.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -919,6 +995,7 @@ Module unicode.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -953,13 +1030,14 @@ Module unicode.
                                             M.read (|
                                               M.match_operator (|
                                                 Ty.tuple [],
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
+                                                            Ty.path "bool",
                                                             M.call_closure (|
                                                               Ty.path "bool",
                                                               BinOp.gt,
@@ -975,12 +1053,14 @@ Module unicode.
                                                           Value.Bool true
                                                         |) in
                                                       M.alloc (|
+                                                        Ty.tuple [],
                                                         M.never_to_any (|
                                                           M.read (| M.break (||) |)
                                                         |)
                                                       |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)
                                             |) in
@@ -995,16 +1075,17 @@ Module unicode.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -1030,6 +1111,7 @@ Module unicode.
     Definition value_UNICODE_VERSION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ],
           Value.Tuple
             [
               Value.Integer IntegerKind.U8 16;
@@ -1051,7 +1133,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 53 ] [ Ty.path "u32" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 53 ] [ Ty.path "u32" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U32 706;
@@ -1121,7 +1205,9 @@ Module unicode.
       Definition value_OFFSETS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1515 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1515 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 65;
@@ -2661,7 +2747,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -2738,7 +2824,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 37 ] [ Ty.path "u32" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 37 ] [ Ty.path "u32" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U32 688;
@@ -2792,7 +2880,9 @@ Module unicode.
       Definition value_OFFSETS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 905 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 905 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 39;
@@ -3722,7 +3812,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -3799,7 +3889,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 22 ] [ Ty.path "u32" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 22 ] [ Ty.path "u32" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U32 4256;
@@ -3838,7 +3930,9 @@ Module unicode.
       Definition value_OFFSETS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 319 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 319 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 65;
@@ -4182,7 +4276,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -4258,7 +4352,13 @@ Module unicode.
           (α : list Value.t)
           : M :=
         ltac:(M.monadic
-          (M.alloc (| M.alloc (| Value.Array [ Value.Integer IntegerKind.U32 1114272 ] |) |))).
+          (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u32" ],
+            M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u32" ],
+              Value.Array [ Value.Integer IntegerKind.U32 1114272 ]
+            |)
+          |))).
       
       Global Instance Instance_IsConstant_value_SHORT_OFFSET_RUNS :
         M.IsFunction.C "core::unicode::unicode_data::cc::SHORT_OFFSET_RUNS" value_SHORT_OFFSET_RUNS.
@@ -4268,7 +4368,9 @@ Module unicode.
       Definition value_OFFSETS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 0;
@@ -4298,7 +4400,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -4375,7 +4477,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 34 ] [ Ty.path "u32" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 34 ] [ Ty.path "u32" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U32 768;
@@ -4426,7 +4530,9 @@ Module unicode.
       Definition value_OFFSETS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 751 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 751 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 0;
@@ -5198,7 +5304,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             LogicalOp.and (|
               M.call_closure (|
                 Ty.path "bool",
@@ -5237,7 +5343,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -5314,7 +5420,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 123 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 123 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 14;
@@ -5458,7 +5566,17 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 20 ]
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
+              ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 20 ]
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
+                ],
               Value.Array
                 [
                   Value.Array
@@ -5855,7 +5973,9 @@ Module unicode.
       Definition value_BITSET_CANONICAL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 56 ] [ Ty.path "u64" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 56 ] [ Ty.path "u64" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U64 0;
@@ -5928,7 +6048,15 @@ Module unicode.
       Definition value_BITSET_MAPPING (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 22 ]
+              [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 22 ]
+                [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
               Value.Array
                 [
                   Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 64 ];
@@ -5979,7 +6107,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -6115,7 +6243,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 42 ] [ Ty.path "u32" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 42 ] [ Ty.path "u32" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U32 1632;
@@ -6172,7 +6302,9 @@ Module unicode.
       Definition value_OFFSETS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 289 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 289 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 48;
@@ -6486,7 +6618,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -6563,7 +6695,9 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 125 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 125 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 12;
@@ -6709,7 +6843,17 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 17 ]
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
+              ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 17 ]
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ]
+                ],
               Value.Array
                 [
                   Value.Array
@@ -7049,7 +7193,9 @@ Module unicode.
       Definition value_BITSET_CANONICAL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 44 ] [ Ty.path "u64" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 44 ] [ Ty.path "u64" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U64 576460743713488896;
@@ -7110,7 +7256,15 @@ Module unicode.
       Definition value_BITSET_MAPPING (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "array")
+              [ Value.Integer IntegerKind.Usize 25 ]
+              [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 25 ]
+                [ Ty.tuple [ Ty.path "u8"; Ty.path "u8" ] ],
               Value.Array
                 [
                   Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 187 ];
@@ -7164,7 +7318,7 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -7296,7 +7450,9 @@ Module unicode.
       Definition value_WHITESPACE_MAP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ],
             M.alloc (|
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ],
               Value.Array
                 [
                   Value.Integer IntegerKind.U8 2;
@@ -7581,11 +7737,12 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
                 M.alloc (|
+                  Ty.path "u32",
                   M.call_closure (|
                     Ty.path "u32",
                     BinOp.Wrap.shr,
@@ -7601,6 +7758,7 @@ Module unicode.
                           Value.Integer IntegerKind.U32 0
                         |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.ne,
@@ -7652,6 +7810,7 @@ Module unicode.
                           Value.Integer IntegerKind.U32 22
                         |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -7669,6 +7828,7 @@ Module unicode.
                           Value.Integer IntegerKind.U32 32
                         |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.ne,
@@ -7720,6 +7880,7 @@ Module unicode.
                           Value.Integer IntegerKind.U32 48
                         |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -7729,7 +7890,7 @@ Module unicode.
                           ]
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -7744,7 +7905,7 @@ Module unicode.
     
     Module conversions.
       Definition value_INDEX_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 4194304 |))).
+        ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 4194304 |))).
       
       Global Instance Instance_IsConstant_value_INDEX_MASK :
         M.IsFunction.C "core::unicode::unicode_data::conversions::INDEX_MASK" value_INDEX_MASK.
@@ -7773,17 +7934,18 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "char" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
@@ -7792,6 +7954,10 @@ Module unicode.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "char" ],
                         Value.Array
                           [
                             M.cast
@@ -7807,7 +7973,10 @@ Module unicode.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| M.cast (Ty.path "u8") (M.read (| c |)) |)
+                                    M.alloc (|
+                                      Ty.path "u8",
+                                      M.cast (Ty.path "u8") (M.read (| c |))
+                                    |)
                                   |)
                                 ]
                               |));
@@ -7818,6 +7987,10 @@ Module unicode.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "char" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "array")
@@ -7950,7 +8123,13 @@ Module unicode.
                                                       ]
                                                   ]
                                                   (Ty.path "core::cmp::Ordering"),
-                                                M.alloc (| α0 |),
+                                                M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
+                                                  α0
+                                                |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -7959,7 +8138,8 @@ Module unicode.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ1_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let key := M.copy (| γ1_0 |) in
+                                                      let key :=
+                                                        M.copy (| Ty.path "char", γ1_0 |) in
                                                       M.call_closure (|
                                                         Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
@@ -8000,11 +8180,11 @@ Module unicode.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 3 ]
                                                 [ Ty.path "char" ]),
-                                            M.alloc (| α0 |),
+                                            M.alloc (| Ty.path "usize", α0 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let i := M.copy (| γ |) in
+                                                  (let i := M.copy (| Ty.path "usize", γ |) in
                                                   M.read (|
                                                     let~ u : Ty.path "u32" :=
                                                       M.read (|
@@ -8048,6 +8228,10 @@ Module unicode.
                                                         |)
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                                        [ Ty.path "char" ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "array")
@@ -8153,12 +8337,18 @@ Module unicode.
                                                                                   3
                                                                               ]
                                                                               [ Ty.path "char" ]),
-                                                                          M.alloc (| α0 |),
+                                                                          M.alloc (|
+                                                                            Ty.path "char",
+                                                                            α0
+                                                                          |),
                                                                           [
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let c :=
-                                                                                  M.copy (| γ |) in
+                                                                                  M.copy (|
+                                                                                    Ty.path "char",
+                                                                                    γ
+                                                                                  |) in
                                                                                 Value.Array
                                                                                   [
                                                                                     M.read (| c |);
@@ -8192,7 +8382,7 @@ Module unicode.
                                                                               3
                                                                           ]
                                                                           [ Ty.path "char" ]),
-                                                                      M.alloc (| α0 |),
+                                                                      M.alloc (| Ty.tuple [], α0 |),
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
@@ -8374,17 +8564,18 @@ Module unicode.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c := M.alloc (| Ty.path "char", c |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "char" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_associated_function (| Ty.path "char", "is_ascii", [], [] |),
@@ -8393,6 +8584,10 @@ Module unicode.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "char" ],
                         Value.Array
                           [
                             M.cast
@@ -8408,7 +8603,10 @@ Module unicode.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| M.cast (Ty.path "u8") (M.read (| c |)) |)
+                                    M.alloc (|
+                                      Ty.path "u8",
+                                      M.cast (Ty.path "u8") (M.read (| c |))
+                                    |)
                                   |)
                                 ]
                               |));
@@ -8419,6 +8617,10 @@ Module unicode.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "char" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "array")
@@ -8551,7 +8753,13 @@ Module unicode.
                                                       ]
                                                   ]
                                                   (Ty.path "core::cmp::Ordering"),
-                                                M.alloc (| α0 |),
+                                                M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
+                                                  α0
+                                                |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -8560,7 +8768,8 @@ Module unicode.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ1_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let key := M.copy (| γ1_0 |) in
+                                                      let key :=
+                                                        M.copy (| Ty.path "char", γ1_0 |) in
                                                       M.call_closure (|
                                                         Ty.path "core::cmp::Ordering",
                                                         M.get_trait_method (|
@@ -8601,11 +8810,11 @@ Module unicode.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 3 ]
                                                 [ Ty.path "char" ]),
-                                            M.alloc (| α0 |),
+                                            M.alloc (| Ty.path "usize", α0 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let i := M.copy (| γ |) in
+                                                  (let i := M.copy (| Ty.path "usize", γ |) in
                                                   M.read (|
                                                     let~ u : Ty.path "u32" :=
                                                       M.read (|
@@ -8649,6 +8858,10 @@ Module unicode.
                                                         |)
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                                        [ Ty.path "char" ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "array")
@@ -8754,12 +8967,18 @@ Module unicode.
                                                                                   3
                                                                               ]
                                                                               [ Ty.path "char" ]),
-                                                                          M.alloc (| α0 |),
+                                                                          M.alloc (|
+                                                                            Ty.path "char",
+                                                                            α0
+                                                                          |),
                                                                           [
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (let c :=
-                                                                                  M.copy (| γ |) in
+                                                                                  M.copy (|
+                                                                                    Ty.path "char",
+                                                                                    γ
+                                                                                  |) in
                                                                                 Value.Array
                                                                                   [
                                                                                     M.read (| c |);
@@ -8793,7 +9012,7 @@ Module unicode.
                                                                               3
                                                                           ]
                                                                           [ Ty.path "char" ]),
-                                                                      M.alloc (| α0 |),
+                                                                      M.alloc (| Ty.tuple [], α0 |),
                                                                       [
                                                                         fun γ =>
                                                                           ltac:(M.monadic
@@ -8956,7 +9175,15 @@ Module unicode.
       Definition value_LOWERCASE_TABLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
               (* Unsize *)
               M.pointer_coercion
                 (M.borrow (|
@@ -8965,6 +9192,10 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1434 ]
+                          [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
                         Value.Array
                           [
                             Value.Tuple
@@ -11857,7 +12088,35 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 3 ]
+                      [ Ty.path "char" ]
+                  ]
+              ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.path "char" ]
+                    ]
+                ],
               (* Unsize *)
               M.pointer_coercion
                 (M.borrow (|
@@ -11866,6 +12125,15 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "char" ]
+                          ],
                         Value.Array
                           [
                             Value.Array
@@ -11888,7 +12156,15 @@ Module unicode.
       Definition value_UPPERCASE_TABLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ] ],
               (* Unsize *)
               M.pointer_coercion
                 (M.borrow (|
@@ -11897,6 +12173,10 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1526 ]
+                          [ Ty.tuple [ Ty.path "char"; Ty.path "u32" ] ],
                         Value.Array
                           [
                             Value.Tuple
@@ -14971,7 +15251,35 @@ Module unicode.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 3 ]
+                      [ Ty.path "char" ]
+                  ]
+              ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.path "char" ]
+                    ]
+                ],
               (* Unsize *)
               M.pointer_coercion
                 (M.borrow (|
@@ -14980,6 +15288,15 @@ Module unicode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 102 ]
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "char" ]
+                          ],
                         Value.Array
                           [
                             Value.Array

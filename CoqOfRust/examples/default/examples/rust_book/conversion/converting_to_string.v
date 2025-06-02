@@ -21,8 +21,12 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "converting_to_string::Circle" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [], [] |),
@@ -42,7 +46,13 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ mk_str (| "Circle of radius " |) ] |)
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ mk_str (| "Circle of radius " |) ]
+                      |)
                     |)
                   |)
                 |);
@@ -52,6 +62,10 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.path "core::fmt::rt::Argument" ],
                         Value.Array
                           [
                             M.call_closure (|
@@ -130,7 +144,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.borrow (| Pointer.Kind.Ref, circle |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

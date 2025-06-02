@@ -14,8 +14,8 @@ Module alloc.
         match ε, τ, α with
         | [], [], [ self; layout ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let layout := M.alloc (| layout |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+            let layout := M.alloc (| Ty.path "core::alloc::layout::Layout", layout |) in
             M.read (|
               let~ size : Ty.path "usize" :=
                 M.call_closure (|
@@ -49,13 +49,14 @@ Module alloc.
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 UnOp.not (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -82,8 +83,8 @@ Module alloc.
                               [ M.read (| ptr |); Value.Integer IntegerKind.U8 0; M.read (| size |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -98,10 +99,10 @@ Module alloc.
         match ε, τ, α with
         | [], [], [ self; ptr; layout; new_size ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let ptr := M.alloc (| ptr |) in
-            let layout := M.alloc (| layout |) in
-            let new_size := M.alloc (| new_size |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+            let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], ptr |) in
+            let layout := M.alloc (| Ty.path "core::alloc::layout::Layout", layout |) in
+            let new_size := M.alloc (| Ty.path "usize", new_size |) in
             M.read (|
               let~ new_layout : Ty.path "core::alloc::layout::Layout" :=
                 M.call_closure (|
@@ -147,13 +148,14 @@ Module alloc.
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 UnOp.not (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -217,8 +219,8 @@ Module alloc.
                                 M.read (| layout |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in

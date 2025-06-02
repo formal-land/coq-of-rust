@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module eip7702.
   Definition value_EIP7702_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61185 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u16", Value.Integer IntegerKind.U16 61185 |))).
   
   Global Instance Instance_IsConstant_value_EIP7702_MAGIC :
     M.IsFunction.C "revm_bytecode::eip7702::EIP7702_MAGIC" value_EIP7702_MAGIC.
@@ -13,7 +13,9 @@ Module eip7702.
   Definition value_EIP7702_MAGIC_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "alloy_primitives::bytes_::Bytes",
         M.alloc (|
+          Ty.path "alloy_primitives::bytes_::Bytes",
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
@@ -40,7 +42,7 @@ Module eip7702.
   Global Typeclasses Opaque value_EIP7702_MAGIC_BYTES.
   
   Definition value_EIP7702_VERSION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 0 |))).
   
   Global Instance Instance_IsConstant_value_EIP7702_VERSION :
     M.IsFunction.C "revm_bytecode::eip7702::EIP7702_VERSION" value_EIP7702_VERSION.
@@ -68,7 +70,11 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
           Value.StructRecord
             "revm_bytecode::eip7702::Eip7702Bytecode"
             []
@@ -179,8 +185,13 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -236,6 +247,7 @@ Module eip7702.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -282,8 +294,16 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -394,7 +414,11 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -411,7 +435,10 @@ Module eip7702.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -439,8 +466,12 @@ Module eip7702.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -501,6 +532,7 @@ Module eip7702.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -551,12 +583,21 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
@@ -605,6 +646,7 @@ Module eip7702.
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
                       M.alloc (|
+                        Ty.path "core::cmp::Ordering",
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
@@ -651,6 +693,7 @@ Module eip7702.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
@@ -694,13 +737,13 @@ Module eip7702.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -725,12 +768,21 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -788,6 +840,10 @@ Module eip7702.
                         []
                         [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -843,6 +899,10 @@ Module eip7702.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "core::cmp::Ordering" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -889,13 +949,27 @@ Module eip7702.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
+                                γ
+                              |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
+                        γ
+                      |) in
                     cmp))
               ]
             |)
@@ -940,7 +1014,7 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ raw ] =>
         ltac:(M.monadic
-          (let raw := M.alloc (| raw |) in
+          (let raw := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", raw |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -952,18 +1026,26 @@ Module eip7702.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                      Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                    ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ne,
@@ -1010,6 +1092,7 @@ Module eip7702.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1031,7 +1114,7 @@ Module eip7702.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1039,13 +1122,14 @@ Module eip7702.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -1179,6 +1263,7 @@ Module eip7702.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1200,7 +1285,7 @@ Module eip7702.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1208,13 +1293,14 @@ Module eip7702.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ne,
@@ -1281,6 +1367,7 @@ Module eip7702.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1302,11 +1389,18 @@ Module eip7702.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "revm_bytecode::eip7702::Eip7702Bytecode";
+                          Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1513,7 +1607,8 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ address ] =>
         ltac:(M.monadic
-          (let address := M.alloc (| address |) in
+          (let address :=
+            M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
           M.read (|
             let~ raw :
                 Ty.apply
@@ -1628,6 +1723,7 @@ Module eip7702.
                 ]
               |) in
             M.alloc (|
+              Ty.path "revm_bytecode::eip7702::Eip7702Bytecode",
               Value.StructRecord
                 "revm_bytecode::eip7702::Eip7702Bytecode"
                 []
@@ -1674,7 +1770,11 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1704,7 +1804,11 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -1758,7 +1862,11 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1792,8 +1900,13 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1816,6 +1929,7 @@ Module eip7702.
                             "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidLength" |) |)
@@ -1830,6 +1944,7 @@ Module eip7702.
                             "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidMagic" |) |) |)
                         |)));
                     fun γ =>
@@ -1841,6 +1956,7 @@ Module eip7702.
                             "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UnsupportedVersion" |) |)
@@ -1883,8 +1999,16 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1907,6 +2031,7 @@ Module eip7702.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -1938,7 +2063,11 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1961,8 +2090,16 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1985,6 +2122,7 @@ Module eip7702.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
@@ -2029,8 +2167,16 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2053,6 +2199,7 @@ Module eip7702.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -2089,8 +2236,12 @@ Module eip7702.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2103,6 +2254,7 @@ Module eip7702.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -2153,8 +2305,13 @@ Module eip7702.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.read (|
@@ -2170,7 +2327,10 @@ Module eip7702.
                             γ,
                             "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength"
                           |) in
-                        M.alloc (| mk_str (| "Eip7702 is not 23 bytes long" |) |)));
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          mk_str (| "Eip7702 is not 23 bytes long" |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2180,6 +2340,7 @@ Module eip7702.
                             "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Bytecode is not starting with 0xEF01" |) |)
@@ -2194,6 +2355,7 @@ Module eip7702.
                             "revm_bytecode::eip7702::Eip7702DecodeError::UnsupportedVersion"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Unsupported Eip7702 version." |) |)
@@ -2203,6 +2365,10 @@ Module eip7702.
                 |)
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")

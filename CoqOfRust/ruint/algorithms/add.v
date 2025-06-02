@@ -15,9 +15,17 @@ Module algorithms.
       match ε, τ, α with
       | [], [], [ lhs; rhs; carry ] =>
         ltac:(M.monadic
-          (let lhs := M.alloc (| lhs |) in
-          let rhs := M.alloc (| rhs |) in
-          let carry := M.alloc (| carry |) in
+          (let lhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+              lhs
+            |) in
+          let rhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+              rhs
+            |) in
+          let carry := M.alloc (| Ty.path "u64", carry |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -25,6 +33,7 @@ Module algorithms.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         M.get_trait_method (|
@@ -62,7 +71,11 @@ Module algorithms.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -71,6 +84,10 @@ Module algorithms.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -105,6 +122,7 @@ Module algorithms.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -115,12 +133,13 @@ Module algorithms.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let i := M.copy (| γ0_0 |) in
+                                          let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.read (|
                                               M.match_operator (|
                                                 Ty.tuple [],
                                                 M.alloc (|
+                                                  Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                                                   M.call_closure (|
                                                     Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                                                     M.get_function (|
@@ -152,8 +171,8 @@ Module algorithms.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let lhs := M.copy (| γ0_0 |) in
-                                                      let lhs := M.copy (| γ0_1 |) in
+                                                      let lhs := M.copy (| Ty.path "u64", γ0_0 |) in
+                                                      let lhs := M.copy (| Ty.path "u64", γ0_1 |) in
                                                       let~ _ : Ty.tuple [] :=
                                                         M.write (|
                                                           M.SubPointer.get_array_field (|
@@ -164,15 +183,15 @@ Module algorithms.
                                                         |) in
                                                       let~ _ : Ty.tuple [] :=
                                                         M.write (| carry, M.read (| lhs |) |) in
-                                                      M.alloc (| Value.Tuple [] |)))
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -199,9 +218,17 @@ Module algorithms.
       match ε, τ, α with
       | [], [], [ lhs; rhs; borrow ] =>
         ltac:(M.monadic
-          (let lhs := M.alloc (| lhs |) in
-          let rhs := M.alloc (| rhs |) in
-          let borrow := M.alloc (| borrow |) in
+          (let lhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+              lhs
+            |) in
+          let rhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+              rhs
+            |) in
+          let borrow := M.alloc (| Ty.path "u64", borrow |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -209,6 +236,7 @@ Module algorithms.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         M.get_trait_method (|
@@ -246,7 +274,11 @@ Module algorithms.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -255,6 +287,10 @@ Module algorithms.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -289,6 +325,7 @@ Module algorithms.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -299,12 +336,13 @@ Module algorithms.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let i := M.copy (| γ0_0 |) in
+                                          let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.read (|
                                               M.match_operator (|
                                                 Ty.tuple [],
                                                 M.alloc (|
+                                                  Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                                                   M.call_closure (|
                                                     Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                                                     M.get_function (|
@@ -336,8 +374,8 @@ Module algorithms.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let lhs := M.copy (| γ0_0 |) in
-                                                      let lhs := M.copy (| γ0_1 |) in
+                                                      let lhs := M.copy (| Ty.path "u64", γ0_0 |) in
+                                                      let lhs := M.copy (| Ty.path "u64", γ0_1 |) in
                                                       let~ _ : Ty.tuple [] :=
                                                         M.write (|
                                                           M.SubPointer.get_array_field (|
@@ -348,15 +386,15 @@ Module algorithms.
                                                         |) in
                                                       let~ _ : Ty.tuple [] :=
                                                         M.write (| borrow, M.read (| lhs |) |) in
-                                                      M.alloc (| Value.Tuple [] |)))
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))

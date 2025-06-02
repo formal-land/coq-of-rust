@@ -23,13 +23,14 @@ Module hint.
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -47,12 +48,13 @@ Module hint.
                           |),
                           []
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.path "never",
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::intrinsics::unreachable", [], [] |),
@@ -85,19 +87,20 @@ Module hint.
     match ε, τ, α with
     | [], [], [ cond ] =>
       ltac:(M.monadic
-        (let cond := M.alloc (| cond |) in
+        (let cond := M.alloc (| Ty.path "bool", cond |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -115,8 +118,8 @@ Module hint.
                           |),
                           [ M.read (| cond |) ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -126,7 +129,7 @@ Module hint.
               M.get_function (| "core::intrinsics::assume", [], [] |),
               [ M.read (| cond |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -185,7 +188,7 @@ Module hint.
               M.get_function (| "core::core_arch::x86::sse2::_mm_pause", [], [] |),
               []
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -203,7 +206,7 @@ Module hint.
     match ε, τ, α with
     | [], [ T ], [ dummy ] =>
       ltac:(M.monadic
-        (let dummy := M.alloc (| dummy |) in
+        (let dummy := M.alloc (| T, dummy |) in
         M.call_closure (|
           T,
           M.get_function (| "core::intrinsics::black_box", [], [ T ] |),
@@ -225,7 +228,7 @@ Module hint.
     match ε, τ, α with
     | [], [ T ], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| T, value |) in
         M.read (| value |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

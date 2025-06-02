@@ -1,12 +1,12 @@
 Require Export Coq.Strings.Ascii.
-Require Export Coq.Strings.String.
+Require Export Coq.Strings.PrimString.
 Require Export Coq.ZArith.ZArith.
 Require Export CoqOfRust.RecordUpdate.
 
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.
 Global Set Printing Projections.
-Global Open Scope string_scope.
+Global Open Scope pstring_scope.
 Global Open Scope list_scope.
 Global Open Scope Z_scope.
 Global Open Scope type_scope.
@@ -28,13 +28,7 @@ Module List.
 End List.
 
 Module Ty.
-  Parameter path : string -> Ty.t.
-
   Parameter apply : Ty.t -> list Value.t -> list Ty.t -> Ty.t.
-
-  Parameter function : list Ty.t -> Ty.t -> Ty.t.
-
-  Parameter tuple : list Ty.t -> Ty.t.
 
   (** As parameter: a list of traits, described by their absolute name and their
       list of type parameters, excluding `Self`. *)
@@ -48,7 +42,7 @@ End Ty.
 
 Definition assign (target : Value.t) (source : Value.t) : M :=
   let* _ := M.write target source in
-  M.alloc (Value.Tuple []).
+  M.alloc (Ty.tuple []) (Value.Tuple []).
 
 Definition get_constant (name : string) (return_ty : Ty.t) : M :=
   let* constant := call_primitive (Primitive.GetFunction name [] []) in
@@ -62,7 +56,7 @@ Definition get_associated_constant (ty : Ty.t) (name : string) (return_ty : Ty.t
 
 (** A value with an address of type `ref str`. *)
 Definition mk_str (s : string) : M :=
-  let* pointer := M.alloc (Value.String s) in
+  let* pointer := M.alloc (Ty.path "str") (Value.String s) in
   M.borrow Pointer.Kind.Ref pointer.
 
 Module Integer.

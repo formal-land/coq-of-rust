@@ -18,7 +18,7 @@ Module arch.
               M.get_function (| "core::intrinsics::breakpoint", [], [] |),
               []
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

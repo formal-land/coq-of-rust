@@ -13,7 +13,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [ F ], [ f ] =>
     ltac:(M.monadic
-      (let f := M.alloc (| f |) in
+      (let f := M.alloc (| F, f |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -29,7 +29,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.borrow (| Pointer.Kind.Ref, f |); Value.Tuple [] ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -65,7 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.function [ Ty.tuple [] ] (Ty.tuple []),
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.tuple [], α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -93,6 +93,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                 Value.Array [ mk_str (| "" |); mk_str (| "
 " |) ]
                                               |)
@@ -105,6 +109,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                                  [ Ty.path "core::fmt::rt::Argument" ],
                                                 Value.Array
                                                   [
                                                     M.call_closure (|
@@ -133,7 +141,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     |)
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)))
                       ]
                     |)))
@@ -149,7 +157,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.read (| print |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

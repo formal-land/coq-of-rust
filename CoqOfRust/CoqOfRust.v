@@ -24,12 +24,13 @@ SOFTWARE.
 *)
 
 Require Export Coq.Strings.Ascii.
-Require Export Coq.Strings.String.
+Require Export Coq.Strings.PrimString.
 Require Export Coq.ZArith.ZArith.
 Require Export CoqOfRust.RecordUpdate.
 Require Export CoqOfRust.lib.lib.
 
 Export List.ListNotations.
+Export PStringNotations.
 
 Require Export CoqOfRust.M.
 Export M.Notations.

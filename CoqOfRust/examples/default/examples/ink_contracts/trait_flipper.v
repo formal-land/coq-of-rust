@@ -66,7 +66,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_flipper::Flipper" ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -85,7 +86,7 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
                 |)
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -99,7 +100,8 @@ Module Impl_trait_flipper_Flip_for_trait_flipper_Flipper.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_flipper::Flipper" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),

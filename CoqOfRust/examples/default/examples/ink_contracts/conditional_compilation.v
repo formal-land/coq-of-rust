@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_conditional_compilation_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "conditional_compilation::AccountId",
@@ -160,7 +164,11 @@ Module Impl_conditional_compilation_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::Env" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -184,8 +192,12 @@ Module Impl_conditional_compilation_Env.
     match ε, τ, α with
     | [], [], [ self; _event ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _event := M.alloc (| _event |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::Env" ],
+            self
+          |) in
+        let _event := M.alloc (| Ty.path "conditional_compilation::Event", _event |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -210,7 +222,11 @@ Module Impl_conditional_compilation_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::Env" ],
+            self
+          |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -270,7 +286,11 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::ConditionalCompilation" ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "conditional_compilation::Env",
           M.get_associated_function (|
@@ -335,7 +355,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| Ty.path "bool", value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           []
@@ -357,7 +377,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| Ty.path "bool", value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           []
@@ -379,7 +399,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| Ty.path "bool", value |) in
         Value.StructRecord
           "conditional_compilation::ConditionalCompilation"
           []
@@ -407,7 +427,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "conditional_compilation::ConditionalCompilation" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -439,6 +466,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -466,6 +494,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -501,7 +530,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -527,7 +556,14 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "conditional_compilation::ConditionalCompilation" ],
+            self
+          |) in
         M.read (|
           let~ caller : Ty.path "conditional_compilation::AccountId" :=
             M.call_closure (|
@@ -542,6 +578,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -569,6 +606,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -613,6 +651,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -649,7 +688,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -672,7 +711,14 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "conditional_compilation::ConditionalCompilation" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -691,7 +737,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 |)
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -705,7 +751,11 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "conditional_compilation::ConditionalCompilation" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -730,8 +780,15 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
     match ε, τ, α with
     | [], [], [ self; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "conditional_compilation::ConditionalCompilation" ],
+            self
+          |) in
+        let value := M.alloc (| Ty.path "bool", value |) in
         M.read (|
           let~ caller : Ty.path "conditional_compilation::AccountId" :=
             M.call_closure (|
@@ -746,6 +803,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -773,6 +831,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "conditional_compilation::Env",
                     M.call_closure (|
                       Ty.path "conditional_compilation::Env",
                       M.get_associated_function (|
@@ -807,7 +866,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
               |),
               M.read (| value |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -47,7 +47,20 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -114,12 +127,25 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -175,8 +201,34 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -246,8 +298,21 @@ Module extension.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -308,8 +373,22 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -336,6 +415,7 @@ Module extension.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ D ] [ PF ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -383,8 +463,21 @@ Module extension.
           match ε, τ, α with
           | [], [ __S ], [ self; __serializer ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let __serializer := M.alloc (| __serializer |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path
+                          "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                        [ D ]
+                        [ F; PF ]
+                    ],
+                  self
+                |) in
+              let __serializer := M.alloc (| __S, __serializer |) in
               M.read (|
                 M.catch_return
                   (Ty.apply
@@ -396,6 +489,13 @@ Module extension.
                     ]) (|
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                          Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                        ],
                       M.read (|
                         let~ __serde_state :
                             Ty.associated_in_trait
@@ -413,6 +513,29 @@ Module extension.
                                 __S
                                 "SerializeStruct",
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ];
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct"
+                                  ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
@@ -515,8 +638,29 @@ Module extension.
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
                                       |) in
-                                    let residual := M.copy (| γ0_0 |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              __S
+                                              "Error"
+                                          ],
+                                        γ0_0
+                                      |) in
                                     M.alloc (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
@@ -590,7 +734,16 @@ Module extension.
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
                                       |) in
-                                    let val := M.copy (| γ0_0 |) in
+                                    let val :=
+                                      M.copy (|
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "SerializeStruct",
+                                        γ0_0
+                                      |) in
                                     val))
                               ]
                             |)
@@ -600,6 +753,24 @@ Module extension.
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.associated_in_trait
+                                          "serde::ser::Serializer"
+                                          []
+                                          []
+                                          __S
+                                          "Error"
+                                      ];
+                                    Ty.tuple []
+                                  ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
@@ -687,6 +858,11 @@ Module extension.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith")
+                                                  [ D ]
+                                                  [ F; PF ],
                                                 Value.StructRecord
                                                   "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith"
                                                   [ D ]
@@ -740,8 +916,24 @@ Module extension.
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
                                       |) in
-                                    let residual := M.copy (| γ0_0 |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.associated_in_trait
+                                              "serde::ser::Serializer"
+                                              []
+                                              []
+                                              __S
+                                              "Error"
+                                          ],
+                                        γ0_0
+                                      |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
@@ -815,12 +1007,19 @@ Module extension.
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
                                       |) in
-                                    let val := M.copy (| γ0_0 |) in
+                                    let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                     val))
                               ]
                             |)
                           |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -881,7 +1080,7 @@ Module extension.
           match ε, τ, α with
           | [], [ __D ], [ __deserializer ] =>
             ltac:(M.monadic
-              (let __deserializer := M.alloc (| __deserializer |) in
+              (let __deserializer := M.alloc (| __D, __deserializer |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -986,8 +1185,34 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                other
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -1067,8 +1292,34 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (|
@@ -1145,7 +1396,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.apply (Ty.path "array") [ D ] [ PF ], value |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1208,7 +1459,7 @@ Module extension.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Ty.function [ Ty.tuple [ Ty.path "usize" ] ] PF,
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -1263,7 +1514,14 @@ Module extension.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                x
+              |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1334,7 +1592,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| PF, x |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1430,6 +1688,11 @@ Module extension.
         let Self : Ty.t := Self D F PF in
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path
+                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+              [ D ]
+              [ F; PF ],
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1464,6 +1727,11 @@ Module extension.
         let Self : Ty.t := Self D F PF in
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path
+                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+              [ D ]
+              [ F; PF ],
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1501,6 +1769,11 @@ Module extension.
         let Self : Ty.t := Self D F PF in
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path
+                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+              [ D ]
+              [ F; PF ],
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1538,6 +1811,11 @@ Module extension.
         let Self : Ty.t := Self D F PF in
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path
+                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+              [ D ]
+              [ F; PF ],
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -1572,7 +1850,20 @@ Module extension.
         match ε, τ, α with
         | [], [], [ val ] =>
           ltac:(M.monadic
-            (let val := M.alloc (| val |) in
+            (let val :=
+              M.alloc (|
+                Ty.associated_in_trait
+                  "p3_field::field::PrimeCharacteristicRing"
+                  []
+                  []
+                  (Ty.apply
+                    (Ty.path
+                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                    [ D ]
+                    [ F; PF ])
+                  "PrimeSubfield",
+                val
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path
@@ -1629,7 +1920,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ b ] =>
           ltac:(M.monadic
-            (let b := M.alloc (| b |) in
+            (let b := M.alloc (| Ty.path "bool", b |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path
@@ -1700,7 +1991,20 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1708,7 +2012,7 @@ Module extension.
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                   [ D ]
                   [ F; PF ],
-                M.alloc (| D |),
+                M.alloc (| Ty.path "usize", D |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1967,6 +2271,11 @@ Module extension.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path
+                            "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                          [ D ]
+                          [ F; PF ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path
@@ -2021,7 +2330,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [ len ] =>
           ltac:(M.monadic
-            (let len := M.alloc (| len |) in
+            (let len := M.alloc (| Ty.path "usize", len |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -2103,7 +2412,7 @@ Module extension.
           (α : list Value.t)
           : M :=
         let Self : Ty.t := Self D F PF in
-        ltac:(M.monadic (M.alloc (| D |))).
+        ltac:(M.monadic (M.alloc (| Ty.path "usize", D |))).
       
       (*
           fn as_basis_coefficients_slice(&self) -> &[PF] {
@@ -2121,7 +2430,20 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
             (* Unsize *)
             M.pointer_coercion
               (M.borrow (|
@@ -2158,7 +2480,7 @@ Module extension.
         match ε, τ, α with
         | [], [ Fn ], [ f ] =>
           ltac:(M.monadic
-            (let f := M.alloc (| f |) in
+            (let f := M.alloc (| Fn, f |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -2190,7 +2512,7 @@ Module extension.
         match ε, τ, α with
         | [], [ _ as I ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| I, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -2256,7 +2578,7 @@ Module extension.
                                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                                 [ D ]
                                 [ F; PF ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -2295,7 +2617,7 @@ Module extension.
                                                       Ty.function
                                                         [ Ty.tuple [ Ty.path "usize" ] ]
                                                         PF,
-                                                      M.alloc (| α0 |),
+                                                      M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -2371,7 +2693,21 @@ Module extension.
         match ε, τ, α with
         | [], [], [ vec ] =>
           ltac:(M.monadic
-            (let vec := M.alloc (| vec |) in
+            (let vec :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ];
+                    Ty.path "alloc::alloc::Global"
+                  ],
+                vec
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ PF; Ty.path "alloc::alloc::Global" ],
               M.get_function (|
@@ -2411,7 +2747,11 @@ Module extension.
         match ε, τ, α with
         | [], [], [ vec ] =>
           ltac:(M.monadic
-            (let vec := M.alloc (| vec |) in
+            (let vec :=
+              M.alloc (|
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ PF; Ty.path "alloc::alloc::Global" ],
+                vec
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -2489,7 +2829,25 @@ Module extension.
         match ε, τ, α with
         | [], [], [ ext_slice ] =>
           ltac:(M.monadic
-            (let ext_slice := M.alloc (| ext_slice |) in
+            (let ext_slice :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path
+                            "p3_field::extension::binomial_extension::BinomialExtensionField")
+                          [ D ]
+                          [ F; F ]
+                      ]
+                  ],
+                ext_slice
+              |) in
             M.read (|
               let~ width : Ty.path "usize" :=
                 M.read (|
@@ -2500,11 +2858,17 @@ Module extension.
                   M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                        ],
                       Value.Tuple
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.path "usize",
                               M.call_closure (|
                                 Ty.path "usize",
                                 M.get_associated_function (|
@@ -2539,17 +2903,20 @@ Module extension.
                         ltac:(M.monadic
                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let left_val := M.copy (| γ0_0 |) in
-                          let right_val := M.copy (| γ0_1 |) in
+                          let left_val :=
+                            M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                          let right_val :=
+                            M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         UnOp.not (|
                                           M.call_closure (|
                                             Ty.path "bool",
@@ -2567,6 +2934,7 @@ Module extension.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2576,6 +2944,7 @@ Module extension.
                                             []
                                             [] in
                                         M.alloc (|
+                                          Ty.path "never",
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (|
@@ -2614,7 +2983,7 @@ Module extension.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)))
                     ]
@@ -2656,11 +3025,11 @@ Module extension.
                                     []
                                     F
                                     "Packing"),
-                                M.alloc (| α0 |),
+                                M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let i := M.copy (| γ |) in
+                                      (let i := M.copy (| Ty.path "usize", γ |) in
                                       M.call_closure (|
                                         Ty.associated_in_trait
                                           "p3_field::field::Field"
@@ -2693,11 +3062,12 @@ Module extension.
                                                       Ty.function
                                                         [ Ty.tuple [ Ty.path "usize" ] ]
                                                         F,
-                                                      M.alloc (| α0 |),
+                                                      M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let j := M.copy (| γ |) in
+                                                            (let j :=
+                                                              M.copy (| Ty.path "usize", γ |) in
                                                             M.read (|
                                                               M.SubPointer.get_array_field (|
                                                                 M.SubPointer.get_struct_record_field (|
@@ -2726,6 +3096,11 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path
@@ -2773,13 +3148,62 @@ Module extension.
         match ε, τ, α with
         | [], [ impl_IntoIterator_Item___Self_ ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| impl_IntoIterator_Item___Self_, iter |) in
             M.read (|
               let~ width : Ty.path "usize" :=
                 M.read (|
                   get_constant (| "p3_field::packed::PackedValue::WIDTH", Ty.path "usize" |)
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::iter::adapters::flatten::FlatMap")
+                  []
+                  [
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      impl_IntoIterator_Item___Self_
+                      "IntoIter";
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::map::Map")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                        Ty.function
+                          [ Ty.tuple [ Ty.path "usize" ] ]
+                          (Ty.apply
+                            (Ty.path
+                              "p3_field::extension::binomial_extension::BinomialExtensionField")
+                            [ D ]
+                            [ F; F ])
+                      ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path
+                                "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                              [ D ]
+                              [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing"
+                              ]
+                          ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::iter::adapters::map::Map")
+                        []
+                        [
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ];
+                          Ty.function
+                            [ Ty.tuple [ Ty.path "usize" ] ]
+                            (Ty.apply
+                              (Ty.path
+                                "p3_field::extension::binomial_extension::BinomialExtensionField")
+                              [ D ]
+                              [ F; F ])
+                        ])
+                  ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::iter::adapters::flatten::FlatMap")
@@ -2948,11 +3372,42 @@ Module extension.
                                           [ D ]
                                           [ F; F ])
                                     ]),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path
+                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                    [ D ]
+                                    [
+                                      F;
+                                      Ty.associated_in_trait
+                                        "p3_field::field::Field"
+                                        []
+                                        []
+                                        F
+                                        "Packing"
+                                    ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let x := M.copy (| γ |) in
+                                      (let x :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path
+                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                            [ D ]
+                                            [
+                                              F;
+                                              Ty.associated_in_trait
+                                                "p3_field::field::Field"
+                                                []
+                                                []
+                                                F
+                                                "Packing"
+                                            ],
+                                          γ
+                                        |) in
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::iter::adapters::map::Map")
@@ -3018,11 +3473,12 @@ Module extension.
                                                             "p3_field::extension::binomial_extension::BinomialExtensionField")
                                                           [ D ]
                                                           [ F; F ]),
-                                                      M.alloc (| α0 |),
+                                                      M.alloc (| Ty.path "usize", α0 |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let i := M.copy (| γ |) in
+                                                            (let i :=
+                                                              M.copy (| Ty.path "usize", γ |) in
                                                             M.read (|
                                                               let~ values :
                                                                   Ty.apply
@@ -3064,12 +3520,17 @@ Module extension.
                                                                                       ]
                                                                                   ]
                                                                                   F,
-                                                                                M.alloc (| α0 |),
+                                                                                M.alloc (|
+                                                                                  Ty.path "usize",
+                                                                                  α0
+                                                                                |),
                                                                                 [
                                                                                   fun γ =>
                                                                                     ltac:(M.monadic
                                                                                       (let j :=
                                                                                         M.copy (|
+                                                                                          Ty.path
+                                                                                            "usize",
                                                                                           γ
                                                                                         |) in
                                                                                       M.read (|
@@ -3134,6 +3595,11 @@ Module extension.
                                                                   ]
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "p3_field::extension::binomial_extension::BinomialExtensionField")
+                                                                  [ D ]
+                                                                  [ F; F ],
                                                                 M.call_closure (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -3198,7 +3664,14 @@ Module extension.
         match ε, τ, α with
         | [], [], [ base ] =>
           ltac:(M.monadic
-            (let base := M.alloc (| base |) in
+            (let base :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                base
+              |) in
             M.read (|
               let~ width : Ty.path "usize" :=
                 M.read (|
@@ -3483,6 +3956,16 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::field::Powers")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
+                  ],
                 Value.StructRecord
                   "p3_field::field::Powers"
                   []
@@ -3553,7 +4036,15 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -3633,8 +4124,24 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                rhs
+              |) in
             M.read (|
               let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.call_closure (|
@@ -3674,6 +4181,11 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
@@ -3736,8 +4248,23 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                rhs
+              |) in
             M.read (|
               let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.call_closure (|
@@ -3777,6 +4304,11 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
@@ -3838,8 +4370,16 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs := M.alloc (| PF, rhs |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -3912,13 +4452,35 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                rhs
+              |) in
             M.read (|
               M.use
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
@@ -3942,7 +4504,11 @@ Module extension.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -3951,6 +4517,10 @@ Module extension.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -3982,6 +4552,7 @@ Module extension.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -3992,7 +4563,7 @@ Module extension.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let i := M.copy (| γ0_0 |) in
+                                        let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
@@ -4029,11 +4600,11 @@ Module extension.
                                               |)
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))
@@ -4083,13 +4654,34 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                rhs
+              |) in
             M.read (|
               M.use
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
@@ -4113,7 +4705,11 @@ Module extension.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -4122,6 +4718,10 @@ Module extension.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -4153,6 +4753,7 @@ Module extension.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -4163,7 +4764,7 @@ Module extension.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let i := M.copy (| γ0_0 |) in
+                                        let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
@@ -4200,11 +4801,11 @@ Module extension.
                                               |)
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))
@@ -4251,8 +4852,21 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs := M.alloc (| PF, rhs |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -4281,7 +4895,7 @@ Module extension.
                     M.read (| rhs |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4319,7 +4933,7 @@ Module extension.
         match ε, τ, α with
         | [], [ _ as I ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| I, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path
@@ -4414,11 +5028,26 @@ Module extension.
                                       "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                                     [ D ]
                                     [ F; PF ]),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path
+                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                    [ D ]
+                                    [ F; PF ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let acc := M.copy (| γ |) in
+                                      (let acc :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path
+                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                            [ D ]
+                                            [ F; PF ],
+                                          γ
+                                        |) in
                                       M.match_operator (|
                                         Ty.function
                                           [
@@ -4441,11 +5070,26 @@ Module extension.
                                               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                                             [ D ]
                                             [ F; PF ]),
-                                        M.alloc (| α1 |),
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path
+                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                            [ D ]
+                                            [ F; PF ],
+                                          α1
+                                        |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                                    [ D ]
+                                                    [ F; PF ],
+                                                  γ
+                                                |) in
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path
@@ -4544,8 +5188,24 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                rhs
+              |) in
             M.read (|
               let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.call_closure (|
@@ -4585,6 +5245,11 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
@@ -4647,8 +5312,23 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                rhs
+              |) in
             M.read (|
               let~ value : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.call_closure (|
@@ -4688,6 +5368,11 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
@@ -4750,8 +5435,16 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs := M.alloc (| PF, rhs |) in
             M.read (|
               let~ res : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.read (|
@@ -4782,6 +5475,11 @@ Module extension.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
                 Value.StructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
@@ -4829,8 +5527,29 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                rhs
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4863,7 +5582,7 @@ Module extension.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4908,8 +5627,28 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                rhs
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4942,7 +5681,7 @@ Module extension.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4986,8 +5725,21 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs := M.alloc (| PF, rhs |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5014,7 +5766,7 @@ Module extension.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5066,8 +5818,24 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                rhs
+              |) in
             M.read (|
               let~ a : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.read (|
@@ -5210,8 +5978,23 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                rhs
+              |) in
             M.read (|
               let~ a : Ty.apply (Ty.path "array") [ D ] [ PF ] :=
                 M.read (|
@@ -5348,8 +6131,16 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                self
+              |) in
+            let rhs := M.alloc (| PF, rhs |) in
             Value.StructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
@@ -5380,11 +6171,11 @@ Module extension.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Ty.function [ Ty.tuple [ PF ] ] PF,
-                                  M.alloc (| α0 |),
+                                  M.alloc (| PF, α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
+                                        (let x := M.copy (| PF, γ |) in
                                         M.call_closure (|
                                           PF,
                                           M.get_trait_method (|
@@ -5445,7 +6236,7 @@ Module extension.
         match ε, τ, α with
         | [], [ _ as I ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| I, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path
@@ -5540,11 +6331,26 @@ Module extension.
                                       "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                                     [ D ]
                                     [ F; PF ]),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path
+                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                    [ D ]
+                                    [ F; PF ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let acc := M.copy (| γ |) in
+                                      (let acc :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path
+                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                            [ D ]
+                                            [ F; PF ],
+                                          γ
+                                        |) in
                                       M.match_operator (|
                                         Ty.function
                                           [
@@ -5567,11 +6373,26 @@ Module extension.
                                               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                                             [ D ]
                                             [ F; PF ]),
-                                        M.alloc (| α1 |),
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path
+                                              "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                            [ D ]
+                                            [ F; PF ],
+                                          α1
+                                        |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                                                    [ D ]
+                                                    [ F; PF ],
+                                                  γ
+                                                |) in
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path
@@ -5662,8 +6483,29 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path
+                    "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                  [ D ]
+                  [ F; PF ],
+                rhs
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5696,7 +6538,7 @@ Module extension.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5741,8 +6583,28 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "p3_field::extension::binomial_extension::BinomialExtensionField")
+                  [ D ]
+                  [ F; F ],
+                rhs
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5775,7 +6637,7 @@ Module extension.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5819,8 +6681,21 @@ Module extension.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path
+                        "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
+                      [ D ]
+                      [ F; PF ]
+                  ],
+                self
+              |) in
+            let rhs := M.alloc (| PF, rhs |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5847,7 +6722,7 @@ Module extension.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

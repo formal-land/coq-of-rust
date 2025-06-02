@@ -39,7 +39,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -50,7 +54,7 @@ Module str.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -88,8 +92,16 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                other
+              |) in
             LogicalOp.and (|
               M.call_closure (|
                 Ty.path "bool",
@@ -163,7 +175,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::str::error::Utf8Error",
@@ -199,8 +215,13 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -240,6 +261,10 @@ Module str.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -278,7 +303,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -307,7 +336,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -325,8 +358,9 @@ Module str.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let len := M.copy (| γ0_0 |) in
+                      let len := M.copy (| Ty.path "u8", γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -337,6 +371,7 @@ Module str.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
                       |)))
                 ]
@@ -371,15 +406,20 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -395,8 +435,12 @@ Module str.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let error_len := M.copy (| γ0_0 |) in
+                      let error_len := M.copy (| Ty.path "u8", γ0_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -428,6 +472,10 @@ Module str.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (| "invalid utf-8 sequence of " |);
@@ -443,6 +491,10 @@ Module str.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -499,6 +551,10 @@ Module str.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -530,6 +586,10 @@ Module str.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (|
@@ -546,6 +606,10 @@ Module str.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -609,7 +673,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::Utf8Error" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (| mk_str (| "invalid utf-8: corrupt contents" |) |)
@@ -642,8 +710,13 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -675,7 +748,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                self
+              |) in
             Value.StructTuple "core::str::error::ParseBoolError" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -709,8 +786,16 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                other
+              |) in
             Value.Bool true))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -736,7 +821,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -763,8 +852,13 @@ Module str.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -803,7 +897,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::str::error::ParseBoolError" ],
+                self
+              |) in
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "failed to parse bool" |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

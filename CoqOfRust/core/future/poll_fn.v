@@ -15,7 +15,7 @@ Module future.
       match ε, τ, α with
       | [], [ T; F ], [ f ] =>
         ltac:(M.monadic
-          (let f := M.alloc (| f |) in
+          (let f := M.alloc (| F, f |) in
           Value.StructRecord "core::future::poll_fn::PollFn" [] [ F ] [ ("f", M.read (| f |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -61,8 +61,16 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -78,6 +86,7 @@ Module future.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.call_closure (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
@@ -126,8 +135,24 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::future::poll_fn::PollFn") [] [ F ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
               M.get_trait_method (|

@@ -39,7 +39,11 @@ Module num.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                  self
+                |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "core::num::flt2dec::decoder::Decoded",
@@ -83,8 +87,13 @@ Module num.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -172,6 +181,7 @@ Module num.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_struct_record_field (|
@@ -218,8 +228,16 @@ Module num.
           match ε, τ, α with
           | [], [], [ self; other ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                  self
+                |) in
+              let other :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                  other
+                |) in
               LogicalOp.and (|
                 LogicalOp.and (|
                   LogicalOp.and (|
@@ -356,7 +374,11 @@ Module num.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                  self
+                |) in
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
@@ -373,7 +395,10 @@ Module num.
                                 (M.match_operator (|
                                   Ty.tuple [],
                                   Value.DeclaredButUndefined,
-                                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                  ]
                                 |)))
                           ]
                         |)))
@@ -449,7 +474,11 @@ Module num.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
+                  self
+                |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "core::num::flt2dec::decoder::FullDecoded",
@@ -477,8 +506,13 @@ Module num.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
@@ -496,6 +530,10 @@ Module num.
                             "core::num::flt2dec::decoder::FullDecoded::Nan"
                           |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -522,6 +560,10 @@ Module num.
                             "core::num::flt2dec::decoder::FullDecoded::Infinite"
                           |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -548,6 +590,10 @@ Module num.
                             "core::num::flt2dec::decoder::FullDecoded::Zero"
                           |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -574,8 +620,19 @@ Module num.
                             "core::num::flt2dec::decoder::FullDecoded::Finite",
                             0
                           |) in
-                        let __self_0 := M.alloc (| γ1_0 |) in
+                        let __self_0 :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -634,8 +691,16 @@ Module num.
           match ε, τ, α with
           | [], [], [ self; other ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
+                  self
+                |) in
+              let other :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
+                  other
+                |) in
               M.read (|
                 let~ __self_discr : Ty.path "isize" :=
                   M.call_closure (|
@@ -658,6 +723,7 @@ Module num.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |) in
                 M.alloc (|
+                  Ty.path "bool",
                   LogicalOp.and (|
                     M.call_closure (|
                       Ty.path "bool",
@@ -668,7 +734,20 @@ Module num.
                       (M.read (|
                         M.match_operator (|
                           Ty.path "bool",
-                          M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ]
+                              ],
+                            Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -681,7 +760,14 @@ Module num.
                                     "core::num::flt2dec::decoder::FullDecoded::Finite",
                                     0
                                   |) in
-                                let __self_0 := M.alloc (| γ2_0 |) in
+                                let __self_0 :=
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                    γ2_0
+                                  |) in
                                 let γ0_1 := M.read (| γ0_1 |) in
                                 let γ2_0 :=
                                   M.SubPointer.get_struct_tuple_field (|
@@ -689,8 +775,16 @@ Module num.
                                     "core::num::flt2dec::decoder::FullDecoded::Finite",
                                     0
                                   |) in
-                                let __arg1_0 := M.alloc (| γ2_0 |) in
+                                let __arg1_0 :=
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "core::num::flt2dec::decoder::Decoded" ],
+                                    γ2_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     M.get_trait_method (|
@@ -716,7 +810,8 @@ Module num.
                                     ]
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            fun γ =>
+                              ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           ]
                         |)
                       |)))
@@ -747,12 +842,16 @@ Module num.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
+                  self
+                |) in
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   Value.DeclaredButUndefined,
-                  [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                  [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                 |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -870,11 +969,12 @@ Module num.
         match ε, τ, α with
         | [], [ T ], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| T, v |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [ Ty.path "bool"; Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                 M.alloc (|
+                  Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
                   M.call_closure (|
                     Ty.tuple [ Ty.path "u64"; Ty.path "i16"; Ty.path "i8" ],
                     M.get_trait_method (|
@@ -895,9 +995,9 @@ Module num.
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                      let mant := M.copy (| γ0_0 |) in
-                      let exp := M.copy (| γ0_1 |) in
-                      let sign := M.copy (| γ0_2 |) in
+                      let mant := M.copy (| Ty.path "u64", γ0_0 |) in
+                      let exp := M.copy (| Ty.path "i16", γ0_1 |) in
+                      let sign := M.copy (| Ty.path "i8", γ0_2 |) in
                       let~ even : Ty.path "bool" :=
                         M.call_closure (|
                           Ty.path "bool",
@@ -916,6 +1016,7 @@ Module num.
                           M.match_operator (|
                             Ty.path "core::num::flt2dec::decoder::FullDecoded",
                             M.alloc (|
+                              Ty.path "core::num::FpCategory",
                               M.call_closure (|
                                 Ty.path "core::num::FpCategory",
                                 M.get_trait_method (|
@@ -936,6 +1037,7 @@ Module num.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Nan" |) in
                                   M.alloc (|
+                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Nan"
                                       []
@@ -947,6 +1049,7 @@ Module num.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Infinite" |) in
                                   M.alloc (|
+                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Infinite"
                                       []
@@ -958,6 +1061,7 @@ Module num.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Zero" |) in
                                   M.alloc (|
+                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Zero"
                                       []
@@ -969,6 +1073,7 @@ Module num.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::num::FpCategory::Subnormal" |) in
                                   M.alloc (|
+                                    Ty.path "core::num::flt2dec::decoder::FullDecoded",
                                     Value.StructTuple
                                       "core::num::flt2dec::decoder::FullDecoded::Finite"
                                       []
@@ -1022,13 +1127,14 @@ Module num.
                                     |) in
                                   M.match_operator (|
                                     Ty.path "core::num::flt2dec::decoder::FullDecoded",
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
+                                                Ty.path "bool",
                                                 M.call_closure (|
                                                   Ty.path "bool",
                                                   BinOp.eq,
@@ -1046,6 +1152,7 @@ Module num.
                                               Value.Bool true
                                             |) in
                                           M.alloc (|
+                                            Ty.path "core::num::flt2dec::decoder::FullDecoded",
                                             Value.StructTuple
                                               "core::num::flt2dec::decoder::FullDecoded::Finite"
                                               []
@@ -1083,6 +1190,7 @@ Module num.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (M.alloc (|
+                                            Ty.path "core::num::flt2dec::decoder::FullDecoded",
                                             Value.StructTuple
                                               "core::num::flt2dec::decoder::FullDecoded::Finite"
                                               []
@@ -1123,6 +1231,8 @@ Module num.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.tuple
+                          [ Ty.path "bool"; Ty.path "core::num::flt2dec::decoder::FullDecoded" ],
                         Value.Tuple
                           [
                             M.call_closure (|

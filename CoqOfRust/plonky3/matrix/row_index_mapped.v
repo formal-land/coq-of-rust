@@ -13,8 +13,8 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [ T; Inner ], [ self; inner ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let inner := M.alloc (| inner |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let inner := M.alloc (| Inner, inner |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -114,11 +114,11 @@ Module row_index_mapped.
                                       [ T ]
                                       Inner
                                       "Row"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let r := M.copy (| γ |) in
+                                        (let r := M.copy (| Ty.path "usize", γ |) in
                                         M.call_closure (|
                                           Ty.associated_in_trait
                                             "p3_matrix::Matrix"
@@ -220,7 +220,19 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
           Value.StructRecord
             "p3_matrix::row_index_mapped::RowIndexMappedView"
             []
@@ -295,8 +307,21 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -336,6 +361,7 @@ Module row_index_mapped.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Inner ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -382,7 +408,19 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "width", [], [] |),
@@ -415,7 +453,19 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (|
@@ -456,9 +506,21 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self; r; c ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let c := M.alloc (| c |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let c := M.alloc (| Ty.path "usize", c |) in
           M.call_closure (|
             T,
             M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "get", [], [] |),
@@ -524,8 +586,20 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Inner "Row",
             M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "row", [], [] |),
@@ -581,8 +655,20 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Inner "{{synthetic}}'2",
             M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "row_slice", [], [] |),
@@ -643,7 +729,14 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                []
+                [ IndexMap; Inner ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -705,8 +798,20 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [ P ], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.tuple
               [
@@ -782,8 +887,20 @@ Module row_index_mapped.
       match ε, τ, α with
       | [], [ P ], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                    []
+                    [ IndexMap; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_matrix::Matrix" [] [ T; P ] Inner "{{synthetic}}'5",
             M.get_trait_method (|

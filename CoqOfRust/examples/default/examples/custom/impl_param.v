@@ -18,9 +18,9 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   match ε, τ, α with
   | [], [ A; impl_Default; impl_Default'1 ], [ func; func2; foo ] =>
     ltac:(M.monadic
-      (let func := M.alloc (| func |) in
-      let func2 := M.alloc (| func2 |) in
-      let foo := M.alloc (| foo |) in
+      (let func := M.alloc (| impl_Default, func |) in
+      let func2 := M.alloc (| impl_Default'1, func2 |) in
+      let foo := M.alloc (| A, foo |) in
       M.read (|
         let~ x : impl_Default := M.read (| func |) in
         let~ _ : Ty.tuple [] :=
@@ -80,7 +80,7 @@ Definition with_impls (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             |),
             [ Value.Tuple [ M.read (| x |); M.read (| y |); M.read (| z |) ] ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -35,12 +35,12 @@ fn path_and_ty_of_bin_op(bin_op: &BinOp, ty_lhs: Rc<CoqType>) -> (&'static str, 
     }
 }
 
-pub(crate) fn allocate_bindings(bindings: &[String], body: Rc<Expr>) -> Rc<Expr> {
-    bindings.iter().rfold(body, |body, binding| {
+pub(crate) fn allocate_bindings(bindings: &[(String, Rc<CoqType>)], body: Rc<Expr>) -> Rc<Expr> {
+    bindings.iter().rfold(body, |body, (name, ty)| {
         Rc::new(Expr::Let {
-            name: Some(binding.clone()),
+            name: Some(name.clone()),
             ty: None,
-            init: Expr::local_var(binding).alloc(),
+            init: Expr::local_var(name).alloc(ty.clone()),
             body,
         })
     })
@@ -57,16 +57,16 @@ fn build_inner_match(
             Pattern::Wild => body,
             Pattern::Binding {
                 name,
-                ty: _,
+                ty,
                 is_with_ref,
                 pattern,
             } => Rc::new(Expr::Let {
                 name: Some(name.clone()),
                 ty: None,
                 init: if *is_with_ref {
-                    Expr::local_var(&scrutinee).alloc()
+                    Expr::local_var(&scrutinee).alloc(ty.clone())
                 } else {
-                    Expr::local_var(&scrutinee).copy()
+                    Expr::local_var(&scrutinee).copy(ty.clone())
                 },
                 body: match pattern {
                     None => body,
@@ -182,7 +182,7 @@ fn build_inner_match(
                         kind: CallKind::Effectful,
                         func: Rc::new(Expr::CallTy {
                             func: Expr::local_var("M.find_or_pattern"),
-                            ty: free_vars_ty,
+                            ty: free_vars_ty.clone(),
                         }),
                         args: vec![
                             Expr::local_var(&scrutinee),
@@ -203,7 +203,7 @@ fn build_inner_match(
                                                         .map(|(name, _)| Expr::local_var(name))
                                                         .collect(),
                                                 })
-                                                .alloc(),
+                                                .alloc(free_vars_ty.clone()),
                                                 0,
                                             ),
                                         })
@@ -460,6 +460,7 @@ pub(crate) fn compile_expr<'a>(
     expr_id: &rustc_middle::thir::ExprId,
 ) -> Rc<Expr> {
     let expr = thir.exprs.get(*expr_id).unwrap();
+    let ty = compile_type(env, &expr.span, generics, &expr.ty);
 
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => compile_expr(env, generics, thir, value),
@@ -501,7 +502,6 @@ pub(crate) fn compile_expr<'a>(
             else_opt,
             ..
         } => {
-            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let conditions = get_if_conditions(env, generics, thir, cond);
             let success = compile_expr(env, generics, thir, then);
             let failure = match else_opt {
@@ -533,14 +533,13 @@ pub(crate) fn compile_expr<'a>(
                 .collect();
             let func = compile_expr(env, generics, thir, fun);
             let func = func.read();
-            let ty = compile_type(env, &expr.span, generics, &expr.ty);
 
             Rc::new(Expr::Call {
                 func,
                 args,
-                kind: CallKind::Closure(ty),
+                kind: CallKind::Closure(ty.clone()),
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::Deref { arg } => Rc::new(Expr::Call {
             func: Expr::local_var("M.deref"),
@@ -550,16 +549,16 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::Binary { op, lhs, rhs } => {
             let lhs_expr = thir.exprs.get(*lhs).unwrap();
             let ty_lhs = compile_type(env, &lhs_expr.span, generics, &lhs_expr.ty);
-            let (path, ty) = path_and_ty_of_bin_op(op, ty_lhs);
+            let (path, _) = path_and_ty_of_bin_op(op, ty_lhs);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
                 args: vec![lhs.read(), rhs.read()],
-                kind: CallKind::Closure(ty),
+                kind: CallKind::Closure(ty.clone()),
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::LogicalOp { op, lhs, rhs } => {
             let path = match op {
@@ -574,7 +573,7 @@ pub(crate) fn compile_expr<'a>(
                 lhs,
                 rhs,
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::Unary { op, arg } => {
             let (path, kind) = match op {
@@ -589,13 +588,13 @@ pub(crate) fn compile_expr<'a>(
                 args: vec![arg.read()],
                 kind,
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::Cast { source } => {
             let source = compile_expr(env, generics, thir, source).read();
             let target_ty = compile_type(env, &expr.span, generics, &expr.ty);
 
-            Rc::new(Expr::Cast { target_ty, source }).alloc()
+            Rc::new(Expr::Cast { target_ty, source }).alloc(ty)
         }
         thir::ExprKind::Use { source } => {
             let source = compile_expr(env, generics, thir, source);
@@ -611,7 +610,7 @@ pub(crate) fn compile_expr<'a>(
                 args: vec![source.read()],
                 kind: CallKind::Effectful,
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::PointerCoercion {
             source,
@@ -629,10 +628,9 @@ pub(crate) fn compile_expr<'a>(
                     kind: CallKind::Pure,
                 }),
             ))
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::Loop { body, .. } => {
-            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let body = compile_expr(env, generics, thir, body);
 
             Rc::new(Expr::Loop { ty, body })
@@ -642,7 +640,7 @@ pub(crate) fn compile_expr<'a>(
 
             emit_warning_with_note(env, &expr.span, error_message, Some("Please report!"));
 
-            Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
+            Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc(ty)
         }
         thir::ExprKind::Match {
             scrutinee,
@@ -650,7 +648,6 @@ pub(crate) fn compile_expr<'a>(
             arms,
             match_source: _,
         } => {
-            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let scrutinee = compile_expr(env, generics, thir, scrutinee);
             let arms: Vec<MatchArm> = arms
                 .iter()
@@ -686,12 +683,12 @@ pub(crate) fn compile_expr<'a>(
                 args,
                 kind: CallKind::Effectful,
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
             let lhs_expr = thir.exprs.get(*lhs).unwrap();
             let ty_lhs = compile_type(env, &lhs_expr.span, generics, &lhs_expr.ty);
-            let (path, ty) = path_and_ty_of_bin_op(op, ty_lhs);
+            let (path, result_ty) = path_and_ty_of_bin_op(op, ty_lhs);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
@@ -706,13 +703,13 @@ pub(crate) fn compile_expr<'a>(
                         Rc::new(Expr::Call {
                             func: Expr::local_var(path),
                             args: vec![Expr::local_var("β").read(), rhs.read()],
-                            kind: CallKind::Closure(ty),
+                            kind: CallKind::Closure(result_ty),
                         }),
                     ],
                     kind: CallKind::Effectful,
                 }),
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::Field {
             lhs,
@@ -790,7 +787,7 @@ pub(crate) fn compile_expr<'a>(
             ],
             kind: CallKind::Effectful,
         })
-        .alloc(),
+        .alloc(ty),
         thir::ExprKind::RawBorrow { mutability, arg } => Rc::new(Expr::Call {
             func: Expr::local_var("M.borrow"),
             args: vec![
@@ -805,7 +802,7 @@ pub(crate) fn compile_expr<'a>(
             ],
             kind: CallKind::Effectful,
         })
-        .alloc(),
+        .alloc(ty),
         thir::ExprKind::Break { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Break)),
         thir::ExprKind::Continue { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Continue)),
         thir::ExprKind::Return { value } => {
@@ -841,7 +838,7 @@ pub(crate) fn compile_expr<'a>(
                 args,
                 kind: CallKind::Effectful,
             })
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::Array { fields } => Rc::new(Expr::Array {
             elements: fields
@@ -850,7 +847,7 @@ pub(crate) fn compile_expr<'a>(
                 .collect(),
             is_internal: false,
         })
-        .alloc(),
+        .alloc(ty),
         thir::ExprKind::Tuple { fields } => {
             let elements: Vec<_> = fields
                 .iter()
@@ -859,11 +856,10 @@ pub(crate) fn compile_expr<'a>(
             if elements.is_empty() {
                 Expr::tt()
             } else {
-                Rc::new(Expr::Tuple { elements }).alloc()
+                Rc::new(Expr::Tuple { elements }).alloc(ty)
             }
         }
         thir::ExprKind::Adt(adt_expr) => {
-            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let (arg_consts, arg_tys) = match ty.as_ref() {
                 CoqType::Application {
                     func: _,
@@ -908,7 +904,7 @@ pub(crate) fn compile_expr<'a>(
                     arg_tys,
                     fields: vec![],
                 })
-                .alloc();
+                .alloc(ty);
             }
 
             if is_a_tuple {
@@ -919,7 +915,7 @@ pub(crate) fn compile_expr<'a>(
                     arg_tys,
                     fields,
                 })
-                .alloc()
+                .alloc(ty)
             } else {
                 Rc::new(Expr::StructStruct {
                     path,
@@ -928,7 +924,7 @@ pub(crate) fn compile_expr<'a>(
                     fields,
                     base,
                 })
-                .alloc()
+                .alloc(ty)
             }
         }
         thir::ExprKind::PlaceTypeAscription { source, .. }
@@ -936,7 +932,6 @@ pub(crate) fn compile_expr<'a>(
             compile_expr(env, generics, thir, source)
         }
         thir::ExprKind::Closure(closure) => {
-            let ty = compile_type(env, &expr.span, generics, &expr.ty);
             let rustc_middle::thir::ClosureExpr { closure_id, .. } = closure.as_ref();
             let result = apply_on_thir(env, closure_id, |thir, expr_id| {
                 let args: Vec<(Rc<Pattern>, Rc<CoqType>)> = thir
@@ -961,20 +956,20 @@ pub(crate) fn compile_expr<'a>(
                     args
                 };
                 let body = compile_expr(env, generics, thir, expr_id).read();
-                let body = args
-                    .iter()
-                    .enumerate()
-                    .rfold(body, |body, (index, (pattern, _))| {
-                        build_match(
-                            ty.clone(),
-                            Expr::local_var(&format!("α{index}")).alloc(),
-                            vec![MatchArm {
-                                pattern: pattern.clone(),
-                                if_let_guard: vec![],
-                                body,
-                            }],
-                        )
-                    });
+                let body =
+                    args.iter()
+                        .enumerate()
+                        .rfold(body, |body, (index, (pattern, pattern_ty))| {
+                            build_match(
+                                ty.clone(),
+                                Expr::local_var(&format!("α{index}")).alloc(pattern_ty.clone()),
+                                vec![MatchArm {
+                                    pattern: pattern.clone(),
+                                    if_let_guard: vec![],
+                                    body,
+                                }],
+                            )
+                        });
                 let args = args
                     .iter()
                     .enumerate()
@@ -987,27 +982,27 @@ pub(crate) fn compile_expr<'a>(
                     is_for_match: false,
                     form: LambdaForm::Closure,
                 })
-                .alloc()
+                .alloc(ty)
             });
 
             match result {
                 Ok(expr) => expr,
-                Err(error) => Rc::new(Expr::Comment(error, Expr::tt())).alloc(),
+                Err(error) => Rc::new(Expr::Comment(error, Expr::tt())).alloc(CoqType::unit()),
             }
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(Expr::Literal(Rc::new(Literal::String(symbol.to_string())))).alloc()
+                Rc::new(Expr::Literal(Rc::new(Literal::String(symbol.to_string())))).alloc(ty)
             }
             rustc_ast::LitKind::Char(c) => {
-                Rc::new(Expr::Literal(Rc::new(Literal::Char(c)))).alloc()
+                Rc::new(Expr::Literal(Rc::new(Literal::Char(c)))).alloc(ty)
             }
             rustc_ast::LitKind::Int(i, _) => Rc::new(Expr::Literal(Rc::new(Literal::Integer(
                 compile_literal_integer(env, &expr.span, &expr.ty, *neg, i.get()),
             ))))
-            .alloc(),
+            .alloc(ty),
             rustc_ast::LitKind::Bool(c) => {
-                Rc::new(Expr::Literal(Rc::new(Literal::Bool(c)))).alloc()
+                Rc::new(Expr::Literal(Rc::new(Literal::Bool(c)))).alloc(ty)
             }
             _ => Rc::new(Expr::Literal(Rc::new(Literal::Error))),
         },
@@ -1015,7 +1010,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Literal(Rc::new(Literal::Integer(
                 compile_literal_integer(env, &expr.span, &expr.ty, false, lit.to_uint(lit.size())),
             ))))
-            .alloc()
+            .alloc(ty)
         }
         thir::ExprKind::ZstLiteral { .. } => {
             match &expr.ty.kind() {
@@ -1031,7 +1026,7 @@ pub(crate) fn compile_expr<'a>(
                             let nb_parent_generics = parent_generics.own_params.len();
                             let parent_type =
                                 env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
-                            let ty = compile_type(env, &expr.span, generics, &parent_type);
+                            let parent_ty = compile_type(env, &expr.span, generics, &parent_type);
                             let func = symbol.unwrap().to_string();
                             // We remove [nb_parent_generics] elements from the start of [generic_args]
                             // as these are already inferred from the `Self` type.
@@ -1057,12 +1052,12 @@ pub(crate) fn compile_expr<'a>(
                                 .collect();
 
                             Rc::new(Expr::GetAssociatedFunction {
-                                ty,
+                                ty: parent_ty,
                                 func,
                                 generic_consts,
                                 generic_tys,
                             })
-                            .alloc()
+                            .alloc(ty)
                         }
                         DefKind::Trait => {
                             let parent_generics = env.tcx.generics_of(parent);
@@ -1123,7 +1118,7 @@ pub(crate) fn compile_expr<'a>(
                                 generic_consts,
                                 generic_tys,
                             })
-                            .alloc()
+                            .alloc(ty)
                         }
                         DefKind::Mod | DefKind::ForeignMod => {
                             let generic_consts = generic_args
@@ -1150,7 +1145,7 @@ pub(crate) fn compile_expr<'a>(
                                 generic_consts,
                                 generic_tys,
                             })
-                            .alloc()
+                            .alloc(ty)
                         }
                         DefKind::Struct | DefKind::Variant => {
                             let path = compile_def_id(env, *def_id);
@@ -1178,7 +1173,7 @@ pub(crate) fn compile_expr<'a>(
                                 generic_consts,
                                 generic_tys,
                             })
-                            .alloc()
+                            .alloc(ty)
                         }
                         DefKind::AssocFn => {
                             let parent_symbol = env.tcx.def_key(parent).get_opt_name().unwrap();
@@ -1189,7 +1184,7 @@ pub(crate) fn compile_expr<'a>(
                                 generic_consts: vec![],
                                 generic_tys: vec![],
                             })
-                            .alloc()
+                            .alloc(ty)
                         }
                         DefKind::Fn => {
                             let parent_path = compile_def_id(env, parent);
@@ -1202,7 +1197,7 @@ pub(crate) fn compile_expr<'a>(
                                 generic_consts: vec![],
                                 generic_tys: vec![],
                             })
-                            .alloc()
+                            .alloc(ty)
                         }
                         _ => {
                             emit_warning_with_note(
@@ -1257,7 +1252,7 @@ pub(crate) fn compile_expr<'a>(
         thir::ExprKind::ConstParam { param, .. } => {
             let name = to_valid_coq_name(IsValue::No, param.name.as_str());
 
-            Expr::local_var(name.as_str()).alloc()
+            Expr::local_var(name.as_str()).alloc(ty)
         }
         thir::ExprKind::StaticRef { def_id, .. } => {
             let return_ty = compile_type(env, &expr.span, generics, &expr.ty);

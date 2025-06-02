@@ -18,7 +18,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -123,8 +127,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -179,12 +191,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -208,8 +224,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -270,8 +294,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
@@ -332,8 +364,12 @@ Module bytes_.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -428,8 +464,13 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -473,8 +514,13 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -518,8 +564,13 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -549,6 +600,7 @@ Module bytes_.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.path "alloc::string::String",
                               M.call_closure (|
                                 Ty.path "alloc::string::String",
                                 M.get_function (|
@@ -619,8 +671,13 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -650,6 +707,7 @@ Module bytes_.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.path "alloc::string::String",
                               M.call_closure (|
                                 Ty.path "alloc::string::String",
                                 M.get_function (|
@@ -723,7 +781,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -762,7 +824,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -805,7 +871,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -857,7 +927,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -900,7 +974,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [ T ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| T, iter |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -944,7 +1018,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [ T ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| T, iter |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -1053,7 +1127,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", self |) in
           M.call_closure (|
             Ty.apply (Ty.path "bytes::buf::iter::IntoIter") [] [ Ty.path "bytes::bytes::Bytes" ],
             M.get_trait_method (|
@@ -1107,7 +1181,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
             M.get_associated_function (|
@@ -1185,7 +1263,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "bytes::bytes::Bytes", value |) in
           Value.StructTuple "alloy_primitives::bytes_::Bytes" [] [] [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1211,7 +1289,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", value |) in
           M.read (|
             M.SubPointer.get_struct_tuple_field (| value, "alloy_primitives::bytes_::Bytes", 0 |)
           |)))
@@ -1239,7 +1317,14 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              value
+            |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -1288,7 +1373,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+              value
+            |) in
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_trait_method (|
@@ -1370,7 +1459,14 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] ],
+              value
+            |) in
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
@@ -1429,7 +1525,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ], value |) in
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_trait_method (|
@@ -1486,7 +1582,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
+              value
+            |) in
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
@@ -1526,7 +1626,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              value
+            |) in
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
@@ -1562,7 +1666,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], value |) in
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
@@ -1608,7 +1712,14 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]; Ty.path "alloc::alloc::Global" ],
+              value
+            |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -1662,7 +1773,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "alloc::string::String", value |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -1707,7 +1818,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", value |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -1761,8 +1872,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1867,8 +1986,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1973,8 +2100,24 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -2104,8 +2247,24 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -2151,8 +2310,13 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ], other |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -2169,6 +2333,7 @@ Module bytes_.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                   M.call_closure (|
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     M.get_trait_method (|
@@ -2213,7 +2378,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], value |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2306,7 +2471,7 @@ Module bytes_.
       match ε, τ, α with
       | [], [ T ], [ hex ] =>
         ltac:(M.monadic
-          (let hex := M.alloc (| hex |) in
+          (let hex := M.alloc (| T, hex |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2394,7 +2559,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
@@ -2421,7 +2590,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2461,8 +2634,12 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; cnt ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let cnt := M.alloc (| cnt |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let cnt := M.alloc (| Ty.path "usize", cnt |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -2498,8 +2675,12 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; len ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let len := M.alloc (| len |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.call_closure (|
             Ty.path "bytes::bytes::Bytes",
             M.get_trait_method (|
@@ -2580,7 +2761,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ bytes ] =>
         ltac:(M.monadic
-          (let bytes := M.alloc (| bytes |) in
+          (let bytes :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              bytes
+            |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -2614,7 +2799,11 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ data ] =>
         ltac:(M.monadic
-          (let data := M.alloc (| data |) in
+          (let data :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              data
+            |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -2648,8 +2837,12 @@ Module bytes_.
       match ε, τ, α with
       | [], [ impl_RangeBounds_usize_ ], [ self; range ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let range := M.alloc (| range |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let range := M.alloc (| impl_RangeBounds_usize_, range |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -2692,8 +2885,16 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; subset ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let subset := M.alloc (| subset |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let subset :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              subset
+            |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -2732,8 +2933,12 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; at_ ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let at_ := M.alloc (| at_ |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let at_ := M.alloc (| Ty.path "usize", at_ |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []
@@ -2772,8 +2977,12 @@ Module bytes_.
       match ε, τ, α with
       | [], [], [ self; at_ ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let at_ := M.alloc (| at_ |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+              self
+            |) in
+          let at_ := M.alloc (| Ty.path "usize", at_ |) in
           Value.StructTuple
             "alloy_primitives::bytes_::Bytes"
             []

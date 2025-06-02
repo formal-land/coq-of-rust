@@ -28,7 +28,11 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
   match ε, τ, α with
   | [], [], [ student ] =>
     ltac:(M.monadic
-      (let student := M.alloc (| student |) in
+      (let student :=
+        M.alloc (|
+          Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("supertraits::CompSciStudent::Trait", []) ] ],
+          student
+        |) in
       M.call_closure (|
         Ty.path "alloc::string::String",
         M.get_function (| "core::hint::must_use", [], [ Ty.path "alloc::string::String" ] |),
@@ -54,6 +58,10 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "My name is " |);
@@ -71,6 +79,10 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -88,6 +100,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "alloc::string::String",
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
                                                 M.get_trait_method (|
@@ -128,6 +141,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "alloc::string::String",
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
                                                 M.get_trait_method (|
@@ -168,6 +182,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "alloc::string::String",
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
                                                 M.get_trait_method (|
@@ -208,6 +223,7 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "alloc::string::String",
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
                                                 M.get_trait_method (|

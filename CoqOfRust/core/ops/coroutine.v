@@ -37,7 +37,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
@@ -52,8 +59,9 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
                         Value.StructTuple
                           "core::ops::coroutine::CoroutineState::Yielded"
                           []
@@ -84,8 +92,9 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ],
                         Value.StructTuple
                           "core::ops::coroutine::CoroutineState::Complete"
                           []
@@ -161,8 +170,22 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -185,6 +208,7 @@ Module ops.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -195,7 +219,30 @@ Module ops.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::coroutine::CoroutineState")
+                                    []
+                                    [ Y; R ]
+                                ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::coroutine::CoroutineState")
+                                    []
+                                    [ Y; R ]
+                                ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -208,7 +255,7 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Yielded",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -216,8 +263,9 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Yielded",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -246,7 +294,7 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Complete",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -254,8 +302,9 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Complete",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -276,6 +325,7 @@ Module ops.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -319,8 +369,22 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -344,7 +408,20 @@ Module ops.
                 |) in
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ];
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -357,7 +434,7 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -365,8 +442,12 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -398,7 +479,7 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -406,8 +487,12 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -431,6 +516,10 @@ Module ops.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -489,7 +578,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -500,7 +596,7 @@ Module ops.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -530,8 +626,22 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -556,6 +666,7 @@ Module ops.
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -585,7 +696,30 @@ Module ops.
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         Ty.path "core::cmp::Ordering",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::coroutine::CoroutineState")
+                                    []
+                                    [ Y; R ]
+                                ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::coroutine::CoroutineState")
+                                    []
+                                    [ Y; R ]
+                                ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -598,7 +732,7 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Yielded",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -606,8 +740,9 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Yielded",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -642,7 +777,7 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Complete",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -650,8 +785,9 @@ Module ops.
                                   "core::ops::coroutine::CoroutineState::Complete",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -678,6 +814,7 @@ Module ops.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -690,7 +827,7 @@ Module ops.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -718,8 +855,16 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -737,8 +882,12 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -771,8 +920,12 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -822,8 +975,15 @@ Module ops.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -868,8 +1028,9 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Yielded",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Y ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -896,8 +1057,9 @@ Module ops.
                           "core::ops::coroutine::CoroutineState::Complete",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -956,8 +1118,25 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; arg ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let arg := M.alloc (| arg |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::pin::Pin")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ G ] ]
+                      ]
+                  ],
+                self
+              |) in
+            let arg := M.alloc (| R, arg |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::ops::coroutine::CoroutineState")
@@ -1068,8 +1247,15 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; arg ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let arg := M.alloc (| arg |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ G ] ] ],
+                self
+              |) in
+            let arg := M.alloc (| R, arg |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::ops::coroutine::CoroutineState")

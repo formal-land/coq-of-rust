@@ -71,7 +71,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::interpreter_action::FrameInput",
@@ -86,8 +93,25 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::FrameInput::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::interpreter_action::FrameInput",
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::FrameInput::Call"
                         []
@@ -131,8 +155,25 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::FrameInput::Create",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::interpreter_action::FrameInput",
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::FrameInput::Create"
                         []
@@ -176,8 +217,25 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::interpreter_action::FrameInput",
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::FrameInput::EOFCreate"
                         []
@@ -235,8 +293,16 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -254,8 +320,28 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::FrameInput::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -288,8 +374,28 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::FrameInput::Create",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -322,8 +428,28 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.path
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -382,8 +508,22 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -406,6 +546,7 @@ Module interpreter_action.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -416,7 +557,20 @@ Module interpreter_action.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -429,7 +583,23 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::FrameInput::Call",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -437,8 +607,25 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::FrameInput::Call",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -493,7 +680,23 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::FrameInput::Create",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -501,8 +704,25 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::FrameInput::Create",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -557,7 +777,23 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -565,8 +801,25 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -613,6 +866,7 @@ Module interpreter_action.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -651,7 +905,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -668,7 +929,10 @@ Module interpreter_action.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -700,7 +964,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
@@ -756,7 +1027,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
@@ -771,8 +1049,16 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
                         []
@@ -802,8 +1088,16 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::Return",
                         "result"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                       Value.StructRecord
                         "revm_interpreter::interpreter_action::InterpreterAction::Return"
                         []
@@ -835,6 +1129,7 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::None"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                       Value.StructTuple
                         "revm_interpreter::interpreter_action::InterpreterAction::None"
                         []
@@ -864,8 +1159,16 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -883,8 +1186,19 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -917,8 +1231,19 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::Return",
                         "result"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -952,6 +1277,10 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::None"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1029,8 +1358,22 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1053,6 +1396,7 @@ Module interpreter_action.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -1063,7 +1407,20 @@ Module interpreter_action.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1076,7 +1433,14 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -1084,8 +1448,16 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -1122,7 +1494,14 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::InterpreterAction::Return",
                                 "result"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -1130,8 +1509,16 @@ Module interpreter_action.
                                 "revm_interpreter::interpreter_action::InterpreterAction::Return",
                                 "result"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -1157,7 +1544,7 @@ Module interpreter_action.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -1189,7 +1576,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1200,7 +1594,7 @@ Module interpreter_action.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -1230,7 +1624,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1250,8 +1651,8 @@ Module interpreter_action.
                         γ1_0,
                         "revm_interpreter::interpreter_action::FrameInput::Call"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1271,7 +1672,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1291,8 +1699,8 @@ Module interpreter_action.
                         γ1_0,
                         "revm_interpreter::interpreter_action::FrameInput::Create"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1313,7 +1721,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1327,8 +1742,8 @@ Module interpreter_action.
                         γ,
                         "revm_interpreter::interpreter_action::InterpreterAction::Return"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1349,7 +1764,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1363,8 +1785,8 @@ Module interpreter_action.
                         γ,
                         "revm_interpreter::interpreter_action::InterpreterAction::None"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1384,7 +1806,14 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter_action::InterpreterAction" ],
+              self
+            |) in
           UnOp.not (|
             M.call_closure (|
               Ty.path "bool",
@@ -1416,7 +1845,8 @@ Module interpreter_action.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "revm_interpreter::interpreter_action::InterpreterAction", self |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1433,8 +1863,16 @@ Module interpreter_action.
                         "revm_interpreter::interpreter_action::InterpreterAction::Return",
                         "result"
                       |) in
-                    let result := M.copy (| γ0_0 |) in
+                    let result :=
+                      M.copy (|
+                        Ty.path "revm_interpreter::interpreter::InterpreterResult",
+                        γ0_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1444,6 +1882,10 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []

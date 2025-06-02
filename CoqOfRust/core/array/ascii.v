@@ -21,7 +21,11 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -38,13 +42,14 @@ Module array.
                           [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                       ]
                   ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_associated_function (|
@@ -62,6 +67,20 @@ Module array.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -106,6 +125,20 @@ Module array.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                              ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -152,7 +185,11 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] ],
+                self
+              |) in
             M.read (|
               let~ byte_ptr :
                   Ty.apply
@@ -182,6 +219,15 @@ Module array.
                     ])
                   (M.read (| byte_ptr |)) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

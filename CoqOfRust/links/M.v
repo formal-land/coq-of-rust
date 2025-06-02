@@ -21,6 +21,7 @@ Arguments Φ _ {_}.
 Global Opaque φ.
 
 Smpl Create of_ty.
+Smpl Add reflexivity : of_ty.
 
 Module OfTy.
   Inductive t (ty' : Ty.t) : Type :=
@@ -48,6 +49,7 @@ Module OfTy.
 End OfTy.
 
 Smpl Create of_value.
+Smpl Add reflexivity : of_value.
 (* Because some types contain constant parameters *)
 Smpl Add smpl of_value : of_ty.
 
@@ -832,14 +834,17 @@ Module Run.
     exception' = Output.Exception.to_exception exception ->
     {{ LowM.Pure (inr exception') 🔽 R, Output }}
   | CallPrimitiveStateAlloc
+      (ty' : Ty.t)
       (value' : Value.t)
       (k : Value.t -> M)
-      (of_value : OfValue.t value') :
-    (forall (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value)),
+      (of_ty : OfTy.t ty')
+      (value : OfTy.get_Set of_ty) :
+    value' = φ value ->
+    (forall (ref : Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty)),
       {{ k (φ ref) 🔽 R, Output }}
     ) ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }}
-  | CallPrimitiveStateAllocImmediate
+    {{ LowM.CallPrimitive (Primitive.StateAlloc ty' value') k 🔽 R, Output }}
+  (* | CallPrimitiveStateAllocImmediate
       (value' : Value.t)
       (k : Value.t -> M)
       (of_value : OfValue.t value') :
@@ -847,7 +852,7 @@ Module Run.
       k (φ (Ref.immediate Pointer.Kind.Raw (OfValue.get_value of_value))) 🔽
       R, Output
     }} ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }}
+    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }} *)
   | CallPrimitiveStateRead {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (k : Value.t -> M) :
@@ -1102,16 +1107,16 @@ Proof.
     exact (LowM.Pure (Output.Exception exception)).
   }
   { (* Alloc *)
-    apply (LowM.CallPrimitive (Primitive.StateAlloc (OfValue.get_value of_value))).
+    apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
     intros ref_core.
     eapply evaluate.
     match goal with
     | H : forall _, _ |- _ => apply (H {| Ref.core := ref_core |})
     end.
   }
-  { (* AllocImmediate *)
+  (* { (* AllocImmediate *)
     exact (evaluate _ _ _ _ _ run).
-  }
+  } *)
   { (* Read *)
     apply (LowM.CallPrimitive (Primitive.StateRead ref_core)).
     intros value.
@@ -1235,10 +1240,15 @@ Ltac run_symbolic_pure :=
   ).
 
 Ltac run_symbolic_state_alloc :=
-  unshelve eapply Run.CallPrimitiveStateAlloc; [now repeat (smpl of_value || smpl of_ty) | cbn; intro].
+  unshelve eapply Run.CallPrimitiveStateAlloc; [
+    now repeat (smpl of_ty || smpl of_value) |
+    |
+    repeat (smpl of_value) |
+    cbn; intro
+  ].
 
-Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |].
+(* Ltac run_symbolic_state_alloc_immediate :=
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |]. *)
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;

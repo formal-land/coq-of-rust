@@ -10,7 +10,7 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ β0 ] =>
     ltac:(M.monadic
-      (let β0 := M.alloc (| β0 |) in
+      (let β0 := M.alloc (| Ty.tuple [ Ty.path "i32"; Ty.path "i32" ], β0 |) in
       M.match_operator (|
         Ty.path "i32",
         β0,
@@ -19,8 +19,16 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ltac:(M.monadic
               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-              let x := M.copy (| γ0_0 |) in
-              let y := M.copy (| γ0_1 |) in
+              let x :=
+                M.copy (|
+                  Ty.path "Type for variables in patterns in function parameters is not handled",
+                  γ0_0
+                |) in
+              let y :=
+                M.copy (|
+                  Ty.path "Type for variables in patterns in function parameters is not handled",
+                  γ0_1
+                |) in
               M.call_closure (|
                 Ty.path "i32",
                 BinOp.Wrap.add,
@@ -55,8 +63,8 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   match ε, τ, α with
   | [], [], [ β0; β1 ] =>
     ltac:(M.monadic
-      (let β0 := M.alloc (| β0 |) in
-      let β1 := M.alloc (| β1 |) in
+      (let β0 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], β0 |) in
+      let β1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], β1 |) in
       M.match_operator (|
         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
         β0,
@@ -64,7 +72,11 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           fun γ =>
             ltac:(M.monadic
               (let γ := M.read (| γ |) in
-              let start := M.copy (| γ |) in
+              let start :=
+                M.copy (|
+                  Ty.path "Type for variables in patterns in function parameters is not handled",
+                  γ
+                |) in
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 β1,
@@ -72,19 +84,25 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
-                      let end_ := M.copy (| γ |) in
+                      let end_ :=
+                        M.copy (|
+                          Ty.path
+                            "Type for variables in patterns in function parameters is not handled",
+                          γ
+                        |) in
                       M.read (|
                         let~ start : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| start |)) in
                         let~ end_ : Ty.path "u32" := M.cast (Ty.path "u32") (M.read (| end_ |)) in
                         M.match_operator (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.le,
@@ -104,13 +122,14 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                   |) in
                                 M.match_operator (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               LogicalOp.and (|
                                                 M.call_closure (|
                                                   Ty.path "bool",
@@ -137,6 +156,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -189,6 +212,10 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -234,6 +261,7 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   Value.StructTuple
                                     "core::option::Option::None"
                                     []

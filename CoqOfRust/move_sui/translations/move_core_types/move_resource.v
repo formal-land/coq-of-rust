@@ -220,6 +220,7 @@ Module move_resource.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "move_core_types::language_storage::StructTag",
                   M.call_closure (|
                     Ty.path "move_core_types::language_storage::StructTag",
                     M.get_trait_method (|

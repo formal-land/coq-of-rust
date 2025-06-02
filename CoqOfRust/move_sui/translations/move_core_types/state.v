@@ -45,7 +45,11 @@ Module state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::state::VMState" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -79,8 +83,13 @@ Module state.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::state::VMState" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -103,6 +112,7 @@ Module state.
                             "move_core_types::state::VMState::DESERIALIZER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DESERIALIZER" |) |) |)
                         |)));
                     fun γ =>
@@ -111,6 +121,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VERIFIER" |) |) |)
                         |)));
                     fun γ =>
@@ -119,6 +130,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RUNTIME" |) |) |)
                         |)));
                     fun γ =>
@@ -127,6 +139,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OTHER" |) |) |)
                         |)))
                   ]
@@ -166,8 +179,16 @@ Module state.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::state::VMState" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::state::VMState" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -190,6 +211,7 @@ Module state.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -221,7 +243,11 @@ Module state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::state::VMState" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -245,7 +271,7 @@ Module state.
     match ε, τ, α with
     | [], [], [ state ] =>
       ltac:(M.monadic
-        (let state := M.alloc (| state |) in
+        (let state := M.alloc (| Ty.path "move_core_types::state::VMState", state |) in
         M.call_closure (|
           Ty.path "move_core_types::state::VMState",
           M.get_associated_function (|
@@ -319,11 +345,34 @@ Module state.
                               ]
                           ]
                           (Ty.path "move_core_types::state::VMState"),
-                        M.alloc (| α0 |),
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::cell::RefCell")
+                                []
+                                [ Ty.path "move_core_types::state::VMState" ]
+                            ],
+                          α0
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let s := M.copy (| γ |) in
+                              (let s :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::cell::RefCell")
+                                        []
+                                        [ Ty.path "move_core_types::state::VMState" ]
+                                    ],
+                                  γ
+                                |) in
                               M.call_closure (|
                                 Ty.path "move_core_types::state::VMState",
                                 M.get_associated_function (|
@@ -436,11 +485,34 @@ Module state.
                               ]
                           ]
                           (Ty.path "move_core_types::state::VMState"),
-                        M.alloc (| α0 |),
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::cell::RefCell")
+                                []
+                                [ Ty.path "move_core_types::state::VMState" ]
+                            ],
+                          α0
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let s := M.copy (| γ |) in
+                              (let s :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::cell::RefCell")
+                                        []
+                                        [ Ty.path "move_core_types::state::VMState" ]
+                                    ],
+                                  γ
+                                |) in
                               M.read (|
                                 M.deref (|
                                   M.call_closure (|
@@ -464,6 +536,10 @@ Module state.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::cell::Ref")
+                                            []
+                                            [ Ty.path "move_core_types::state::VMState" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::cell::Ref")

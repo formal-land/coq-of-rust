@@ -21,7 +21,7 @@ Module ops.
       match ε, τ, α with
       | [], [ T; Y ], [ yeeted ] =>
         ltac:(M.monadic
-          (let yeeted := M.alloc (| yeeted |) in
+          (let yeeted := M.alloc (| Y, yeeted |) in
           M.call_closure (|
             T,
             M.get_trait_method (|
@@ -78,7 +78,7 @@ Module ops.
         match ε, τ, α with
         | [], [ A; impl_FnMut_A__arrow_T ], [ f ] =>
           ltac:(M.monadic
-            (let f := M.alloc (| f |) in
+            (let f := M.alloc (| impl_FnMut_A__arrow_T, f |) in
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -89,11 +89,11 @@ Module ops.
                         Ty.function
                           [ Ty.tuple [ A ] ]
                           (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ]),
-                        M.alloc (| α0 |),
+                        M.alloc (| A, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
+                              (let a := M.copy (| A, γ |) in
                               Value.StructTuple
                                 "core::ops::try_trait::NeverShortCircuit"
                                 []
@@ -139,7 +139,7 @@ Module ops.
         match ε, τ, α with
         | [], [ A; B; impl_FnMut_A__B__arrow_T ], [ f ] =>
           ltac:(M.monadic
-            (let f := M.alloc (| f |) in
+            (let f := M.alloc (| impl_FnMut_A__B__arrow_T, f |) in
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -150,11 +150,11 @@ Module ops.
                         Ty.function
                           [ Ty.tuple [ A; B ] ]
                           (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ]),
-                        M.alloc (| α0 |),
+                        M.alloc (| A, α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let a := M.copy (| γ |) in
+                              (let a := M.copy (| A, γ |) in
                               M.match_operator (|
                                 Ty.function
                                   [ Ty.tuple [ A; B ] ]
@@ -162,11 +162,11 @@ Module ops.
                                     (Ty.path "core::ops::try_trait::NeverShortCircuit")
                                     []
                                     [ T ]),
-                                M.alloc (| α1 |),
+                                M.alloc (| B, α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let b := M.copy (| γ |) in
+                                      (let b := M.copy (| B, γ |) in
                                       Value.StructTuple
                                         "core::ops::try_trait::NeverShortCircuit"
                                         []
@@ -236,7 +236,11 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ],
+                self
+              |) in
             Value.StructTuple
               "core::ops::control_flow::ControlFlow::Continue"
               []
@@ -263,7 +267,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| T, x |) in
             Value.StructTuple
               "core::ops::try_trait::NeverShortCircuit"
               []
@@ -307,7 +311,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ never ] =>
           ltac:(M.monadic
-            (let never := M.alloc (| never |) in
+            (let never :=
+              M.alloc (| Ty.path "core::ops::try_trait::NeverShortCircuitResidual", never |) in
             M.never_to_any (| M.read (| M.match_operator (| Ty.path "never", never, [] |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -365,8 +370,16 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -389,6 +402,7 @@ Module ops.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ T ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|

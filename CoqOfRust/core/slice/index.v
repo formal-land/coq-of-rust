@@ -25,8 +25,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                self
+              |) in
+            let index := M.alloc (| I, index |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -86,8 +90,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                self
+              |) in
+            let index := M.alloc (| I, index |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -155,8 +163,8 @@ Module slice.
       match ε, τ, α with
       | [], [], [ index; len ] =>
         ltac:(M.monadic
-          (let index := M.alloc (| index |) in
-          let len := M.alloc (| len |) in
+          (let index := M.alloc (| Ty.path "usize", index |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::slice::index::slice_start_index_len_fail.do_panic", [], [] |),
@@ -184,8 +192,8 @@ Module slice.
       match ε, τ, α with
       | [], [], [ index; len ] =>
         ltac:(M.monadic
-          (let index := M.alloc (| index |) in
-          let len := M.alloc (| len |) in
+          (let index := M.alloc (| Ty.path "usize", index |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::slice::index::slice_end_index_len_fail.do_panic", [], [] |),
@@ -213,8 +221,8 @@ Module slice.
       match ε, τ, α with
       | [], [], [ index; end_ ] =>
         ltac:(M.monadic
-          (let index := M.alloc (| index |) in
-          let end_ := M.alloc (| end_ |) in
+          (let index := M.alloc (| Ty.path "usize", index |) in
+          let end_ := M.alloc (| Ty.path "usize", end_ |) in
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::slice::index::slice_index_order_fail.do_panic", [], [] |),
@@ -260,6 +268,10 @@ Module slice.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [ mk_str (| "attempted to index slice from after maximum usize" |) ]
                         |)
@@ -312,6 +324,10 @@ Module slice.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [ mk_str (| "attempted to index slice up to maximum usize" |) ]
                         |)
@@ -343,12 +359,17 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ ptr; index ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let index := M.alloc (| index |) in
+          (let ptr :=
+            M.alloc (|
+              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              ptr
+            |) in
+          let index := M.alloc (| Ty.path "usize", index |) in
           M.read (|
             let~ ptr : Ty.apply (Ty.path "*const") [] [ T ] :=
               M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| ptr |)) in
             M.alloc (|
+              Ty.apply (Ty.path "*const") [] [ T ],
               M.call_closure (|
                 Ty.apply (Ty.path "*const") [] [ T ],
                 M.get_function (|
@@ -379,12 +400,17 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ ptr; index ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let index := M.alloc (| index |) in
+          (let ptr :=
+            M.alloc (|
+              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              ptr
+            |) in
+          let index := M.alloc (| Ty.path "usize", index |) in
           M.read (|
             let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
               M.cast (Ty.apply (Ty.path "*mut") [] [ T ]) (M.read (| ptr |)) in
             M.alloc (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
               M.call_closure (|
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 M.get_function (|
@@ -419,9 +445,13 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ ptr; offset; len ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let offset := M.alloc (| offset |) in
-          let len := M.alloc (| len |) in
+          (let ptr :=
+            M.alloc (|
+              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              ptr
+            |) in
+          let offset := M.alloc (| Ty.path "usize", offset |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.read (|
             let~ ptr : Ty.apply (Ty.path "*const") [] [ T ] :=
               M.call_closure (|
@@ -430,6 +460,7 @@ Module slice.
                 [ M.read (| ptr |); M.read (| offset |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.call_closure (|
                 Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.get_function (|
@@ -472,9 +503,13 @@ Module slice.
       match ε, τ, α with
       | [], [ T ], [ ptr; offset; len ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let offset := M.alloc (| offset |) in
-          let len := M.alloc (| len |) in
+          (let ptr :=
+            M.alloc (|
+              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              ptr
+            |) in
+          let offset := M.alloc (| Ty.path "usize", offset |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.read (|
             let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
               M.call_closure (|
@@ -483,6 +518,7 @@ Module slice.
                 [ M.read (| ptr |); M.read (| offset |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.call_closure (|
                 Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.get_function (|
@@ -689,18 +725,23 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.lt,
@@ -726,6 +767,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -761,6 +806,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ T ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -788,18 +837,23 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.lt,
@@ -825,6 +879,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -860,6 +918,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -901,20 +963,25 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -949,8 +1016,8 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -979,6 +1046,7 @@ Module slice.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ T ],
                 M.call_closure (|
                   Ty.apply (Ty.path "*const") [] [ T ],
                   M.get_function (| "core::slice::index::get_noubcheck", [], [ T ] |),
@@ -1010,20 +1078,25 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::intrinsics::ub_checks", [], [] |),
@@ -1058,12 +1131,13 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_function (| "core::slice::index::get_mut_noubcheck", [], [ T ] |),
@@ -1085,8 +1159,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1113,8 +1191,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1175,21 +1257,26 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::index_range::IndexRange", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -1224,6 +1311,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1281,6 +1372,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -1308,21 +1403,26 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::index_range::IndexRange", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -1357,6 +1457,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1414,6 +1518,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -1450,20 +1558,25 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::index_range::IndexRange", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::intrinsics::ub_checks", [], [] |),
@@ -1507,12 +1620,13 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.call_closure (|
                   Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (| "core::slice::index::get_offset_len_noubcheck", [], [ T ] |),
@@ -1567,20 +1681,25 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::index_range::IndexRange", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::intrinsics::ub_checks", [], [] |),
@@ -1624,12 +1743,13 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (|
@@ -1681,18 +1801,23 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::index_range::IndexRange", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -1727,6 +1852,7 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -1778,6 +1904,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -1833,8 +1960,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::index_range::IndexRange", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1844,13 +1975,14 @@ Module slice.
                     M.read (|
                       M.match_operator (|
                         Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.le,
@@ -1886,6 +2018,10 @@ Module slice.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                 M.borrow (|
                                   Pointer.Kind.MutRef,
                                   M.deref (|
@@ -1949,6 +2085,10 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -2041,20 +2181,29 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.alloc (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           M.call_closure (|
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
@@ -2082,10 +2231,11 @@ Module slice.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let new_len := M.copy (| γ0_0 |) in
+                      let new_len := M.copy (| Ty.path "usize", γ0_0 |) in
                       let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -2117,6 +2267,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -2162,6 +2316,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -2191,20 +2349,29 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.alloc (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                           M.call_closure (|
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                             M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
@@ -2232,10 +2399,11 @@ Module slice.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let new_len := M.copy (| γ0_0 |) in
+                      let new_len := M.copy (| Ty.path "usize", γ0_0 |) in
                       let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -2267,6 +2435,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -2312,6 +2484,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -2358,20 +2534,29 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::intrinsics::ub_checks", [], [] |),
@@ -2419,8 +2604,8 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -2446,6 +2631,7 @@ Module slice.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.call_closure (|
                   Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (| "core::slice::index::get_offset_len_noubcheck", [], [ T ] |),
@@ -2494,20 +2680,29 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_function (| "core::intrinsics::ub_checks", [], [] |),
@@ -2555,8 +2750,8 @@ Module slice.
                                 |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -2582,6 +2777,7 @@ Module slice.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   M.get_function (|
@@ -2624,12 +2820,21 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
@@ -2660,18 +2865,19 @@ Module slice.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let new_len := M.copy (| γ0_0 |) in
+                      let new_len := M.copy (| Ty.path "usize", γ0_0 |) in
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.gt,
@@ -2707,6 +2913,7 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.call_closure (|
                                         Ty.path "never",
@@ -2742,11 +2949,12 @@ Module slice.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -2806,8 +3014,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2815,6 +3031,7 @@ Module slice.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         M.get_associated_function (| Ty.path "usize", "checked_sub", [], [] |),
@@ -2845,18 +3062,19 @@ Module slice.
                               "core::option::Option::Some",
                               0
                             |) in
-                          let new_len := M.copy (| γ0_0 |) in
+                          let new_len := M.copy (| Ty.path "usize", γ0_0 |) in
                           let~ _ : Ty.tuple [] :=
                             M.read (|
                               M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.gt,
@@ -2892,6 +3110,7 @@ Module slice.
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.call_closure (|
                                             Ty.path "never",
@@ -2927,11 +3146,13 @@ Module slice.
                                           |)
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ]
                               |)
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -3017,8 +3238,13 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ], self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3063,8 +3289,13 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ], self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3115,8 +3346,13 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ], self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -3164,8 +3400,13 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ], self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -3207,8 +3448,13 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ], self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3255,8 +3501,13 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ], self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -3334,8 +3585,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3382,8 +3641,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3436,8 +3703,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -3487,8 +3762,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -3532,8 +3815,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3582,8 +3873,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -3663,8 +3962,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3721,8 +4028,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3785,8 +4100,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -3846,8 +4169,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -3905,20 +4236,29 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.gt,
@@ -3951,6 +4291,7 @@ Module slice.
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -3986,11 +4327,12 @@ Module slice.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -4039,8 +4381,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -4049,13 +4399,14 @@ Module slice.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.gt,
@@ -4088,6 +4439,7 @@ Module slice.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -4123,11 +4475,12 @@ Module slice.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     M.borrow (|
                       Pointer.Kind.MutRef,
                       M.deref (|
@@ -4211,8 +4564,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -4257,8 +4618,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -4309,8 +4678,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -4358,8 +4735,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -4401,8 +4786,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4449,8 +4842,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -4527,8 +4928,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::range::RangeFull", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -4547,8 +4952,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::range::RangeFull", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -4572,8 +4981,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::range::RangeFull", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (| slice |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4593,8 +5006,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::range::RangeFull", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (| slice |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4609,8 +5026,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::range::RangeFull", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (| slice |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4625,8 +5046,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self := M.alloc (| Ty.path "core::ops::range::RangeFull", self |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) |)
@@ -4670,21 +5095,30 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.eq,
@@ -4718,6 +5152,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -4727,6 +5165,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -4775,21 +5217,30 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.eq,
@@ -4823,6 +5274,10 @@ Module slice.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -4832,6 +5287,10 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -4887,8 +5346,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -4933,8 +5400,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -4976,20 +5451,29 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.eq,
@@ -5024,6 +5508,7 @@ Module slice.
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -5036,11 +5521,12 @@ Module slice.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5092,8 +5578,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5102,13 +5596,14 @@ Module slice.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -5143,6 +5638,7 @@ Module slice.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -5155,11 +5651,12 @@ Module slice.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                     M.borrow (|
                       Pointer.Kind.MutRef,
                       M.deref (|
@@ -5236,8 +5733,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -5282,8 +5787,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -5334,8 +5847,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -5383,8 +5904,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -5426,8 +5955,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5477,8 +6014,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5570,8 +6115,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -5622,8 +6175,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -5680,8 +6241,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -5735,8 +6304,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -5784,8 +6361,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5841,8 +6426,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5955,8 +6548,12 @@ Module slice.
       match ε, τ, α with
       | [], [ R ], [ range; bounds ] =>
         ltac:(M.monadic
-          (let range := M.alloc (| range |) in
-          let bounds := M.alloc (| bounds |) in
+          (let range := M.alloc (| R, range |) in
+          let bounds :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+              bounds
+            |) in
           M.read (|
             let~ len : Ty.path "usize" :=
               M.read (|
@@ -5971,6 +6568,10 @@ Module slice.
                 M.match_operator (|
                   Ty.path "usize",
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::range::Bound")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::ops::range::Bound")
@@ -5998,7 +6599,7 @@ Module slice.
                             0
                           |) in
                         let γ0_0 := M.read (| γ0_0 |) in
-                        let start := M.copy (| γ0_0 |) in
+                        let start := M.copy (| Ty.path "usize", γ0_0 |) in
                         start));
                     fun γ =>
                       ltac:(M.monadic
@@ -6008,8 +6609,10 @@ Module slice.
                             "core::ops::range::Bound::Excluded",
                             0
                           |) in
-                        let start := M.copy (| γ0_0 |) in
+                        let start :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
                         M.alloc (|
+                          Ty.path "usize",
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_associated_function (|
@@ -6040,7 +6643,7 @@ Module slice.
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
-                                          M.alloc (| α0 |),
+                                          M.alloc (| Ty.tuple [], α0 |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -6065,7 +6668,7 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                        M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |) in
@@ -6074,6 +6677,10 @@ Module slice.
                 M.match_operator (|
                   Ty.path "usize",
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::range::Bound")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::ops::range::Bound")
@@ -6100,8 +6707,10 @@ Module slice.
                             "core::ops::range::Bound::Included",
                             0
                           |) in
-                        let end_ := M.copy (| γ0_0 |) in
+                        let end_ :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
                         M.alloc (|
+                          Ty.path "usize",
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_associated_function (|
@@ -6132,7 +6741,7 @@ Module slice.
                                       ltac:(M.monadic
                                         (M.match_operator (|
                                           Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
-                                          M.alloc (| α0 |),
+                                          M.alloc (| Ty.tuple [], α0 |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
@@ -6163,7 +6772,7 @@ Module slice.
                             0
                           |) in
                         let γ0_0 := M.read (| γ0_0 |) in
-                        let end_ := M.copy (| γ0_0 |) in
+                        let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                         end_));
                     fun γ =>
                       ltac:(M.monadic
@@ -6176,13 +6785,14 @@ Module slice.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -6191,6 +6801,7 @@ Module slice.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -6203,7 +6814,7 @@ Module slice.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -6211,13 +6822,14 @@ Module slice.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.gt,
@@ -6226,6 +6838,7 @@ Module slice.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -6238,11 +6851,12 @@ Module slice.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
               Value.StructRecord
                 "core::ops::range::Range"
                 []
@@ -6283,8 +6897,12 @@ Module slice.
       match ε, τ, α with
       | [], [ R ], [ range; bounds ] =>
         ltac:(M.monadic
-          (let range := M.alloc (| range |) in
-          let bounds := M.alloc (| bounds |) in
+          (let range := M.alloc (| R, range |) in
+          let bounds :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ],
+              bounds
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -6293,6 +6911,10 @@ Module slice.
                 [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                   M.read (|
                     let~ len : Ty.path "usize" :=
                       M.read (|
@@ -6307,6 +6929,10 @@ Module slice.
                         M.match_operator (|
                           Ty.path "usize",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::range::Bound")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::range::Bound")
@@ -6334,7 +6960,7 @@ Module slice.
                                     0
                                   |) in
                                 let γ0_0 := M.read (| γ0_0 |) in
-                                let start := M.copy (| γ0_0 |) in
+                                let start := M.copy (| Ty.path "usize", γ0_0 |) in
                                 start));
                             fun γ =>
                               ltac:(M.monadic
@@ -6344,10 +6970,24 @@ Module slice.
                                     "core::ops::range::Bound::Excluded",
                                     0
                                   |) in
-                                let start := M.copy (| γ0_0 |) in
+                                let start :=
+                                  M.copy (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    γ0_0
+                                  |) in
                                 M.match_operator (|
                                   Ty.path "usize",
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::convert::Infallible" ];
+                                        Ty.path "usize"
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -6400,8 +7040,16 @@ Module slice.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::convert::Infallible" ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.path "usize",
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -6451,7 +7099,7 @@ Module slice.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                         val))
                                   ]
                                 |)));
@@ -6459,7 +7107,7 @@ Module slice.
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                                M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -6468,6 +7116,10 @@ Module slice.
                         M.match_operator (|
                           Ty.path "usize",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::range::Bound")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::range::Bound")
@@ -6494,10 +7146,24 @@ Module slice.
                                     "core::ops::range::Bound::Included",
                                     0
                                   |) in
-                                let end_ := M.copy (| γ0_0 |) in
+                                let end_ :=
+                                  M.copy (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    γ0_0
+                                  |) in
                                 M.match_operator (|
                                   Ty.path "usize",
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::convert::Infallible" ];
+                                        Ty.path "usize"
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -6550,8 +7216,16 @@ Module slice.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "core::convert::Infallible" ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.path "usize",
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -6601,7 +7275,7 @@ Module slice.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                         val))
                                   ]
                                 |)));
@@ -6614,7 +7288,7 @@ Module slice.
                                     0
                                   |) in
                                 let γ0_0 := M.read (| γ0_0 |) in
-                                let end_ := M.copy (| γ0_0 |) in
+                                let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                                 end_));
                             fun γ =>
                               ltac:(M.monadic
@@ -6629,13 +7303,14 @@ Module slice.
                         (Ty.path "core::option::Option")
                         []
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   LogicalOp.or (|
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -6653,6 +7328,15 @@ Module slice.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
                               Value.StructTuple
                                 "core::option::Option::None"
                                 []
@@ -6667,6 +7351,15 @@ Module slice.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 []
@@ -6721,8 +7414,16 @@ Module slice.
       match ε, τ, α with
       | [], [], [ len; β1 ] =>
         ltac:(M.monadic
-          (let len := M.alloc (| len |) in
-          let β1 := M.alloc (| β1 |) in
+          (let len := M.alloc (| Ty.path "usize", len |) in
+          let β1 :=
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                  Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                ],
+              β1
+            |) in
           M.match_operator (|
             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
             β1,
@@ -6731,8 +7432,18 @@ Module slice.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let start := M.copy (| γ0_0 |) in
-                  let end_ := M.copy (| γ0_1 |) in
+                  let start :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_0
+                    |) in
+                  let end_ :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_1
+                    |) in
                   M.read (|
                     let~ start : Ty.path "usize" :=
                       M.read (|
@@ -6748,7 +7459,7 @@ Module slice.
                                     "core::ops::range::Bound::Included",
                                     0
                                   |) in
-                                let i := M.copy (| γ0_0 |) in
+                                let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                 i));
                             fun γ =>
                               ltac:(M.monadic
@@ -6758,8 +7469,9 @@ Module slice.
                                     "core::ops::range::Bound::Excluded",
                                     0
                                   |) in
-                                let i := M.copy (| γ0_0 |) in
+                                let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
@@ -6770,7 +7482,7 @@ Module slice.
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                                M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -6788,8 +7500,9 @@ Module slice.
                                     "core::ops::range::Bound::Included",
                                     0
                                   |) in
-                                let i := M.copy (| γ0_0 |) in
+                                let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
@@ -6804,7 +7517,7 @@ Module slice.
                                     "core::ops::range::Bound::Excluded",
                                     0
                                   |) in
-                                let i := M.copy (| γ0_0 |) in
+                                let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                 i));
                             fun γ =>
                               ltac:(M.monadic
@@ -6815,6 +7528,7 @@ Module slice.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       Value.StructRecord
                         "core::ops::range::Range"
                         []
@@ -6860,8 +7574,16 @@ Module slice.
       match ε, τ, α with
       | [], [], [ len; β1 ] =>
         ltac:(M.monadic
-          (let len := M.alloc (| len |) in
-          let β1 := M.alloc (| β1 |) in
+          (let len := M.alloc (| Ty.path "usize", len |) in
+          let β1 :=
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                  Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                ],
+              β1
+            |) in
           M.match_operator (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -6873,8 +7595,18 @@ Module slice.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let start := M.copy (| γ0_0 |) in
-                  let end_ := M.copy (| γ0_1 |) in
+                  let start :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_0
+                    |) in
+                  let end_ :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_1
+                    |) in
                   M.read (|
                     M.catch_return
                       (Ty.apply
@@ -6883,6 +7615,10 @@ Module slice.
                         [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]) (|
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                           M.read (|
                             let~ start : Ty.path "usize" :=
                               M.read (|
@@ -6898,7 +7634,7 @@ Module slice.
                                             "core::ops::range::Bound::Included",
                                             0
                                           |) in
-                                        let start := M.copy (| γ0_0 |) in
+                                        let start := M.copy (| Ty.path "usize", γ0_0 |) in
                                         start));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -6908,10 +7644,20 @@ Module slice.
                                             "core::ops::range::Bound::Excluded",
                                             0
                                           |) in
-                                        let start := M.copy (| γ0_0 |) in
+                                        let start := M.copy (| Ty.path "usize", γ0_0 |) in
                                         M.match_operator (|
                                           Ty.path "usize",
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ];
+                                                Ty.path "usize"
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -6964,8 +7710,16 @@ Module slice.
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
                                                   |) in
-                                                let residual := M.copy (| γ0_0 |) in
+                                                let residual :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "core::convert::Infallible" ],
+                                                    γ0_0
+                                                  |) in
                                                 M.alloc (|
+                                                  Ty.path "usize",
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -7019,7 +7773,7 @@ Module slice.
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
                                                   |) in
-                                                let val := M.copy (| γ0_0 |) in
+                                                let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                                 val))
                                           ]
                                         |)));
@@ -7030,7 +7784,10 @@ Module slice.
                                             γ,
                                             "core::ops::range::Bound::Unbounded"
                                           |) in
-                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                                        M.alloc (|
+                                          Ty.path "usize",
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)))
                                   ]
                                 |)
                               |) in
@@ -7048,10 +7805,20 @@ Module slice.
                                             "core::ops::range::Bound::Included",
                                             0
                                           |) in
-                                        let end_ := M.copy (| γ0_0 |) in
+                                        let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                                         M.match_operator (|
                                           Ty.path "usize",
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::convert::Infallible" ];
+                                                Ty.path "usize"
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -7104,8 +7871,16 @@ Module slice.
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
                                                   |) in
-                                                let residual := M.copy (| γ0_0 |) in
+                                                let residual :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [ Ty.path "core::convert::Infallible" ],
+                                                    γ0_0
+                                                  |) in
                                                 M.alloc (|
+                                                  Ty.path "usize",
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -7159,7 +7934,7 @@ Module slice.
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
                                                   |) in
-                                                let val := M.copy (| γ0_0 |) in
+                                                let val := M.copy (| Ty.path "usize", γ0_0 |) in
                                                 val))
                                           ]
                                         |)));
@@ -7171,7 +7946,7 @@ Module slice.
                                             "core::ops::range::Bound::Excluded",
                                             0
                                           |) in
-                                        let end_ := M.copy (| γ0_0 |) in
+                                        let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                                         end_));
                                     fun γ =>
                                       ltac:(M.monadic
@@ -7185,6 +7960,15 @@ Module slice.
                                 |)
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 []
@@ -7248,8 +8032,16 @@ Module slice.
       match ε, τ, α with
       | [], [], [ len; β1 ] =>
         ltac:(M.monadic
-          (let len := M.alloc (| len |) in
-          let β1 := M.alloc (| β1 |) in
+          (let len := M.alloc (| Ty.path "usize", len |) in
+          let β1 :=
+            M.alloc (|
+              Ty.tuple
+                [
+                  Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                  Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                ],
+              β1
+            |) in
           M.match_operator (|
             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
             β1,
@@ -7258,8 +8050,18 @@ Module slice.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let start := M.copy (| γ0_0 |) in
-                  let end_ := M.copy (| γ0_1 |) in
+                  let start :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_0
+                    |) in
+                  let end_ :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_1
+                    |) in
                   M.read (|
                     let~ start : Ty.path "usize" :=
                       M.read (|
@@ -7275,7 +8077,7 @@ Module slice.
                                     "core::ops::range::Bound::Included",
                                     0
                                   |) in
-                                let start := M.copy (| γ0_0 |) in
+                                let start := M.copy (| Ty.path "usize", γ0_0 |) in
                                 start));
                             fun γ =>
                               ltac:(M.monadic
@@ -7285,8 +8087,9 @@ Module slice.
                                     "core::ops::range::Bound::Excluded",
                                     0
                                   |) in
-                                let start := M.copy (| γ0_0 |) in
+                                let start := M.copy (| Ty.path "usize", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -7320,7 +8123,7 @@ Module slice.
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
-                                                  M.alloc (| α0 |),
+                                                  M.alloc (| Ty.tuple [], α0 |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -7346,7 +8149,7 @@ Module slice.
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                                M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -7364,8 +8167,9 @@ Module slice.
                                     "core::ops::range::Bound::Included",
                                     0
                                   |) in
-                                let end_ := M.copy (| γ0_0 |) in
+                                let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -7399,7 +8203,7 @@ Module slice.
                                               ltac:(M.monadic
                                                 (M.match_operator (|
                                                   Ty.function [ Ty.tuple [] ] (Ty.path "usize"),
-                                                  M.alloc (| α0 |),
+                                                  M.alloc (| Ty.tuple [], α0 |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
@@ -7429,7 +8233,7 @@ Module slice.
                                     "core::ops::range::Bound::Excluded",
                                     0
                                   |) in
-                                let end_ := M.copy (| γ0_0 |) in
+                                let end_ := M.copy (| Ty.path "usize", γ0_0 |) in
                                 end_));
                             fun γ =>
                               ltac:(M.monadic
@@ -7440,6 +8244,7 @@ Module slice.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       Value.StructRecord
                         "core::ops::range::Range"
                         []
@@ -7478,8 +8283,20 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                  ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -7504,6 +8321,32 @@ Module slice.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::slice::index::SliceIndex"
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                              (Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Bound")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Bound")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ])
+                              "Output"
+                          ]
+                      ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -7523,6 +8366,19 @@ Module slice.
                           M.match_operator (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -7597,8 +8453,19 @@ Module slice.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -7648,7 +8515,14 @@ Module slice.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ0_0
+                                    |) in
                                   val))
                             ]
                           |)
@@ -7672,8 +8546,20 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                  ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -7698,6 +8584,32 @@ Module slice.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.associated_in_trait
+                              "core::slice::index::SliceIndex"
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                              (Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Bound")
+                                    []
+                                    [ Ty.path "usize" ];
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Bound")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ])
+                              "Output"
+                          ]
+                      ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -7717,6 +8629,19 @@ Module slice.
                           M.match_operator (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -7791,8 +8716,19 @@ Module slice.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -7842,7 +8778,14 @@ Module slice.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ0_0
+                                    |) in
                                   val))
                             ]
                           |)
@@ -7872,8 +8815,20 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                  ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -7925,8 +8880,20 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                  ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
               M.get_trait_method (|
@@ -7972,8 +8939,20 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                  ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -8024,8 +9003,20 @@ Module slice.
         match ε, τ, α with
         | [], [], [ self; slice ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let slice := M.alloc (| slice |) in
+            (let self :=
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ];
+                    Ty.apply (Ty.path "core::ops::range::Bound") [] [ Ty.path "usize" ]
+                  ],
+                self
+              |) in
+            let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                slice
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|

@@ -53,7 +53,14 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signature::error::SignatureError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signature::error::SignatureError",
@@ -97,8 +104,16 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signature::error::SignatureError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -116,8 +131,16 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::FromBytes",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -150,8 +173,16 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::FromHex",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "const_hex::error::FromHexError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -184,8 +215,13 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::InvalidParity",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -239,7 +275,7 @@ Module signature.
         match ε, τ, α with
         | [], [], [ err ] =>
           ltac:(M.monadic
-            (let err := M.alloc (| err |) in
+            (let err := M.alloc (| Ty.path "const_hex::error::FromHexError", err |) in
             Value.StructTuple
               "alloy_primitives::signature::error::SignatureError::FromHex"
               []
@@ -274,7 +310,14 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signature::error::SignatureError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -292,8 +335,21 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::FromHex",
                           0
                         |) in
-                      let e := M.alloc (| γ1_0 |) in
+                      let e :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "const_hex::error::FromHexError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -312,6 +368,15 @@ Module signature.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -356,8 +421,16 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signature::error::SignatureError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -375,8 +448,16 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::FromBytes",
                           0
                         |) in
-                      let e := M.alloc (| γ1_0 |) in
+                      let e :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -406,8 +487,16 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::FromHex",
                           0
                         |) in
-                      let e := M.alloc (| γ1_0 |) in
+                      let e :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "const_hex::error::FromHexError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -437,8 +526,12 @@ Module signature.
                           "alloy_primitives::signature::error::SignatureError::InvalidParity",
                           0
                         |) in
-                      let v := M.alloc (| γ1_0 |) in
+                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -469,7 +562,13 @@ Module signature.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (| Value.Array [ mk_str (| "invalid parity: " |) ] |)
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                        Value.Array [ mk_str (| "invalid parity: " |) ]
+                                      |)
                                     |)
                                   |)
                                 |);
@@ -479,6 +578,10 @@ Module signature.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -533,7 +636,7 @@ Module signature.
         match ε, τ, α with
         | [], [], [ β0 ] =>
           ltac:(M.monadic
-            (let β0 := M.alloc (| β0 |) in
+            (let β0 := M.alloc (| Ty.path "core::convert::Infallible", β0 |) in
             M.match_operator (|
               Ty.path "alloy_primitives::signature::error::SignatureError",
               β0,

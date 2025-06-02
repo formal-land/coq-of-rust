@@ -19,8 +19,16 @@ Module strided.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -79,6 +87,7 @@ Module strided.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -141,9 +150,9 @@ Module strided.
       match ε, τ, α with
       | [], [ T; Inner ], [ inner; stride; offset ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          let stride := M.alloc (| stride |) in
-          let offset := M.alloc (| offset |) in
+          (let inner := M.alloc (| Inner, inner |) in
+          let stride := M.alloc (| Ty.path "usize", stride |) in
+          let offset := M.alloc (| Ty.path "usize", offset |) in
           M.read (|
             let~ h : Ty.path "usize" :=
               M.call_closure (|
@@ -176,6 +185,10 @@ Module strided.
                 [ M.read (| full_strides |); M.cast (Ty.path "usize") (M.read (| final_stride |)) ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
+                []
+                [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap"; Inner ],
               Value.StructRecord
                 "p3_matrix::row_index_mapped::RowIndexMappedView"
                 []
@@ -215,7 +228,14 @@ Module strided.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -235,8 +255,15 @@ Module strided.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap" ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.add,

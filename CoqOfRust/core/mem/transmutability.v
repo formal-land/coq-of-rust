@@ -15,7 +15,7 @@ Module mem.
         match ε, τ, α with
         | [], [], [ src ] =>
           ltac:(M.monadic
-            (let src := M.alloc (| src |) in
+            (let src := M.alloc (| Src, src |) in
             M.read (|
               let~ transmute :
                   Ty.apply
@@ -48,6 +48,7 @@ Module mem.
                   |)
                 |) in
               M.alloc (|
+                Self,
                 M.call_closure (|
                   Self,
                   M.get_associated_function (|
@@ -105,8 +106,16 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
@@ -220,12 +229,16 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -249,7 +262,11 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::mem::transmutability::Assume",
@@ -289,8 +306,13 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::mem::transmutability::Assume" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -362,6 +384,7 @@ Module mem.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -423,6 +446,7 @@ Module mem.
       Definition value_NOTHING (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "core::mem::transmutability::Assume",
             Value.StructRecord
               "core::mem::transmutability::Assume"
               []
@@ -445,6 +469,7 @@ Module mem.
       Definition value_ALIGNMENT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "core::mem::transmutability::Assume",
             M.struct_record_update
               (M.read (|
                 get_associated_constant (|
@@ -466,6 +491,7 @@ Module mem.
       Definition value_LIFETIMES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "core::mem::transmutability::Assume",
             M.struct_record_update
               (M.read (|
                 get_associated_constant (|
@@ -487,6 +513,7 @@ Module mem.
       Definition value_SAFETY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "core::mem::transmutability::Assume",
             M.struct_record_update
               (M.read (|
                 get_associated_constant (|
@@ -508,6 +535,7 @@ Module mem.
       Definition value_VALIDITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "core::mem::transmutability::Assume",
             M.struct_record_update
               (M.read (|
                 get_associated_constant (|
@@ -538,8 +566,9 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other_assumptions := M.alloc (| other_assumptions |) in
+            (let self := M.alloc (| Ty.path "core::mem::transmutability::Assume", self |) in
+            let other_assumptions :=
+              M.alloc (| Ty.path "core::mem::transmutability::Assume", other_assumptions |) in
             Value.StructRecord
               "core::mem::transmutability::Assume"
               []
@@ -639,8 +668,9 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other_assumptions := M.alloc (| other_assumptions |) in
+            (let self := M.alloc (| Ty.path "core::mem::transmutability::Assume", self |) in
+            let other_assumptions :=
+              M.alloc (| Ty.path "core::mem::transmutability::Assume", other_assumptions |) in
             Value.StructRecord
               "core::mem::transmutability::Assume"
               []
@@ -750,8 +780,9 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other_assumptions := M.alloc (| other_assumptions |) in
+            (let self := M.alloc (| Ty.path "core::mem::transmutability::Assume", self |) in
+            let other_assumptions :=
+              M.alloc (| Ty.path "core::mem::transmutability::Assume", other_assumptions |) in
             M.call_closure (|
               Ty.path "core::mem::transmutability::Assume",
               M.get_associated_function (|
@@ -790,8 +821,9 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other_assumptions := M.alloc (| other_assumptions |) in
+            (let self := M.alloc (| Ty.path "core::mem::transmutability::Assume", self |) in
+            let other_assumptions :=
+              M.alloc (| Ty.path "core::mem::transmutability::Assume", other_assumptions |) in
             M.call_closure (|
               Ty.path "core::mem::transmutability::Assume",
               M.get_associated_function (|

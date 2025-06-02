@@ -45,7 +45,11 @@ Module Impl_core_clone_Clone_for_move_bytecode_verifier_meter_Scope.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            self
+          |) in
         M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -79,8 +83,12 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -100,6 +108,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                           "move_bytecode_verifier_meter::Scope::Transaction"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transaction" |) |) |)
                       |)));
                   fun γ =>
@@ -108,6 +117,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Package" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Package" |) |) |)
                       |)));
                   fun γ =>
@@ -116,6 +126,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_bytecode_verifier_meter::Scope::Module" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Module" |) |) |)
                       |)));
                   fun γ =>
@@ -127,6 +138,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
                           "move_bytecode_verifier_meter::Scope::Function"
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Function" |) |) |)
                       |)))
                 ]
@@ -166,8 +178,16 @@ Module Impl_core_cmp_PartialEq_move_bytecode_verifier_meter_Scope_for_move_bytec
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -190,6 +210,7 @@ Module Impl_core_cmp_PartialEq_move_bytecode_verifier_meter_Scope_for_move_bytec
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -221,7 +242,11 @@ Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            self
+          |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -244,8 +269,16 @@ Module Impl_core_cmp_PartialOrd_move_bytecode_verifier_meter_Scope_for_move_byte
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -268,6 +301,7 @@ Module Impl_core_cmp_PartialOrd_move_bytecode_verifier_meter_Scope_for_move_byte
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -312,8 +346,16 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier_meter::Scope" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -336,6 +378,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "core::cmp::Ordering",
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -370,10 +413,10 @@ Module Meter.
     match ε, τ, α with
     | [], [], [ self; scope; units_per_item; items ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let scope := M.alloc (| scope |) in
-        let units_per_item := M.alloc (| units_per_item |) in
-        let items := M.alloc (| items |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+        let scope := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", scope |) in
+        let units_per_item := M.alloc (| Ty.path "u128", units_per_item |) in
+        let items := M.alloc (| Ty.path "usize", items |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -382,18 +425,23 @@ Module Meter.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -403,6 +451,7 @@ Module Meter.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -418,11 +467,15 @@ Module Meter.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -469,11 +522,11 @@ Module Meter.
     match ε, τ, α with
     | [], [], [ self; scope; units_per_item; items; growth_factor ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let scope := M.alloc (| scope |) in
-        let units_per_item := M.alloc (| units_per_item |) in
-        let items := M.alloc (| items |) in
-        let growth_factor := M.alloc (| growth_factor |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+        let scope := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", scope |) in
+        let units_per_item := M.alloc (| Ty.path "u128", units_per_item |) in
+        let items := M.alloc (| Ty.path "usize", items |) in
+        let growth_factor := M.alloc (| Ty.path "f32", growth_factor |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -482,18 +535,23 @@ Module Meter.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -503,6 +561,7 @@ Module Meter.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -518,7 +577,7 @@ Module Meter.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -528,6 +587,7 @@ Module Meter.
                         (M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             M.call_closure (|
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.get_trait_method (|
@@ -554,7 +614,14 @@ Module Meter.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
+                                (let iter :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    γ
+                                  |) in
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
@@ -563,6 +630,10 @@ Module Meter.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -599,6 +670,7 @@ Module Meter.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -614,6 +686,21 @@ Module Meter.
                                                     M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path
@@ -687,8 +774,21 @@ Module Meter.
                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                 0
                                                               |) in
-                                                            let residual := M.copy (| γ0_0 |) in
+                                                            let residual :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::convert::Infallible";
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
+                                                                γ0_0
+                                                              |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   M.return_ (|
@@ -744,7 +844,8 @@ Module Meter.
                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                 0
                                                               |) in
-                                                            let val := M.copy (| γ0_0 |) in
+                                                            let val :=
+                                                              M.copy (| Ty.tuple [], γ0_0 |) in
                                                             val))
                                                       ]
                                                     |)
@@ -773,16 +874,20 @@ Module Meter.
                                                         ]
                                                       |))
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 |)))
                           ]
                         |))
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -816,9 +921,21 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
     match ε, τ, α with
     | [], [], [ self; name; scope ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let name := M.alloc (| name |) in
-        let scope := M.alloc (| scope |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ] ]
+              ],
+            self
+          |) in
+        let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
+        let scope := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", scope |) in
         M.call_closure (|
           Ty.tuple [],
           M.get_trait_method (|
@@ -851,10 +968,22 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
     match ε, τ, α with
     | [], [], [ self; from; to; factor ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let from := M.alloc (| from |) in
-        let to := M.alloc (| to |) in
-        let factor := M.alloc (| factor |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ] ]
+              ],
+            self
+          |) in
+        let from := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", from |) in
+        let to := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", to |) in
+        let factor := M.alloc (| Ty.path "f32", factor |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -891,9 +1020,21 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
     match ε, τ, α with
     | [], [], [ self; scope; units ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let scope := M.alloc (| scope |) in
-        let units := M.alloc (| units |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.dyn [ ("move_bytecode_verifier_meter::Meter::Trait", []) ] ]
+              ],
+            self
+          |) in
+        let scope := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", scope |) in
+        let units := M.alloc (| Ty.path "u128", units |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")

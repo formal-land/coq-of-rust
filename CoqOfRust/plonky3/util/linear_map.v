@@ -26,8 +26,16 @@ Module linear_map.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -50,6 +58,15 @@ Module linear_map.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.tuple [ K; V ]; Ty.path "alloc::alloc::Global" ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -175,8 +192,15 @@ Module linear_map.
       match ε, τ, α with
       | [], [], [ self; k ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let k := M.alloc (| k |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] ],
+              self
+            |) in
+          let k := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], k |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ V ] ],
             M.get_associated_function (|
@@ -224,6 +248,7 @@ Module linear_map.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
+                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.tuple [ K; V ] ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.tuple [ K; V ] ],
                         M.get_associated_function (|
@@ -288,7 +313,13 @@ Module linear_map.
                                     ]
                                 ]
                                 (Ty.path "bool"),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -296,7 +327,7 @@ Module linear_map.
                                     let γ := M.read (| γ |) in
                                     let γ2_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ2_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let kk := M.alloc (| γ2_0 |) in
+                                    let kk := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], γ2_0 |) in
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -329,14 +360,14 @@ Module linear_map.
                           Ty.function
                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
                             (Ty.apply (Ty.path "&") [] [ V ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let v := M.alloc (| γ1_1 |) in
+                                let v := M.alloc (| Ty.apply (Ty.path "&") [] [ V ], γ1_1 |) in
                                 M.read (| v |)))
                           ]
                         |)))
@@ -363,8 +394,15 @@ Module linear_map.
       match ε, τ, α with
       | [], [], [ self; k ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let k := M.alloc (| k |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] ],
+              self
+            |) in
+          let k := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], k |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ V ] ],
             M.get_associated_function (|
@@ -412,6 +450,7 @@ Module linear_map.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.tuple [ K; V ] ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ Ty.tuple [ K; V ] ],
                         M.get_associated_function (|
@@ -476,7 +515,13 @@ Module linear_map.
                                     ]
                                 ]
                                 (Ty.path "bool"),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -484,7 +529,7 @@ Module linear_map.
                                     let γ := M.read (| γ |) in
                                     let γ2_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ2_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let kk := M.alloc (| γ2_0 |) in
+                                    let kk := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], γ2_0 |) in
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -517,14 +562,14 @@ Module linear_map.
                           Ty.function
                             [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ] ] ]
                             (Ty.apply (Ty.path "&mut") [] [ V ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let v := M.alloc (| γ1_1 |) in
+                                let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ V ], γ1_1 |) in
                                 M.read (| v |)))
                           ]
                         |)))
@@ -557,18 +602,29 @@ Module linear_map.
       match ε, τ, α with
       | [], [], [ self; k; v ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let k := M.alloc (| k |) in
-          let v := M.alloc (| v |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] ],
+              self
+            |) in
+          let k := M.alloc (| K, k |) in
+          let v := M.alloc (| V, v |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ V ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "&mut") [] [ V ] ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -595,7 +651,7 @@ Module linear_map.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let vv := M.copy (| γ0_0 |) in
+                    let vv := M.copy (| Ty.apply (Ty.path "&mut") [] [ V ], γ0_0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -609,6 +665,7 @@ Module linear_map.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ V ],
                       Value.StructTuple "core::option::Option::Some" [] [ V ] [ M.read (| v |) ]
                     |)));
                 fun γ =>
@@ -637,7 +694,10 @@ Module linear_map.
                           Value.Tuple [ M.read (| k |); M.read (| v |) ]
                         ]
                       |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ V ] [] |)))
+                    M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ V ],
+                      Value.StructTuple "core::option::Option::None" [] [ V ] []
+                    |)))
               ]
             |)
           |)))
@@ -672,9 +732,16 @@ Module linear_map.
       match ε, τ, α with
       | [], [ impl_FnOnce___arrow_V ], [ self; k; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let k := M.alloc (| k |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] ],
+              self
+            |) in
+          let k := M.alloc (| K, k |) in
+          let f := M.alloc (| impl_FnOnce___arrow_V, f |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -699,6 +766,7 @@ Module linear_map.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.alloc (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.tuple [ K; V ] ],
                           M.call_closure (|
                             Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.tuple [ K; V ] ],
                             M.get_associated_function (|
@@ -755,14 +823,15 @@ Module linear_map.
                                   Ty.function
                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
                                     (Ty.path "bool"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let kk := M.alloc (| γ1_0 |) in
+                                        let kk :=
+                                          M.alloc (| Ty.apply (Ty.path "&") [] [ K ], γ1_0 |) in
                                         M.call_closure (|
                                           Ty.path "bool",
                                           M.get_trait_method (|
@@ -778,7 +847,10 @@ Module linear_map.
                                             M.borrow (| Pointer.Kind.Ref, kk |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.alloc (| M.borrow (| Pointer.Kind.Ref, k |) |)
+                                              M.alloc (|
+                                                Ty.apply (Ty.path "&") [] [ K ],
+                                                M.borrow (| Pointer.Kind.Ref, k |)
+                                              |)
                                             |)
                                           ]
                                         |)))
@@ -789,13 +861,14 @@ Module linear_map.
                     ]
                   |) in
                 M.alloc (|
+                  Ty.apply (Ty.path "&mut") [] [ V ],
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.deref (|
                       M.read (|
                         M.match_operator (|
                           Ty.apply (Ty.path "&mut") [] [ V ],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -806,8 +879,9 @@ Module linear_map.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let idx := M.copy (| γ0_0 |) in
+                                let idx := M.copy (| Ty.path "usize", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.apply (Ty.path "&mut") [] [ V ],
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (|
@@ -972,6 +1046,7 @@ Module linear_map.
                                     ]
                                   |) in
                                 M.alloc (|
+                                  Ty.apply (Ty.path "&mut") [] [ V ],
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (|
@@ -1013,7 +1088,14 @@ Module linear_map.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -1093,14 +1175,14 @@ Module linear_map.
                           Ty.function
                             [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] ] ]
                             (Ty.apply (Ty.path "&") [] [ V ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ := M.read (| γ |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let v := M.alloc (| γ1_1 |) in
+                                let v := M.alloc (| Ty.apply (Ty.path "&") [] [ V ], γ1_1 |) in
                                 M.read (| v |)))
                           ]
                         |)))
@@ -1136,7 +1218,7 @@ Module linear_map.
       match ε, τ, α with
       | [], [ T ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| T, iter |) in
           M.read (|
             let~ me : Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ] :=
               M.call_closure (|
@@ -1158,6 +1240,12 @@ Module linear_map.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.associated_in_trait
+                        "core::iter::traits::collect::IntoIterator"
+                        []
+                        []
+                        T
+                        "IntoIter",
                       M.call_closure (|
                         Ty.associated_in_trait
                           "core::iter::traits::collect::IntoIterator"
@@ -1180,7 +1268,16 @@ Module linear_map.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.associated_in_trait
+                                "core::iter::traits::collect::IntoIterator"
+                                []
+                                []
+                                T
+                                "IntoIter",
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -1189,6 +1286,10 @@ Module linear_map.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.tuple [ K; V ] ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -1225,6 +1326,7 @@ Module linear_map.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -1237,8 +1339,8 @@ Module linear_map.
                                             |) in
                                           let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let k := M.copy (| γ1_0 |) in
-                                          let v := M.copy (| γ1_1 |) in
+                                          let k := M.copy (| K, γ1_0 |) in
+                                          let v := M.copy (| V, γ1_1 |) in
                                           let~ _ :
                                               Ty.apply (Ty.path "core::option::Option") [] [ V ] :=
                                             M.call_closure (|
@@ -1258,11 +1360,11 @@ Module linear_map.
                                                 M.read (| v |)
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -1311,7 +1413,8 @@ Module linear_map.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_util::linear_map::LinearMap") [] [ K; V ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloc::vec::into_iter::IntoIter")

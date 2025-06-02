@@ -19,7 +19,19 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_associated_function (|
@@ -50,11 +62,28 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                    ],
                   M.call_closure (|
                     Ty.tuple
                       [
@@ -81,20 +110,35 @@ Module buf.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let s1 := M.copy (| γ0_0 |) in
-                      let s2 := M.copy (| γ0_1 |) in
+                      let s1 :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          γ0_0
+                        |) in
+                      let s2 :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          γ0_1
+                        |) in
                       M.match_operator (|
                         Ty.apply
                           (Ty.path "&")
                           []
                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_associated_function (|
@@ -114,11 +158,19 @@ Module buf.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s2 |) |) |)
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s1 |) |) |)
                               |)))
                         ]
@@ -138,8 +190,20 @@ Module buf.
         match ε, τ, α with
         | [], [], [ self; cnt ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cnt := M.alloc (| cnt |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::collections::vec_deque::VecDeque")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let cnt := M.alloc (| Ty.path "usize", cnt |) in
             M.read (|
               let~ _ :
                   Ty.apply
@@ -169,7 +233,7 @@ Module buf.
                       [ ("end_", M.read (| cnt |)) ]
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

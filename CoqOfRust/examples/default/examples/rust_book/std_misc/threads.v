@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 10 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 10 |))).
 
 Global Instance Instance_IsConstant_value_NTHREADS :
   M.IsFunction.C "threads::NTHREADS" value_NTHREADS.
@@ -68,6 +68,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
                     M.get_trait_method (|
@@ -95,7 +96,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
+                      (let iter :=
+                        M.copy (|
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u32" ],
+                          γ
+                        |) in
                       M.loop (|
                         Ty.tuple [],
                         ltac:(M.monadic
@@ -104,6 +109,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                   M.call_closure (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                                     M.get_trait_method (|
@@ -132,6 +138,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -142,7 +149,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let i := M.copy (| γ0_0 |) in
+                                      let i := M.copy (| Ty.path "u32", γ0_0 |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.call_closure (|
                                           Ty.tuple [],
@@ -187,7 +194,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             Ty.function
                                                               [ Ty.tuple [] ]
                                                               (Ty.tuple []),
-                                                            M.alloc (| α0 |),
+                                                            M.alloc (| Ty.tuple [], α0 |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
@@ -227,6 +234,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       M.borrow (|
                                                                                         Pointer.Kind.Ref,
                                                                                         M.alloc (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "array")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                IntegerKind.Usize
+                                                                                                2
+                                                                                            ]
+                                                                                            [
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "&")
+                                                                                                []
+                                                                                                [
+                                                                                                  Ty.path
+                                                                                                    "str"
+                                                                                                ]
+                                                                                            ],
                                                                                           Value.Array
                                                                                             [
                                                                                               mk_str (|
@@ -247,6 +272,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       M.borrow (|
                                                                                         Pointer.Kind.Ref,
                                                                                         M.alloc (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "array")
+                                                                                            [
+                                                                                              Value.Integer
+                                                                                                IntegerKind.Usize
+                                                                                                1
+                                                                                            ]
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::fmt::rt::Argument"
+                                                                                            ],
                                                                                           Value.Array
                                                                                             [
                                                                                               M.call_closure (|
@@ -283,9 +320,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                               |)
                                                                             ]
                                                                           |) in
-                                                                        M.alloc (| Value.Tuple [] |)
+                                                                        M.alloc (|
+                                                                          Ty.tuple [],
+                                                                          Value.Tuple []
+                                                                        |)
                                                                       |) in
-                                                                    M.alloc (| Value.Tuple [] |)
+                                                                    M.alloc (|
+                                                                      Ty.tuple [],
+                                                                      Value.Tuple []
+                                                                    |)
                                                                   |)))
                                                             ]
                                                           |)))
@@ -296,11 +339,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       |)))
                 ]
               |))
@@ -309,6 +352,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           (M.match_operator (|
             Ty.tuple [],
             M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
+                [
+                  Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.tuple [] ];
+                  Ty.path "alloc::alloc::Global"
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -338,7 +388,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let iter := M.copy (| γ |) in
+                  (let iter :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                        []
+                        [
+                          Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.tuple [] ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      γ
+                    |) in
                   M.loop (|
                     Ty.tuple [],
                     ltac:(M.monadic
@@ -347,6 +407,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "std::thread::JoinHandle") [] [ Ty.tuple [] ] ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -384,7 +448,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 ltac:(M.monadic
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                  M.alloc (|
+                                    Ty.tuple [],
+                                    M.never_to_any (| M.read (| M.break (||) |) |)
+                                  |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
@@ -393,10 +460,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let child := M.copy (| γ0_0 |) in
+                                  let child :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "std::thread::JoinHandle")
+                                        []
+                                        [ Ty.tuple [] ],
+                                      γ0_0
+                                    |) in
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.tuple [];
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [
+                                              Ty.dyn
+                                                [
+                                                  ("core::any::Any::Trait", []);
+                                                  ("core::marker::Send::AutoTrait", [])
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -427,12 +518,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [ M.read (| child |) ]
                                       |)
                                     |),
-                                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                    ]
                                   |)))
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   |)))
             ]
           |))

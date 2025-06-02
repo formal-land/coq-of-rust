@@ -5,6 +5,10 @@ Module constants.
   Definition value_R (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "array")
+          [ Value.Integer IntegerKind.Usize 5 ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ Ty.path "u8" ] ],
         Value.Array
           [
             Value.Array
@@ -58,6 +62,7 @@ Module constants.
   Definition value_RC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 24 ] [ Ty.path "u64" ],
         Value.Array
           [
             Value.Integer IntegerKind.U64 1;
@@ -95,6 +100,10 @@ Module constants.
   Definition value_RC_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "array")
+          [ Value.Integer IntegerKind.Usize 24 ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ Ty.path "u8" ] ],
         Value.Array
           [
             Value.Array
@@ -1722,8 +1731,8 @@ Module constants.
     match ε, τ, α with
     | [], [], [ round; bit_index ] =>
       ltac:(M.monadic
-        (let round := M.alloc (| round |) in
-        let bit_index := M.alloc (| bit_index |) in
+        (let round := M.alloc (| Ty.path "usize", round |) in
+        let bit_index := M.alloc (| Ty.path "usize", bit_index |) in
         M.read (|
           M.SubPointer.get_array_field (|
             M.SubPointer.get_array_field (|

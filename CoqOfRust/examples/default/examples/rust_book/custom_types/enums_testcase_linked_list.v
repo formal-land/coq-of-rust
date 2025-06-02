@@ -61,8 +61,8 @@ Module Impl_enums_testcase_linked_list_List.
     match ε, τ, α with
     | [], [], [ self; elem ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let elem := M.alloc (| elem |) in
+        (let self := M.alloc (| Ty.path "enums_testcase_linked_list::List", self |) in
+        let elem := M.alloc (| Ty.path "u32", elem |) in
         Value.StructTuple
           "enums_testcase_linked_list::List::Cons"
           []
@@ -115,7 +115,11 @@ Module Impl_enums_testcase_linked_list_List.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "enums_testcase_linked_list::List" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "u32",
@@ -135,8 +139,24 @@ Module Impl_enums_testcase_linked_list_List.
                       "enums_testcase_linked_list::List::Cons",
                       1
                     |) in
-                  let tail := M.alloc (| γ0_1 |) in
+                  let tail :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.path "enums_testcase_linked_list::List";
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ0_1
+                    |) in
                   M.alloc (|
+                    Ty.path "u32",
                     M.call_closure (|
                       Ty.path "u32",
                       BinOp.Wrap.add,
@@ -163,7 +183,7 @@ Module Impl_enums_testcase_linked_list_List.
               fun γ =>
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "enums_testcase_linked_list::List::Nil" |) in
-                  M.alloc (| Value.Integer IntegerKind.U32 0 |)))
+                  M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 0 |)))
             ]
           |)
         |)))
@@ -192,7 +212,11 @@ Module Impl_enums_testcase_linked_list_List.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "enums_testcase_linked_list::List" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "alloc::string::String",
@@ -212,9 +236,25 @@ Module Impl_enums_testcase_linked_list_List.
                       "enums_testcase_linked_list::List::Cons",
                       1
                     |) in
-                  let head := M.copy (| γ0_0 |) in
-                  let tail := M.alloc (| γ0_1 |) in
+                  let head := M.copy (| Ty.path "u32", γ0_0 |) in
+                  let tail :=
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
+                            []
+                            [
+                              Ty.path "enums_testcase_linked_list::List";
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
+                      γ0_1
+                    |) in
                   M.alloc (|
+                    Ty.path "alloc::string::String",
                     M.call_closure (|
                       Ty.path "alloc::string::String",
                       M.get_function (|
@@ -247,6 +287,10 @@ Module Impl_enums_testcase_linked_list_List.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 2 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array [ mk_str (| "" |); mk_str (| ", " |) ]
                                           |)
                                         |)
@@ -258,6 +302,10 @@ Module Impl_enums_testcase_linked_list_List.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 2 ]
+                                              [ Ty.path "core::fmt::rt::Argument" ],
                                             Value.Array
                                               [
                                                 M.call_closure (|
@@ -292,6 +340,7 @@ Module Impl_enums_testcase_linked_list_List.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
+                                                            Ty.path "alloc::string::String",
                                                             M.call_closure (|
                                                               Ty.path "alloc::string::String",
                                                               M.get_associated_function (|
@@ -338,6 +387,7 @@ Module Impl_enums_testcase_linked_list_List.
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "enums_testcase_linked_list::List::Nil" |) in
                   M.alloc (|
+                    Ty.path "alloc::string::String",
                     M.call_closure (|
                       Ty.path "alloc::string::String",
                       M.get_function (|
@@ -366,7 +416,13 @@ Module Impl_enums_testcase_linked_list_List.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.Array [ mk_str (| "Nil" |) ] |)
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                            Value.Array [ mk_str (| "Nil" |) ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -486,6 +542,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "linked list has length: " |); mk_str (| "
 " |) ]
@@ -499,6 +559,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -516,6 +580,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "u32",
                                               M.call_closure (|
                                                 Ty.path "u32",
                                                 M.get_associated_function (|
@@ -541,7 +606,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -564,8 +629,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -575,6 +646,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -592,6 +667,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "alloc::string::String",
                                               M.call_closure (|
                                                 Ty.path "alloc::string::String",
                                                 M.get_associated_function (|
@@ -617,9 +693,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

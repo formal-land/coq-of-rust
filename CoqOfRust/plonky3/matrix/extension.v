@@ -20,8 +20,16 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatMatrixView") [] [ F; EF; Inner ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -59,6 +67,11 @@ Module extension.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ Ty.tuple [ F; EF ] ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -100,7 +113,7 @@ Module extension.
       match ε, τ, α with
       | [], [], [ inner ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
+          (let inner := M.alloc (| Inner, inner |) in
           Value.StructTuple
             "p3_matrix::extension::FlatMatrixView"
             []
@@ -141,7 +154,14 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatMatrixView") [] [ F; EF; Inner ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -191,7 +211,14 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatMatrixView") [] [ F; EF; Inner ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.mul,
@@ -233,7 +260,14 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatMatrixView") [] [ F; EF; Inner ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ EF ], "height", [], [] |),
@@ -277,8 +311,15 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatMatrixView") [] [ F; EF; Inner ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           Value.StructRecord
             "p3_matrix::extension::FlatIter"
             []
@@ -351,8 +392,15 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatMatrixView") [] [ F; EF; Inner ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
@@ -472,6 +520,12 @@ Module extension.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.associated_in_trait
+                                        "p3_matrix::Matrix"
+                                        []
+                                        [ EF ]
+                                        Inner
+                                        "{{synthetic}}'2",
                                       M.call_closure (|
                                         Ty.associated_in_trait
                                           "p3_matrix::Matrix"
@@ -521,11 +575,12 @@ Module extension.
                                       (Ty.path "&")
                                       []
                                       [ Ty.apply (Ty.path "slice") [] [ F ] ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ EF ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let val := M.copy (| γ |) in
+                                        (let val :=
+                                          M.copy (| Ty.apply (Ty.path "&") [] [ EF ], γ |) in
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -613,7 +668,14 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::extension::FlatIter") [] [ F; I ] ],
+              self
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -629,18 +691,30 @@ Module extension.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "core::iter::traits::iterator::Iterator"
+                        []
+                        []
+                        (Ty.apply (Ty.path "p3_matrix::extension::FlatIter") [] [ F; I ])
+                        "Item"
+                    ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.eq,
@@ -701,8 +775,8 @@ Module extension.
                                       |)
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -729,6 +803,16 @@ Module extension.
                                       M.match_operator (|
                                         Ty.apply (Ty.path "&") [] [ EF ],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::ops::control_flow::ControlFlow")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "core::convert::Infallible" ];
+                                              Ty.apply (Ty.path "&") [] [ EF ]
+                                            ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -791,8 +875,16 @@ Module extension.
                                                   "core::ops::control_flow::ControlFlow::Break",
                                                   0
                                                 |) in
-                                              let residual := M.copy (| γ0_0 |) in
+                                              let residual :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ],
+                                                  γ0_0
+                                                |) in
                                               M.alloc (|
+                                                Ty.apply (Ty.path "&") [] [ EF ],
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -833,7 +925,11 @@ Module extension.
                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                   0
                                                 |) in
-                                              let val := M.copy (| γ0_0 |) in
+                                              let val :=
+                                                M.copy (|
+                                                  Ty.apply (Ty.path "&") [] [ EF ],
+                                                  γ0_0
+                                                |) in
                                               val))
                                         ]
                                       |)
@@ -868,6 +964,7 @@ Module extension.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ F ],
                       Value.StructTuple "core::option::Option::Some" [] [ F ] [ M.read (| value |) ]
                     |)
                   |)

@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_contract_terminate_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "contract_terminate::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "contract_terminate::AccountId",
@@ -108,7 +112,8 @@ Module Impl_contract_terminate_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_terminate::Env" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -132,8 +137,9 @@ Module Impl_contract_terminate_Env.
     match ε, τ, α with
     | [], [], [ self; _account ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _account := M.alloc (| _account |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_terminate::Env" ], self |) in
+        let _account := M.alloc (| Ty.path "contract_terminate::AccountId", _account |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -193,7 +199,11 @@ Module Impl_contract_terminate_JustTerminate.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "contract_terminate::JustTerminate" ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "contract_terminate::Env",
           M.get_associated_function (|
@@ -236,7 +246,11 @@ Module Impl_contract_terminate_JustTerminate.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "contract_terminate::JustTerminate" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -251,6 +265,7 @@ Module Impl_contract_terminate_JustTerminate.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "contract_terminate::Env",
                     M.call_closure (|
                       Ty.path "contract_terminate::Env",
                       M.get_associated_function (|
@@ -275,6 +290,7 @@ Module Impl_contract_terminate_JustTerminate.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "contract_terminate::Env",
                         M.call_closure (|
                           Ty.path "contract_terminate::Env",
                           M.get_associated_function (|
@@ -291,7 +307,7 @@ Module Impl_contract_terminate_JustTerminate.
                 |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

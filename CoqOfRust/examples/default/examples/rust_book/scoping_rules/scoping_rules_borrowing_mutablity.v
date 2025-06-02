@@ -22,7 +22,11 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_mutablity::Book" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "scoping_rules_borrowing_mutablity::Book",
@@ -82,7 +86,11 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ book ] =>
     ltac:(M.monadic
-      (let book := M.alloc (| book |) in
+      (let book :=
+        M.alloc (|
+          Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_borrowing_mutablity::Book" ],
+          book
+        |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -106,6 +114,10 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "I immutably borrowed " |);
@@ -123,6 +135,10 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -182,9 +198,9 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -204,7 +220,11 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ book ] =>
     ltac:(M.monadic
-      (let book := M.alloc (| book |) in
+      (let book :=
+        M.alloc (|
+          Ty.apply (Ty.path "&mut") [] [ Ty.path "scoping_rules_borrowing_mutablity::Book" ],
+          book
+        |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.write (|
@@ -237,6 +257,10 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "I mutably borrowed " |);
@@ -254,6 +278,10 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -313,9 +341,9 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -402,7 +430,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

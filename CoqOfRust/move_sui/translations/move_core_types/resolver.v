@@ -13,7 +13,7 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.read (|
             get_associated_constant (|
               Ty.path "move_core_types::account_address::AccountAddress",
@@ -30,8 +30,12 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; module_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let module_id :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module_id
+            |) in
           Value.StructTuple
             "core::result::Result::Ok"
             []
@@ -68,9 +72,17 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; module_id; _struct ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
-          let _struct := M.alloc (| _struct |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let module_id :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module_id
+            |) in
+          let _struct :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
+              _struct
+            |) in
           Value.StructTuple
             "core::result::Result::Ok"
             []
@@ -149,9 +161,21 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; address; tag ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let tag := M.alloc (| tag |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
+          let address :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_core_types::account_address::AccountAddress" ],
+              address
+            |) in
+          let tag :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::StructTag" ],
+              tag
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -220,8 +244,13 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; module_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
+          let module_id :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module_id
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -290,8 +319,19 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; module_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+              self
+            |) in
+          let module_id :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module_id
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -376,7 +416,8 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
           M.call_closure (|
             Ty.path "move_core_types::account_address::AccountAddress",
             M.get_trait_method (|
@@ -408,8 +449,13 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; module_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
+          let module_id :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module_id
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -457,9 +503,18 @@ Module resolver.
       match ε, τ, α with
       | [], [], [ self; module_id; struct_ ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
-          let struct_ := M.alloc (| struct_ |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
+          let module_id :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
+              module_id
+            |) in
+          let struct_ :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::identifier::IdentStr" ],
+              struct_
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")

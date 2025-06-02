@@ -32,8 +32,14 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "called `function()`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "called `function()`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -41,9 +47,9 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -85,6 +91,10 @@ Module cool.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "called `cool::function()`
 " |) ]
                               |)
@@ -95,9 +105,9 @@ Module cool.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -140,8 +150,14 @@ Module my.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "called `my::function()`
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "called `my::function()`
+" |) ]
+                              |)
                             |)
                           |)
                         |)
@@ -149,9 +165,9 @@ Module my.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -194,6 +210,10 @@ Module my.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "called `my::cool::function()`
 " |) ]
                                 |)
@@ -204,9 +224,9 @@ Module my.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -269,6 +289,10 @@ Module my.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "called `my::indirect_call()`, that
 > " |) ]
                               |)
@@ -279,7 +303,7 @@ Module my.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -311,7 +335,7 @@ Module my.
               M.get_function (| "super_and_self::cool::function", [], [] |),
               []
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -338,7 +362,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (| "super_and_self::my::indirect_call", [], [] |),
             []
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

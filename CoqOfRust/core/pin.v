@@ -32,7 +32,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
           Value.StructRecord
             "core::pin::Pin"
             []
@@ -85,8 +89,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -156,8 +168,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -259,8 +279,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -330,8 +358,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -401,8 +437,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -472,8 +516,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -543,8 +595,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Q ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -634,8 +694,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
@@ -718,8 +786,12 @@ Module pin.
       match ε, τ, α with
       | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -758,7 +830,7 @@ Module pin.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -788,7 +860,7 @@ Module pin.
       match ε, τ, α with
       | [], [], [ pointer ] =>
         ltac:(M.monadic
-          (let pointer := M.alloc (| pointer |) in
+          (let pointer := M.alloc (| Ptr, pointer |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ],
             M.get_associated_function (|
@@ -818,7 +890,7 @@ Module pin.
       match ε, τ, α with
       | [], [], [ pin ] =>
         ltac:(M.monadic
-          (let pin := M.alloc (| pin |) in
+          (let pin := M.alloc (| Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ], pin |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "__pointer" |)
           |)))
@@ -845,7 +917,7 @@ Module pin.
       match ε, τ, α with
       | [], [], [ pointer ] =>
         ltac:(M.monadic
-          (let pointer := M.alloc (| pointer |) in
+          (let pointer := M.alloc (| Ptr, pointer |) in
           Value.StructRecord "core::pin::Pin" [] [ Ptr ] [ ("__pointer", M.read (| pointer |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -867,7 +939,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::pin::Pin")
@@ -949,7 +1025,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::pin::Pin")
@@ -1060,7 +1140,14 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::pin::Pin")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::pin::Pin")
@@ -1125,8 +1212,16 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; value ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let value := M.alloc (| value |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let value :=
+            M.alloc (|
+              Ty.associated_in_trait "core::ops::deref::Deref" [] [] Ptr "Target",
+              value
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -1159,7 +1254,7 @@ Module pin.
                 |),
                 M.read (| value |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1184,7 +1279,7 @@ Module pin.
       match ε, τ, α with
       | [], [], [ pin ] =>
         ltac:(M.monadic
-          (let pin := M.alloc (| pin |) in
+          (let pin := M.alloc (| Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ], pin |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| pin, "core::pin::Pin", "__pointer" |)
           |)))
@@ -1224,8 +1319,12 @@ Module pin.
       match ε, τ, α with
       | [], [ U; F ], [ self; func ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let func := M.alloc (| func |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+              self
+            |) in
+          let func := M.alloc (| F, func |) in
           M.read (|
             let~ pointer : Ty.apply (Ty.path "&") [] [ T ] :=
               M.borrow (|
@@ -1255,6 +1354,7 @@ Module pin.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ U ] ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ U ] ],
                 M.get_associated_function (|
@@ -1286,7 +1386,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "core::pin::Pin", "__pointer" |)
           |)))
@@ -1310,7 +1414,7 @@ Module pin.
       match ε, τ, α with
       | [], [], [ r ] =>
         ltac:(M.monadic
-          (let r := M.alloc (| r |) in
+          (let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], r |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
@@ -1345,7 +1449,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
           Value.StructRecord
             "core::pin::Pin"
             []
@@ -1383,7 +1491,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1421,7 +1533,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1469,8 +1585,12 @@ Module pin.
       match ε, τ, α with
       | [], [ U; F ], [ self; func ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let func := M.alloc (| func |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
+          let func := M.alloc (| F, func |) in
           M.read (|
             let~ pointer : Ty.apply (Ty.path "&mut") [] [ T ] :=
               M.borrow (|
@@ -1507,6 +1627,7 @@ Module pin.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ U ] ],
                 M.get_associated_function (|
@@ -1539,7 +1660,7 @@ Module pin.
       match ε, τ, α with
       | [], [], [ r ] =>
         ltac:(M.monadic
-          (let r := M.alloc (| r |) in
+          (let r := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], r |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
@@ -1579,7 +1700,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1652,7 +1777,11 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1756,8 +1885,13 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1807,8 +1941,13 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1858,8 +1997,13 @@ Module pin.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ Ptr ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")

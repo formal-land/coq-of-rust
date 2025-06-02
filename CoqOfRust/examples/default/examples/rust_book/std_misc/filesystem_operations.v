@@ -15,7 +15,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ path ] =>
     ltac:(M.monadic
-      (let path := M.alloc (| path |) in
+      (let path := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ], path |) in
       M.read (|
         M.catch_return
           (Ty.apply
@@ -24,12 +24,27 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ]) (|
           ltac:(M.monadic
             (M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ],
               M.read (|
                 let~ f : Ty.path "std::fs::File" :=
                   M.read (|
                     M.match_operator (|
                       Ty.path "std::fs::File",
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error"
+                              ];
+                            Ty.path "std::fs::File"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
@@ -82,8 +97,19 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
                               |) in
-                            let residual := M.copy (| γ0_0 |) in
+                            let residual :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "std::io::error::Error"
+                                  ],
+                                γ0_0
+                              |) in
                             M.alloc (|
+                              Ty.path "std::fs::File",
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
@@ -132,7 +158,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
                               |) in
-                            let val := M.copy (| γ0_0 |) in
+                            let val := M.copy (| Ty.path "std::fs::File", γ0_0 |) in
                             val))
                       ]
                     |)
@@ -149,6 +175,10 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     []
                     [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ],
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -182,6 +212,10 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             0
                           |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ],
                           Value.StructTuple
                             "core::result::Result::Ok"
                             []
@@ -196,8 +230,12 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::result::Result::Err",
                             0
                           |) in
-                        let e := M.copy (| γ0_0 |) in
+                        let e := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ],
                           Value.StructTuple
                             "core::result::Result::Err"
                             []
@@ -228,8 +266,8 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ s; path ] =>
     ltac:(M.monadic
-      (let s := M.alloc (| s |) in
-      let path := M.alloc (| path |) in
+      (let s := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], s |) in
+      let path := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ], path |) in
       M.read (|
         M.catch_return
           (Ty.apply
@@ -238,12 +276,27 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.tuple []; Ty.path "std::io::error::Error" ]) (|
           ltac:(M.monadic
             (M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "std::io::error::Error" ],
               M.read (|
                 let~ f : Ty.path "std::fs::File" :=
                   M.read (|
                     M.match_operator (|
                       Ty.path "std::fs::File",
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; Ty.path "std::io::error::Error"
+                              ];
+                            Ty.path "std::fs::File"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::ops::control_flow::ControlFlow")
@@ -296,8 +349,19 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::ops::control_flow::ControlFlow::Break",
                                 0
                               |) in
-                            let residual := M.copy (| γ0_0 |) in
+                            let residual :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "std::io::error::Error"
+                                  ],
+                                γ0_0
+                              |) in
                             M.alloc (|
+                              Ty.path "std::fs::File",
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
@@ -340,12 +404,16 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::ops::control_flow::ControlFlow::Continue",
                                 0
                               |) in
-                            let val := M.copy (| γ0_0 |) in
+                            let val := M.copy (| Ty.path "std::fs::File", γ0_0 |) in
                             val))
                       ]
                     |)
                   |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -401,7 +469,7 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ path ] =>
     ltac:(M.monadic
-      (let path := M.alloc (| path |) in
+      (let path := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ], path |) in
       M.read (|
         M.match_operator (|
           Ty.apply
@@ -409,6 +477,10 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
             [ Ty.tuple []; Ty.path "std::io::error::Error" ],
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -448,6 +520,7 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.MutRef,
                                   M.alloc (|
+                                    Ty.path "std::fs::OpenOptions",
                                     M.call_closure (|
                                       Ty.path "std::fs::OpenOptions",
                                       M.get_associated_function (|
@@ -480,6 +553,10 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                   Value.StructTuple
                     "core::result::Result::Ok"
                     []
@@ -490,8 +567,12 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let e := M.copy (| γ0_0 |) in
+                let e := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                   Value.StructTuple
                     "core::result::Result::Err"
                     []
@@ -598,8 +679,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`mkdir a`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`mkdir a`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -607,13 +694,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -632,7 +723,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let why := M.copy (| γ0_0 |) in
+                    let why := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -654,6 +745,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "! " |); mk_str (| "
 " |) ]
                                     |)
@@ -666,6 +761,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -683,6 +782,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.path "std::io::error::ErrorKind",
                                                       M.call_closure (|
                                                         Ty.path "std::io::error::ErrorKind",
                                                         M.get_associated_function (|
@@ -708,12 +808,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
@@ -738,8 +838,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`echo hello > a/b.txt`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`echo hello > a/b.txt`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -747,7 +853,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -778,6 +884,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                                 M.get_associated_function (|
@@ -811,11 +918,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.function
                             [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
                             (Ty.tuple []),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "std::io::error::Error", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
+                                (let why := M.copy (| Ty.path "std::io::error::Error", γ |) in
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
@@ -842,6 +949,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [ mk_str (| "! " |); mk_str (| "
 " |) ]
@@ -855,6 +971,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -875,6 +995,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path
+                                                                          "std::io::error::ErrorKind",
                                                                         M.call_closure (|
                                                                           Ty.path
                                                                             "std::io::error::ErrorKind",
@@ -907,9 +1029,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)))
                           ]
                         |)))
@@ -938,8 +1060,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`mkdir -p a/c/d`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`mkdir -p a/c/d`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -947,7 +1075,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -984,11 +1112,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.function
                             [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
                             (Ty.tuple []),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "std::io::error::Error", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
+                                (let why := M.copy (| Ty.path "std::io::error::Error", γ |) in
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
@@ -1015,6 +1143,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [ mk_str (| "! " |); mk_str (| "
 " |) ]
@@ -1028,6 +1165,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -1048,6 +1189,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path
+                                                                          "std::io::error::ErrorKind",
                                                                         M.call_closure (|
                                                                           Ty.path
                                                                             "std::io::error::ErrorKind",
@@ -1080,9 +1223,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)))
                           ]
                         |)))
@@ -1111,8 +1254,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`touch a/c/e.txt`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`touch a/c/e.txt`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -1120,7 +1269,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -1150,6 +1299,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                                 M.get_associated_function (|
@@ -1183,11 +1333,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.function
                             [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
                             (Ty.tuple []),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "std::io::error::Error", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
+                                (let why := M.copy (| Ty.path "std::io::error::Error", γ |) in
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
@@ -1214,6 +1364,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [ mk_str (| "! " |); mk_str (| "
 " |) ]
@@ -1227,6 +1386,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -1247,6 +1410,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path
+                                                                          "std::io::error::ErrorKind",
                                                                         M.call_closure (|
                                                                           Ty.path
                                                                             "std::io::error::ErrorKind",
@@ -1279,9 +1444,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)))
                           ]
                         |)))
@@ -1310,8 +1475,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`ln -s ../b.txt a/c/b.txt`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`ln -s ../b.txt a/c/b.txt`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -1319,17 +1490,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
@@ -1373,11 +1544,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Ty.function
                                         [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
                                         (Ty.tuple []),
-                                      M.alloc (| α0 |),
+                                      M.alloc (| Ty.path "std::io::error::Error", α0 |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let why := M.copy (| γ |) in
+                                            (let why :=
+                                              M.copy (| Ty.path "std::io::error::Error", γ |) in
                                             M.read (|
                                               let~ _ : Ty.tuple [] :=
                                                 M.read (|
@@ -1408,6 +1580,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
+                                                                      ]
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "str" ]
+                                                                      ],
                                                                     Value.Array
                                                                       [
                                                                         mk_str (| "! " |);
@@ -1424,6 +1609,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument"
+                                                                      ],
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
@@ -1446,6 +1642,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
+                                                                                    Ty.path
+                                                                                      "std::io::error::ErrorKind",
                                                                                     M.call_closure (|
                                                                                       Ty.path
                                                                                         "std::io::error::ErrorKind",
@@ -1478,9 +1676,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         |)
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                             |)))
                                       ]
                                     |)))
@@ -1488,8 +1686,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 end))
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
@@ -1514,8 +1712,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`cat a/c/b.txt`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`cat a/c/b.txt`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -1523,13 +1727,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "alloc::string::String"; Ty.path "std::io::error::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1545,6 +1753,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                                 M.call_closure (|
                                   Ty.apply (Ty.path "&") [] [ Ty.path "std::path::Path" ],
                                   M.get_associated_function (|
@@ -1574,7 +1783,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let why := M.copy (| γ0_0 |) in
+                    let why := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -1596,6 +1805,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "! " |); mk_str (| "
 " |) ]
                                     |)
@@ -1608,6 +1821,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -1625,6 +1842,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.path "std::io::error::ErrorKind",
                                                       M.call_closure (|
                                                         Ty.path "std::io::error::ErrorKind",
                                                         M.get_associated_function (|
@@ -1650,12 +1868,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let s := M.copy (| γ0_0 |) in
+                    let s := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -1677,6 +1895,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "> " |); mk_str (| "
 " |) ]
                                     |)
@@ -1689,6 +1911,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -1715,7 +1941,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
@@ -1740,8 +1966,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`ls a`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`ls a`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -1749,13 +1981,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "std::fs::ReadDir"; Ty.path "std::io::error::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1774,7 +2010,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let why := M.copy (| γ0_0 |) in
+                    let why := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -1796,6 +2032,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "! " |); mk_str (| "
 " |) ]
                                     |)
@@ -1808,6 +2048,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -1825,6 +2069,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.path "std::io::error::ErrorKind",
                                                       M.call_closure (|
                                                         Ty.path "std::io::error::ErrorKind",
                                                         M.get_associated_function (|
@@ -1850,16 +2095,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let paths := M.copy (| γ0_0 |) in
+                    let paths := M.copy (| Ty.path "std::fs::ReadDir", γ0_0 |) in
                     M.use
                       (M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.path "std::fs::ReadDir",
                           M.call_closure (|
                             Ty.path "std::fs::ReadDir",
                             M.get_trait_method (|
@@ -1877,7 +2123,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let iter := M.copy (| γ |) in
+                              (let iter := M.copy (| Ty.path "std::fs::ReadDir", γ |) in
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
@@ -1886,6 +2132,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "std::fs::DirEntry";
+                                                  Ty.path "std::io::error::Error"
+                                                ]
+                                            ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -1927,6 +2185,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "core::option::Option::None"
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |)));
                                           fun γ =>
@@ -1937,7 +2196,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   "core::option::Option::Some",
                                                   0
                                                 |) in
-                                              let path := M.copy (| γ0_0 |) in
+                                              let path :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "std::fs::DirEntry";
+                                                      Ty.path "std::io::error::Error"
+                                                    ],
+                                                  γ0_0
+                                                |) in
                                               let~ _ : Ty.tuple [] :=
                                                 M.read (|
                                                   let~ _ : Ty.tuple [] :=
@@ -1967,6 +2236,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          2
+                                                                      ]
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "str" ]
+                                                                      ],
                                                                     Value.Array
                                                                       [
                                                                         mk_str (| "> " |);
@@ -1983,6 +2265,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "array")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
+                                                                      [
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument"
+                                                                      ],
                                                                     Value.Array
                                                                       [
                                                                         M.call_closure (|
@@ -2005,6 +2298,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                 M.borrow (|
                                                                                   Pointer.Kind.Ref,
                                                                                   M.alloc (|
+                                                                                    Ty.path
+                                                                                      "std::path::PathBuf",
                                                                                     M.call_closure (|
                                                                                       Ty.path
                                                                                         "std::path::PathBuf",
@@ -2019,6 +2314,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                         M.borrow (|
                                                                                           Pointer.Kind.Ref,
                                                                                           M.alloc (|
+                                                                                            Ty.path
+                                                                                              "std::fs::DirEntry",
                                                                                             M.call_closure (|
                                                                                               Ty.path
                                                                                                 "std::fs::DirEntry",
@@ -2062,13 +2359,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         |)
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               |)))
                         ]
                       |))))
@@ -2096,8 +2393,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`rm a/c/e.txt`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`rm a/c/e.txt`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -2105,7 +2408,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -2142,11 +2445,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.function
                             [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
                             (Ty.tuple []),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "std::io::error::Error", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
+                                (let why := M.copy (| Ty.path "std::io::error::Error", γ |) in
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
@@ -2173,6 +2476,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [ mk_str (| "! " |); mk_str (| "
 " |) ]
@@ -2186,6 +2498,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -2206,6 +2522,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path
+                                                                          "std::io::error::ErrorKind",
                                                                         M.call_closure (|
                                                                           Ty.path
                                                                             "std::io::error::ErrorKind",
@@ -2238,9 +2556,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)))
                           ]
                         |)))
@@ -2269,8 +2587,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "`rmdir a/c/d`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "`rmdir a/c/d`
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -2278,7 +2602,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -2315,11 +2639,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Ty.function
                             [ Ty.tuple [ Ty.path "std::io::error::Error" ] ]
                             (Ty.tuple []),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "std::io::error::Error", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let why := M.copy (| γ |) in
+                                (let why := M.copy (| Ty.path "std::io::error::Error", γ |) in
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
@@ -2346,6 +2670,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ]
+                                                          ],
                                                         Value.Array
                                                           [ mk_str (| "! " |); mk_str (| "
 " |) ]
@@ -2359,6 +2692,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                                          [ Ty.path "core::fmt::rt::Argument" ],
                                                         Value.Array
                                                           [
                                                             M.call_closure (|
@@ -2379,6 +2716,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.path
+                                                                          "std::io::error::ErrorKind",
                                                                         M.call_closure (|
                                                                           Ty.path
                                                                             "std::io::error::ErrorKind",
@@ -2411,9 +2750,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)))
                           ]
                         |)))
@@ -2421,7 +2760,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     end))
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

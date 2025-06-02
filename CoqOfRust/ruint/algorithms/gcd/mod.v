@@ -31,20 +31,21 @@ Module algorithms.
       match ε, τ, α with
       | [ BITS; LIMBS ], [], [ a; b ] =>
         ltac:(M.monadic
-          (let a := M.alloc (| a |) in
-          let b := M.alloc (| b |) in
+          (let a := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], a |) in
+          let b := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], b |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -82,8 +83,8 @@ Module algorithms.
                               |)
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -94,13 +95,14 @@ Module algorithms.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     M.get_trait_method (|
@@ -131,11 +133,12 @@ Module algorithms.
                               M.read (|
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                        (let γ :=
+                                          M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                                         let _ :=
                                           is_constant_or_break_match (|
                                             M.read (| γ |),
@@ -145,13 +148,14 @@ Module algorithms.
                                           M.read (|
                                             M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
+                                                          Ty.path "bool",
                                                           UnOp.not (|
                                                             M.call_closure (|
                                                               Ty.path "bool",
@@ -185,6 +189,7 @@ Module algorithms.
                                                         Value.Bool true
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.never_to_any (|
                                                         M.call_closure (|
                                                           Ty.path "never",
@@ -199,12 +204,14 @@ Module algorithms.
                                                       |)
                                                     |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
@@ -221,13 +228,14 @@ Module algorithms.
                               |) in
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           M.call_closure (|
                                             Ty.path "bool",
                                             M.get_trait_method (|
@@ -290,7 +298,7 @@ Module algorithms.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let~ _ : Ty.tuple [] :=
@@ -314,17 +322,18 @@ Module algorithms.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.tuple [],
                               M.never_to_any (|
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.never_to_any (| M.read (| M.break (||) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)
                               |)
                             |)))
@@ -406,8 +415,8 @@ Module algorithms.
       match ε, τ, α with
       | [ BITS; LIMBS ], [], [ a; b ] =>
         ltac:(M.monadic
-          (let a := M.alloc (| a |) in
-          let b := M.alloc (| b |) in
+          (let a := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], a |) in
+          let b := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], b |) in
           M.read (|
             M.catch_return
               (Ty.tuple
@@ -419,18 +428,26 @@ Module algorithms.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                      Ty.path "bool"
+                    ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.eq,
@@ -443,6 +460,7 @@ Module algorithms.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -475,7 +493,7 @@ Module algorithms.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -497,7 +515,7 @@ Module algorithms.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -526,8 +544,8 @@ Module algorithms.
                                       |)
                                     ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -577,13 +595,14 @@ Module algorithms.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           M.call_closure (|
                                             Ty.path "bool",
                                             M.get_trait_method (|
@@ -624,11 +643,16 @@ Module algorithms.
                                       M.read (|
                                         M.match_operator (|
                                           Ty.tuple [],
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                                (let γ :=
+                                                  M.use
+                                                    (M.alloc (|
+                                                      Ty.path "bool",
+                                                      Value.Bool true
+                                                    |)) in
                                                 let _ :=
                                                   is_constant_or_break_match (|
                                                     M.read (| γ |),
@@ -638,13 +662,14 @@ Module algorithms.
                                                   M.read (|
                                                     M.match_operator (|
                                                       Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
+                                                                  Ty.path "bool",
                                                                   UnOp.not (|
                                                                     M.call_closure (|
                                                                       Ty.path "bool",
@@ -684,6 +709,7 @@ Module algorithms.
                                                                 Value.Bool true
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.call_closure (|
                                                                   Ty.path "never",
@@ -702,12 +728,17 @@ Module algorithms.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
@@ -724,13 +755,14 @@ Module algorithms.
                                       |) in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     M.get_trait_method (|
@@ -1025,7 +1057,7 @@ Module algorithms.
                                                 even,
                                                 UnOp.not (| M.read (| even |) |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
@@ -1124,17 +1156,18 @@ Module algorithms.
                                                   ]
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Value.Tuple [] |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                         |)
                                       |)
                                     |)))
@@ -1146,7 +1179,7 @@ Module algorithms.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -1182,7 +1215,7 @@ Module algorithms.
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let~ _ : Ty.tuple [] :=
@@ -1211,7 +1244,7 @@ Module algorithms.
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1219,7 +1252,7 @@ Module algorithms.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -1250,12 +1283,19 @@ Module algorithms.
                                   |) in
                                 let~ _ : Ty.tuple [] :=
                                   M.write (| even, UnOp.not (| M.read (| even |) |) |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [];
+                          Ty.path "bool"
+                        ],
                       Value.Tuple
                         [ M.read (| a |); M.read (| s0 |); M.read (| t0 |); M.read (| even |) ]
                     |)
@@ -1322,8 +1362,9 @@ Module algorithms.
       match ε, τ, α with
       | [ BITS; LIMBS ], [], [ num; modulus ] =>
         ltac:(M.monadic
-          (let num := M.alloc (| num |) in
-          let modulus := M.alloc (| modulus |) in
+          (let num := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], num |) in
+          let modulus :=
+            M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], modulus |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1332,18 +1373,23 @@ Module algorithms.
                 [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.or (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -1389,6 +1435,7 @@ Module algorithms.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1401,7 +1448,7 @@ Module algorithms.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1413,13 +1460,14 @@ Module algorithms.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_trait_method (|
@@ -1456,8 +1504,8 @@ Module algorithms.
                                     |),
                                     [ M.borrow (| Pointer.Kind.MutRef, b |); M.read (| a |) ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1465,13 +1513,14 @@ Module algorithms.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_trait_method (|
@@ -1502,6 +1551,7 @@ Module algorithms.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1514,7 +1564,7 @@ Module algorithms.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1545,13 +1595,14 @@ Module algorithms.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           M.call_closure (|
                                             Ty.path "bool",
                                             M.get_trait_method (|
@@ -1592,11 +1643,16 @@ Module algorithms.
                                       M.read (|
                                         M.match_operator (|
                                           Ty.tuple [],
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                                (let γ :=
+                                                  M.use
+                                                    (M.alloc (|
+                                                      Ty.path "bool",
+                                                      Value.Bool true
+                                                    |)) in
                                                 let _ :=
                                                   is_constant_or_break_match (|
                                                     M.read (| γ |),
@@ -1606,13 +1662,14 @@ Module algorithms.
                                                   M.read (|
                                                     M.match_operator (|
                                                       Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
+                                                                  Ty.path "bool",
                                                                   UnOp.not (|
                                                                     M.call_closure (|
                                                                       Ty.path "bool",
@@ -1652,6 +1709,7 @@ Module algorithms.
                                                                 Value.Bool true
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.call_closure (|
                                                                   Ty.path "never",
@@ -1670,12 +1728,17 @@ Module algorithms.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
@@ -1692,13 +1755,14 @@ Module algorithms.
                                       |) in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     M.get_trait_method (|
@@ -1917,7 +1981,7 @@ Module algorithms.
                                                 even,
                                                 UnOp.not (| M.read (| even |) |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let~ _ : Ty.tuple [] :=
@@ -1991,17 +2055,18 @@ Module algorithms.
                                                   ]
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Value.Tuple [] |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                         |)
                                       |)
                                     |)))
@@ -2014,13 +2079,14 @@ Module algorithms.
                         (Ty.path "core::option::Option")
                         []
                         [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     M.get_trait_method (|
@@ -2037,6 +2103,7 @@ Module algorithms.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                           M.call_closure (|
                                             Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                             M.get_associated_function (|
@@ -2055,6 +2122,10 @@ Module algorithms.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 []
@@ -2063,7 +2134,7 @@ Module algorithms.
                                   M.read (|
                                     M.match_operator (|
                                       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -2074,6 +2145,7 @@ Module algorithms.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
+                                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
                                                 M.get_trait_method (|
@@ -2105,6 +2177,10 @@ Module algorithms.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
                               Value.StructTuple
                                 "core::option::Option::None"
                                 []

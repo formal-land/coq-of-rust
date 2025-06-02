@@ -12,8 +12,8 @@ Module signature.
       match ε, τ, α with
       | [], [], [ v; chain_id ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
-          let chain_id := M.alloc (| chain_id |) in
+          (let v := M.alloc (| Ty.path "u8", v |) in
+          let chain_id := M.alloc (| Ty.path "u64", chain_id |) in
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.add,
@@ -63,23 +63,25 @@ Module signature.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v := M.alloc (| Ty.path "u64", v |) in
           M.read (|
             M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -98,6 +100,7 @@ Module signature.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -110,7 +113,7 @@ Module signature.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -123,6 +126,7 @@ Module signature.
                           [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
                         |)) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -171,7 +175,7 @@ Module signature.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v := M.alloc (| Ty.path "u64", v |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -189,7 +193,7 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -197,7 +201,7 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 1
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -205,7 +209,7 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 27
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -213,17 +217,17 @@ Module signature.
                                 M.read (| γ |),
                                 Value.Integer IntegerKind.U64 28
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -251,7 +255,7 @@ Module signature.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v := M.alloc (| Ty.path "u64", v |) in
           M.read (|
             M.match_operator (|
               Ty.path "u8",
@@ -260,6 +264,7 @@ Module signature.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.path "u8",
                       M.cast
                         (Ty.path "u8")
                         (M.call_closure (|
@@ -271,6 +276,7 @@ Module signature.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.path "u8",
                       M.cast
                         (Ty.path "u8")
                         (M.call_closure (|
@@ -289,6 +295,7 @@ Module signature.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.path "u8",
                       M.cast
                         (Ty.path "u8")
                         (M.call_closure (|

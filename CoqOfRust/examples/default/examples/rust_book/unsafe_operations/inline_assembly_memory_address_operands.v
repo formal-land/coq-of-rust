@@ -35,10 +35,10 @@ Module main.
     match ε, τ, α with
     | [], [], [ control ] =>
       ltac:(M.monadic
-        (let control := M.alloc (| control |) in
+        (let control := M.alloc (| Ty.path "u16", control |) in
         M.read (|
           let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

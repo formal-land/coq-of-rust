@@ -26,8 +26,37 @@ Module asserting.
       match ε, τ, α with
       | [], [], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::asserting::Wrapper")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ E ] ]
+                    ]
+                ],
+              self
+            |) in
+          let β1 :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::asserting::Capture")
+                    []
+                    [ E; Ty.path "core::asserting::TryCaptureWithoutDebug" ]
+                ],
+              β1
+            |) in
           M.match_operator (| Ty.tuple [], β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -59,8 +88,21 @@ Module asserting.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::asserting::Capture")
+                    []
+                    [ E; Ty.path "core::asserting::TryCaptureWithoutDebug" ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -110,8 +152,32 @@ Module asserting.
       match ε, τ, α with
       | [], [], [ self; to ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let to := M.alloc (| to |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::asserting::Wrapper")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ E ] ]
+                ],
+              self
+            |) in
+          let to :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::asserting::Capture")
+                    []
+                    [ E; Ty.path "core::asserting::TryCaptureWithDebug" ]
+                ],
+              to
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -138,7 +204,7 @@ Module asserting.
                     |)
                   ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -173,8 +239,21 @@ Module asserting.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::asserting::Capture")
+                    []
+                    [ E; Ty.path "core::asserting::TryCaptureWithDebug" ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -191,6 +270,10 @@ Module asserting.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -216,8 +299,12 @@ Module asserting.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let value := M.alloc (| γ0_0 |) in
+                    let value := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")

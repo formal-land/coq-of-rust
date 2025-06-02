@@ -52,7 +52,7 @@ Module main.
     match ε, τ, α with
     | [], [], [ arg ] =>
       ltac:(M.monadic
-        (let arg := M.alloc (| arg |) in
+        (let arg := M.alloc (| Ty.path "i32", arg |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -75,8 +75,14 @@ Module main.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "arg = " |); mk_str (| "
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "arg = " |); mk_str (| "
+" |) ]
+                              |)
                             |)
                           |)
                         |);
@@ -86,6 +92,10 @@ Module main.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -112,9 +122,10 @@ Module main.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           M.alloc (|
+            Ty.path "i32",
             M.call_closure (|
               Ty.path "i32",
               BinOp.Wrap.mul,
@@ -154,7 +165,7 @@ Module main.
     match ε, τ, α with
     | [], [], [ arg ] =>
       ltac:(M.monadic
-        (let arg := M.alloc (| arg |) in
+        (let arg := M.alloc (| Ty.path "i32", arg |) in
         M.read (|
           let result := M.read (| Value.DeclaredButUndefined |) in
           let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in

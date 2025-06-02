@@ -47,7 +47,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
@@ -62,8 +66,9 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -90,6 +95,7 @@ Module task.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
                         Value.StructTuple "core::task::poll::Poll::Pending" [] [ T ] []
                       |)))
                 ]
@@ -117,8 +123,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -136,8 +147,12 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -166,6 +181,10 @@ Module task.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -213,12 +232,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -257,8 +280,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -281,6 +312,7 @@ Module task.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -291,7 +323,20 @@ Module task.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -304,7 +349,7 @@ Module task.
                                   "core::task::poll::Poll::Ready",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -312,8 +357,9 @@ Module task.
                                   "core::task::poll::Poll::Ready",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -331,7 +377,7 @@ Module task.
                                   ]
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                         ]
                       |)
                     |)))
@@ -360,8 +406,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -386,6 +440,7 @@ Module task.
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -415,7 +470,20 @@ Module task.
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         Ty.path "core::cmp::Ordering",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -428,7 +496,7 @@ Module task.
                                   "core::task::poll::Poll::Ready",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -436,8 +504,9 @@ Module task.
                                   "core::task::poll::Poll::Ready",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -464,13 +533,14 @@ Module task.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
                               |)))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -497,8 +567,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -522,7 +600,20 @@ Module task.
                 |) in
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ];
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ]
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -535,7 +626,7 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -543,8 +634,12 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -568,6 +663,10 @@ Module task.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -619,8 +718,12 @@ Module task.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -665,8 +768,9 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -684,7 +788,7 @@ Module task.
                           ]
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |)))
@@ -720,8 +824,8 @@ Module task.
         match ε, τ, α with
         | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ], self |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
@@ -735,8 +839,9 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      let t := M.copy (| γ0_0 |) in
+                      let t := M.copy (| T, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -761,6 +866,7 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ U ],
                         Value.StructTuple "core::task::poll::Poll::Pending" [] [ U ] []
                       |)))
                 ]
@@ -785,7 +891,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -799,8 +909,8 @@ Module task.
                           "core::task::poll::Poll::Ready",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -823,7 +933,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ] ],
+                self
+              |) in
             UnOp.not (|
               M.call_closure (|
                 Ty.path "bool",
@@ -870,8 +984,15 @@ Module task.
         match ε, τ, α with
         | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+                self
+              |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -894,8 +1015,12 @@ Module task.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let t := M.copy (| γ1_0 |) in
+                      let t := M.copy (| T, γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -936,8 +1061,12 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ1_0 |) in
+                      let e := M.copy (| E, γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -954,6 +1083,10 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Pending"
                           []
@@ -989,8 +1122,15 @@ Module task.
         match ε, τ, α with
         | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+                self
+              |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1013,8 +1153,12 @@ Module task.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let t := M.copy (| γ1_0 |) in
+                      let t := M.copy (| T, γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1041,8 +1185,12 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ1_0 |) in
+                      let e := M.copy (| E, γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1073,6 +1221,10 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Pending"
                           []
@@ -1122,8 +1274,20 @@ Module task.
         match ε, τ, α with
         | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                  ],
+                self
+              |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1157,8 +1321,17 @@ Module task.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let t := M.copy (| γ2_0 |) in
+                      let t := M.copy (| T, γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1216,8 +1389,17 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ2_0 |) in
+                      let e := M.copy (| E, γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1251,6 +1433,15 @@ Module task.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1272,6 +1463,15 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ U; E ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Pending"
                           []
@@ -1313,8 +1513,20 @@ Module task.
         match ε, τ, α with
         | [], [ U; F ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                  ],
+                self
+              |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1348,8 +1560,17 @@ Module task.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let t := M.copy (| γ2_0 |) in
+                      let t := M.copy (| T, γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1393,8 +1614,17 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ2_0 |) in
+                      let e := M.copy (| E, γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1442,6 +1672,15 @@ Module task.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1463,6 +1702,15 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; U ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Pending"
                           []
@@ -1500,7 +1748,7 @@ Module task.
         match ε, τ, α with
         | [], [], [ t ] =>
           ltac:(M.monadic
-            (let t := M.alloc (| t |) in
+            (let t := M.alloc (| T, t |) in
             Value.StructTuple "core::task::poll::Poll::Ready" [] [ T ] [ M.read (| t |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1545,7 +1793,19 @@ Module task.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c :=
+              M.alloc (|
+                Ty.associated_in_trait
+                  "core::ops::try_trait::Try"
+                  []
+                  []
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ])
+                  "Output",
+                c
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -1579,7 +1839,14 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1608,8 +1875,18 @@ Module task.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ1_0 |) in
+                      let x := M.copy (| T, γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -1642,8 +1919,18 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ1_0 |) in
+                      let e := M.copy (| E, γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -1666,6 +1953,16 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -1724,7 +2021,14 @@ Module task.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "core::convert::Infallible"; E ],
+                x
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1741,8 +2045,12 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ0_0 |) in
+                      let e := M.copy (| E, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1825,7 +2133,24 @@ Module task.
         match ε, τ, α with
         | [], [], [ c ] =>
           ltac:(M.monadic
-            (let c := M.alloc (| c |) in
+            (let c :=
+              M.alloc (|
+                Ty.associated_in_trait
+                  "core::ops::try_trait::Try"
+                  []
+                  []
+                  (Ty.apply
+                    (Ty.path "core::task::poll::Poll")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                    ])
+                  "Output",
+                c
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -1871,11 +2196,15 @@ Module task.
                                 (Ty.path "core::option::Option")
                                 []
                                 [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
+                                  (let x :=
+                                    M.copy (|
+                                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                                      γ
+                                    |) in
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -1924,7 +2253,19 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1962,8 +2303,21 @@ Module task.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ2_0 |) in
+                      let x := M.copy (| T, γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -2011,8 +2365,21 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ2_0 |) in
+                      let e := M.copy (| E, γ2_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -2044,6 +2411,19 @@ Module task.
                         |) in
                       let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -2069,6 +2449,19 @@ Module task.
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::task::poll::Poll::Pending" |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "core::convert::Infallible"; E ];
+                            Ty.apply
+                              (Ty.path "core::task::poll::Poll")
+                              []
+                              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -2141,7 +2534,14 @@ Module task.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "core::convert::Infallible"; E ],
+                x
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -2163,8 +2563,17 @@ Module task.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let e := M.copy (| γ0_0 |) in
+                      let e := M.copy (| E, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::task::poll::Poll")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; F ] ]
+                          ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []

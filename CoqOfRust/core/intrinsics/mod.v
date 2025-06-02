@@ -13,7 +13,7 @@ Module num.
         match ε, τ, α with
         | [], [], [ radix ] =>
           ltac:(M.monadic
-            (let radix := M.alloc (| radix |) in
+            (let radix := M.alloc (| Ty.path "u32", radix |) in
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -33,6 +33,10 @@ Module num.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array
                               [
                                 mk_str (|
@@ -49,6 +53,10 @@ Module num.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             Value.Array
                               [
                                 M.call_closure (|
@@ -95,7 +103,7 @@ Module num.
         match ε, τ, α with
         | [], [], [ radix ] =>
           ltac:(M.monadic
-            (let radix := M.alloc (| radix |) in
+            (let radix := M.alloc (| Ty.path "u32", radix |) in
             M.read (|
               M.match_operator (|
                 Ty.path "never",
@@ -104,6 +112,7 @@ Module num.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "never",
                         M.call_closure (|
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -123,6 +132,10 @@ Module num.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (|
@@ -163,7 +176,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ to_drop ] =>
       ltac:(M.monadic
-        (let to_drop := M.alloc (| to_drop |) in
+        (let to_drop := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], to_drop |) in
         M.call_closure (|
           Ty.tuple [],
           M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
@@ -190,9 +203,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -221,9 +234,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -252,9 +265,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -283,9 +296,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -314,9 +327,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -345,9 +358,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -376,9 +389,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -407,9 +420,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -438,9 +451,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -469,9 +482,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -500,9 +513,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -527,9 +540,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -558,9 +571,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -589,9 +602,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -616,9 +629,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -651,9 +664,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -688,9 +701,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -725,9 +738,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -762,9 +775,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -799,9 +812,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -836,9 +849,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -873,9 +886,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -910,9 +923,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -947,9 +960,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -984,9 +997,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1021,9 +1034,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1054,9 +1067,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1091,9 +1104,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1128,9 +1141,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1161,9 +1174,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _old; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _old := M.alloc (| _old |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _old := M.alloc (| T, _old |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1190,7 +1203,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1215,7 +1228,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1240,7 +1253,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1265,7 +1278,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1290,8 +1303,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| T, _val |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1316,8 +1329,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| T, _val |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1342,8 +1355,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| T, _val |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1368,8 +1381,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| T, _val |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1394,8 +1407,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1420,8 +1433,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1446,8 +1459,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1472,8 +1485,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1498,8 +1511,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1524,8 +1537,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1550,8 +1563,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1576,8 +1589,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1602,8 +1615,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1628,8 +1641,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1654,8 +1667,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1680,8 +1693,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1706,8 +1719,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1732,8 +1745,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1758,8 +1771,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1784,8 +1797,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1810,8 +1823,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1836,8 +1849,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1862,8 +1875,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1888,8 +1901,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1914,8 +1927,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1940,8 +1953,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1966,8 +1979,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1992,8 +2005,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2018,8 +2031,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2044,8 +2057,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2070,8 +2083,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2096,8 +2109,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2122,8 +2135,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2148,8 +2161,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2174,8 +2187,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2200,8 +2213,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2226,8 +2239,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2252,8 +2265,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2278,8 +2291,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2304,8 +2317,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2330,8 +2343,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2356,8 +2369,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2382,8 +2395,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2408,8 +2421,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2434,8 +2447,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2460,8 +2473,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2486,8 +2499,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2512,8 +2525,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2538,8 +2551,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2564,8 +2577,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2590,8 +2603,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2616,8 +2629,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2642,8 +2655,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2668,8 +2681,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2694,8 +2707,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2720,8 +2733,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2746,8 +2759,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2772,8 +2785,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -2798,8 +2811,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| T, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3040,8 +3053,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _data; _locality ] =>
       ltac:(M.monadic
-        (let _data := M.alloc (| _data |) in
-        let _locality := M.alloc (| _locality |) in
+        (let _data := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _data |) in
+        let _locality := M.alloc (| Ty.path "i32", _locality |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3066,8 +3079,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _data; _locality ] =>
       ltac:(M.monadic
-        (let _data := M.alloc (| _data |) in
-        let _locality := M.alloc (| _locality |) in
+        (let _data := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _data |) in
+        let _locality := M.alloc (| Ty.path "i32", _locality |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3092,8 +3105,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _data; _locality ] =>
       ltac:(M.monadic
-        (let _data := M.alloc (| _data |) in
-        let _locality := M.alloc (| _locality |) in
+        (let _data := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _data |) in
+        let _locality := M.alloc (| Ty.path "i32", _locality |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3118,8 +3131,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _data; _locality ] =>
       ltac:(M.monadic
-        (let _data := M.alloc (| _data |) in
-        let _locality := M.alloc (| _locality |) in
+        (let _data := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _data |) in
+        let _locality := M.alloc (| Ty.path "i32", _locality |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3168,7 +3181,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ β0 ] =>
       ltac:(M.monadic
-        (let β0 := M.alloc (| β0 |) in
+        (let β0 := M.alloc (| T, β0 |) in
         M.match_operator (|
           T,
           β0,
@@ -3247,17 +3260,18 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ b ] =>
       ltac:(M.monadic
-        (let b := M.alloc (| b |) in
+        (let b := M.alloc (| Ty.path "bool", b |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let γ := M.use (M.alloc (| UnOp.not (| M.read (| b |) |) |)) in
+                  (let γ := M.use (M.alloc (| Ty.path "bool", UnOp.not (| M.read (| b |) |) |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.tuple [],
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -3266,7 +3280,7 @@ Module intrinsics.
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -3303,17 +3317,17 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ b ] =>
       ltac:(M.monadic
-        (let b := M.alloc (| b |) in
+        (let b := M.alloc (| Ty.path "bool", b |) in
         M.read (|
           M.match_operator (|
             Ty.path "bool",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use b in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Bool true |)));
+                  M.alloc (| Ty.path "bool", Value.Bool true |)));
               fun γ =>
                 ltac:(M.monadic
                   (let~ _ : Ty.tuple [] :=
@@ -3322,7 +3336,7 @@ Module intrinsics.
                       M.get_function (| "core::intrinsics::cold_path", [], [] |),
                       []
                     |) in
-                  M.alloc (| Value.Bool false |)))
+                  M.alloc (| Ty.path "bool", Value.Bool false |)))
             ]
           |)
         |)))
@@ -3347,11 +3361,11 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ b ] =>
       ltac:(M.monadic
-        (let b := M.alloc (| b |) in
+        (let b := M.alloc (| Ty.path "bool", b |) in
         M.read (|
           M.match_operator (|
             Ty.path "bool",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -3363,8 +3377,8 @@ Module intrinsics.
                       M.get_function (| "core::intrinsics::cold_path", [], [] |),
                       []
                     |) in
-                  M.alloc (| Value.Bool true |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                  M.alloc (| Ty.path "bool", Value.Bool true |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
             ]
           |)
         |)))
@@ -3385,13 +3399,13 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ b; true_val; false_val ] =>
       ltac:(M.monadic
-        (let b := M.alloc (| b |) in
-        let true_val := M.alloc (| true_val |) in
-        let false_val := M.alloc (| false_val |) in
+        (let b := M.alloc (| Ty.path "bool", b |) in
+        let true_val := M.alloc (| T, true_val |) in
+        let false_val := M.alloc (| T, false_val |) in
         M.read (|
           M.match_operator (|
             T,
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -3521,7 +3535,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ β0 ] =>
       ltac:(M.monadic
-        (let β0 := M.alloc (| β0 |) in
+        (let β0 := M.alloc (| T, β0 |) in
         M.match_operator (|
           Ty.tuple [],
           β0,
@@ -3553,7 +3567,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ Src; Dst ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Src, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3578,7 +3592,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ Src; Dst ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Src, _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3627,8 +3641,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ Ptr; Delta ], [ _dst; _offset ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _offset := M.alloc (| _offset |) in
+        (let _dst := M.alloc (| Ptr, _dst |) in
+        let _offset := M.alloc (| Delta, _offset |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3652,8 +3666,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _offset ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _offset := M.alloc (| _offset |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _dst |) in
+        let _offset := M.alloc (| Ty.path "isize", _offset |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3678,8 +3692,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr; _mask ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
-        let _mask := M.alloc (| _mask |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _ptr |) in
+        let _mask := M.alloc (| Ty.path "usize", _mask |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3708,9 +3722,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src; _count ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
-        let _count := M.alloc (| _count |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
+        let _count := M.alloc (| Ty.path "usize", _count |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3737,9 +3751,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _src; _count ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _src := M.alloc (| _src |) in
-        let _count := M.alloc (| _count |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
+        let _count := M.alloc (| Ty.path "usize", _count |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3764,9 +3778,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val; _count ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
-        let _count := M.alloc (| _count |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| Ty.path "u8", _val |) in
+        let _count := M.alloc (| Ty.path "usize", _count |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3791,7 +3805,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3816,8 +3830,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| T, _val |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3842,7 +3856,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _src ] =>
       ltac:(M.monadic
-        (let _src := M.alloc (| _src |) in
+        (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3867,8 +3881,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dst; _val ] =>
       ltac:(M.monadic
-        (let _dst := M.alloc (| _dst |) in
-        let _val := M.alloc (| _val |) in
+        (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+        let _val := M.alloc (| T, _val |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3893,7 +3907,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3917,7 +3931,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3941,7 +3955,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3965,7 +3979,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -3990,8 +4004,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f16", _a |) in
+        let _x := M.alloc (| Ty.path "i32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4015,8 +4029,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f32", _a |) in
+        let _x := M.alloc (| Ty.path "i32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4040,8 +4054,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f64", _a |) in
+        let _x := M.alloc (| Ty.path "i32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4065,8 +4079,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f128", _a |) in
+        let _x := M.alloc (| Ty.path "i32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4091,7 +4105,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4115,7 +4129,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4139,7 +4153,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4163,7 +4177,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4187,7 +4201,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4211,7 +4225,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4235,7 +4249,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4259,7 +4273,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4283,8 +4297,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f16", _a |) in
+        let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4308,8 +4322,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f32", _a |) in
+        let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4333,8 +4347,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f64", _a |) in
+        let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4358,8 +4372,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _x ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _x := M.alloc (| _x |) in
+        (let _a := M.alloc (| Ty.path "f128", _a |) in
+        let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4383,7 +4397,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4407,7 +4421,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4431,7 +4445,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4455,7 +4469,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4479,7 +4493,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4503,7 +4517,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4527,7 +4541,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4551,7 +4565,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4576,7 +4590,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4600,7 +4614,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4624,7 +4638,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4648,7 +4662,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4672,7 +4686,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4697,7 +4711,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4722,7 +4736,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4747,7 +4761,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4772,7 +4786,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4796,7 +4810,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4820,7 +4834,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4844,7 +4858,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4869,9 +4883,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f16", _a |) in
+        let _b := M.alloc (| Ty.path "f16", _b |) in
+        let _c := M.alloc (| Ty.path "f16", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4895,9 +4909,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f32", _a |) in
+        let _b := M.alloc (| Ty.path "f32", _b |) in
+        let _c := M.alloc (| Ty.path "f32", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4921,9 +4935,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f64", _a |) in
+        let _b := M.alloc (| Ty.path "f64", _b |) in
+        let _c := M.alloc (| Ty.path "f64", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4947,9 +4961,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f128", _a |) in
+        let _b := M.alloc (| Ty.path "f128", _b |) in
+        let _c := M.alloc (| Ty.path "f128", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -4973,9 +4987,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f16", _a |) in
+        let _b := M.alloc (| Ty.path "f16", _b |) in
+        let _c := M.alloc (| Ty.path "f16", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5000,9 +5014,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f32", _a |) in
+        let _b := M.alloc (| Ty.path "f32", _b |) in
+        let _c := M.alloc (| Ty.path "f32", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5027,9 +5041,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f64", _a |) in
+        let _b := M.alloc (| Ty.path "f64", _b |) in
+        let _c := M.alloc (| Ty.path "f64", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5054,9 +5068,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _a; _b; _c ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
-        let _c := M.alloc (| _c |) in
+        (let _a := M.alloc (| Ty.path "f128", _a |) in
+        let _b := M.alloc (| Ty.path "f128", _b |) in
+        let _c := M.alloc (| Ty.path "f128", _c |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5081,7 +5095,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5106,7 +5120,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5131,7 +5145,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5156,7 +5170,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5181,7 +5195,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5205,7 +5219,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5229,7 +5243,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5253,7 +5267,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5278,7 +5292,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5303,7 +5317,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5328,7 +5342,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5353,7 +5367,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5378,7 +5392,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5402,7 +5416,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5426,7 +5440,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5450,7 +5464,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5475,7 +5489,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5500,7 +5514,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5525,7 +5539,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5550,7 +5564,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5575,7 +5589,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5600,7 +5614,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5625,7 +5639,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5650,7 +5664,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5675,7 +5689,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5700,7 +5714,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5725,7 +5739,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5750,7 +5764,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5775,8 +5789,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5801,8 +5815,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5827,8 +5841,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5853,8 +5867,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5879,8 +5893,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5905,7 +5919,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ Float; Int ], [ _value ] =>
       ltac:(M.monadic
-        (let _value := M.alloc (| _value |) in
+        (let _value := M.alloc (| Float, _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5930,8 +5944,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5956,8 +5970,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -5982,8 +5996,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6008,8 +6022,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6034,8 +6048,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6060,7 +6074,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6084,7 +6098,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6108,7 +6122,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6133,7 +6147,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6157,7 +6171,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6182,7 +6196,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6206,7 +6220,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| T, _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6231,8 +6245,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _lhs; _rhss ] =>
       ltac:(M.monadic
-        (let _lhs := M.alloc (| _lhs |) in
-        let _rhss := M.alloc (| _rhss |) in
+        (let _lhs := M.alloc (| T, _lhs |) in
+        let _rhss := M.alloc (| T, _rhss |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6257,8 +6271,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6283,8 +6297,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6309,8 +6323,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6335,8 +6349,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6361,8 +6375,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6387,8 +6401,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6413,8 +6427,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T; U ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| U, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6439,8 +6453,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T; U ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| U, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6465,8 +6479,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6491,8 +6505,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6517,8 +6531,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _y := M.alloc (| T, _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6543,8 +6557,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _shift ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _shift := M.alloc (| _shift |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _shift := M.alloc (| Ty.path "u32", _shift |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6569,8 +6583,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _x; _shift ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _shift := M.alloc (| _shift |) in
+        (let _x := M.alloc (| T, _x |) in
+        let _shift := M.alloc (| Ty.path "u32", _shift |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6595,8 +6609,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6621,8 +6635,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6647,8 +6661,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6673,8 +6687,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6699,8 +6713,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| T, _a |) in
+        let _b := M.alloc (| T, _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6725,7 +6739,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _ptr |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6750,8 +6764,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr; _value ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
-        let _value := M.alloc (| _value |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _ptr |) in
+        let _value := M.alloc (| T, _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6776,7 +6790,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _v ] =>
       ltac:(M.monadic
-        (let _v := M.alloc (| _v |) in
+        (let _v := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], _v |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6813,8 +6827,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr; _base ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
-        let _base := M.alloc (| _base |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _ptr |) in
+        let _base := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _base |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6839,8 +6853,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr; _base ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
-        let _base := M.alloc (| _base |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _ptr |) in
+        let _base := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _base |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6865,8 +6879,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ ptr; other ] =>
       ltac:(M.monadic
-        (let ptr := M.alloc (| ptr |) in
-        let other := M.alloc (| other |) in
+        (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], ptr |) in
+        let other := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], other |) in
         M.cast
           (Ty.path "u8")
           (M.call_closure (|
@@ -6891,8 +6905,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _a; _b ] =>
       ltac:(M.monadic
-        (let _a := M.alloc (| _a |) in
-        let _b := M.alloc (| _b |) in
+        (let _a := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], _a |) in
+        let _b := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], _b |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6916,9 +6930,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _left; _right; _bytes ] =>
       ltac:(M.monadic
-        (let _left := M.alloc (| _left |) in
-        let _right := M.alloc (| _right |) in
-        let _bytes := M.alloc (| _bytes |) in
+        (let _left := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], _left |) in
+        let _right := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], _right |) in
+        let _bytes := M.alloc (| Ty.path "usize", _bytes |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6943,7 +6957,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _dummy ] =>
       ltac:(M.monadic
-        (let _dummy := M.alloc (| _dummy |) in
+        (let _dummy := M.alloc (| T, _dummy |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -6976,9 +6990,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ ARG; F; G; RET ], [ _arg; _called_in_const; _called_at_rt ] =>
       ltac:(M.monadic
-        (let _arg := M.alloc (| _arg |) in
-        let _called_in_const := M.alloc (| _called_in_const |) in
-        let _called_at_rt := M.alloc (| _called_at_rt |) in
+        (let _arg := M.alloc (| ARG, _arg |) in
+        let _called_in_const := M.alloc (| F, _called_in_const |) in
+        let _called_at_rt := M.alloc (| G, _called_at_rt |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7003,7 +7017,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _arg ] =>
       ltac:(M.monadic
-        (let _arg := M.alloc (| _arg |) in
+        (let _arg := M.alloc (| T, _arg |) in
         Value.Bool false))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -7024,8 +7038,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ x; y ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
+        (let x := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], x |) in
+        let y := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], y |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -7033,7 +7047,7 @@ Module intrinsics.
               M.get_function (| "core::ptr::swap_nonoverlapping", [], [ T ] |),
               [ M.read (| x |); M.read (| y |); Value.Integer IntegerKind.Usize 1 ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -7070,8 +7084,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _size; _align ] =>
       ltac:(M.monadic
-        (let _size := M.alloc (| _size |) in
-        let _align := M.alloc (| _align |) in
+        (let _size := M.alloc (| Ty.path "usize", _size |) in
+        let _align := M.alloc (| Ty.path "usize", _align |) in
         M.call_closure (|
           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
           M.get_function (| "core::ptr::null_mut", [], [ Ty.path "u8" ] |),
@@ -7094,9 +7108,9 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _ptr; _size; _align ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
-        let _size := M.alloc (| _size |) in
-        let _align := M.alloc (| _align |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], _ptr |) in
+        let _size := M.alloc (| Ty.path "usize", _size |) in
+        let _align := M.alloc (| Ty.path "usize", _align |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -7115,7 +7129,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _ptr ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], _ptr |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7140,7 +7154,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _ptr ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], _ptr |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7260,7 +7274,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _ptr |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7285,7 +7299,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ _ptr ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _ptr |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7359,8 +7373,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ P; D; M_ ], [ _data; _meta ] =>
       ltac:(M.monadic
-        (let _data := M.alloc (| _data |) in
-        let _meta := M.alloc (| _meta |) in
+        (let _data := M.alloc (| D, _data |) in
+        let _meta := M.alloc (| M_, _meta |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7424,7 +7438,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ P; M_ ], [ _ptr ] =>
       ltac:(M.monadic
-        (let _ptr := M.alloc (| _ptr |) in
+        (let _ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ P ], _ptr |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7477,21 +7491,22 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
-        (let src := M.alloc (| src |) in
-        let dst := M.alloc (| dst |) in
-        let count := M.alloc (| count |) in
+        (let src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], src |) in
+        let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+        let count := M.alloc (| Ty.path "usize", count |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -7527,12 +7542,13 @@ Module intrinsics.
                             M.read (| count |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_function (|
@@ -7562,9 +7578,9 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ _src; _dst; _count ] =>
         ltac:(M.monadic
-          (let _src := M.alloc (| _src |) in
-          let _dst := M.alloc (| _dst |) in
-          let _count := M.alloc (| _count |) in
+          (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
+          let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+          let _count := M.alloc (| Ty.path "usize", _count |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -7615,21 +7631,22 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ src; dst; count ] =>
       ltac:(M.monadic
-        (let src := M.alloc (| src |) in
-        let dst := M.alloc (| dst |) in
-        let count := M.alloc (| count |) in
+        (let src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], src |) in
+        let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+        let count := M.alloc (| Ty.path "usize", count |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -7669,12 +7686,13 @@ Module intrinsics.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy.copy", [], [] |),
@@ -7699,9 +7717,9 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ _src; _dst; _count ] =>
         ltac:(M.monadic
-          (let _src := M.alloc (| _src |) in
-          let _dst := M.alloc (| _dst |) in
-          let _count := M.alloc (| _count |) in
+          (let _src := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], _src |) in
+          let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+          let _count := M.alloc (| Ty.path "usize", _count |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -7746,21 +7764,22 @@ Module intrinsics.
     match ε, τ, α with
     | [], [ T ], [ dst; val; count ] =>
       ltac:(M.monadic
-        (let dst := M.alloc (| dst |) in
-        let val := M.alloc (| val |) in
-        let count := M.alloc (| count |) in
+        (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+        let val := M.alloc (| Ty.path "u8", val |) in
+        let count := M.alloc (| Ty.path "usize", count |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
@@ -7801,12 +7820,13 @@ Module intrinsics.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "core::intrinsics::write_bytes.write_bytes", [], [] |),
@@ -7832,9 +7852,9 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ _dst; _val; _count ] =>
         ltac:(M.monadic
-          (let _dst := M.alloc (| _dst |) in
-          let _val := M.alloc (| _val |) in
-          let _count := M.alloc (| _count |) in
+          (let _dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], _dst |) in
+          let _val := M.alloc (| Ty.path "u8", _val |) in
+          let _count := M.alloc (| Ty.path "usize", _count |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -7860,8 +7880,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
+        let _y := M.alloc (| Ty.path "f16", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7886,8 +7906,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
+        let _y := M.alloc (| Ty.path "f32", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7912,8 +7932,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
+        let _y := M.alloc (| Ty.path "f64", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7938,8 +7958,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
+        let _y := M.alloc (| Ty.path "f128", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7964,8 +7984,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
+        let _y := M.alloc (| Ty.path "f16", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -7990,8 +8010,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
+        let _y := M.alloc (| Ty.path "f32", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8016,8 +8036,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
+        let _y := M.alloc (| Ty.path "f64", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8042,8 +8062,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
+        let _y := M.alloc (| Ty.path "f128", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8068,7 +8088,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8092,7 +8112,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8116,7 +8136,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8140,7 +8160,7 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8165,8 +8185,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f16", _x |) in
+        let _y := M.alloc (| Ty.path "f16", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8191,8 +8211,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f32", _x |) in
+        let _y := M.alloc (| Ty.path "f32", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8217,8 +8237,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f64", _x |) in
+        let _y := M.alloc (| Ty.path "f64", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8243,8 +8263,8 @@ Module intrinsics.
     match ε, τ, α with
     | [], [], [ _x; _y ] =>
       ltac:(M.monadic
-        (let _x := M.alloc (| _x |) in
-        let _y := M.alloc (| _y |) in
+        (let _x := M.alloc (| Ty.path "f128", _x |) in
+        let _y := M.alloc (| Ty.path "f128", _y |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -8309,9 +8329,9 @@ Module ub_checks.
       match ε, τ, α with
       | [], [], [ ptr; align; is_zst ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let align := M.alloc (| align |) in
-          let is_zst := M.alloc (| is_zst |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], ptr |) in
+          let align := M.alloc (| Ty.path "usize", align |) in
+          let is_zst := M.alloc (| Ty.path "bool", is_zst |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -8361,9 +8381,9 @@ Module ub_checks.
       match ε, τ, α with
       | [], [], [ ptr; align; is_zst ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let align := M.alloc (| align |) in
-          let is_zst := M.alloc (| is_zst |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], ptr |) in
+          let align := M.alloc (| Ty.path "usize", align |) in
+          let is_zst := M.alloc (| Ty.path "bool", is_zst |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -8384,6 +8404,7 @@ Module ub_checks.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.or (|
                                         M.read (| is_zst |),
                                         ltac:(M.monadic
@@ -8427,10 +8448,10 @@ Module ub_checks.
       match ε, τ, α with
       | [], [], [ src; dst; size; count ] =>
         ltac:(M.monadic
-          (let src := M.alloc (| src |) in
-          let dst := M.alloc (| dst |) in
-          let size := M.alloc (| size |) in
-          let count := M.alloc (| count |) in
+          (let src := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], src |) in
+          let dst := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], dst |) in
+          let size := M.alloc (| Ty.path "usize", size |) in
+          let count := M.alloc (| Ty.path "usize", count |) in
           M.read (|
             let~ src_usize : Ty.path "usize" :=
               M.call_closure (|
@@ -8457,6 +8478,7 @@ Module ub_checks.
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                   M.get_associated_function (| Ty.path "usize", "checked_mul", [], [] |),
@@ -8472,7 +8494,7 @@ Module ub_checks.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let size := M.copy (| γ0_0 |) in
+                    let size := M.copy (| Ty.path "usize", γ0_0 |) in
                     let~ diff : Ty.path "usize" :=
                       M.call_closure (|
                         Ty.path "usize",
@@ -8480,6 +8502,7 @@ Module ub_checks.
                         [ M.read (| src_usize |); M.read (| dst_usize |) ]
                       |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         BinOp.ge,
@@ -8509,10 +8532,10 @@ Module ub_checks.
       match ε, τ, α with
       | [], [], [ src; dst; size; count ] =>
         ltac:(M.monadic
-          (let src := M.alloc (| src |) in
-          let dst := M.alloc (| dst |) in
-          let size := M.alloc (| size |) in
-          let count := M.alloc (| count |) in
+          (let src := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], src |) in
+          let dst := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], dst |) in
+          let size := M.alloc (| Ty.path "usize", size |) in
+          let count := M.alloc (| Ty.path "usize", count |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -8535,7 +8558,11 @@ Module ub_checks.
                                     (M.match_operator (|
                                       Ty.path "bool",
                                       count,
-                                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |))) ]
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.path "bool", Value.Bool true |)))
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -8567,9 +8594,9 @@ Module char.
           match ε, τ, α with
           | [], [], [ code; len; dst_len ] =>
             ltac:(M.monadic
-              (let code := M.alloc (| code |) in
-              let len := M.alloc (| len |) in
-              let dst_len := M.alloc (| dst_len |) in
+              (let code := M.alloc (| Ty.path "u32", code |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
+              let dst_len := M.alloc (| Ty.path "usize", dst_len |) in
               M.call_closure (|
                 Ty.path "never",
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -8591,6 +8618,10 @@ Module char.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [
                                     mk_str (| "encode_utf8: need " |);
@@ -8609,6 +8640,10 @@ Module char.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -8669,6 +8704,10 @@ Module char.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -8777,9 +8816,9 @@ Module char.
           match ε, τ, α with
           | [], [], [ code; len; dst_len ] =>
             ltac:(M.monadic
-              (let code := M.alloc (| code |) in
-              let len := M.alloc (| len |) in
-              let dst_len := M.alloc (| dst_len |) in
+              (let code := M.alloc (| Ty.path "u32", code |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
+              let dst_len := M.alloc (| Ty.path "usize", dst_len |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "never",
@@ -8800,6 +8839,7 @@ Module char.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
+                                          Ty.path "never",
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (|
@@ -8823,6 +8863,15 @@ Module char.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "str" ]
+                                                            ],
                                                           Value.Array
                                                             [
                                                               mk_str (|
@@ -8866,9 +8915,9 @@ Module char.
           match ε, τ, α with
           | [], [], [ code; len; dst_len ] =>
             ltac:(M.monadic
-              (let code := M.alloc (| code |) in
-              let len := M.alloc (| len |) in
-              let dst_len := M.alloc (| dst_len |) in
+              (let code := M.alloc (| Ty.path "u32", code |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
+              let dst_len := M.alloc (| Ty.path "usize", dst_len |) in
               M.call_closure (|
                 Ty.path "never",
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -8890,6 +8939,10 @@ Module char.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [
                                     mk_str (| "encode_utf16: need " |);
@@ -8908,6 +8961,10 @@ Module char.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -8968,6 +9025,10 @@ Module char.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -9076,9 +9137,9 @@ Module char.
           match ε, τ, α with
           | [], [], [ code; len; dst_len ] =>
             ltac:(M.monadic
-              (let code := M.alloc (| code |) in
-              let len := M.alloc (| len |) in
-              let dst_len := M.alloc (| dst_len |) in
+              (let code := M.alloc (| Ty.path "u32", code |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
+              let dst_len := M.alloc (| Ty.path "usize", dst_len |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "never",
@@ -9099,6 +9160,7 @@ Module char.
                                     fun γ =>
                                       ltac:(M.monadic
                                         (M.alloc (|
+                                          Ty.path "never",
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (|
@@ -9122,6 +9184,15 @@ Module char.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "str" ]
+                                                            ],
                                                           Value.Array
                                                             [
                                                               mk_str (|
@@ -9168,7 +9239,7 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ], s |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::ffi::c_str::strlen::runtime::strlen", [], [] |),
@@ -9194,7 +9265,7 @@ Module ffi.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ], s |) in
             M.read (|
               M.match_operator (|
                 Ty.path "usize",
@@ -9210,13 +9281,14 @@ Module ffi.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.ne,
@@ -9260,15 +9332,16 @@ Module ffi.
                                             [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -9302,20 +9375,21 @@ Module panicking.
       match ε, τ, α with
       | [], [], [ fmt; force_no_backtrace ] =>
         ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          let force_no_backtrace := M.alloc (| force_no_backtrace |) in
+          (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
+          let force_no_backtrace := M.alloc (| Ty.path "bool", force_no_backtrace |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -9324,7 +9398,7 @@ Module panicking.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -9362,6 +9436,7 @@ Module panicking.
                 ]
               |) in
             M.alloc (|
+              Ty.path "never",
               M.call_closure (|
                 Ty.path "never",
                 M.get_function (|
@@ -9394,8 +9469,8 @@ Module panicking.
       match ε, τ, α with
       | [], [], [ fmt; force_no_backtrace ] =>
         ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          let force_no_backtrace := M.alloc (| force_no_backtrace |) in
+          (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
+          let force_no_backtrace := M.alloc (| Ty.path "bool", force_no_backtrace |) in
           M.read (|
             M.match_operator (|
               Ty.path "never",
@@ -9410,6 +9485,7 @@ Module panicking.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "never",
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -9443,12 +9519,17 @@ Module slice.
         match ε, τ, α with
         | [], [], [ x; text ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
-            let text := M.alloc (| text |) in
+            (let x := M.alloc (| Ty.path "u8", x |) in
+            let text :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                text
+              |) in
             M.read (|
               M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                     M.read (|
                       let~ len : Ty.path "usize" :=
                         M.call_closure (|
@@ -9492,13 +9573,14 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.gt,
@@ -9570,12 +9652,16 @@ Module slice.
                                     |) in
                                   M.match_operator (|
                                     Ty.tuple [],
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -9601,8 +9687,9 @@ Module slice.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let index := M.copy (| γ0_0 |) in
+                                          let index := M.copy (| Ty.path "usize", γ0_0 |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
@@ -9615,10 +9702,11 @@ Module slice.
                                               |)
                                             |)
                                           |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      fun γ =>
+                                        ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -9635,13 +9723,14 @@ Module slice.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.le,
@@ -9772,13 +9861,14 @@ Module slice.
                                             |) in
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
+                                                        Ty.path "bool",
                                                         LogicalOp.or (|
                                                           M.read (| zu |),
                                                           ltac:(M.monadic (M.read (| zv |)))
@@ -9790,10 +9880,12 @@ Module slice.
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
@@ -9822,15 +9914,16 @@ Module slice.
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -9899,12 +9992,13 @@ Module slice.
                         |) in
                       M.match_operator (|
                         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.alloc (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::option::Option")
@@ -9930,8 +10024,9 @@ Module slice.
                                   "core::option::Option::Some",
                                   0
                                 |) in
-                              let i := M.copy (| γ0_0 |) in
+                              let i := M.copy (| Ty.path "usize", γ0_0 |) in
                               M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 Value.StructTuple
                                   "core::option::Option::Some"
                                   []
@@ -9947,6 +10042,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 Value.StructTuple
                                   "core::option::Option::None"
                                   []
@@ -9979,8 +10075,12 @@ Module slice.
         match ε, τ, α with
         | [], [], [ x; text ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
-            let text := M.alloc (| text |) in
+            (let x := M.alloc (| Ty.path "u8", x |) in
+            let text :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                text
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -9995,6 +10095,7 @@ Module slice.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                   M.get_function (| "core::slice::memchr::memchr_naive", [], [] |),
@@ -10030,11 +10131,16 @@ Module slice.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                s
+              |) in
             M.read (|
               M.catch_return (Ty.path "bool") (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.path "bool",
                     M.read (|
                       let~ len : Ty.path "usize" :=
                         M.call_closure (|
@@ -10079,13 +10185,14 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         LogicalOp.or (|
                                           LogicalOp.or (|
                                             M.call_closure (|
@@ -10138,6 +10245,7 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -10159,7 +10267,7 @@ Module slice.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -10167,13 +10275,14 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.path "usize",
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.eq,
@@ -10226,13 +10335,14 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           M.get_function (|
@@ -10249,11 +10359,12 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (| M.return_ (| Value.Bool false |) |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -10261,11 +10372,11 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                  (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                                   let _ :=
                                     is_constant_or_break_match (|
                                       M.read (| γ |),
@@ -10275,13 +10386,14 @@ Module slice.
                                     M.read (|
                                       M.match_operator (|
                                         Ty.tuple [],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     UnOp.not (|
                                                       M.call_closure (|
                                                         Ty.path "bool",
@@ -10299,6 +10411,7 @@ Module slice.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.call_closure (|
                                                     Ty.path "never",
@@ -10315,12 +10428,14 @@ Module slice.
                                                   |)
                                                 |)
                                               |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -10342,11 +10457,11 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                  (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                                   let _ :=
                                     is_constant_or_break_match (|
                                       M.read (| γ |),
@@ -10356,13 +10471,14 @@ Module slice.
                                     M.read (|
                                       M.match_operator (|
                                         Ty.tuple [],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     UnOp.not (|
                                                       M.call_closure (|
                                                         Ty.path "bool",
@@ -10396,6 +10512,7 @@ Module slice.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.call_closure (|
                                                     Ty.path "never",
@@ -10412,12 +10529,14 @@ Module slice.
                                                   |)
                                                 |)
                                               |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -10428,13 +10547,14 @@ Module slice.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.lt,
@@ -10465,11 +10585,16 @@ Module slice.
                                         M.read (|
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        Ty.path "bool",
+                                                        Value.Bool true
+                                                      |)) in
                                                   let _ :=
                                                     is_constant_or_break_match (|
                                                       M.read (| γ |),
@@ -10479,13 +10604,14 @@ Module slice.
                                                     M.read (|
                                                       M.match_operator (|
                                                         Ty.tuple [],
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
+                                                                    Ty.path "bool",
                                                                     UnOp.not (|
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
@@ -10515,6 +10641,7 @@ Module slice.
                                                                   Value.Bool true
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.tuple [],
                                                                 M.never_to_any (|
                                                                   M.call_closure (|
                                                                     Ty.path "never",
@@ -10533,13 +10660,17 @@ Module slice.
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
+                                                              (M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)))
                                                         ]
                                                       |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
@@ -10547,11 +10678,16 @@ Module slice.
                                         M.read (|
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        Ty.path "bool",
+                                                        Value.Bool true
+                                                      |)) in
                                                   let _ :=
                                                     is_constant_or_break_match (|
                                                       M.read (| γ |),
@@ -10561,13 +10697,14 @@ Module slice.
                                                     M.read (|
                                                       M.match_operator (|
                                                         Ty.tuple [],
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
+                                                                    Ty.path "bool",
                                                                     UnOp.not (|
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
@@ -10619,6 +10756,7 @@ Module slice.
                                                                   Value.Bool true
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.tuple [],
                                                                 M.never_to_any (|
                                                                   M.call_closure (|
                                                                     Ty.path "never",
@@ -10637,13 +10775,17 @@ Module slice.
                                                               |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
+                                                              (M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)))
                                                         ]
                                                       |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
@@ -10662,13 +10804,14 @@ Module slice.
                                         M.read (|
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
+                                                        Ty.path "bool",
                                                         M.call_closure (|
                                                           Ty.path "bool",
                                                           M.get_function (|
@@ -10685,12 +10828,14 @@ Module slice.
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (|
                                                       M.read (| M.return_ (| Value.Bool false |) |)
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
@@ -10729,15 +10874,16 @@ Module slice.
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -10749,11 +10895,11 @@ Module slice.
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                  (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                                   let _ :=
                                     is_constant_or_break_match (|
                                       M.read (| γ |),
@@ -10763,13 +10909,14 @@ Module slice.
                                     M.read (|
                                       M.match_operator (|
                                         Ty.tuple [],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     UnOp.not (|
                                                       LogicalOp.and (|
                                                         M.call_closure (|
@@ -10808,6 +10955,7 @@ Module slice.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.call_closure (|
                                                     Ty.path "never",
@@ -10824,12 +10972,14 @@ Module slice.
                                                   |)
                                                 |)
                                               |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -10873,6 +11023,7 @@ Module slice.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.path "bool",
                         UnOp.not (|
                           M.call_closure (|
                             Ty.path "bool",
@@ -10905,7 +11056,11 @@ Module slice.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                s
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -10914,6 +11069,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_function (| "core::slice::ascii::is_ascii_simple", [], [] |),
@@ -10945,8 +11101,8 @@ Module slice.
           match ε, τ, α with
           | [], [], [ index; len ] =>
             ltac:(M.monadic
-              (let index := M.alloc (| index |) in
-              let len := M.alloc (| len |) in
+              (let index := M.alloc (| Ty.path "usize", index |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
               M.call_closure (|
                 Ty.path "never",
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -10966,6 +11122,10 @@ Module slice.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "range start index " |);
@@ -10981,6 +11141,10 @@ Module slice.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -11044,8 +11208,8 @@ Module slice.
           match ε, τ, α with
           | [], [], [ index; len ] =>
             ltac:(M.monadic
-              (let index := M.alloc (| index |) in
-              let len := M.alloc (| len |) in
+              (let index := M.alloc (| Ty.path "usize", index |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "never",
@@ -11060,6 +11224,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.path "never",
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -11079,6 +11244,10 @@ Module slice.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   Value.Array
                                                     [
                                                       mk_str (|
@@ -11122,8 +11291,8 @@ Module slice.
           match ε, τ, α with
           | [], [], [ index; len ] =>
             ltac:(M.monadic
-              (let index := M.alloc (| index |) in
-              let len := M.alloc (| len |) in
+              (let index := M.alloc (| Ty.path "usize", index |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
               M.call_closure (|
                 Ty.path "never",
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -11143,6 +11312,10 @@ Module slice.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "range end index " |);
@@ -11158,6 +11331,10 @@ Module slice.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -11219,8 +11396,8 @@ Module slice.
           match ε, τ, α with
           | [], [], [ index; len ] =>
             ltac:(M.monadic
-              (let index := M.alloc (| index |) in
-              let len := M.alloc (| len |) in
+              (let index := M.alloc (| Ty.path "usize", index |) in
+              let len := M.alloc (| Ty.path "usize", len |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "never",
@@ -11235,6 +11412,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.path "never",
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -11254,6 +11432,10 @@ Module slice.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   Value.Array
                                                     [
                                                       mk_str (|
@@ -11297,8 +11479,8 @@ Module slice.
           match ε, τ, α with
           | [], [], [ index; end_ ] =>
             ltac:(M.monadic
-              (let index := M.alloc (| index |) in
-              let end_ := M.alloc (| end_ |) in
+              (let index := M.alloc (| Ty.path "usize", index |) in
+              let end_ := M.alloc (| Ty.path "usize", end_ |) in
               M.call_closure (|
                 Ty.path "never",
                 M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -11318,6 +11500,10 @@ Module slice.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "slice index starts at " |);
@@ -11333,6 +11519,10 @@ Module slice.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -11394,8 +11584,8 @@ Module slice.
           match ε, τ, α with
           | [], [], [ index; end_ ] =>
             ltac:(M.monadic
-              (let index := M.alloc (| index |) in
-              let end_ := M.alloc (| end_ |) in
+              (let index := M.alloc (| Ty.path "usize", index |) in
+              let end_ := M.alloc (| Ty.path "usize", end_ |) in
               M.read (|
                 M.match_operator (|
                   Ty.path "never",
@@ -11410,6 +11600,7 @@ Module slice.
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.path "never",
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -11429,6 +11620,10 @@ Module slice.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   Value.Array
                                                     [
                                                       mk_str (|
@@ -11475,7 +11670,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                v
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_associated_function (|
@@ -11523,7 +11722,11 @@ Module str.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                v
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "usize",

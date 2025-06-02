@@ -19,8 +19,8 @@ Module Impl_core_hash_Hash_for_hash_Person.
     match ε, τ, α with
     | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let state := M.alloc (| state |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "hash::Person" ], self |) in
+        let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -81,6 +81,7 @@ Module Impl_core_hash_Hash_for_hash_Person.
               ]
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -134,7 +135,7 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   match ε, τ, α with
   | [], [ T ], [ t ] =>
     ltac:(M.monadic
-      (let t := M.alloc (| t |) in
+      (let t := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], t |) in
       M.read (|
         let~ s : Ty.path "std::hash::random::DefaultHasher" :=
           M.call_closure (|
@@ -168,6 +169,7 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
             ]
           |) in
         M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             M.get_trait_method (|
@@ -262,13 +264,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           UnOp.not (|
                             M.call_closure (|
                               Ty.path "bool",
@@ -308,6 +311,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -320,11 +324,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

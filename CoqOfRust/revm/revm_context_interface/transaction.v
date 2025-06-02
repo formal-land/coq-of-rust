@@ -11,7 +11,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -32,6 +32,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array [ mk_str (| "not implemented: legacy tx not supported" |) ]
                           |)
                         |)
@@ -43,6 +47,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "array")
@@ -74,7 +82,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -95,6 +103,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array [ mk_str (| "not implemented: Eip2930 tx not supported" |) ]
                           |)
                         |)
@@ -106,6 +118,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "array")
@@ -137,7 +153,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -158,6 +174,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array [ mk_str (| "not implemented: Eip1559 tx not supported" |) ]
                           |)
                         |)
@@ -169,6 +189,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "array")
@@ -200,7 +224,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -221,6 +245,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array [ mk_str (| "not implemented: Eip4844 tx not supported" |) ]
                           |)
                         |)
@@ -232,6 +260,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "array")
@@ -263,7 +295,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -284,6 +316,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array [ mk_str (| "not implemented: Eip7702 tx not supported" |) ]
                           |)
                         |)
@@ -295,6 +331,10 @@ Module transaction.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "array")
@@ -331,7 +371,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           (* Unsize *)
           M.pointer_coercion
             (M.borrow (|
@@ -355,6 +395,8 @@ Module transaction.
                                 ]
                             ],
                           M.alloc (|
+                            Ty.path
+                              "revm_context_interface::transaction::transaction_type::TransactionType",
                             M.call_closure (|
                               Ty.path
                                 "revm_context_interface::transaction::transaction_type::TransactionType",
@@ -407,6 +449,16 @@ Module transaction.
                                     "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                            [])
+                                        ]
+                                    ],
                                   (* Unsize *)
                                   M.pointer_coercion
                                     (M.borrow (|
@@ -451,6 +503,16 @@ Module transaction.
                                     "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                            [])
+                                        ]
+                                    ],
                                   (* Unsize *)
                                   M.pointer_coercion
                                     (M.borrow (|
@@ -495,6 +557,16 @@ Module transaction.
                                     "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                            [])
+                                        ]
+                                    ],
                                   (* Unsize *)
                                   M.pointer_coercion
                                     (M.borrow (|
@@ -539,6 +611,16 @@ Module transaction.
                                     "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                            [])
+                                        ]
+                                    ],
                                   (* Unsize *)
                                   M.pointer_coercion
                                     (M.borrow (|
@@ -583,6 +665,16 @@ Module transaction.
                                     "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                            [])
+                                        ]
+                                    ],
                                   (* Unsize *)
                                   M.pointer_coercion
                                     (M.borrow (|
@@ -627,6 +719,16 @@ Module transaction.
                                     "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.dyn
+                                        [
+                                          ("revm_context_interface::transaction::common::CommonTxFields::Trait",
+                                            [])
+                                        ]
+                                    ],
                                   M.never_to_any (|
                                     M.call_closure (|
                                       Ty.path "never",
@@ -650,6 +752,11 @@ Module transaction.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [
                                                         mk_str (|
@@ -666,6 +773,10 @@ Module transaction.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 0 ]
+                                                      [ Ty.path "core::fmt::rt::Argument" ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "array")
@@ -708,11 +819,12 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.read (|
             M.match_operator (|
               Ty.path "u128",
               M.alloc (|
+                Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
                 M.call_closure (|
                   Ty.path "revm_context_interface::transaction::transaction_type::TransactionType",
                   M.get_trait_method (|
@@ -763,6 +875,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                       |) in
                     M.alloc (|
+                      Ty.path "u128",
                       M.call_closure (|
                         Ty.path "u128",
                         M.get_trait_method (|
@@ -819,6 +932,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                       |) in
                     M.alloc (|
+                      Ty.path "u128",
                       M.call_closure (|
                         Ty.path "u128",
                         M.get_trait_method (|
@@ -875,6 +989,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                       |) in
                     M.alloc (|
+                      Ty.path "u128",
                       M.call_closure (|
                         Ty.path "u128",
                         M.get_trait_method (|
@@ -931,6 +1046,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                       |) in
                     M.alloc (|
+                      Ty.path "u128",
                       M.call_closure (|
                         Ty.path "u128",
                         M.get_trait_method (|
@@ -987,6 +1103,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                       |) in
                     M.alloc (|
+                      Ty.path "u128",
                       M.call_closure (|
                         Ty.path "u128",
                         M.get_trait_method (|
@@ -1043,6 +1160,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                       |) in
                     M.alloc (|
+                      Ty.path "u128",
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -1066,6 +1184,10 @@ Module transaction.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "not implemented: Custom tx not supported" |)
                                           ]
@@ -1079,6 +1201,10 @@ Module transaction.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "array")
@@ -1119,12 +1245,13 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self; base_fee ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let base_fee := M.alloc (| base_fee |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let base_fee := M.alloc (| Ty.path "u128", base_fee |) in
           M.read (|
             M.catch_return (Ty.path "u128") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "u128",
                   M.read (|
                     let~ tx_type :
                         Ty.path
@@ -1184,6 +1311,7 @@ Module transaction.
                                   "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                                 |) in
                               M.alloc (|
+                                Ty.tuple [ Ty.path "u128"; Ty.path "u128" ],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1251,6 +1379,7 @@ Module transaction.
                                   "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                                 |) in
                               M.alloc (|
+                                Ty.tuple [ Ty.path "u128"; Ty.path "u128" ],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1318,6 +1447,7 @@ Module transaction.
                                   "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                                 |) in
                               M.alloc (|
+                                Ty.tuple [ Ty.path "u128"; Ty.path "u128" ],
                                 Value.Tuple
                                   [
                                     M.call_closure (|
@@ -1434,6 +1564,7 @@ Module transaction.
                                   "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                                 |) in
                               M.alloc (|
+                                Ty.tuple [ Ty.path "u128"; Ty.path "u128" ],
                                 Value.Tuple
                                   [
                                     M.call_closure (|
@@ -1550,6 +1681,7 @@ Module transaction.
                                   "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                                 |) in
                               M.alloc (|
+                                Ty.tuple [ Ty.path "u128"; Ty.path "u128" ],
                                 Value.Tuple
                                   [
                                     M.call_closure (|
@@ -1666,6 +1798,7 @@ Module transaction.
                                   "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                                 |) in
                               M.alloc (|
+                                Ty.tuple [ Ty.path "u128"; Ty.path "u128" ],
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -1689,6 +1822,10 @@ Module transaction.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   Value.Array
                                                     [
                                                       mk_str (|
@@ -1705,6 +1842,10 @@ Module transaction.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 0 ]
+                                                    [ Ty.path "core::fmt::rt::Argument" ],
                                                   M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "array")
@@ -1735,9 +1876,10 @@ Module transaction.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let max_fee := M.copy (| γ0_0 |) in
-                            let max_priority_fee := M.copy (| γ0_1 |) in
+                            let max_fee := M.copy (| Ty.path "u128", γ0_0 |) in
+                            let max_priority_fee := M.copy (| Ty.path "u128", γ0_1 |) in
                             M.alloc (|
+                              Ty.path "u128",
                               M.call_closure (|
                                 Ty.path "u128",
                                 M.get_function (| "core::cmp::min", [], [ Ty.path "u128" ] |),
@@ -1774,7 +1916,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.read (|
             let~ tx_type :
                 Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" :=
@@ -1828,6 +1970,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                       |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       M.call_closure (|
                         Ty.path "alloy_primitives::common::TxKind",
                         M.get_trait_method (|
@@ -1884,6 +2027,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                       |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       M.call_closure (|
                         Ty.path "alloy_primitives::common::TxKind",
                         M.get_trait_method (|
@@ -1940,6 +2084,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                       |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       M.call_closure (|
                         Ty.path "alloy_primitives::common::TxKind",
                         M.get_trait_method (|
@@ -1996,6 +2141,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                       |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       Value.StructTuple
                         "alloy_primitives::common::TxKind::Call"
                         []
@@ -2063,6 +2209,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                       |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       Value.StructTuple
                         "alloy_primitives::common::TxKind::Call"
                         []
@@ -2130,6 +2277,7 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                       |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2153,6 +2301,10 @@ Module transaction.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "not implemented: Custom tx not supported" |)
                                           ]
@@ -2166,6 +2318,10 @@ Module transaction.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "array")
@@ -2206,7 +2362,7 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.read (|
             let~ tx_type :
                 Ty.path "revm_context_interface::transaction::transaction_type::TransactionType" :=
@@ -2275,6 +2431,22 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -2301,6 +2473,22 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2395,6 +2583,22 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2489,6 +2693,22 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2583,6 +2803,22 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2677,6 +2913,22 @@ Module transaction.
                         "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "revm_context_interface::transaction::Transaction"
+                                []
+                                []
+                                Self
+                                "AccessList"
+                            ]
+                        ],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2700,6 +2952,10 @@ Module transaction.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "not implemented: Custom tx not supported" |)
                                           ]
@@ -2713,6 +2969,10 @@ Module transaction.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 0 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "array")
@@ -2806,7 +3066,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.associated_in_trait
                 "revm_context_interface::transaction::Transaction"
@@ -2839,7 +3100,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2882,7 +3144,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2925,7 +3188,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2968,7 +3232,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3011,7 +3276,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3059,7 +3325,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             (* Unsize *)
             M.pointer_coercion
               (M.borrow (|
@@ -3110,7 +3377,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -3143,8 +3411,9 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self; base_fee ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let base_fee := M.alloc (| base_fee |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
+            let base_fee := M.alloc (| Ty.path "u128", base_fee |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -3173,7 +3442,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "alloy_primitives::common::TxKind",
               M.get_trait_method (|
@@ -3201,7 +3471,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3325,7 +3596,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.associated_in_trait
                 "revm_context_interface::transaction::Transaction"
@@ -3358,7 +3637,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3401,7 +3688,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3444,7 +3739,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3487,7 +3790,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3530,7 +3841,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3578,7 +3897,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             (* Unsize *)
             M.pointer_coercion
               (M.borrow (|
@@ -3629,7 +3956,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -3662,8 +3997,16 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self; base_fee ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let base_fee := M.alloc (| base_fee |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let base_fee := M.alloc (| Ty.path "u128", base_fee |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -3692,7 +4035,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "alloy_primitives::common::TxKind",
               M.get_trait_method (|
@@ -3720,7 +4071,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -3844,7 +4203,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.associated_in_trait
                 "revm_context_interface::transaction::Transaction"
@@ -3894,7 +4261,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3954,7 +4329,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4014,7 +4397,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4074,7 +4465,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4134,7 +4533,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4199,7 +4606,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             (* Unsize *)
             M.pointer_coercion
               (M.borrow (|
@@ -4268,7 +4683,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -4318,8 +4741,16 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self; base_fee ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let base_fee := M.alloc (| base_fee |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let base_fee := M.alloc (| Ty.path "u128", base_fee |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -4365,7 +4796,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "alloy_primitives::common::TxKind",
               M.get_trait_method (|
@@ -4410,7 +4849,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -4551,7 +4998,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.associated_in_trait
                 "revm_context_interface::transaction::Transaction"
@@ -4598,7 +5052,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4658,7 +5119,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4718,7 +5186,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4778,7 +5253,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4838,7 +5320,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4903,7 +5392,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             (* Unsize *)
             M.pointer_coercion
               (M.borrow (|
@@ -4972,7 +5468,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -5019,8 +5522,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self; base_fee ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let base_fee := M.alloc (| base_fee |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
+            let base_fee := M.alloc (| Ty.path "u128", base_fee |) in
             M.call_closure (|
               Ty.path "u128",
               M.get_trait_method (|
@@ -5063,7 +5573,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "alloy_primitives::common::TxKind",
               M.get_trait_method (|
@@ -5105,7 +5622,14 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -5204,7 +5728,8 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5270,7 +5795,11 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5337,7 +5866,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5404,7 +5941,15 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5497,8 +6042,21 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self; block ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block := M.alloc (| block |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
+          let block :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "revm_context_interface::transaction::TransactionGetter"
+                []
+                []
+                (Ty.apply (Ty.path "&mut") [] [ T ])
+                "Transaction",
+              block
+            |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -5545,8 +6103,24 @@ Module transaction.
       match ε, τ, α with
       | [], [], [ self; block ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block := M.alloc (| block |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+              self
+            |) in
+          let block :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "revm_context_interface::transaction::TransactionGetter"
+                []
+                []
+                (Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ])
+                "Transaction",
+              block
+            |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|

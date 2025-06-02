@@ -18,8 +18,13 @@ Module air.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_keccak_air::air::KeccakAir" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -61,9 +66,13 @@ Module air.
       match ε, τ, α with
       | [], [ F ], [ self; num_hashes; extra_capacity_bits ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let num_hashes := M.alloc (| num_hashes |) in
-          let extra_capacity_bits := M.alloc (| extra_capacity_bits |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_keccak_air::air::KeccakAir" ],
+              self
+            |) in
+          let num_hashes := M.alloc (| Ty.path "usize", num_hashes |) in
+          let extra_capacity_bits := M.alloc (| Ty.path "usize", extra_capacity_bits |) in
           M.read (|
             let~ rng : Ty.path "rand::rngs::small::SmallRng" :=
               M.call_closure (|
@@ -188,7 +197,7 @@ Module air.
                                       (Ty.path "array")
                                       [ Value.Integer IntegerKind.Usize 25 ]
                                       [ Ty.path "u64" ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -222,6 +231,11 @@ Module air.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ F; Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ]
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -255,7 +269,11 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_keccak_air::air::KeccakAir" ],
+              self
+            |) in
           M.read (|
             get_constant (| "p3_keccak_air::columns::NUM_KECCAK_COLS", Ty.path "usize" |)
           |)))
@@ -449,8 +467,12 @@ Module air.
       match ε, τ, α with
       | [], [], [ self; builder ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let builder := M.alloc (| builder |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_keccak_air::air::KeccakAir" ],
+              self
+            |) in
+          let builder := M.alloc (| Ty.apply (Ty.path "&mut") [] [ AB ], builder |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -467,6 +489,21 @@ Module air.
             M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.associated_in_trait
+                      "p3_matrix::Matrix"
+                      []
+                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                      "{{synthetic}}'2";
+                    Ty.associated_in_trait
+                      "p3_matrix::Matrix"
+                      []
+                      [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                      (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                      "{{synthetic}}'2"
+                  ],
                 Value.Tuple
                   [
                     M.call_closure (|
@@ -512,8 +549,26 @@ Module air.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let local := M.copy (| γ0_0 |) in
-                    let next := M.copy (| γ0_1 |) in
+                    let local :=
+                      M.copy (|
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                          "{{synthetic}}'2",
+                        γ0_0
+                      |) in
+                    let next :=
+                      M.copy (|
+                        Ty.associated_in_trait
+                          "p3_matrix::Matrix"
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                          (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                          "{{synthetic}}'2",
+                        γ0_1
+                      |) in
                     let~ local :
                         Ty.apply
                           (Ty.path "&")
@@ -770,6 +825,7 @@ Module air.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -799,7 +855,14 @@ Module air.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -808,6 +871,10 @@ Module air.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -844,6 +911,7 @@ Module air.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -854,11 +922,15 @@ Module air.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let y := M.copy (| γ0_0 |) in
+                                                  let y := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   M.use
                                                     (M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
@@ -895,7 +967,15 @@ Module air.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let iter := M.copy (| γ |) in
+                                                            (let iter :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ],
+                                                                γ
+                                                              |) in
                                                             M.loop (|
                                                               Ty.tuple [],
                                                               ltac:(M.monadic
@@ -904,6 +984,11 @@ Module air.
                                                                     M.match_operator (|
                                                                       Ty.tuple [],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [ Ty.path "usize" ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -945,6 +1030,7 @@ Module air.
                                                                                 "core::option::Option::None"
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -960,7 +1046,10 @@ Module air.
                                                                                 0
                                                                               |) in
                                                                             let x :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.path "usize",
+                                                                                γ0_0
+                                                                              |) in
                                                                             let~ _ : Ty.tuple [] :=
                                                                               M.call_closure (|
                                                                                 Ty.tuple [],
@@ -992,6 +1081,11 @@ Module air.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.MutRef,
                                                                                     M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "p3_air::air::FilteredAirBuilder")
+                                                                                        []
+                                                                                        [ AB ],
                                                                                       M.call_closure (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -1102,6 +1196,8 @@ Module air.
                                                                                                       AB
                                                                                                       "Expr"),
                                                                                                   M.alloc (|
+                                                                                                    Ty.path
+                                                                                                      "usize",
                                                                                                     α0
                                                                                                   |),
                                                                                                   [
@@ -1111,6 +1207,8 @@ Module air.
                                                                                                         (let
                                                                                                               limb :=
                                                                                                           M.copy (|
+                                                                                                            Ty.path
+                                                                                                              "usize",
                                                                                                             γ
                                                                                                           |) in
                                                                                                         M.call_closure (|
@@ -1207,19 +1305,23 @@ Module air.
                                                                                 ]
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                             |)))
                                                       ]
                                                     |))))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -1230,6 +1332,7 @@ Module air.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -1259,7 +1362,14 @@ Module air.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -1268,6 +1378,10 @@ Module air.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -1304,6 +1418,7 @@ Module air.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -1314,11 +1429,15 @@ Module air.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let y := M.copy (| γ0_0 |) in
+                                                  let y := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   M.use
                                                     (M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
@@ -1355,7 +1474,15 @@ Module air.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let iter := M.copy (| γ |) in
+                                                            (let iter :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ],
+                                                                γ
+                                                              |) in
                                                             M.loop (|
                                                               Ty.tuple [],
                                                               ltac:(M.monadic
@@ -1364,6 +1491,11 @@ Module air.
                                                                     M.match_operator (|
                                                                       Ty.tuple [],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [ Ty.path "usize" ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -1405,6 +1537,7 @@ Module air.
                                                                                 "core::option::Option::None"
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -1420,7 +1553,10 @@ Module air.
                                                                                 0
                                                                               |) in
                                                                             let x :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.path "usize",
+                                                                                γ0_0
+                                                                              |) in
                                                                             let~ _ : Ty.tuple [] :=
                                                                               M.call_closure (|
                                                                                 Ty.tuple [],
@@ -1458,6 +1594,17 @@ Module air.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.MutRef,
                                                                                     M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "p3_air::air::FilteredAirBuilder")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "p3_air::air::FilteredAirBuilder")
+                                                                                            []
+                                                                                            [ AB ]
+                                                                                        ],
                                                                                       M.call_closure (|
                                                                                         Ty.apply
                                                                                           (Ty.path
@@ -1487,6 +1634,12 @@ Module air.
                                                                                           M.borrow (|
                                                                                             Pointer.Kind.MutRef,
                                                                                             M.alloc (|
+                                                                                              Ty.apply
+                                                                                                (Ty.path
+                                                                                                  "p3_air::air::FilteredAirBuilder")
+                                                                                                []
+                                                                                                [ AB
+                                                                                                ],
                                                                                               M.call_closure (|
                                                                                                 Ty.apply
                                                                                                   (Ty.path
@@ -1628,6 +1781,8 @@ Module air.
                                                                                                       AB
                                                                                                       "Expr"),
                                                                                                   M.alloc (|
+                                                                                                    Ty.path
+                                                                                                      "usize",
                                                                                                     α0
                                                                                                   |),
                                                                                                   [
@@ -1637,6 +1792,8 @@ Module air.
                                                                                                         (let
                                                                                                               limb :=
                                                                                                           M.copy (|
+                                                                                                            Ty.path
+                                                                                                              "usize",
                                                                                                             γ
                                                                                                           |) in
                                                                                                         M.call_closure (|
@@ -1733,19 +1890,23 @@ Module air.
                                                                                 ]
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                             |)))
                                                       ]
                                                     |))))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -1789,6 +1950,7 @@ Module air.
                           M.borrow (|
                             Pointer.Kind.MutRef,
                             M.alloc (|
+                              Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                                 M.get_trait_method (|
@@ -1848,6 +2010,7 @@ Module air.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -1877,7 +2040,14 @@ Module air.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -1886,6 +2056,10 @@ Module air.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -1922,6 +2096,7 @@ Module air.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -1932,7 +2107,7 @@ Module air.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let x := M.copy (| γ0_0 |) in
+                                                  let x := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.call_closure (|
                                                       Ty.tuple [],
@@ -2044,12 +2219,18 @@ Module air.
                                                                             []
                                                                             AB
                                                                             "Expr"),
-                                                                        M.alloc (| α0 |),
+                                                                        M.alloc (|
+                                                                          Ty.path "usize",
+                                                                          α0
+                                                                        |),
                                                                         [
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let z :=
-                                                                                M.copy (| γ |) in
+                                                                                M.copy (|
+                                                                                  Ty.path "usize",
+                                                                                  γ
+                                                                                |) in
                                                                               M.read (|
                                                                                 let~ xor :
                                                                                     Ty.associated_in_trait
@@ -2083,6 +2264,12 @@ Module air.
                                                                                       M.borrow (|
                                                                                         Pointer.Kind.Ref,
                                                                                         M.alloc (|
+                                                                                          Ty.associated_in_trait
+                                                                                            "p3_air::air::AirBuilder"
+                                                                                            []
+                                                                                            []
+                                                                                            AB
+                                                                                            "Expr",
                                                                                           M.call_closure (|
                                                                                             Ty.associated_in_trait
                                                                                               "p3_air::air::AirBuilder"
@@ -2143,6 +2330,12 @@ Module air.
                                                                                           M.borrow (|
                                                                                             Pointer.Kind.Ref,
                                                                                             M.alloc (|
+                                                                                              Ty.associated_in_trait
+                                                                                                "p3_air::air::AirBuilder"
+                                                                                                []
+                                                                                                []
+                                                                                                AB
+                                                                                                "Expr",
                                                                                               M.call_closure (|
                                                                                                 Ty.associated_in_trait
                                                                                                   "p3_air::air::AirBuilder"
@@ -2225,6 +2418,12 @@ Module air.
                                                                                           M.borrow (|
                                                                                             Pointer.Kind.Ref,
                                                                                             M.alloc (|
+                                                                                              Ty.associated_in_trait
+                                                                                                "p3_air::air::AirBuilder"
+                                                                                                []
+                                                                                                []
+                                                                                                AB
+                                                                                                "Expr",
                                                                                               M.call_closure (|
                                                                                                 Ty.associated_in_trait
                                                                                                   "p3_air::air::AirBuilder"
@@ -2324,6 +2523,12 @@ Module air.
                                                                                     ]
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.associated_in_trait
+                                                                                    "p3_air::air::AirBuilder"
+                                                                                    []
+                                                                                    []
+                                                                                    AB
+                                                                                    "Expr",
                                                                                   M.call_closure (|
                                                                                     Ty.associated_in_trait
                                                                                       "p3_air::air::AirBuilder"
@@ -2391,11 +2596,11 @@ Module air.
                                                         |)
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -2406,6 +2611,7 @@ Module air.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -2435,7 +2641,14 @@ Module air.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -2444,6 +2657,10 @@ Module air.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -2480,6 +2697,7 @@ Module air.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -2490,11 +2708,15 @@ Module air.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let y := M.copy (| γ0_0 |) in
+                                                  let y := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   M.use
                                                     (M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
@@ -2531,7 +2753,15 @@ Module air.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let iter := M.copy (| γ |) in
+                                                            (let iter :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ],
+                                                                γ
+                                                              |) in
                                                             M.loop (|
                                                               Ty.tuple [],
                                                               ltac:(M.monadic
@@ -2540,6 +2770,11 @@ Module air.
                                                                     M.match_operator (|
                                                                       Ty.tuple [],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [ Ty.path "usize" ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2581,6 +2816,7 @@ Module air.
                                                                                 "core::option::Option::None"
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -2596,7 +2832,10 @@ Module air.
                                                                                 0
                                                                               |) in
                                                                             let x :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.path "usize",
+                                                                                γ0_0
+                                                                              |) in
                                                                             let~ get_bit :
                                                                                 Ty.function
                                                                                   [
@@ -2634,6 +2873,8 @@ Module air.
                                                                                               AB
                                                                                               "Expr"),
                                                                                           M.alloc (|
+                                                                                            Ty.path
+                                                                                              "usize",
                                                                                             α0
                                                                                           |),
                                                                                           [
@@ -2642,6 +2883,8 @@ Module air.
                                                                                                 (let
                                                                                                       z :=
                                                                                                   M.copy (|
+                                                                                                    Ty.path
+                                                                                                      "usize",
                                                                                                     γ
                                                                                                   |) in
                                                                                                 M.call_closure (|
@@ -2669,6 +2912,12 @@ Module air.
                                                                                                     M.borrow (|
                                                                                                       Pointer.Kind.Ref,
                                                                                                       M.alloc (|
+                                                                                                        Ty.associated_in_trait
+                                                                                                          "p3_air::air::AirBuilder"
+                                                                                                          []
+                                                                                                          []
+                                                                                                          AB
+                                                                                                          "Expr",
                                                                                                         M.call_closure (|
                                                                                                           Ty.associated_in_trait
                                                                                                             "p3_air::air::AirBuilder"
@@ -2734,6 +2983,12 @@ Module air.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.associated_in_trait
+                                                                                                              "p3_air::air::AirBuilder"
+                                                                                                              []
+                                                                                                              []
+                                                                                                              AB
+                                                                                                              "Expr",
                                                                                                             M.call_closure (|
                                                                                                               Ty.associated_in_trait
                                                                                                                 "p3_air::air::AirBuilder"
@@ -2796,6 +3051,12 @@ Module air.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.associated_in_trait
+                                                                                                              "p3_air::air::AirBuilder"
+                                                                                                              []
+                                                                                                              []
+                                                                                                              AB
+                                                                                                              "Expr",
                                                                                                             M.call_closure (|
                                                                                                               Ty.associated_in_trait
                                                                                                                 "p3_air::air::AirBuilder"
@@ -3017,6 +3278,8 @@ Module air.
                                                                                                       AB
                                                                                                       "Expr"),
                                                                                                   M.alloc (|
+                                                                                                    Ty.path
+                                                                                                      "usize",
                                                                                                     α0
                                                                                                   |),
                                                                                                   [
@@ -3026,6 +3289,8 @@ Module air.
                                                                                                         (let
                                                                                                               limb :=
                                                                                                           M.copy (|
+                                                                                                            Ty.path
+                                                                                                              "usize",
                                                                                                             γ
                                                                                                           |) in
                                                                                                         M.read (|
@@ -3228,6 +3493,12 @@ Module air.
                                                                                                                                 AB
                                                                                                                                 "Expr"),
                                                                                                                             M.alloc (|
+                                                                                                                              Ty.associated_in_trait
+                                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                                []
+                                                                                                                                []
+                                                                                                                                AB
+                                                                                                                                "Expr",
                                                                                                                               α0
                                                                                                                             |),
                                                                                                                             [
@@ -3237,6 +3508,12 @@ Module air.
                                                                                                                                   (let
                                                                                                                                         acc :=
                                                                                                                                     M.copy (|
+                                                                                                                                      Ty.associated_in_trait
+                                                                                                                                        "p3_air::air::AirBuilder"
+                                                                                                                                        []
+                                                                                                                                        []
+                                                                                                                                        AB
+                                                                                                                                        "Expr",
                                                                                                                                       γ
                                                                                                                                     |) in
                                                                                                                                   M.match_operator (|
@@ -3261,6 +3538,8 @@ Module air.
                                                                                                                                         AB
                                                                                                                                         "Expr"),
                                                                                                                                     M.alloc (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "usize",
                                                                                                                                       α1
                                                                                                                                     |),
                                                                                                                                     [
@@ -3270,6 +3549,8 @@ Module air.
                                                                                                                                           (let
                                                                                                                                                 z :=
                                                                                                                                             M.copy (|
+                                                                                                                                              Ty.path
+                                                                                                                                                "usize",
                                                                                                                                               γ
                                                                                                                                             |) in
                                                                                                                                           M.call_closure (|
@@ -3390,6 +3671,12 @@ Module air.
                                                                                                               ]
                                                                                                             |) in
                                                                                                           M.alloc (|
+                                                                                                            Ty.associated_in_trait
+                                                                                                              "p3_air::air::AirBuilder"
+                                                                                                              []
+                                                                                                              []
+                                                                                                              AB
+                                                                                                              "Expr",
                                                                                                             M.call_closure (|
                                                                                                               Ty.associated_in_trait
                                                                                                                 "p3_air::air::AirBuilder"
@@ -3463,19 +3750,23 @@ Module air.
                                                                                 ]
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                             |)))
                                                       ]
                                                     |))))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -3486,6 +3777,7 @@ Module air.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -3515,7 +3807,14 @@ Module air.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -3524,6 +3823,10 @@ Module air.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -3560,6 +3863,7 @@ Module air.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -3570,7 +3874,7 @@ Module air.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let x := M.copy (| γ0_0 |) in
+                                                  let x := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   let~ four :
                                                       Ty.associated_in_trait
                                                         "p3_air::air::AirBuilder"
@@ -3689,12 +3993,18 @@ Module air.
                                                                             []
                                                                             AB
                                                                             "Expr"),
-                                                                        M.alloc (| α0 |),
+                                                                        M.alloc (|
+                                                                          Ty.path "usize",
+                                                                          α0
+                                                                        |),
                                                                         [
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (let z :=
-                                                                                M.copy (| γ |) in
+                                                                                M.copy (|
+                                                                                  Ty.path "usize",
+                                                                                  γ
+                                                                                |) in
                                                                               M.read (|
                                                                                 let~ sum :
                                                                                     Ty.associated_in_trait
@@ -3865,6 +4175,8 @@ Module air.
                                                                                                           AB
                                                                                                           "Expr"),
                                                                                                       M.alloc (|
+                                                                                                        Ty.path
+                                                                                                          "usize",
                                                                                                         α0
                                                                                                       |),
                                                                                                       [
@@ -3874,6 +4186,8 @@ Module air.
                                                                                                             (let
                                                                                                                   y :=
                                                                                                               M.copy (|
+                                                                                                                Ty.path
+                                                                                                                  "usize",
                                                                                                                 γ
                                                                                                               |) in
                                                                                                             M.call_closure (|
@@ -4006,6 +4320,12 @@ Module air.
                                                                                     ]
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.associated_in_trait
+                                                                                    "p3_air::air::AirBuilder"
+                                                                                    []
+                                                                                    []
+                                                                                    AB
+                                                                                    "Expr",
                                                                                   M.call_closure (|
                                                                                     Ty.associated_in_trait
                                                                                       "p3_air::air::AirBuilder"
@@ -4240,11 +4560,11 @@ Module air.
                                                         |)
                                                       ]
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -4255,6 +4575,7 @@ Module air.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -4284,7 +4605,14 @@ Module air.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -4293,6 +4621,10 @@ Module air.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -4329,6 +4661,7 @@ Module air.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -4339,11 +4672,15 @@ Module air.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let y := M.copy (| γ0_0 |) in
+                                                  let y := M.copy (| Ty.path "usize", γ0_0 |) in
                                                   M.use
                                                     (M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ops::range::Range")
+                                                          []
+                                                          [ Ty.path "usize" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::ops::range::Range")
@@ -4380,7 +4717,15 @@ Module air.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let iter := M.copy (| γ |) in
+                                                            (let iter :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "core::ops::range::Range")
+                                                                  []
+                                                                  [ Ty.path "usize" ],
+                                                                γ
+                                                              |) in
                                                             M.loop (|
                                                               Ty.tuple [],
                                                               ltac:(M.monadic
@@ -4389,6 +4734,11 @@ Module air.
                                                                     M.match_operator (|
                                                                       Ty.tuple [],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [ Ty.path "usize" ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -4430,6 +4780,7 @@ Module air.
                                                                                 "core::option::Option::None"
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               M.never_to_any (|
                                                                                 M.read (|
                                                                                   M.break (||)
@@ -4445,7 +4796,10 @@ Module air.
                                                                                 0
                                                                               |) in
                                                                             let x :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.path "usize",
+                                                                                γ0_0
+                                                                              |) in
                                                                             let~ get_bit :
                                                                                 Ty.function
                                                                                   [
@@ -4483,6 +4837,8 @@ Module air.
                                                                                               AB
                                                                                               "Expr"),
                                                                                           M.alloc (|
+                                                                                            Ty.path
+                                                                                              "usize",
                                                                                             α0
                                                                                           |),
                                                                                           [
@@ -4491,6 +4847,8 @@ Module air.
                                                                                                 (let
                                                                                                       z :=
                                                                                                   M.copy (|
+                                                                                                    Ty.path
+                                                                                                      "usize",
                                                                                                     γ
                                                                                                   |) in
                                                                                                 M.read (|
@@ -4527,6 +4885,12 @@ Module air.
                                                                                                         M.borrow (|
                                                                                                           Pointer.Kind.Ref,
                                                                                                           M.alloc (|
+                                                                                                            Ty.associated_in_trait
+                                                                                                              "p3_air::air::AirBuilder"
+                                                                                                              []
+                                                                                                              []
+                                                                                                              AB
+                                                                                                              "Expr",
                                                                                                             M.call_closure (|
                                                                                                               Ty.associated_in_trait
                                                                                                                 "p3_air::air::AirBuilder"
@@ -4630,6 +4994,12 @@ Module air.
                                                                                                             M.borrow (|
                                                                                                               Pointer.Kind.Ref,
                                                                                                               M.alloc (|
+                                                                                                                Ty.associated_in_trait
+                                                                                                                  "p3_air::air::AirBuilder"
+                                                                                                                  []
+                                                                                                                  []
+                                                                                                                  AB
+                                                                                                                  "Expr",
                                                                                                                 M.call_closure (|
                                                                                                                   Ty.associated_in_trait
                                                                                                                     "p3_air::air::AirBuilder"
@@ -4732,6 +5102,12 @@ Module air.
                                                                                                       ]
                                                                                                     |) in
                                                                                                   M.alloc (|
+                                                                                                    Ty.associated_in_trait
+                                                                                                      "p3_air::air::AirBuilder"
+                                                                                                      []
+                                                                                                      []
+                                                                                                      AB
+                                                                                                      "Expr",
                                                                                                     M.call_closure (|
                                                                                                       Ty.associated_in_trait
                                                                                                         "p3_air::air::AirBuilder"
@@ -4764,6 +5140,12 @@ Module air.
                                                                                                             M.borrow (|
                                                                                                               Pointer.Kind.Ref,
                                                                                                               M.alloc (|
+                                                                                                                Ty.associated_in_trait
+                                                                                                                  "p3_air::air::AirBuilder"
+                                                                                                                  []
+                                                                                                                  []
+                                                                                                                  AB
+                                                                                                                  "Expr",
                                                                                                                 M.call_closure (|
                                                                                                                   Ty.associated_in_trait
                                                                                                                     "p3_air::air::AirBuilder"
@@ -4957,6 +5339,8 @@ Module air.
                                                                                                       AB
                                                                                                       "Expr"),
                                                                                                   M.alloc (|
+                                                                                                    Ty.path
+                                                                                                      "usize",
                                                                                                     α0
                                                                                                   |),
                                                                                                   [
@@ -4966,6 +5350,8 @@ Module air.
                                                                                                         (let
                                                                                                               limb :=
                                                                                                           M.copy (|
+                                                                                                            Ty.path
+                                                                                                              "usize",
                                                                                                             γ
                                                                                                           |) in
                                                                                                         M.read (|
@@ -5168,6 +5554,12 @@ Module air.
                                                                                                                                 AB
                                                                                                                                 "Expr"),
                                                                                                                             M.alloc (|
+                                                                                                                              Ty.associated_in_trait
+                                                                                                                                "p3_air::air::AirBuilder"
+                                                                                                                                []
+                                                                                                                                []
+                                                                                                                                AB
+                                                                                                                                "Expr",
                                                                                                                               α0
                                                                                                                             |),
                                                                                                                             [
@@ -5177,6 +5569,12 @@ Module air.
                                                                                                                                   (let
                                                                                                                                         acc :=
                                                                                                                                     M.copy (|
+                                                                                                                                      Ty.associated_in_trait
+                                                                                                                                        "p3_air::air::AirBuilder"
+                                                                                                                                        []
+                                                                                                                                        []
+                                                                                                                                        AB
+                                                                                                                                        "Expr",
                                                                                                                                       γ
                                                                                                                                     |) in
                                                                                                                                   M.match_operator (|
@@ -5201,6 +5599,8 @@ Module air.
                                                                                                                                         AB
                                                                                                                                         "Expr"),
                                                                                                                                     M.alloc (|
+                                                                                                                                      Ty.path
+                                                                                                                                        "usize",
                                                                                                                                       α1
                                                                                                                                     |),
                                                                                                                                     [
@@ -5210,6 +5610,8 @@ Module air.
                                                                                                                                           (let
                                                                                                                                                 z :=
                                                                                                                                             M.copy (|
+                                                                                                                                              Ty.path
+                                                                                                                                                "usize",
                                                                                                                                               γ
                                                                                                                                             |) in
                                                                                                                                           M.call_closure (|
@@ -5330,6 +5732,12 @@ Module air.
                                                                                                               ]
                                                                                                             |) in
                                                                                                           M.alloc (|
+                                                                                                            Ty.associated_in_trait
+                                                                                                              "p3_air::air::AirBuilder"
+                                                                                                              []
+                                                                                                              []
+                                                                                                              AB
+                                                                                                              "Expr",
                                                                                                             M.call_closure (|
                                                                                                               Ty.associated_in_trait
                                                                                                                 "p3_air::air::AirBuilder"
@@ -5403,19 +5811,23 @@ Module air.
                                                                                 ]
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                             |)))
                                                       ]
                                                     |))))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -5488,11 +5900,11 @@ Module air.
                                               []
                                               AB
                                               "Expr"),
-                                          M.alloc (| α0 |),
+                                          M.alloc (| Ty.path "usize", α0 |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let limb := M.copy (| γ |) in
+                                                (let limb := M.copy (| Ty.path "usize", γ |) in
                                                 M.read (|
                                                   let~ computed_a_prime_prime_0_0_limb :
                                                       Ty.associated_in_trait
@@ -5658,12 +6070,28 @@ Module air.
                                                                         []
                                                                         AB
                                                                         "Expr"),
-                                                                    M.alloc (| α0 |),
+                                                                    M.alloc (|
+                                                                      Ty.associated_in_trait
+                                                                        "p3_air::air::AirBuilder"
+                                                                        []
+                                                                        []
+                                                                        AB
+                                                                        "Expr",
+                                                                      α0
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let acc :=
-                                                                            M.copy (| γ |) in
+                                                                            M.copy (|
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Expr",
+                                                                              γ
+                                                                            |) in
                                                                           M.match_operator (|
                                                                             Ty.function
                                                                               [
@@ -5684,12 +6112,17 @@ Module air.
                                                                                 []
                                                                                 AB
                                                                                 "Expr"),
-                                                                            M.alloc (| α1 |),
+                                                                            M.alloc (|
+                                                                              Ty.path "usize",
+                                                                              α1
+                                                                            |),
                                                                             [
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (let z :=
                                                                                     M.copy (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       γ
                                                                                     |) in
                                                                                   M.call_closure (|
@@ -5778,6 +6211,12 @@ Module air.
                                                       ]
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Expr",
                                                     M.call_closure (|
                                                       Ty.associated_in_trait
                                                         "p3_air::air::AirBuilder"
@@ -5857,11 +6296,11 @@ Module air.
                                       []
                                       AB
                                       "Expr"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let i := M.copy (| γ |) in
+                                        (let i := M.copy (| Ty.path "usize", γ |) in
                                         M.read (|
                                           let~ rc_bit_i :
                                               Ty.associated_in_trait
@@ -5887,6 +6326,10 @@ Module air.
                                                 (M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::Range")
@@ -5926,7 +6369,14 @@ Module air.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let iter := M.copy (| γ |) in
+                                                        (let iter :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path "core::ops::range::Range")
+                                                              []
+                                                              [ Ty.path "usize" ],
+                                                            γ
+                                                          |) in
                                                         M.loop (|
                                                           Ty.tuple [],
                                                           ltac:(M.monadic
@@ -5935,6 +6385,11 @@ Module air.
                                                                 M.match_operator (|
                                                                   Ty.tuple [],
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [ Ty.path "usize" ],
                                                                     M.call_closure (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -5976,6 +6431,7 @@ Module air.
                                                                             "core::option::Option::None"
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           M.never_to_any (|
                                                                             M.read (|
                                                                               M.break (||)
@@ -5991,7 +6447,10 @@ Module air.
                                                                             0
                                                                           |) in
                                                                         let r :=
-                                                                          M.copy (| γ0_0 |) in
+                                                                          M.copy (|
+                                                                            Ty.path "usize",
+                                                                            γ0_0
+                                                                          |) in
                                                                         let~ this_round :
                                                                             Ty.associated_in_trait
                                                                               "p3_air::air::AirBuilder"
@@ -6134,17 +6593,27 @@ Module air.
                                                                             ]
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |)))
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                         |)))
                                                   ]
                                                 |))
                                             |) in
                                           M.alloc (|
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              AB
+                                              "Expr",
                                             M.call_closure (|
                                               Ty.associated_in_trait
                                                 "p3_air::air::AirBuilder"
@@ -6174,6 +6643,12 @@ Module air.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.associated_in_trait
+                                                          "p3_air::air::AirBuilder"
+                                                          []
+                                                          []
+                                                          AB
+                                                          "Expr",
                                                         M.call_closure (|
                                                           Ty.associated_in_trait
                                                             "p3_air::air::AirBuilder"
@@ -6272,11 +6747,11 @@ Module air.
                                               []
                                               AB
                                               "Expr"),
-                                          M.alloc (| α0 |),
+                                          M.alloc (| Ty.path "usize", α0 |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let limb := M.copy (| γ |) in
+                                                (let limb := M.copy (| Ty.path "usize", γ |) in
                                                 M.read (|
                                                   let~ computed_a_prime_prime_prime_0_0_limb :
                                                       Ty.associated_in_trait
@@ -6442,12 +6917,28 @@ Module air.
                                                                         []
                                                                         AB
                                                                         "Expr"),
-                                                                    M.alloc (| α0 |),
+                                                                    M.alloc (|
+                                                                      Ty.associated_in_trait
+                                                                        "p3_air::air::AirBuilder"
+                                                                        []
+                                                                        []
+                                                                        AB
+                                                                        "Expr",
+                                                                      α0
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let acc :=
-                                                                            M.copy (| γ |) in
+                                                                            M.copy (|
+                                                                              Ty.associated_in_trait
+                                                                                "p3_air::air::AirBuilder"
+                                                                                []
+                                                                                []
+                                                                                AB
+                                                                                "Expr",
+                                                                              γ
+                                                                            |) in
                                                                           M.match_operator (|
                                                                             Ty.function
                                                                               [
@@ -6468,12 +6959,17 @@ Module air.
                                                                                 []
                                                                                 AB
                                                                                 "Expr"),
-                                                                            M.alloc (| α1 |),
+                                                                            M.alloc (|
+                                                                              Ty.path "usize",
+                                                                              α1
+                                                                            |),
                                                                             [
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (let z :=
                                                                                     M.copy (|
+                                                                                      Ty.path
+                                                                                        "usize",
                                                                                       γ
                                                                                     |) in
                                                                                   M.call_closure (|
@@ -6594,6 +7090,12 @@ Module air.
                                                       ]
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.associated_in_trait
+                                                      "p3_air::air::AirBuilder"
+                                                      []
+                                                      []
+                                                      AB
+                                                      "Expr",
                                                     M.call_closure (|
                                                       Ty.associated_in_trait
                                                         "p3_air::air::AirBuilder"
@@ -6652,6 +7154,7 @@ Module air.
                       (M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                           M.call_closure (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             M.get_trait_method (|
@@ -6678,7 +7181,14 @@ Module air.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let iter := M.copy (| γ |) in
+                              (let iter :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::range::Range")
+                                    []
+                                    [ Ty.path "usize" ],
+                                  γ
+                                |) in
                               M.loop (|
                                 Ty.tuple [],
                                 ltac:(M.monadic
@@ -6687,6 +7197,10 @@ Module air.
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -6723,6 +7237,7 @@ Module air.
                                                   "core::option::Option::None"
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (| M.read (| M.break (||) |) |)
                                               |)));
                                           fun γ =>
@@ -6733,11 +7248,15 @@ Module air.
                                                   "core::option::Option::Some",
                                                   0
                                                 |) in
-                                              let x := M.copy (| γ0_0 |) in
+                                              let x := M.copy (| Ty.path "usize", γ0_0 |) in
                                               M.use
                                                 (M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::ops::range::Range")
@@ -6772,7 +7291,14 @@ Module air.
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (let iter := M.copy (| γ |) in
+                                                        (let iter :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path "core::ops::range::Range")
+                                                              []
+                                                              [ Ty.path "usize" ],
+                                                            γ
+                                                          |) in
                                                         M.loop (|
                                                           Ty.tuple [],
                                                           ltac:(M.monadic
@@ -6781,6 +7307,11 @@ Module air.
                                                                 M.match_operator (|
                                                                   Ty.tuple [],
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::option::Option")
+                                                                      []
+                                                                      [ Ty.path "usize" ],
                                                                     M.call_closure (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -6822,6 +7353,7 @@ Module air.
                                                                             "core::option::Option::None"
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           M.never_to_any (|
                                                                             M.read (|
                                                                               M.break (||)
@@ -6837,7 +7369,10 @@ Module air.
                                                                             0
                                                                           |) in
                                                                         let y :=
-                                                                          M.copy (| γ0_0 |) in
+                                                                          M.copy (|
+                                                                            Ty.path "usize",
+                                                                            γ0_0
+                                                                          |) in
                                                                         let~ _ : Ty.tuple [] :=
                                                                           M.call_closure (|
                                                                             Ty.tuple [],
@@ -6875,6 +7410,17 @@ Module air.
                                                                               M.borrow (|
                                                                                 Pointer.Kind.MutRef,
                                                                                 M.alloc (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "p3_air::air::FilteredAirBuilder")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "p3_air::air::FilteredAirBuilder")
+                                                                                        []
+                                                                                        [ AB ]
+                                                                                    ],
                                                                                   M.call_closure (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -6911,6 +7457,11 @@ Module air.
                                                                                       M.borrow (|
                                                                                         Pointer.Kind.MutRef,
                                                                                         M.alloc (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "p3_air::air::FilteredAirBuilder")
+                                                                                            []
+                                                                                            [ AB ],
                                                                                           M.call_closure (|
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -7041,6 +7592,8 @@ Module air.
                                                                                                   AB
                                                                                                   "Expr"),
                                                                                               M.alloc (|
+                                                                                                Ty.path
+                                                                                                  "usize",
                                                                                                 α0
                                                                                               |),
                                                                                               [
@@ -7050,6 +7603,8 @@ Module air.
                                                                                                     (let
                                                                                                           limb :=
                                                                                                       M.copy (|
+                                                                                                        Ty.path
+                                                                                                          "usize",
                                                                                                         γ
                                                                                                       |) in
                                                                                                     M.call_closure (|
@@ -7164,19 +7719,23 @@ Module air.
                                                                             ]
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |)))
                                                                   ]
                                                                 |)
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                         |)))
                                                   ]
                                                 |))))
                                         ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               |)))
                         ]
                       |))))

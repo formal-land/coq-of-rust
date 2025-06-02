@@ -17,8 +17,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.add,
@@ -48,8 +48,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u8", self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.call_closure (|
               Ty.path "u8",
               BinOp.Wrap.add,
@@ -79,8 +79,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u16", self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.call_closure (|
               Ty.path "u16",
               BinOp.Wrap.add,
@@ -110,8 +110,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u32", self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.add,
@@ -141,8 +141,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u64", self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.call_closure (|
               Ty.path "u64",
               BinOp.Wrap.add,
@@ -172,8 +172,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u128", self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.call_closure (|
               Ty.path "u128",
               BinOp.Wrap.add,
@@ -203,8 +203,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "isize", self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.call_closure (|
               Ty.path "isize",
               BinOp.Wrap.add,
@@ -234,8 +234,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i8", self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.call_closure (|
               Ty.path "i8",
               BinOp.Wrap.add,
@@ -265,8 +265,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i16", self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.call_closure (|
               Ty.path "i16",
               BinOp.Wrap.add,
@@ -296,8 +296,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i32", self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.call_closure (|
               Ty.path "i32",
               BinOp.Wrap.add,
@@ -327,8 +327,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i64", self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.call_closure (|
               Ty.path "i64",
               BinOp.Wrap.add,
@@ -358,8 +358,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i128", self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.call_closure (|
               Ty.path "i128",
               BinOp.Wrap.add,
@@ -389,8 +389,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             M.call_closure (|
               Ty.path "f16",
               BinOp.Wrap.add,
@@ -420,8 +420,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             M.call_closure (|
               Ty.path "f32",
               BinOp.Wrap.add,
@@ -451,8 +451,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             M.call_closure (|
               Ty.path "f64",
               BinOp.Wrap.add,
@@ -482,8 +482,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             M.call_closure (|
               Ty.path "f128",
               BinOp.Wrap.add,
@@ -516,8 +516,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.sub,
@@ -547,8 +547,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u8", self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.call_closure (|
               Ty.path "u8",
               BinOp.Wrap.sub,
@@ -578,8 +578,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u16", self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.call_closure (|
               Ty.path "u16",
               BinOp.Wrap.sub,
@@ -609,8 +609,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u32", self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.sub,
@@ -640,8 +640,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u64", self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.call_closure (|
               Ty.path "u64",
               BinOp.Wrap.sub,
@@ -671,8 +671,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u128", self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.call_closure (|
               Ty.path "u128",
               BinOp.Wrap.sub,
@@ -702,8 +702,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "isize", self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.call_closure (|
               Ty.path "isize",
               BinOp.Wrap.sub,
@@ -733,8 +733,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i8", self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.call_closure (|
               Ty.path "i8",
               BinOp.Wrap.sub,
@@ -764,8 +764,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i16", self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.call_closure (|
               Ty.path "i16",
               BinOp.Wrap.sub,
@@ -795,8 +795,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i32", self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.call_closure (|
               Ty.path "i32",
               BinOp.Wrap.sub,
@@ -826,8 +826,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i64", self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.call_closure (|
               Ty.path "i64",
               BinOp.Wrap.sub,
@@ -857,8 +857,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i128", self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.call_closure (|
               Ty.path "i128",
               BinOp.Wrap.sub,
@@ -888,8 +888,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             M.call_closure (|
               Ty.path "f16",
               BinOp.Wrap.sub,
@@ -919,8 +919,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             M.call_closure (|
               Ty.path "f32",
               BinOp.Wrap.sub,
@@ -950,8 +950,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             M.call_closure (|
               Ty.path "f64",
               BinOp.Wrap.sub,
@@ -981,8 +981,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             M.call_closure (|
               Ty.path "f128",
               BinOp.Wrap.sub,
@@ -1015,8 +1015,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.mul,
@@ -1046,8 +1046,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u8", self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.call_closure (|
               Ty.path "u8",
               BinOp.Wrap.mul,
@@ -1077,8 +1077,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u16", self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.call_closure (|
               Ty.path "u16",
               BinOp.Wrap.mul,
@@ -1108,8 +1108,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u32", self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.mul,
@@ -1139,8 +1139,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u64", self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.call_closure (|
               Ty.path "u64",
               BinOp.Wrap.mul,
@@ -1170,8 +1170,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u128", self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.call_closure (|
               Ty.path "u128",
               BinOp.Wrap.mul,
@@ -1201,8 +1201,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "isize", self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.call_closure (|
               Ty.path "isize",
               BinOp.Wrap.mul,
@@ -1232,8 +1232,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i8", self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.call_closure (|
               Ty.path "i8",
               BinOp.Wrap.mul,
@@ -1263,8 +1263,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i16", self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.call_closure (|
               Ty.path "i16",
               BinOp.Wrap.mul,
@@ -1294,8 +1294,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i32", self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.call_closure (|
               Ty.path "i32",
               BinOp.Wrap.mul,
@@ -1325,8 +1325,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i64", self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.call_closure (|
               Ty.path "i64",
               BinOp.Wrap.mul,
@@ -1356,8 +1356,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i128", self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.call_closure (|
               Ty.path "i128",
               BinOp.Wrap.mul,
@@ -1387,8 +1387,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             M.call_closure (|
               Ty.path "f16",
               BinOp.Wrap.mul,
@@ -1418,8 +1418,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             M.call_closure (|
               Ty.path "f32",
               BinOp.Wrap.mul,
@@ -1449,8 +1449,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             M.call_closure (|
               Ty.path "f64",
               BinOp.Wrap.mul,
@@ -1480,8 +1480,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             M.call_closure (|
               Ty.path "f128",
               BinOp.Wrap.mul,
@@ -1514,8 +1514,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.div,
@@ -1545,8 +1545,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u8", self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.call_closure (|
               Ty.path "u8",
               BinOp.Wrap.div,
@@ -1576,8 +1576,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u16", self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.call_closure (|
               Ty.path "u16",
               BinOp.Wrap.div,
@@ -1607,8 +1607,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u32", self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.div,
@@ -1638,8 +1638,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u64", self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.call_closure (|
               Ty.path "u64",
               BinOp.Wrap.div,
@@ -1669,8 +1669,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u128", self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.call_closure (|
               Ty.path "u128",
               BinOp.Wrap.div,
@@ -1700,8 +1700,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "isize", self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.call_closure (|
               Ty.path "isize",
               BinOp.Wrap.div,
@@ -1731,8 +1731,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i8", self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.call_closure (|
               Ty.path "i8",
               BinOp.Wrap.div,
@@ -1762,8 +1762,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i16", self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.call_closure (|
               Ty.path "i16",
               BinOp.Wrap.div,
@@ -1793,8 +1793,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i32", self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.call_closure (|
               Ty.path "i32",
               BinOp.Wrap.div,
@@ -1824,8 +1824,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i64", self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.call_closure (|
               Ty.path "i64",
               BinOp.Wrap.div,
@@ -1855,8 +1855,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i128", self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.call_closure (|
               Ty.path "i128",
               BinOp.Wrap.div,
@@ -1886,8 +1886,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             M.call_closure (|
               Ty.path "f16",
               BinOp.Wrap.div,
@@ -1917,8 +1917,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             M.call_closure (|
               Ty.path "f32",
               BinOp.Wrap.div,
@@ -1948,8 +1948,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             M.call_closure (|
               Ty.path "f64",
               BinOp.Wrap.div,
@@ -1979,8 +1979,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             M.call_closure (|
               Ty.path "f128",
               BinOp.Wrap.div,
@@ -2013,8 +2013,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "usize", self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.rem,
@@ -2044,8 +2044,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u8", self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.call_closure (|
               Ty.path "u8",
               BinOp.Wrap.rem,
@@ -2075,8 +2075,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u16", self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.call_closure (|
               Ty.path "u16",
               BinOp.Wrap.rem,
@@ -2106,8 +2106,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u32", self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.rem,
@@ -2137,8 +2137,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u64", self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.call_closure (|
               Ty.path "u64",
               BinOp.Wrap.rem,
@@ -2168,8 +2168,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "u128", self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.call_closure (|
               Ty.path "u128",
               BinOp.Wrap.rem,
@@ -2199,8 +2199,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "isize", self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.call_closure (|
               Ty.path "isize",
               BinOp.Wrap.rem,
@@ -2230,8 +2230,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i8", self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.call_closure (|
               Ty.path "i8",
               BinOp.Wrap.rem,
@@ -2261,8 +2261,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i16", self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.call_closure (|
               Ty.path "i16",
               BinOp.Wrap.rem,
@@ -2292,8 +2292,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i32", self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.call_closure (|
               Ty.path "i32",
               BinOp.Wrap.rem,
@@ -2323,8 +2323,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i64", self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.call_closure (|
               Ty.path "i64",
               BinOp.Wrap.rem,
@@ -2354,8 +2354,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "i128", self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.call_closure (|
               Ty.path "i128",
               BinOp.Wrap.rem,
@@ -2385,8 +2385,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             M.call_closure (|
               Ty.path "f16",
               BinOp.Wrap.rem,
@@ -2416,8 +2416,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             M.call_closure (|
               Ty.path "f32",
               BinOp.Wrap.rem,
@@ -2447,8 +2447,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             M.call_closure (|
               Ty.path "f64",
               BinOp.Wrap.rem,
@@ -2478,8 +2478,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             M.call_closure (|
               Ty.path "f128",
               BinOp.Wrap.rem,
@@ -2512,7 +2512,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "isize", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2538,7 +2538,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "i8", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2564,7 +2564,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "i16", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2590,7 +2590,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "i32", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2616,7 +2616,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "i64", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2642,7 +2642,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "i128", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2668,7 +2668,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f16", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2694,7 +2694,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f32", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2720,7 +2720,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f64", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2746,7 +2746,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "f128", self |) in
             UnOp.neg (| M.read (| self |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2772,8 +2772,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2803,8 +2803,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2834,8 +2834,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2865,8 +2865,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2896,8 +2896,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2927,8 +2927,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2958,8 +2958,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -2989,8 +2989,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3020,8 +3020,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3051,8 +3051,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3082,8 +3082,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3113,8 +3113,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3144,8 +3144,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3175,8 +3175,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3206,8 +3206,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3237,8 +3237,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3271,8 +3271,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3302,8 +3302,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3333,8 +3333,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3364,8 +3364,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3395,8 +3395,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3426,8 +3426,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3457,8 +3457,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3488,8 +3488,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3519,8 +3519,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3550,8 +3550,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3581,8 +3581,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3612,8 +3612,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3643,8 +3643,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3674,8 +3674,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3705,8 +3705,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3736,8 +3736,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3770,8 +3770,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3801,8 +3801,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3832,8 +3832,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3863,8 +3863,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3894,8 +3894,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3925,8 +3925,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3956,8 +3956,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -3987,8 +3987,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4018,8 +4018,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4049,8 +4049,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4080,8 +4080,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4111,8 +4111,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4142,8 +4142,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4173,8 +4173,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4204,8 +4204,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4235,8 +4235,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4269,8 +4269,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4300,8 +4300,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4331,8 +4331,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4362,8 +4362,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4393,8 +4393,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4424,8 +4424,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4455,8 +4455,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4486,8 +4486,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4517,8 +4517,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4548,8 +4548,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4579,8 +4579,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4610,8 +4610,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4641,8 +4641,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4672,8 +4672,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4703,8 +4703,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4734,8 +4734,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4768,8 +4768,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4799,8 +4799,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4830,8 +4830,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4861,8 +4861,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4892,8 +4892,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4923,8 +4923,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4954,8 +4954,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -4985,8 +4985,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5016,8 +5016,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5047,8 +5047,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5078,8 +5078,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5109,8 +5109,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5140,8 +5140,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.path "f16", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5171,8 +5171,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.path "f32", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5202,8 +5202,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.path "f64", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,
@@ -5233,8 +5233,8 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.path "f128", other |) in
             let β := M.deref (| M.read (| self |) |) in
             M.write (|
               β,

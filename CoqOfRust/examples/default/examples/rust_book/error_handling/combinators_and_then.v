@@ -36,8 +36,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "combinators_and_then::Food" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -54,6 +55,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                       let _ :=
                         M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CordonBleu" |) |) |)
                       |)));
                   fun γ =>
@@ -61,6 +63,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Steak" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Steak" |) |) |)
                       |)));
                   fun γ =>
@@ -68,6 +71,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Food.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Sushi" |) |) |)
                       |)))
                 ]
@@ -122,8 +126,9 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "combinators_and_then::Day" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -139,6 +144,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Monday" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Monday" |) |) |)
                       |)));
                   fun γ =>
@@ -146,6 +152,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Tuesday" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Tuesday" |) |) |)
                       |)));
                   fun γ =>
@@ -153,6 +160,7 @@ Module Impl_core_fmt_Debug_for_combinators_and_then_Day.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_and_then::Day::Wednesday" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Wednesday" |) |) |)
                       |)))
                 ]
@@ -184,7 +192,7 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   match ε, τ, α with
   | [], [], [ food ] =>
     ltac:(M.monadic
-      (let food := M.alloc (| food |) in
+      (let food := M.alloc (| Ty.path "combinators_and_then::Food", food |) in
       M.read (|
         M.match_operator (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
@@ -194,6 +202,10 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::Sushi" |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "combinators_and_then::Food" ],
                   Value.StructTuple
                     "core::option::Option::None"
                     []
@@ -203,6 +215,10 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "combinators_and_then::Food" ],
                   Value.StructTuple
                     "core::option::Option::Some"
                     []
@@ -232,7 +248,7 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ food ] =>
     ltac:(M.monadic
-      (let food := M.alloc (| food |) in
+      (let food := M.alloc (| Ty.path "combinators_and_then::Food", food |) in
       M.read (|
         M.match_operator (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
@@ -242,6 +258,10 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "combinators_and_then::Food::CordonBleu" |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "combinators_and_then::Food" ],
                   Value.StructTuple
                     "core::option::Option::None"
                     []
@@ -251,6 +271,10 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "combinators_and_then::Food" ],
                   Value.StructTuple
                     "core::option::Option::Some"
                     []
@@ -283,11 +307,12 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ food ] =>
     ltac:(M.monadic
-      (let food := M.alloc (| food |) in
+      (let food := M.alloc (| Ty.path "combinators_and_then::Food", food |) in
       M.read (|
         M.match_operator (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
               M.get_function (| "combinators_and_then::have_recipe", [], [] |),
@@ -299,6 +324,10 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "combinators_and_then::Food" ],
                   Value.StructTuple
                     "core::option::Option::None"
                     []
@@ -309,13 +338,17 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let food := M.copy (| γ0_0 |) in
+                let food := M.copy (| Ty.path "combinators_and_then::Food", γ0_0 |) in
                 M.match_operator (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.path "combinators_and_then::Food" ],
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "combinators_and_then::Food" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -330,6 +363,10 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "combinators_and_then::Food" ],
                           Value.StructTuple
                             "core::option::Option::None"
                             []
@@ -344,8 +381,12 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                             "core::option::Option::Some",
                             0
                           |) in
-                        let food := M.copy (| γ0_0 |) in
+                        let food := M.copy (| Ty.path "combinators_and_then::Food", γ0_0 |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "combinators_and_then::Food" ],
                           Value.StructTuple
                             "core::option::Option::Some"
                             []
@@ -374,7 +415,7 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ food ] =>
     ltac:(M.monadic
-      (let food := M.alloc (| food |) in
+      (let food := M.alloc (| Ty.path "combinators_and_then::Food", food |) in
       M.call_closure (|
         Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
         M.get_associated_function (|
@@ -420,12 +461,13 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ food; day ] =>
     ltac:(M.monadic
-      (let food := M.alloc (| food |) in
-      let day := M.alloc (| day |) in
+      (let food := M.alloc (| Ty.path "combinators_and_then::Food", food |) in
+      let day := M.alloc (| Ty.path "combinators_and_then::Day", day |) in
       M.read (|
         M.match_operator (|
           Ty.tuple [],
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "combinators_and_then::Food" ],
               M.get_function (| "combinators_and_then::cookable_v2", [], [] |),
@@ -437,7 +479,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let food := M.copy (| γ0_0 |) in
+                let food := M.copy (| Ty.path "combinators_and_then::Food", γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -458,6 +500,10 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [
                                       mk_str (| "Yay! On " |);
@@ -475,6 +521,10 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -516,7 +566,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
@@ -540,6 +590,10 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [
                                       mk_str (| "Oh no. We don't get to eat on " |);
@@ -556,6 +610,10 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -582,7 +640,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))
@@ -610,6 +668,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           Ty.tuple [],
           M.alloc (|
+            Ty.tuple
+              [
+                Ty.path "combinators_and_then::Food";
+                Ty.path "combinators_and_then::Food";
+                Ty.path "combinators_and_then::Food"
+              ],
             Value.Tuple
               [
                 Value.StructTuple "combinators_and_then::Food::CordonBleu" [] [] [];
@@ -623,9 +687,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                let cordon_bleu := M.copy (| γ0_0 |) in
-                let steak := M.copy (| γ0_1 |) in
-                let sushi := M.copy (| γ0_2 |) in
+                let cordon_bleu := M.copy (| Ty.path "combinators_and_then::Food", γ0_0 |) in
+                let steak := M.copy (| Ty.path "combinators_and_then::Food", γ0_1 |) in
+                let sushi := M.copy (| Ty.path "combinators_and_then::Food", γ0_2 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -653,7 +717,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       Value.StructTuple "combinators_and_then::Day::Wednesday" [] [] []
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))

@@ -35,7 +35,14 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
             Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
               []
@@ -85,8 +92,16 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -110,6 +125,7 @@ Module mem.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ T ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -196,8 +212,22 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
@@ -249,12 +279,19 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -281,8 +318,22 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
@@ -339,8 +390,22 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
@@ -396,8 +461,15 @@ Module mem.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
@@ -445,7 +517,7 @@ Module mem.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| T, value |) in
             Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
               []
@@ -470,7 +542,11 @@ Module mem.
         match ε, τ, α with
         | [], [], [ slot ] =>
           ltac:(M.monadic
-            (let slot := M.alloc (| slot |) in
+            (let slot :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
+                slot
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 slot,
@@ -499,7 +575,14 @@ Module mem.
         match ε, τ, α with
         | [], [], [ slot ] =>
           ltac:(M.monadic
-            (let slot := M.alloc (| slot |) in
+            (let slot :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                slot
+              |) in
             M.call_closure (|
               T,
               M.get_function (| "core::ptr::read", [], [ T ] |),
@@ -540,7 +623,14 @@ Module mem.
         match ε, τ, α with
         | [], [], [ slot ] =>
           ltac:(M.monadic
-            (let slot := M.alloc (| slot |) in
+            (let slot :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                slot
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
@@ -588,7 +678,14 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -630,7 +727,14 @@ Module mem.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|

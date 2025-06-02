@@ -11,8 +11,12 @@ Module utilities.
     match ε, τ, α with
     | [ LEN ], [], [ data; offset ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
-        let offset := M.alloc (| offset |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
+        let offset := M.alloc (| Ty.path "usize", offset |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "alloc::borrow::Cow")
@@ -84,9 +88,13 @@ Module utilities.
     match ε, τ, α with
     | [], [], [ data; offset; len ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
-        let offset := M.alloc (| offset |) in
-        let len := M.alloc (| len |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
+        let offset := M.alloc (| Ty.path "usize", offset |) in
+        let len := M.alloc (| Ty.path "usize", len |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "alloc::borrow::Cow")
@@ -167,19 +175,32 @@ Module utilities.
     match ε, τ, α with
     | [ LEN ], [], [ data ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "alloc::borrow::Cow")
               []
               [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -208,8 +229,16 @@ Module utilities.
                     |) in
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data := M.copy (| γ0_0 |) in
+                  let data :=
+                    M.copy (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      γ0_0
+                    |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
                       []
@@ -338,6 +367,10 @@ Module utilities.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Owned"
                       []
@@ -370,20 +403,33 @@ Module utilities.
     match ε, τ, α with
     | [], [], [ data; len ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
-        let len := M.alloc (| len |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
+        let len := M.alloc (| Ty.path "usize", len |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "alloc::borrow::Cow")
               []
               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -412,8 +458,16 @@ Module utilities.
                     |) in
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data := M.copy (| γ0_0 |) in
+                  let data :=
+                    M.copy (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      γ0_0
+                    |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
                       []
@@ -502,6 +556,10 @@ Module utilities.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Owned"
                       []
@@ -534,19 +592,32 @@ Module utilities.
     match ε, τ, α with
     | [ LEN ], [], [ data ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "alloc::borrow::Cow")
               []
               [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -575,8 +646,16 @@ Module utilities.
                     |) in
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data := M.copy (| γ0_0 |) in
+                  let data :=
+                    M.copy (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      γ0_0
+                    |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
                       []
@@ -712,6 +791,10 @@ Module utilities.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "array") [ LEN ] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Owned"
                       []
@@ -744,20 +827,33 @@ Module utilities.
     match ε, τ, α with
     | [], [], [ data; len ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
-        let len := M.alloc (| len |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+            data
+          |) in
+        let len := M.alloc (| Ty.path "usize", len |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "alloc::borrow::Cow")
               []
               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -786,8 +882,16 @@ Module utilities.
                     |) in
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let data := M.copy (| γ0_0 |) in
+                  let data :=
+                    M.copy (|
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                      γ0_0
+                    |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Borrowed"
                       []
@@ -883,6 +987,10 @@ Module utilities.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "alloc::borrow::Cow")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                     Value.StructTuple
                       "alloc::borrow::Cow::Owned"
                       []
@@ -909,7 +1017,7 @@ Module utilities.
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| Ty.path "bool", value |) in
         M.call_closure (|
           Ty.path "alloy_primitives::bytes_::Bytes",
           M.get_associated_function (|
@@ -973,7 +1081,7 @@ Module utilities.
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| Ty.path "bool", value |) in
         M.read (|
           M.match_operator (|
             Ty.apply
@@ -985,7 +1093,7 @@ Module utilities.
                   [ Value.Integer IntegerKind.Usize 32 ]
                   []
               ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -1032,12 +1140,25 @@ Module utilities.
     Definition value_TRUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                []
+            ],
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -1078,12 +1199,25 @@ Module utilities.
     Definition value_FALSE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                []
+            ],
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")

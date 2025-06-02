@@ -103,6 +103,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "The rich have lots of money!
 " |) ]
                                     |)
@@ -113,7 +117,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "enums_use::Status::Poor" |) in
@@ -137,6 +141,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "The poor have no money...
 " |) ]
                                     |)
@@ -147,7 +155,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
@@ -177,8 +185,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "Civilians work!
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Civilians work!
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -186,7 +200,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "enums_use::Work::Soldier" |) in
@@ -209,8 +223,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "Soldiers fight!
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Soldiers fight!
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -218,7 +238,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))

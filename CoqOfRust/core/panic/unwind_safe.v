@@ -300,7 +300,14 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -342,7 +349,14 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -391,8 +405,12 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; _args ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _args := M.alloc (| _args |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ F ],
+                self
+              |) in
+            let _args := M.alloc (| Ty.tuple [], _args |) in
             M.call_closure (|
               R,
               M.get_trait_method (|
@@ -446,8 +464,16 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -475,6 +501,7 @@ Module panic.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.path "core::fmt::builders::DebugTuple",
                             M.call_closure (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               M.get_associated_function (|
@@ -585,8 +612,24 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ F ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.read (|
               let~ pinned_field :
                   Ty.apply (Ty.path "core::pin::Pin") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] :=
@@ -650,11 +693,35 @@ Module panic.
                                       ]
                                   ]
                                   (Ty.apply (Ty.path "&mut") [] [ F ]),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                        []
+                                        [ F ]
+                                    ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let x := M.copy (| γ |) in
+                                      (let x :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::panic::unwind_safe::AssertUnwindSafe")
+                                                []
+                                                [ F ]
+                                            ],
+                                          γ
+                                        |) in
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
                                         M.deref (|
@@ -675,6 +742,10 @@ Module panic.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::task::poll::Poll")
+                  []
+                  [ Ty.associated_in_trait "core::future::future::Future" [] [] F "Output" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::task::poll::Poll")
@@ -729,8 +800,24 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ S ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -818,11 +905,35 @@ Module panic.
                                       ]
                                   ]
                                   (Ty.apply (Ty.path "&mut") [] [ S ]),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::panic::unwind_safe::AssertUnwindSafe")
+                                        []
+                                        [ S ]
+                                    ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let x := M.copy (| γ |) in
+                                      (let x :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path
+                                                  "core::panic::unwind_safe::AssertUnwindSafe")
+                                                []
+                                                [ S ]
+                                            ],
+                                          γ
+                                        |) in
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
                                         M.deref (|
@@ -858,7 +969,14 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::panic::unwind_safe::AssertUnwindSafe") [] [ S ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]

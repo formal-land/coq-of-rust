@@ -20,7 +20,11 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.eq,
@@ -74,14 +78,18 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "u8", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -106,6 +114,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "u8",
               M.call_closure (|
                 Ty.path "u8",
                 M.get_associated_function (| Ty.path "u8", "from_ne_bytes", [], [] |),
@@ -139,14 +148,18 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "i8", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I8 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "i8", Value.Integer IntegerKind.I8 0 |)) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -171,6 +184,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "i8",
               M.call_closure (|
                 Ty.path "i8",
                 M.get_associated_function (| Ty.path "i8", "from_ne_bytes", [], [] |),
@@ -204,14 +218,19 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "u16", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "u16", Value.Integer IntegerKind.U16 0 |)) |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -236,6 +255,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "u16",
               M.call_closure (|
                 Ty.path "u16",
                 M.get_associated_function (| Ty.path "u16", "from_ne_bytes", [], [] |),
@@ -269,14 +289,19 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "i16", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I16 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "i16", Value.Integer IntegerKind.I16 0 |)) |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -301,6 +326,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "i16",
               M.call_closure (|
                 Ty.path "i16",
                 M.get_associated_function (| Ty.path "i16", "from_ne_bytes", [], [] |),
@@ -334,14 +360,19 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "u32", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 0 |)) |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -366,6 +397,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "u32",
               M.call_closure (|
                 Ty.path "u32",
                 M.get_associated_function (| Ty.path "u32", "from_ne_bytes", [], [] |),
@@ -399,14 +431,19 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "i32", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I32 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 0 |)) |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -431,6 +468,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "i32",
               M.call_closure (|
                 Ty.path "i32",
                 M.get_associated_function (| Ty.path "i32", "from_ne_bytes", [], [] |),
@@ -464,14 +502,19 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "u64", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)) |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -496,6 +539,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "u64",
               M.call_closure (|
                 Ty.path "u64",
                 M.get_associated_function (| Ty.path "u64", "from_ne_bytes", [], [] |),
@@ -529,14 +573,19 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "i64", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I64 0 |)) |) ]
+                [ M.read (| M.use (M.alloc (| Ty.path "i64", Value.Integer IntegerKind.I64 0 |)) |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -561,6 +610,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "i64",
               M.call_closure (|
                 Ty.path "i64",
                 M.get_associated_function (| Ty.path "i64", "from_ne_bytes", [], [] |),
@@ -594,7 +644,11 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply
@@ -604,7 +658,11 @@ Module random.
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "u128", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U128 0 |)) |) ]
+                [
+                  M.read (|
+                    M.use (M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 0 |))
+                  |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -629,6 +687,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "u128",
               M.call_closure (|
                 Ty.path "u128",
                 M.get_associated_function (| Ty.path "u128", "from_ne_bytes", [], [] |),
@@ -662,7 +721,11 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply
@@ -672,7 +735,11 @@ Module random.
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "i128", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.I128 0 |)) |) ]
+                [
+                  M.read (|
+                    M.use (M.alloc (| Ty.path "i128", Value.Integer IntegerKind.I128 0 |))
+                  |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -697,6 +764,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "i128",
               M.call_closure (|
                 Ty.path "i128",
                 M.get_associated_function (| Ty.path "i128", "from_ne_bytes", [], [] |),
@@ -730,14 +798,22 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "usize", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 0 |)) |) ]
+                [
+                  M.read (|
+                    M.use (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |))
+                  |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -762,6 +838,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "usize",
               M.call_closure (|
                 Ty.path "usize",
                 M.get_associated_function (| Ty.path "usize", "from_ne_bytes", [], [] |),
@@ -795,14 +872,22 @@ Module random.
       match ε, τ, α with
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
-          (let source := M.alloc (| source |) in
+          (let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ impl_RandomSource__plus___Sized ],
+              source
+            |) in
           M.read (|
             let~ bytes :
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
               M.call_closure (|
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ],
                 M.get_associated_function (| Ty.path "isize", "to_ne_bytes", [], [] |),
-                [ M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Isize 0 |)) |) ]
+                [
+                  M.read (|
+                    M.use (M.alloc (| Ty.path "isize", Value.Integer IntegerKind.Isize 0 |))
+                  |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -827,6 +912,7 @@ Module random.
                 ]
               |) in
             M.alloc (|
+              Ty.path "isize",
               M.call_closure (|
                 Ty.path "isize",
                 M.get_associated_function (| Ty.path "isize", "from_ne_bytes", [], [] |),

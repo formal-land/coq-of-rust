@@ -13,7 +13,7 @@ Module block.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             M.get_associated_function (|
@@ -66,11 +66,19 @@ Module block.
                                 ]
                             ]
                             (Ty.path "u128"),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.path "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let a := M.copy (| γ |) in
+                                (let a :=
+                                  M.copy (|
+                                    Ty.path
+                                      "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                                    γ
+                                  |) in
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     a,
@@ -98,7 +106,7 @@ Module block.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
             M.get_associated_function (|
@@ -151,11 +159,19 @@ Module block.
                                 ]
                             ]
                             (Ty.path "u64"),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.path "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let a := M.copy (| γ |) in
+                                (let a :=
+                                  M.copy (|
+                                    Ty.path
+                                      "revm_context_interface::block::blob::BlobExcessGasAndPrice",
+                                    γ
+                                  |) in
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     a,
@@ -186,7 +202,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -214,7 +231,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
               M.get_trait_method (|
@@ -242,7 +260,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -270,7 +289,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -298,7 +318,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -326,7 +347,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -357,7 +379,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -398,7 +421,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -434,7 +458,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_trait_method (|
@@ -467,7 +492,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               M.get_trait_method (|
@@ -519,7 +545,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -547,7 +577,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
               M.get_trait_method (|
@@ -575,7 +609,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -603,7 +641,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -631,7 +673,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -659,7 +705,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -690,7 +740,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -731,7 +785,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -767,7 +825,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_trait_method (|
@@ -800,7 +862,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               M.get_trait_method (|
@@ -853,7 +919,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -881,7 +955,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
               M.get_trait_method (|
@@ -909,7 +991,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -937,7 +1027,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -965,7 +1063,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -993,7 +1099,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -1024,7 +1138,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -1065,7 +1187,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -1101,7 +1231,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_trait_method (|
@@ -1134,7 +1272,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               M.get_trait_method (|
@@ -1187,7 +1333,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -1232,7 +1386,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "alloy_primitives::bits::address::Address",
               M.get_trait_method (|
@@ -1277,7 +1439,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -1322,7 +1492,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -1367,7 +1545,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -1412,7 +1598,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -1460,7 +1654,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -1518,7 +1720,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -1571,7 +1781,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_trait_method (|
@@ -1621,7 +1839,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               M.get_trait_method (|
@@ -1694,7 +1920,8 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1754,7 +1981,11 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1815,7 +2046,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1876,7 +2115,15 @@ Module block.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -1968,8 +2215,21 @@ Module block.
       match ε, τ, α with
       | [], [], [ self; block ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block := M.alloc (| block |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
+          let block :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "revm_context_interface::block::BlockGetter"
+                []
+                []
+                (Ty.apply (Ty.path "&mut") [] [ T ])
+                "Block",
+              block
+            |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -2016,8 +2276,24 @@ Module block.
       match ε, τ, α with
       | [], [], [ self; block ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block := M.alloc (| block |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+              self
+            |) in
+          let block :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "revm_context_interface::block::BlockGetter"
+                []
+                []
+                (Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ])
+                "Block",
+              block
+            |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|

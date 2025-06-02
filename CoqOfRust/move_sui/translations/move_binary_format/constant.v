@@ -27,7 +27,11 @@ Module constant.
     match ε, τ, α with
     | [], [], [ sig ] =>
       ltac:(M.monadic
-        (let sig := M.alloc (| sig |) in
+        (let sig :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::SignatureToken" ],
+            sig
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -36,6 +40,10 @@ Module constant.
               [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                 M.read (|
                   M.match_operator (|
                     Ty.apply
@@ -53,6 +61,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::Signer"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -74,6 +86,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::Address"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -95,6 +111,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::Bool"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -116,6 +136,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::U8"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -137,6 +161,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::U16"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -158,6 +186,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::U32"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -179,6 +211,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::U64"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -200,6 +236,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::U128"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -221,6 +261,10 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::U256"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -242,8 +286,27 @@ Module constant.
                               "move_binary_format::file_format::SignatureToken::Vector",
                               0
                             |) in
-                          let v := M.alloc (| γ1_0 |) in
+                          let v :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_binary_format::file_format::SignatureToken";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ1_0
+                            |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -281,6 +344,17 @@ Module constant.
                                             Ty.path
                                               "move_core_types::runtime_value::MoveTypeLayout",
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ];
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveTypeLayout"
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -376,8 +450,17 @@ Module constant.
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
                                                     |) in
-                                                  let residual := M.copy (| γ0_0 |) in
+                                                  let residual :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "core::convert::Infallible" ],
+                                                      γ0_0
+                                                    |) in
                                                   M.alloc (|
+                                                    Ty.path
+                                                      "move_core_types::runtime_value::MoveTypeLayout",
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
@@ -426,7 +509,12 @@ Module constant.
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
                                                     |) in
-                                                  let val := M.copy (| γ0_0 |) in
+                                                  let val :=
+                                                    M.copy (|
+                                                      Ty.path
+                                                        "move_core_types::runtime_value::MoveTypeLayout",
+                                                      γ0_0
+                                                    |) in
                                                   val))
                                             ]
                                           |)
@@ -450,7 +538,7 @@ Module constant.
                                       "move_binary_format::file_format::SignatureToken::Reference",
                                       0
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := M.read (| γ |) in
@@ -460,7 +548,7 @@ Module constant.
                                       "move_binary_format::file_format::SignatureToken::MutableReference",
                                       0
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := M.read (| γ |) in
@@ -470,7 +558,7 @@ Module constant.
                                       "move_binary_format::file_format::SignatureToken::Struct",
                                       0
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := M.read (| γ |) in
@@ -480,7 +568,7 @@ Module constant.
                                       "move_binary_format::file_format::SignatureToken::TypeParameter",
                                       0
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ := M.read (| γ |) in
@@ -490,7 +578,7 @@ Module constant.
                                       "move_binary_format::file_format::SignatureToken::StructInstantiation",
                                       0
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ],
                             fun γ =>
                               ltac:(M.monadic
@@ -498,6 +586,11 @@ Module constant.
                                 | [] =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "move_core_types::runtime_value::MoveTypeLayout"
+                                        ],
                                       Value.StructTuple
                                         "core::option::Option::None"
                                         []
@@ -542,7 +635,11 @@ Module constant.
     match ε, τ, α with
     | [], [], [ ty ] =>
       ltac:(M.monadic
-        (let ty := M.alloc (| ty |) in
+        (let ty :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
+            ty
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -551,6 +648,10 @@ Module constant.
               [ Ty.path "move_binary_format::file_format::SignatureToken" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                 M.read (|
                   M.match_operator (|
                     Ty.apply
@@ -568,6 +669,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::Address"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -589,6 +694,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::Signer"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -610,6 +719,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::U8"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -631,6 +744,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::U16"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -652,6 +769,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::U32"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -673,6 +794,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::U64"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -694,6 +819,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::U128"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -715,6 +844,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::U256"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -736,8 +869,27 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::Vector",
                               0
                             |) in
-                          let v := M.alloc (| γ1_0 |) in
+                          let v :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.path "move_core_types::runtime_value::MoveTypeLayout";
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              γ1_0
+                            |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -775,6 +927,17 @@ Module constant.
                                             Ty.path
                                               "move_binary_format::file_format::SignatureToken",
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ];
+                                                  Ty.path
+                                                    "move_binary_format::file_format::SignatureToken"
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -870,8 +1033,17 @@ Module constant.
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
                                                     |) in
-                                                  let residual := M.copy (| γ0_0 |) in
+                                                  let residual :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "core::convert::Infallible" ],
+                                                      γ0_0
+                                                    |) in
                                                   M.alloc (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format::SignatureToken",
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
@@ -920,7 +1092,12 @@ Module constant.
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
                                                     |) in
-                                                  let val := M.copy (| γ0_0 |) in
+                                                  let val :=
+                                                    M.copy (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::SignatureToken",
+                                                      γ0_0
+                                                    |) in
                                                   val))
                                             ]
                                           |)
@@ -940,6 +1117,10 @@ Module constant.
                               0
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::None"
                               []
@@ -955,6 +1136,10 @@ Module constant.
                               "move_core_types::runtime_value::MoveTypeLayout::Bool"
                             |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::file_format::SignatureToken" ],
                             Value.StructTuple
                               "core::option::Option::Some"
                               []
@@ -996,8 +1181,19 @@ Module constant.
       match ε, τ, α with
       | [], [], [ ty; v ] =>
         ltac:(M.monadic
-          (let ty := M.alloc (| ty |) in
-          let v := M.alloc (| v |) in
+          (let ty :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_core_types::runtime_value::MoveTypeLayout" ],
+              ty
+            |) in
+          let v :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::runtime_value::MoveValue" ],
+              v
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1006,6 +1202,10 @@ Module constant.
                 [ Ty.path "move_binary_format::file_format::Constant" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Constant" ],
                   Value.StructTuple
                     "core::option::Option::Some"
                     []
@@ -1021,6 +1221,16 @@ Module constant.
                               M.match_operator (|
                                 Ty.path "move_binary_format::file_format::SignatureToken",
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ];
+                                      Ty.path "move_binary_format::file_format::SignatureToken"
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1078,8 +1288,16 @@ Module constant.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::convert::Infallible" ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.path "move_binary_format::file_format::SignatureToken",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -1125,7 +1343,11 @@ Module constant.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val :=
+                                        M.copy (|
+                                          Ty.path "move_binary_format::file_format::SignatureToken",
+                                          γ0_0
+                                        |) in
                                       val))
                                 ]
                               |)
@@ -1138,6 +1360,19 @@ Module constant.
                                   []
                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ];
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1205,8 +1440,19 @@ Module constant.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::convert::Infallible" ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -1252,7 +1498,14 @@ Module constant.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                          γ0_0
+                                        |) in
                                       val))
                                 ]
                               |)
@@ -1280,7 +1533,11 @@ Module constant.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Constant" ],
+              self
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1289,12 +1546,26 @@ Module constant.
                 [ Ty.path "move_core_types::runtime_value::MoveValue" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                   M.read (|
                     let~ ty : Ty.path "move_core_types::runtime_value::MoveTypeLayout" :=
                       M.read (|
                         M.match_operator (|
                           Ty.path "move_core_types::runtime_value::MoveTypeLayout",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::convert::Infallible" ];
+                                Ty.path "move_core_types::runtime_value::MoveTypeLayout"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1357,8 +1628,16 @@ Module constant.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "move_core_types::runtime_value::MoveTypeLayout",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1399,12 +1678,20 @@ Module constant.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val :=
+                                  M.copy (|
+                                    Ty.path "move_core_types::runtime_value::MoveTypeLayout",
+                                    γ0_0
+                                  |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_core_types::runtime_value::MoveValue" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")

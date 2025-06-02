@@ -15,7 +15,7 @@ Module ops.
       match ε, τ, α with
       | [], [ T ], [ x ] =>
         ltac:(M.monadic
-          (let x := M.alloc (| x |) in
+          (let x := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], x |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (| "core::ops::drop::Drop", T, [], [], "drop", [], [] |),

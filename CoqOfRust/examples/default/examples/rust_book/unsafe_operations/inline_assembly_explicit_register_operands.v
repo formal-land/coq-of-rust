@@ -18,7 +18,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ cmd : Ty.path "i32" := Value.Integer IntegerKind.I32 209 in
         let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

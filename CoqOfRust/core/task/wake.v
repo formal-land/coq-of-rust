@@ -35,8 +35,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWaker" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWaker" ],
+                other
+              |) in
             LogicalOp.and (|
               M.call_closure (|
                 Ty.path "bool",
@@ -110,8 +118,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWaker" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -151,6 +164,15 @@ Module task.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "core::task::wake::RawWakerVTable" ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -189,8 +211,12 @@ Module task.
         match ε, τ, α with
         | [], [], [ data; vtable ] =>
           ltac:(M.monadic
-            (let data := M.alloc (| data |) in
-            let vtable := M.alloc (| vtable |) in
+            (let data := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], data |) in
+            let vtable :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                vtable
+              |) in
             Value.StructRecord
               "core::task::wake::RawWaker"
               []
@@ -222,6 +248,7 @@ Module task.
       Definition value_NOOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "core::task::wake::RawWaker",
             M.call_closure (|
               Ty.path "core::task::wake::RawWaker",
               M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
@@ -291,8 +318,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
@@ -414,7 +449,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::task::wake::RawWakerVTable",
@@ -469,8 +508,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -542,6 +586,14 @@ Module task.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ]
+                                (Ty.tuple [])
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -585,10 +637,28 @@ Module task.
         match ε, τ, α with
         | [], [], [ clone; wake; wake_by_ref; drop ] =>
           ltac:(M.monadic
-            (let clone := M.alloc (| clone |) in
-            let wake := M.alloc (| wake |) in
-            let wake_by_ref := M.alloc (| wake_by_ref |) in
-            let drop := M.alloc (| drop |) in
+            (let clone :=
+              M.alloc (|
+                Ty.function
+                  [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ]
+                  (Ty.path "core::task::wake::RawWaker"),
+                clone
+              |) in
+            let wake :=
+              M.alloc (|
+                Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []),
+                wake
+              |) in
+            let wake_by_ref :=
+              M.alloc (|
+                Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []),
+                wake_by_ref
+              |) in
+            let drop :=
+              M.alloc (|
+                Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []),
+                drop
+              |) in
             Value.StructRecord
               "core::task::wake::RawWakerVTable"
               []
@@ -639,8 +709,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::ExtData" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -658,8 +733,24 @@ Module task.
                           "core::task::wake::ExtData::Some",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -692,8 +783,13 @@ Module task.
                           "core::task::wake::ExtData::None",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -775,7 +871,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ waker ] =>
           ltac:(M.monadic
-            (let waker := M.alloc (| waker |) in
+            (let waker :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                waker
+              |) in
             M.call_closure (|
               Ty.path "core::task::wake::Context",
               M.get_associated_function (|
@@ -814,7 +914,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Context" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -848,7 +952,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Context" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -888,7 +996,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                self
+              |) in
             (* Unsize *)
             M.pointer_coercion
               (M.borrow (|
@@ -906,6 +1018,7 @@ Module task.
                               []
                               [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
                             M.alloc (|
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::ExtData" ],
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.SubPointer.get_struct_tuple_field (|
@@ -929,8 +1042,24 @@ Module task.
                                       "core::task::wake::ExtData::Some",
                                       0
                                     |) in
-                                  let data := M.alloc (| γ1_0 |) in
+                                  let data :=
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                                        ],
+                                      γ1_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
                                     (* Unsize *)
                                     M.pointer_coercion
                                       (M.borrow (|
@@ -947,8 +1076,16 @@ Module task.
                                       "core::task::wake::ExtData::None",
                                       0
                                     |) in
-                                  let unit_ := M.alloc (| γ1_0 |) in
+                                  let unit_ :=
+                                    M.alloc (|
+                                      Ty.apply (Ty.path "&mut") [] [ Ty.tuple [] ],
+                                      γ1_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
                                     (* Unsize *)
                                     M.pointer_coercion
                                       (M.borrow (|
@@ -983,8 +1120,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Context" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1012,6 +1154,7 @@ Module task.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.path "core::fmt::builders::DebugStruct",
                             M.call_closure (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               M.get_associated_function (|
@@ -1099,8 +1242,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::ContextBuilder" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1188,6 +1336,15 @@ Module task.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::marker::PhantomData")
+                                []
+                                [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -1234,7 +1391,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ waker ] =>
           ltac:(M.monadic
-            (let waker := M.alloc (| waker |) in
+            (let waker :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                waker
+              |) in
             M.read (|
               let~ local_waker :
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ] :=
@@ -1251,6 +1412,7 @@ Module task.
                   [ M.read (| waker |) ]
                 |) in
               M.alloc (|
+                Ty.path "core::task::wake::ContextBuilder",
                 Value.StructRecord
                   "core::task::wake::ContextBuilder"
                   []
@@ -1306,13 +1468,18 @@ Module task.
         match ε, τ, α with
         | [], [], [ cx ] =>
           ltac:(M.monadic
-            (let cx := M.alloc (| cx |) in
+            (let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.read (|
               let~ ext : Ty.path "core::task::wake::ExtData" :=
                 M.read (|
                   M.match_operator (|
                     Ty.path "core::task::wake::ExtData",
                     M.alloc (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::ExtData" ],
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.SubPointer.get_struct_tuple_field (|
@@ -1336,8 +1503,21 @@ Module task.
                               "core::task::wake::ExtData::Some",
                               0
                             |) in
-                          let ext := M.alloc (| γ1_0 |) in
+                          let ext :=
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [ Ty.dyn [ ("core::any::Any::Trait", []) ] ]
+                                ],
+                              γ1_0
+                            |) in
                           M.alloc (|
+                            Ty.path "core::task::wake::ExtData",
                             Value.StructTuple
                               "core::task::wake::ExtData::Some"
                               []
@@ -1361,6 +1541,7 @@ Module task.
                               0
                             |) in
                           M.alloc (|
+                            Ty.path "core::task::wake::ExtData",
                             Value.StructTuple
                               "core::task::wake::ExtData::None"
                               []
@@ -1371,6 +1552,7 @@ Module task.
                   |)
                 |) in
               M.alloc (|
+                Ty.path "core::task::wake::ContextBuilder",
                 Value.StructRecord
                   "core::task::wake::ContextBuilder"
                   []
@@ -1438,8 +1620,12 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; waker ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let waker := M.alloc (| waker |) in
+            (let self := M.alloc (| Ty.path "core::task::wake::ContextBuilder", self |) in
+            let waker :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                waker
+              |) in
             M.struct_record_update (M.read (| self |)) [ ("waker", M.read (| waker |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1457,8 +1643,12 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; local_waker ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let local_waker := M.alloc (| local_waker |) in
+            (let self := M.alloc (| Ty.path "core::task::wake::ContextBuilder", self |) in
+            let local_waker :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                local_waker
+              |) in
             M.struct_record_update
               (M.read (| self |))
               [ ("local_waker", M.read (| local_waker |)) ]))
@@ -1479,8 +1669,12 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; data ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let data := M.alloc (| data |) in
+            (let self := M.alloc (| Ty.path "core::task::wake::ContextBuilder", self |) in
+            let data :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::any::Any::Trait", []) ] ],
+                data
+              |) in
             M.struct_record_update
               (M.read (| self |))
               [
@@ -1512,7 +1706,7 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::task::wake::ContextBuilder", self |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::task::wake::Context",
@@ -1550,12 +1744,39 @@ Module task.
                           "core::task::wake::ContextBuilder",
                           "_marker2"
                         |) in
-                      let waker := M.copy (| γ0_0 |) in
-                      let local_waker := M.copy (| γ0_1 |) in
-                      let ext := M.copy (| γ0_2 |) in
-                      let _marker := M.copy (| γ0_3 |) in
-                      let _marker2 := M.copy (| γ0_4 |) in
+                      let waker :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                          γ0_0
+                        |) in
+                      let local_waker :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                          γ0_1
+                        |) in
+                      let ext := M.copy (| Ty.path "core::task::wake::ExtData", γ0_2 |) in
+                      let _marker :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::marker::PhantomData")
+                            []
+                            [
+                              Ty.function
+                                [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ]
+                                (Ty.apply (Ty.path "&") [] [ Ty.tuple [] ])
+                            ],
+                          γ0_3
+                        |) in
+                      let _marker2 :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::marker::PhantomData")
+                            []
+                            [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ] ],
+                          γ0_4
+                        |) in
                       M.alloc (|
+                        Ty.path "core::task::wake::Context",
                         Value.StructRecord
                           "core::task::wake::Context"
                           []
@@ -1654,7 +1875,7 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::task::wake::Waker", self |) in
             M.read (|
               let~ this :
                   Ty.apply
@@ -1747,7 +1968,7 @@ Module task.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1769,7 +1990,8 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
             M.call_closure (|
               Ty.tuple [],
               M.read (|
@@ -1826,8 +2048,13 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -1851,8 +2078,13 @@ Module task.
                           "core::task::wake::RawWaker",
                           "vtable"
                         |) in
-                      let a_data := M.copy (| γ0_0 |) in
-                      let a_vtable := M.copy (| γ0_1 |) in
+                      let a_data :=
+                        M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                      let a_vtable :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                          γ0_1
+                        |) in
                       M.match_operator (|
                         Ty.path "bool",
                         M.SubPointer.get_struct_record_field (|
@@ -1875,9 +2107,18 @@ Module task.
                                   "core::task::wake::RawWaker",
                                   "vtable"
                                 |) in
-                              let b_data := M.copy (| γ0_0 |) in
-                              let b_vtable := M.copy (| γ0_1 |) in
+                              let b_data :=
+                                M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                              let b_vtable :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::task::wake::RawWakerVTable" ],
+                                  γ0_1
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 LogicalOp.and (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -1927,8 +2168,12 @@ Module task.
         match ε, τ, α with
         | [], [], [ data; vtable ] =>
           ltac:(M.monadic
-            (let data := M.alloc (| data |) in
-            let vtable := M.alloc (| vtable |) in
+            (let data := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], data |) in
+            let vtable :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                vtable
+              |) in
             Value.StructRecord
               "core::task::wake::Waker"
               []
@@ -1957,7 +2202,7 @@ Module task.
         match ε, τ, α with
         | [], [], [ waker ] =>
           ltac:(M.monadic
-            (let waker := M.alloc (| waker |) in
+            (let waker := M.alloc (| Ty.path "core::task::wake::RawWaker", waker |) in
             Value.StructRecord "core::task::wake::Waker" [] [] [ ("waker", M.read (| waker |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1999,7 +2244,8 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -2027,7 +2273,8 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -2064,7 +2311,8 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
             Value.StructRecord
               "core::task::wake::Waker"
               []
@@ -2121,18 +2369,27 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; source ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let source := M.alloc (| source |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Waker" ],
+                self
+              |) in
+            let source :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ],
+                source
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -2167,8 +2424,8 @@ Module task.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |)))
@@ -2201,7 +2458,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Waker" ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.read (|
@@ -2265,14 +2526,17 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               let~ vtable_ptr :
                   Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
                 M.read (|
                   M.use
                     (M.alloc (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
                       M.borrow (|
                         Pointer.Kind.ConstPointer,
                         M.deref (|
@@ -2292,6 +2556,10 @@ Module task.
                     |))
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -2337,6 +2605,7 @@ Module task.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
+                                        Ty.path "core::fmt::builders::DebugStruct",
                                         M.call_closure (|
                                           Ty.path "core::fmt::builders::DebugStruct",
                                           M.get_associated_function (|
@@ -2453,7 +2722,7 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::task::wake::LocalWaker", self |) in
             M.read (|
               let~ this :
                   Ty.apply
@@ -2549,7 +2818,7 @@ Module task.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2571,7 +2840,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.read (|
@@ -2628,8 +2901,16 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -2653,8 +2934,13 @@ Module task.
                           "core::task::wake::RawWaker",
                           "vtable"
                         |) in
-                      let a_data := M.copy (| γ0_0 |) in
-                      let a_vtable := M.copy (| γ0_1 |) in
+                      let a_data :=
+                        M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                      let a_vtable :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                          γ0_1
+                        |) in
                       M.match_operator (|
                         Ty.path "bool",
                         M.SubPointer.get_struct_record_field (|
@@ -2677,9 +2963,18 @@ Module task.
                                   "core::task::wake::RawWaker",
                                   "vtable"
                                 |) in
-                              let b_data := M.copy (| γ0_0 |) in
-                              let b_vtable := M.copy (| γ0_1 |) in
+                              let b_data :=
+                                M.copy (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], γ0_0 |) in
+                              let b_vtable :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "core::task::wake::RawWakerVTable" ],
+                                  γ0_1
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 LogicalOp.and (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -2729,8 +3024,12 @@ Module task.
         match ε, τ, α with
         | [], [], [ data; vtable ] =>
           ltac:(M.monadic
-            (let data := M.alloc (| data |) in
-            let vtable := M.alloc (| vtable |) in
+            (let data := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], data |) in
+            let vtable :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
+                vtable
+              |) in
             Value.StructRecord
               "core::task::wake::LocalWaker"
               []
@@ -2759,7 +3058,7 @@ Module task.
         match ε, τ, α with
         | [], [], [ waker ] =>
           ltac:(M.monadic
-            (let waker := M.alloc (| waker |) in
+            (let waker := M.alloc (| Ty.path "core::task::wake::RawWaker", waker |) in
             Value.StructRecord
               "core::task::wake::LocalWaker"
               []
@@ -2805,7 +3104,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -2833,7 +3136,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.SubPointer.get_struct_record_field (|
@@ -2870,7 +3177,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
             Value.StructRecord
               "core::task::wake::LocalWaker"
               []
@@ -2927,18 +3238,27 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; source ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let source := M.alloc (| source |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
+            let source :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                source
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -2973,8 +3293,8 @@ Module task.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| source |) |) |) ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |)))
@@ -3005,7 +3325,8 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
             M.call_closure (|
               Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
               M.get_function (|
@@ -3045,7 +3366,11 @@ Module task.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.read (|
@@ -3109,14 +3434,20 @@ Module task.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               let~ vtable_ptr :
                   Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ] :=
                 M.read (|
                   M.use
                     (M.alloc (|
+                      Ty.apply (Ty.path "*const") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
                       M.borrow (|
                         Pointer.Kind.ConstPointer,
                         M.deref (|
@@ -3136,6 +3467,10 @@ Module task.
                     |))
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -3181,6 +3516,7 @@ Module task.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
+                                        Ty.path "core::fmt::builders::DebugStruct",
                                         M.call_closure (|
                                           Ty.path "core::fmt::builders::DebugStruct",
                                           M.get_associated_function (|

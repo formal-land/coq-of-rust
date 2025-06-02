@@ -23,8 +23,19 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ] ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -120,8 +131,19 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ] ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")

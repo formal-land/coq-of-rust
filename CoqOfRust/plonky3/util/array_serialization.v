@@ -18,8 +18,12 @@ Module array_serialization.
     match ε, τ, α with
     | [ N ], [ _ as S; T ], [ data; ser ] =>
       ltac:(M.monadic
-        (let data := M.alloc (| data |) in
-        let ser := M.alloc (| ser |) in
+        (let data :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+            data
+          |) in
+        let ser := M.alloc (| S, ser |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -31,6 +35,13 @@ Module array_serialization.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                    Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                  ],
                 M.read (|
                   let~ s :
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeTuple" :=
@@ -38,6 +49,24 @@ Module array_serialization.
                       M.match_operator (|
                         Ty.associated_in_trait "serde::ser::Serializer" [] [] S "SerializeTuple",
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                                ];
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                S
+                                "SerializeTuple"
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -114,8 +143,29 @@ Module array_serialization.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        S
+                                        "Error"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.associated_in_trait
+                                  "serde::ser::Serializer"
+                                  []
+                                  []
+                                  S
+                                  "SerializeTuple",
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -189,7 +239,16 @@ Module array_serialization.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val :=
+                                M.copy (|
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    S
+                                    "SerializeTuple",
+                                  γ0_0
+                                |) in
                               val))
                         ]
                       |)
@@ -200,6 +259,7 @@ Module array_serialization.
                         (M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                             M.call_closure (|
                               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
                               M.get_trait_method (|
@@ -220,7 +280,11 @@ Module array_serialization.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
+                                (let iter :=
+                                  M.copy (|
+                                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                                    γ
+                                  |) in
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
@@ -229,6 +293,10 @@ Module array_serialization.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.apply (Ty.path "&") [] [ T ] ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -265,6 +333,7 @@ Module array_serialization.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -275,12 +344,35 @@ Module array_serialization.
                                                     "core::option::Option::Some",
                                                     0
                                                   |) in
-                                                let item := M.copy (| γ0_0 |) in
+                                                let item :=
+                                                  M.copy (|
+                                                    Ty.apply (Ty.path "&") [] [ T ],
+                                                    γ0_0
+                                                  |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.read (|
                                                     M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.associated_in_trait
+                                                                  "serde::ser::Serializer"
+                                                                  []
+                                                                  []
+                                                                  S
+                                                                  "Error"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path
@@ -373,8 +465,25 @@ Module array_serialization.
                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                 0
                                                               |) in
-                                                            let residual := M.copy (| γ0_0 |) in
+                                                            let residual :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::convert::Infallible";
+                                                                    Ty.associated_in_trait
+                                                                      "serde::ser::Serializer"
+                                                                      []
+                                                                      []
+                                                                      S
+                                                                      "Error"
+                                                                  ],
+                                                                γ0_0
+                                                              |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   M.return_ (|
@@ -452,21 +561,29 @@ Module array_serialization.
                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                 0
                                                               |) in
-                                                            let val := M.copy (| γ0_0 |) in
+                                                            let val :=
+                                                              M.copy (| Ty.tuple [], γ0_0 |) in
                                                             val))
                                                       ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 |)))
                           ]
                         |))
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] S "Error"
+                      ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -530,8 +647,19 @@ Module array_serialization.
       match ε, τ, α with
       | [], [], [ self; formatter ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let formatter := M.alloc (| formatter |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_util::array_serialization::ArrayVisitor") [ N ] [ T ] ],
+              self
+            |) in
+          let formatter :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ],
+              formatter
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -554,7 +682,13 @@ Module array_serialization.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ mk_str (| "an array of length " |) ] |)
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "an array of length " |) ]
+                        |)
                       |)
                     |)
                   |);
@@ -564,6 +698,10 @@ Module array_serialization.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "core::fmt::rt::Argument" ],
                           Value.Array
                             [
                               M.call_closure (|
@@ -577,7 +715,12 @@ Module array_serialization.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| N |) |) |)
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (| Ty.path "usize", N |)
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -622,8 +765,12 @@ Module array_serialization.
       match ε, τ, α with
       | [], [ A ], [ self; seq ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let seq := M.alloc (| seq |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "p3_util::array_serialization::ArrayVisitor") [ N ] [ T ],
+              self
+            |) in
+          let seq := M.alloc (| A, seq |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -640,6 +787,21 @@ Module array_serialization.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "serde::de::Visitor"
+                        []
+                        []
+                        (Ty.apply
+                          (Ty.path "p3_util::array_serialization::ArrayVisitor")
+                          [ N ]
+                          [ T ])
+                        "Value";
+                      Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                    ],
                   M.read (|
                     let~ data :
                         Ty.apply
@@ -668,6 +830,7 @@ Module array_serialization.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                                 M.get_trait_method (|
@@ -694,7 +857,14 @@ Module array_serialization.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -703,6 +873,10 @@ Module array_serialization.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -739,6 +913,7 @@ Module array_serialization.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -757,6 +932,28 @@ Module array_serialization.
                                                         []
                                                         [ T ],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.associated_in_trait
+                                                                  "serde::de::SeqAccess"
+                                                                  []
+                                                                  []
+                                                                  A
+                                                                  "Error"
+                                                              ];
+                                                            Ty.apply
+                                                              (Ty.path "core::option::Option")
+                                                              []
+                                                              [ T ]
+                                                          ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path
@@ -849,8 +1046,28 @@ Module array_serialization.
                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                 0
                                                               |) in
-                                                            let residual := M.copy (| γ0_0 |) in
+                                                            let residual :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::convert::Infallible";
+                                                                    Ty.associated_in_trait
+                                                                      "serde::de::SeqAccess"
+                                                                      []
+                                                                      []
+                                                                      A
+                                                                      "Error"
+                                                                  ],
+                                                                γ0_0
+                                                              |) in
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ T ],
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   M.return_ (|
@@ -924,7 +1141,14 @@ Module array_serialization.
                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                 0
                                                               |) in
-                                                            let val := M.copy (| γ0_0 |) in
+                                                            let val :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ T ],
+                                                                γ0_0
+                                                              |) in
                                                             val))
                                                       ]
                                                     |),
@@ -937,8 +1161,9 @@ Module array_serialization.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val := M.copy (| T, γ0_0 |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.call_closure (|
                                                               Ty.tuple [],
                                                               M.get_associated_function (|
@@ -970,6 +1195,7 @@ Module array_serialization.
                                                               "core::option::Option::None"
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -1035,7 +1261,7 @@ Module array_serialization.
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -1049,6 +1275,16 @@ Module array_serialization.
                           Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
                         ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply (Ty.path "array") [ N ] [ T ];
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ T; Ty.path "alloc::alloc::Global" ]
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1084,8 +1320,15 @@ Module array_serialization.
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            let arr := M.copy (| γ0_0 |) in
+                            let arr := M.copy (| Ty.apply (Ty.path "array") [ N ] [ T ], γ0_0 |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                  Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                                ],
                               Value.StructTuple
                                 "core::result::Result::Ok"
                                 []
@@ -1104,6 +1347,13 @@ Module array_serialization.
                                 0
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.apply (Ty.path "array") [ N ] [ T ];
+                                  Ty.associated_in_trait "serde::de::SeqAccess" [] [] A "Error"
+                                ],
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -1149,7 +1399,7 @@ Module array_serialization.
     match ε, τ, α with
     | [ N ], [ D; T ], [ deserializer ] =>
       ltac:(M.monadic
-        (let deserializer := M.alloc (| deserializer |) in
+        (let deserializer := M.alloc (| D, deserializer |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")

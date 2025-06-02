@@ -39,7 +39,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
+              self
+            |) in
           Value.StructRecord
             "p3_matrix::dense::DenseMatrix"
             []
@@ -145,8 +152,16 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -202,6 +217,10 @@ Module dense.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -253,8 +272,22 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -362,7 +395,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -379,7 +419,10 @@ Module dense.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -411,8 +454,15 @@ Module dense.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -424,6 +474,13 @@ Module dense.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -441,6 +498,29 @@ Module dense.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ];
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -557,8 +637,29 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -632,7 +733,16 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   val))
                             ]
                           |)
@@ -642,6 +752,24 @@ Module dense.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -744,8 +872,24 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -819,7 +963,7 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   val))
                             ]
                           |)
@@ -829,6 +973,24 @@ Module dense.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -931,8 +1093,24 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1006,7 +1184,7 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   val))
                             ]
                           |)
@@ -1016,6 +1194,24 @@ Module dense.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error"
+                                    ];
+                                  Ty.tuple []
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1118,8 +1314,24 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.associated_in_trait
+                                            "serde::ser::Serializer"
+                                            []
+                                            []
+                                            __S
+                                            "Error"
+                                        ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1193,12 +1405,19 @@ Module dense.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   val))
                             ]
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1255,7 +1474,7 @@ Module dense.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1374,7 +1593,11 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              self
+            |) in
           M.read (| self |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1403,7 +1626,8 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [], [] |),
@@ -1436,7 +1660,11 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "to_vec", [], [] |),
@@ -1469,7 +1697,11 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
             M.get_associated_function (|
@@ -1510,8 +1742,8 @@ Module dense.
       match ε, τ, α with
       | [], [], [ width; height ] =>
         ltac:(M.monadic
-          (let width := M.alloc (| width |) in
-          let height := M.alloc (| height |) in
+          (let width := M.alloc (| Ty.path "usize", width |) in
+          let height := M.alloc (| Ty.path "usize", height |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -1565,7 +1797,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -1632,9 +1872,9 @@ Module dense.
       match ε, τ, α with
       | [], [ R ], [ rng; rows; cols ] =>
         ltac:(M.monadic
-          (let rng := M.alloc (| rng |) in
-          let rows := M.alloc (| rows |) in
-          let cols := M.alloc (| cols |) in
+          (let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
+          let rows := M.alloc (| Ty.path "usize", rows |) in
+          let cols := M.alloc (| Ty.path "usize", cols |) in
           M.read (|
             let~ values :
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
@@ -1726,6 +1966,11 @@ Module dense.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -1776,9 +2021,9 @@ Module dense.
       match ε, τ, α with
       | [], [ R ], [ rng; rows; cols ] =>
         ltac:(M.monadic
-          (let rng := M.alloc (| rng |) in
-          let rows := M.alloc (| rows |) in
-          let cols := M.alloc (| cols |) in
+          (let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
+          let rows := M.alloc (| Ty.path "usize", rows |) in
+          let cols := M.alloc (| Ty.path "usize", cols |) in
           M.read (|
             let~ values :
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
@@ -1932,11 +2177,12 @@ Module dense.
                                       Ty.function
                                         [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
                                         (Ty.path "bool"),
-                                      M.alloc (| α0 |),
+                                      M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
+                                            (let x :=
+                                              M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                             UnOp.not (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -1973,6 +2219,11 @@ Module dense.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -2015,21 +2266,37 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; new_height; fill ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let new_height := M.alloc (| new_height |) in
-          let fill := M.alloc (| fill |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::dense::DenseMatrix")
+                    []
+                    [
+                      T;
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ]
+                ],
+              self
+            |) in
+          let new_height := M.alloc (| Ty.path "usize", new_height |) in
+          let fill := M.alloc (| T, fill |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -2069,6 +2336,7 @@ Module dense.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -2077,7 +2345,7 @@ Module dense.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -2116,7 +2384,7 @@ Module dense.
                   M.read (| fill |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2139,7 +2407,22 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::dense::DenseMatrix")
+                    []
+                    [
+                      T;
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ]
+                ],
+              self
+            |) in
           M.read (|
             let~ nelts : Ty.path "usize" :=
               M.call_closure (|
@@ -2319,6 +2602,11 @@ Module dense.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ T; Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -2391,19 +2679,55 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::dense::DenseMatrix")
+                    []
+                    [
+                      T;
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::dense::DenseMatrix")
+                    []
+                    [
+                      T;
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ]
+                ],
+              other
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -2431,6 +2755,7 @@ Module dense.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -2462,17 +2787,20 @@ Module dense.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -2490,6 +2818,7 @@ Module dense.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2499,6 +2828,7 @@ Module dense.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -2537,7 +2867,7 @@ Module dense.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
@@ -2548,11 +2878,17 @@ Module dense.
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -2580,6 +2916,7 @@ Module dense.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -2611,17 +2948,20 @@ Module dense.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -2639,6 +2979,7 @@ Module dense.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2648,6 +2989,7 @@ Module dense.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -2686,7 +3028,7 @@ Module dense.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
@@ -2813,7 +3155,7 @@ Module dense.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2844,30 +3186,31 @@ Module dense.
       match ε, τ, α with
       | [], [], [ values; width ] =>
         ltac:(M.monadic
-          (let values := M.alloc (| values |) in
-          let width := M.alloc (| width |) in
+          (let values := M.alloc (| S, values |) in
+          let width := M.alloc (| Ty.path "usize", width |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             LogicalOp.or (|
                                               M.call_closure (|
@@ -2949,6 +3292,7 @@ Module dense.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -2961,16 +3305,18 @@ Module dense.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ],
               Value.StructRecord
                 "p3_matrix::dense::DenseMatrix"
                 []
@@ -3002,7 +3348,7 @@ Module dense.
       match ε, τ, α with
       | [], [], [ values ] =>
         ltac:(M.monadic
-          (let values := M.alloc (| values |) in
+          (let values := M.alloc (| S, values |) in
           M.read (|
             let~ width : Ty.path "usize" :=
               M.call_closure (|
@@ -3030,6 +3376,7 @@ Module dense.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ],
               M.call_closure (|
                 Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ],
                 M.get_associated_function (|
@@ -3061,7 +3408,7 @@ Module dense.
       match ε, τ, α with
       | [], [], [ values ] =>
         ltac:(M.monadic
-          (let values := M.alloc (| values |) in
+          (let values := M.alloc (| S, values |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ],
             M.get_associated_function (|
@@ -3091,7 +3438,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -3165,7 +3519,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -3248,19 +3609,39 @@ Module dense.
       match ε, τ, α with
       | [], [ S2 ], [ self; source ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let source := M.alloc (| source |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let source :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S2 ] ],
+              source
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::Dimensions" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::Dimensions" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "p3_matrix::Dimensions",
                             M.call_closure (|
                               Ty.path "p3_matrix::Dimensions",
                               M.get_trait_method (|
@@ -3279,6 +3660,7 @@ Module dense.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "p3_matrix::Dimensions",
                             M.call_closure (|
                               Ty.path "p3_matrix::Dimensions",
                               M.get_trait_method (|
@@ -3301,17 +3683,26 @@ Module dense.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::Dimensions" ],
+                            γ0_0
+                          |) in
+                        let right_val :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "p3_matrix::Dimensions" ],
+                            γ0_1
+                          |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -3343,6 +3734,7 @@ Module dense.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -3352,6 +3744,7 @@ Module dense.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -3393,7 +3786,7 @@ Module dense.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
@@ -3493,14 +3886,41 @@ Module dense.
                                     ]
                                 ]
                                 (Ty.tuple []),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                  ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let dst := M.copy (| γ0_0 |) in
-                                    let src := M.copy (| γ0_1 |) in
+                                    let dst :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        γ0_0
+                                      |) in
+                                    let src :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        γ0_1
+                                      |) in
                                     M.read (|
                                       let~ _ : Ty.tuple [] :=
                                         M.call_closure (|
@@ -3522,7 +3942,7 @@ Module dense.
                                             |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                     |)))
                               ]
                             |)))
@@ -3530,7 +3950,7 @@ Module dense.
                         end))
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3566,7 +3986,14 @@ Module dense.
       match ε, τ, α with
       | [], [ F ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.read (|
             let~ width : Ty.path "usize" :=
               M.call_closure (|
@@ -3706,11 +4133,11 @@ Module dense.
                                       (Ty.path "core::iter::adapters::copied::Copied")
                                       []
                                       [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ F ] ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
+                                        (let x := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::iter::adapters::copied::Copied")
@@ -3775,6 +4202,11 @@ Module dense.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ F; Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ]
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -3816,7 +4248,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ T ],
             M.get_associated_function (|
@@ -3889,7 +4328,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ T ],
             M.get_trait_method (|
@@ -3960,8 +4406,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -4083,7 +4536,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksExactMut") [] [ T ],
             M.get_associated_function (|
@@ -4157,7 +4617,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksExactMut") [] [ T ],
             M.get_trait_method (|
@@ -4234,8 +4701,15 @@ Module dense.
       match ε, τ, α with
       | [], [ P ], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.tuple
               [
@@ -4298,9 +4772,16 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r; scale ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let scale := M.alloc (| scale |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let scale := M.alloc (| T, scale |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -4328,7 +4809,7 @@ Module dense.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4353,8 +4834,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; scale ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let scale := M.alloc (| scale |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let scale := M.alloc (| T, scale |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -4391,7 +4879,7 @@ Module dense.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4416,8 +4904,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             M.match_operator (|
               Ty.tuple
@@ -4432,6 +4927,11 @@ Module dense.
                     [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                 ],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -4494,9 +4994,29 @@ Module dense.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let lo := M.copy (| γ0_0 |) in
-                    let hi := M.copy (| γ0_1 |) in
+                    let lo :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_0
+                      |) in
+                    let hi :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
+                            [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ];
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
+                            [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
+                        ],
                       Value.Tuple
                         [
                           M.call_closure (|
@@ -4596,8 +5116,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             M.match_operator (|
               Ty.tuple
@@ -4612,6 +5139,11 @@ Module dense.
                     [ T; Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ]
                 ],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -4674,9 +5206,34 @@ Module dense.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let lo := M.copy (| γ0_0 |) in
-                    let hi := M.copy (| γ0_1 |) in
+                    let lo :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_0
+                      |) in
+                    let hi :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
+                            [
+                              T;
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ];
+                          Ty.apply
+                            (Ty.path "p3_matrix::dense::DenseMatrix")
+                            []
+                            [
+                              T;
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ]
+                        ],
                       Value.Tuple
                         [
                           M.call_closure (|
@@ -4785,8 +5342,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; chunk_rows ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_rows := M.alloc (| chunk_rows |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let chunk_rows := M.alloc (| Ty.path "usize", chunk_rows |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -4894,11 +5458,21 @@ Module dense.
                               []
                               [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let slice := M.copy (| γ |) in
+                                (let slice :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -4978,8 +5552,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; chunk_rows ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_rows := M.alloc (| chunk_rows |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let chunk_rows := M.alloc (| Ty.path "usize", chunk_rows |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -5087,11 +5668,21 @@ Module dense.
                               []
                               [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let slice := M.copy (| γ |) in
+                                (let slice :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -5172,8 +5763,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; chunk_rows ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_rows := M.alloc (| chunk_rows |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let chunk_rows := M.alloc (| Ty.path "usize", chunk_rows |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -5293,11 +5891,21 @@ Module dense.
                                 T;
                                 Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let slice := M.copy (| γ |) in
+                                (let slice :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -5378,8 +5986,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; chunk_rows ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_rows := M.alloc (| chunk_rows |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let chunk_rows := M.alloc (| Ty.path "usize", chunk_rows |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -5496,11 +6111,21 @@ Module dense.
                                 T;
                                 Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let slice := M.copy (| γ |) in
+                                (let slice :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -5581,8 +6206,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; chunk_rows ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_rows := M.alloc (| chunk_rows |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let chunk_rows := M.alloc (| Ty.path "usize", chunk_rows |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -5702,11 +6334,21 @@ Module dense.
                                 T;
                                 Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let slice := M.copy (| γ |) in
+                                (let slice :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -5784,25 +6426,37 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; row_1; row_2 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let row_1 := M.alloc (| row_1 |) in
-          let row_2 := M.alloc (| row_2 |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let row_1 := M.alloc (| Ty.path "usize", row_1 |) in
+          let row_2 := M.alloc (| Ty.path "usize", row_2 |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                                  ],
                                 Value.Tuple
                                   [
                                     M.borrow (| Pointer.Kind.Ref, row_1 |);
@@ -5814,17 +6468,26 @@ Module dense.
                                   ltac:(M.monadic
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let left_val := M.copy (| γ0_0 |) in
-                                    let right_val := M.copy (| γ0_1 |) in
+                                    let left_val :=
+                                      M.copy (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                        γ0_0
+                                      |) in
+                                    let right_val :=
+                                      M.copy (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                        γ0_1
+                                      |) in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     BinOp.eq,
@@ -5844,6 +6507,7 @@ Module dense.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
+                                              Ty.tuple [],
                                               M.never_to_any (|
                                                 M.read (|
                                                   let~ kind :
@@ -5854,6 +6518,7 @@ Module dense.
                                                       []
                                                       [] in
                                                   M.alloc (|
+                                                    Ty.path "never",
                                                     M.call_closure (|
                                                       Ty.path "never",
                                                       M.get_function (|
@@ -5892,14 +6557,16 @@ Module dense.
                                                 |)
                                               |)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -5940,6 +6607,11 @@ Module dense.
                   Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
                 ],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -5989,9 +6661,22 @@ Module dense.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let lo := M.copy (| γ0_0 |) in
-                    let hi := M.copy (| γ0_1 |) in
+                    let lo :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_0
+                      |) in
+                    let hi :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                          Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                        ],
                       Value.Tuple
                         [
                           M.borrow (|
@@ -6167,9 +6852,16 @@ Module dense.
       match ε, τ, α with
       | [], [ P ], [ self; row_1; row_2 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let row_1 := M.alloc (| row_1 |) in
-          let row_2 := M.alloc (| row_2 |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let row_1 := M.alloc (| Ty.path "usize", row_1 |) in
+          let row_2 := M.alloc (| Ty.path "usize", row_2 |) in
           M.read (|
             M.match_operator (|
               Ty.tuple
@@ -6186,6 +6878,11 @@ Module dense.
                     ]
                 ],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -6210,9 +6907,30 @@ Module dense.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let slice_1 := M.copy (| γ0_0 |) in
-                    let slice_2 := M.copy (| γ0_1 |) in
+                    let slice_1 :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_0
+                      |) in
+                    let slice_2 :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ P ] ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ];
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ P ] ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                            ]
+                        ],
                       Value.Tuple
                         [
                           M.call_closure (|
@@ -6282,8 +7000,9 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; added_bits ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let added_bits := M.alloc (| added_bits |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ], self |) in
+          let added_bits := M.alloc (| Ty.path "usize", added_bits |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -6293,6 +7012,13 @@ Module dense.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "p3_matrix::dense::DenseMatrix")
+                    []
+                    [
+                      T;
+                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ],
                   M.read (|
                     let~ _ : Ty.tuple [] := Value.Tuple [] in
                     let __tracing_attr_span := M.read (| Value.DeclaredButUndefined |) in
@@ -6301,13 +7027,14 @@ Module dense.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.or (|
                                         LogicalOp.and (|
                                           M.call_closure (|
@@ -6363,6 +7090,7 @@ Module dense.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.path "tracing_core::metadata::LevelFilter",
                                                     M.call_closure (|
                                                       Ty.path "tracing_core::metadata::LevelFilter",
                                                       M.get_associated_function (|
@@ -6405,13 +7133,14 @@ Module dense.
                                         |) in
                                       M.match_operator (|
                                         Ty.path "tracing::span::Span",
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     LogicalOp.and (|
                                                       LogicalOp.and (|
                                                         LogicalOp.and (|
@@ -6481,6 +7210,8 @@ Module dense.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
+                                                                    Ty.path
+                                                                      "tracing_core::metadata::LevelFilter",
                                                                     M.call_closure (|
                                                                       Ty.path
                                                                         "tracing_core::metadata::LevelFilter",
@@ -6535,6 +7266,7 @@ Module dense.
                                                                 |)
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.path "bool",
                                                               UnOp.not (|
                                                                 M.call_closure (|
                                                                   Ty.path "bool",
@@ -6660,6 +7392,7 @@ Module dense.
                                                   ]
                                                 |) in
                                               M.alloc (|
+                                                Ty.path "tracing::span::Span",
                                                 M.call_closure (|
                                                   Ty.path "tracing::span::Span",
                                                   M.get_associated_function (|
@@ -6679,6 +7412,7 @@ Module dense.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.alloc (|
+                                                            Ty.path "tracing_core::field::ValueSet",
                                                             M.call_closure (|
                                                               Ty.path
                                                                 "tracing_core::field::ValueSet",
@@ -6760,7 +7494,44 @@ Module dense.
                                                                   M.deref (|
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
-                                                                      M.alloc (| Value.Array [] |)
+                                                                      M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0
+                                                                          ]
+                                                                          [
+                                                                            Ty.tuple
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "tracing_core::field::Field"
+                                                                                  ];
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::option::Option")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.dyn
+                                                                                          [
+                                                                                            ("tracing_core::field::Value::Trait",
+                                                                                              [])
+                                                                                          ]
+                                                                                      ]
+                                                                                  ]
+                                                                              ]
+                                                                          ],
+                                                                        Value.Array []
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)
@@ -6849,8 +7620,8 @@ Module dense.
                                       [ M.borrow (| Pointer.Kind.Ref, __tracing_attr_span |) ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -6858,17 +7629,18 @@ Module dense.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                                (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
                                 let _ :=
                                   is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ __tracing_attr_fake_return :
@@ -6886,7 +7658,8 @@ Module dense.
                                           M.read (|
                                             M.loop (|
                                               Ty.path "never",
-                                              ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             |)
                                           |)
                                         |) in
@@ -6894,7 +7667,7 @@ Module dense.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -6902,13 +7675,14 @@ Module dense.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.eq,
@@ -6922,6 +7696,7 @@ Module dense.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -6954,7 +7729,7 @@ Module dense.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -7197,14 +7972,53 @@ Module dense.
                                             ]
                                         ]
                                         (Ty.tuple []),
-                                      M.alloc (| α0 |),
+                                      M.alloc (|
+                                        Ty.tuple
+                                          [
+                                            Ty.apply
+                                              (Ty.path "p3_matrix::dense::DenseMatrix")
+                                              []
+                                              [
+                                                T;
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                              ];
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                          ],
+                                        α0
+                                      |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                            let ch := M.copy (| γ0_0 |) in
-                                            let r := M.copy (| γ0_1 |) in
+                                            let ch :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path "p3_matrix::dense::DenseMatrix")
+                                                  []
+                                                  [
+                                                    T;
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      []
+                                                      [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                                                  ],
+                                                γ0_0
+                                              |) in
+                                            let r :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                γ0_1
+                                              |) in
                                             M.call_closure (|
                                               Ty.tuple [],
                                               M.get_associated_function (|
@@ -7286,7 +8100,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -7311,17 +8132,25 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "usize",
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.eq,
@@ -7338,10 +8167,11 @@ Module dense.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
+                    M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.path "usize",
                       M.call_closure (|
                         Ty.path "usize",
                         BinOp.Wrap.div,
@@ -7413,9 +8243,16 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r; c ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let c := M.alloc (| c |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let c := M.alloc (| Ty.path "usize", c |) in
           M.call_closure (|
             T,
             M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
@@ -7499,8 +8336,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::cloned::Cloned")
@@ -7623,8 +8467,15 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -7733,7 +8584,8 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")
@@ -7810,8 +8662,15 @@ Module dense.
       match ε, τ, α with
       | [], [ P ], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             let~ buf : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
               M.borrow (|
@@ -7913,6 +8772,11 @@ Module dense.
                     [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
                 ],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ P ] ];
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -7936,9 +8800,28 @@ Module dense.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let packed := M.copy (| γ0_0 |) in
-                    let sfx := M.copy (| γ0_1 |) in
+                    let packed :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ P ] ],
+                        γ0_0
+                      |) in
+                    let sfx :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::copied::Copied")
+                            []
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ P ] ];
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::cloned::Cloned")
+                            []
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
+                        ],
                       Value.Tuple
                         [
                           M.call_closure (|
@@ -8030,8 +8913,15 @@ Module dense.
       match ε, τ, α with
       | [], [ P ], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             let~ buf : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
               M.borrow (|
@@ -8132,6 +9022,11 @@ Module dense.
                   Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ P ]
                 ],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ P ] ];
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -8155,9 +9050,27 @@ Module dense.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let packed := M.copy (| γ0_0 |) in
-                    let sfx := M.copy (| γ0_1 |) in
+                    let packed :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ P ] ],
+                        γ0_0
+                      |) in
+                    let sfx :=
+                      M.copy (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::iter::adapters::chain::Chain")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::copied::Copied")
+                            []
+                            [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ P ] ];
+                          Ty.apply (Ty.path "core::iter::sources::once::Once") [] [ P ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::iter::adapters::chain::Chain")
@@ -8234,11 +9147,11 @@ Module dense.
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T,
-                                              M.alloc (| α0 |),
+                                              M.alloc (| Ty.path "usize", α0 |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let i := M.copy (| γ |) in
+                                                    (let i := M.copy (| Ty.path "usize", γ |) in
                                                     M.call_closure (|
                                                       T,
                                                       M.get_associated_function (|
@@ -8347,7 +9260,14 @@ Module dense.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "p3_matrix::dense::DenseMatrix")
+                []
+                [ T; Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "p3_matrix::dense::DenseMatrix")

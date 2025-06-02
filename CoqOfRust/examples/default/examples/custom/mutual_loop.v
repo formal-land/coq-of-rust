@@ -36,7 +36,8 @@ Module Impl_mutual_loop_LoopA.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "mutual_loop::LoopA" ], self |) in
         M.call_closure (|
           Ty.path "mutual_loop::LoopB",
           M.get_associated_function (| Ty.path "mutual_loop::LoopB", "start_loop", [], [] |),
@@ -127,7 +128,7 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
             M.get_associated_function (| Ty.path "mutual_loop::LoopA", "start_loop", [], [] |),
             [ M.borrow (| Pointer.Kind.Ref, la |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

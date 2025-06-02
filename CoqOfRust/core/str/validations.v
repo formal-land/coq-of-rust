@@ -12,8 +12,8 @@ Module str.
       match ε, τ, α with
       | [], [], [ byte; width ] =>
         ltac:(M.monadic
-          (let byte := M.alloc (| byte |) in
-          let width := M.alloc (| width |) in
+          (let byte := M.alloc (| Ty.path "u8", byte |) in
+          let width := M.alloc (| Ty.path "u32", width |) in
           M.cast
             (Ty.path "u32")
             (M.call_closure (|
@@ -45,8 +45,8 @@ Module str.
       match ε, τ, α with
       | [], [], [ ch; byte ] =>
         ltac:(M.monadic
-          (let ch := M.alloc (| ch |) in
-          let byte := M.alloc (| byte |) in
+          (let ch := M.alloc (| Ty.path "u32", ch |) in
+          let byte := M.alloc (| Ty.path "u8", byte |) in
           M.call_closure (|
             Ty.path "u32",
             BinOp.Wrap.bit_or,
@@ -87,7 +87,7 @@ Module str.
       match ε, τ, α with
       | [], [], [ byte ] =>
         ltac:(M.monadic
-          (let byte := M.alloc (| byte |) in
+          (let byte := M.alloc (| Ty.path "u8", byte |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.lt,
@@ -142,11 +142,12 @@ Module str.
       match ε, τ, α with
       | [], [ _ as I ], [ bytes ] =>
         ltac:(M.monadic
-          (let bytes := M.alloc (| bytes |) in
+          (let bytes := M.alloc (| Ty.apply (Ty.path "&mut") [] [ I ], bytes |) in
           M.read (|
             M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                   M.read (|
                     let~ x : Ty.path "u8" :=
                       M.read (|
@@ -155,6 +156,16 @@ Module str.
                             M.match_operator (|
                               Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::ops::control_flow::ControlFlow")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ];
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                  ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::ops::control_flow::ControlFlow")
@@ -212,8 +223,16 @@ Module str.
                                         "core::ops::control_flow::ControlFlow::Break",
                                         0
                                       |) in
-                                    let residual := M.copy (| γ0_0 |) in
+                                    let residual :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::convert::Infallible" ],
+                                        γ0_0
+                                      |) in
                                     M.alloc (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
@@ -253,7 +272,11 @@ Module str.
                                         "core::ops::control_flow::ControlFlow::Continue",
                                         0
                                       |) in
-                                    let val := M.copy (| γ0_0 |) in
+                                    let val :=
+                                      M.copy (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                        γ0_0
+                                      |) in
                                     val))
                               ]
                             |)
@@ -264,13 +287,14 @@ Module str.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.lt,
@@ -283,6 +307,7 @@ Module str.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -295,7 +320,7 @@ Module str.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -355,13 +380,14 @@ Module str.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ge,
@@ -458,13 +484,14 @@ Module str.
                                   |) in
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               M.call_closure (|
                                                 Ty.path "bool",
                                                 BinOp.ge,
@@ -551,15 +578,17 @@ Module str.
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -619,11 +648,12 @@ Module str.
       match ε, τ, α with
       | [], [ _ as I ], [ bytes ] =>
         ltac:(M.monadic
-          (let bytes := M.alloc (| bytes |) in
+          (let bytes := M.alloc (| Ty.apply (Ty.path "&mut") [] [ I ], bytes |) in
           M.read (|
             M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                   M.read (|
                     let~ w : Ty.path "u8" :=
                       M.read (|
@@ -634,6 +664,16 @@ Module str.
                               M.match_operator (|
                                 Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ];
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                                    ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -691,8 +731,16 @@ Module str.
                                           "core::ops::control_flow::ControlFlow::Break",
                                           0
                                         |) in
-                                      let residual := M.copy (| γ0_0 |) in
+                                      let residual :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::convert::Infallible" ],
+                                          γ0_0
+                                        |) in
                                       M.alloc (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -732,7 +780,11 @@ Module str.
                                           "core::ops::control_flow::ControlFlow::Continue",
                                           0
                                         |) in
-                                      let val := M.copy (| γ0_0 |) in
+                                      let val :=
+                                        M.copy (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                          γ0_0
+                                        |) in
                                       val))
                                 ]
                               |)
@@ -741,9 +793,10 @@ Module str.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let next_byte := M.copy (| γ |) in
+                                (let next_byte := M.copy (| Ty.path "u8", γ |) in
                                 let γ :=
                                   M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.lt,
@@ -756,6 +809,7 @@ Module str.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.path "u8",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -770,7 +824,7 @@ Module str.
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
-                                (let back_byte := M.copy (| γ |) in
+                                (let back_byte := M.copy (| Ty.path "u8", γ |) in
                                 back_byte))
                           ]
                         |)
@@ -829,13 +883,14 @@ Module str.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_function (|
@@ -908,13 +963,14 @@ Module str.
                                   M.read (|
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     M.get_function (|
@@ -1003,8 +1059,10 @@ Module str.
                                                   [ M.read (| ch |); M.read (| y |) ]
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)
                                   |) in
@@ -1021,8 +1079,8 @@ Module str.
                                       [ M.read (| ch |); M.read (| z |) ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1036,6 +1094,7 @@ Module str.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1057,6 +1116,7 @@ Module str.
     Definition value_NONASCII_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "usize",
           M.call_closure (|
             Ty.path "usize",
             M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
@@ -1078,7 +1138,7 @@ Module str.
       match ε, τ, α with
       | [], [], [ x ] =>
         ltac:(M.monadic
-          (let x := M.alloc (| x |) in
+          (let x := M.alloc (| Ty.path "usize", x |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.ne,
@@ -1236,7 +1296,11 @@ Module str.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              v
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1245,6 +1309,10 @@ Module str.
                 [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
                   M.read (|
                     let~ index : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                     let~ len : Ty.path "usize" :=
@@ -1276,13 +1344,14 @@ Module str.
                       M.read (|
                         M.match_operator (|
                           Ty.path "usize",
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ge,
@@ -1295,6 +1364,7 @@ Module str.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     BinOp.Wrap.add,
@@ -1309,7 +1379,8 @@ Module str.
                                   |)
                                 |)));
                             fun γ =>
-                              ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                              ltac:(M.monadic
+                                (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -1367,13 +1438,14 @@ Module str.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           M.call_closure (|
                                             Ty.path "bool",
                                             BinOp.lt,
@@ -1395,13 +1467,14 @@ Module str.
                                       |) in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     BinOp.ge,
@@ -1441,13 +1514,14 @@ Module str.
                                                           |) in
                                                         M.match_operator (|
                                                           Ty.tuple [],
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
+                                                                      Ty.path "bool",
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
                                                                         BinOp.ge,
@@ -1479,6 +1553,7 @@ Module str.
                                                                                   M.match_operator (|
                                                                                     Ty.tuple [],
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       Value.Tuple []
                                                                                     |),
                                                                                     [
@@ -1487,6 +1562,8 @@ Module str.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.call_closure (|
                                                                                                   Ty.path
                                                                                                     "bool",
@@ -1510,6 +1587,8 @@ Module str.
                                                                                                 true
                                                                                             |) in
                                                                                           M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             M.never_to_any (|
                                                                                               M.read (|
                                                                                                 M.return_ (|
@@ -1550,6 +1629,8 @@ Module str.
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
                                                                                           (M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             Value.Tuple
                                                                                               []
                                                                                           |)))
@@ -1575,6 +1656,7 @@ Module str.
                                                                     Value.Bool true
                                                                   |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.never_to_any (|
                                                                     M.read (|
                                                                       M.return_ (|
@@ -1614,7 +1696,10 @@ Module str.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)));
                                                     fun γ =>
@@ -1629,6 +1714,8 @@ Module str.
                                                             M.match_operator (|
                                                               Ty.tuple [],
                                                               M.alloc (|
+                                                                Ty.tuple
+                                                                  [ Ty.path "u8"; Ty.path "u8" ],
                                                                 Value.Tuple
                                                                   [
                                                                     M.read (| first |);
@@ -1653,6 +1740,7 @@ Module str.
                                                                           M.match_operator (|
                                                                             Ty.tuple [],
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |),
                                                                             [
@@ -1661,6 +1749,8 @@ Module str.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "bool",
@@ -1684,6 +1774,7 @@ Module str.
                                                                                         true
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     M.never_to_any (|
                                                                                       M.read (|
                                                                                         M.return_ (|
@@ -1724,6 +1815,7 @@ Module str.
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)))
                                                                             ]
@@ -1765,6 +1857,7 @@ Module str.
                                                                                   224
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)));
                                                                         fun γ =>
@@ -1780,6 +1873,7 @@ Module str.
                                                                                 1
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)));
                                                                         fun γ =>
@@ -1802,6 +1896,7 @@ Module str.
                                                                                   237
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)));
                                                                         fun γ =>
@@ -1817,6 +1912,7 @@ Module str.
                                                                                 1
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ],
@@ -1826,6 +1922,7 @@ Module str.
                                                                           | [] =>
                                                                             ltac:(M.monadic
                                                                               (M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |)))
                                                                           | _ =>
@@ -1836,6 +1933,7 @@ Module str.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
+                                                                      Ty.tuple [],
                                                                       M.never_to_any (|
                                                                         M.read (|
                                                                           M.return_ (|
@@ -1881,13 +1979,14 @@ Module str.
                                                           |) in
                                                         M.match_operator (|
                                                           Ty.tuple [],
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
+                                                                      Ty.path "bool",
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
                                                                         BinOp.ge,
@@ -1919,6 +2018,7 @@ Module str.
                                                                                   M.match_operator (|
                                                                                     Ty.tuple [],
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       Value.Tuple []
                                                                                     |),
                                                                                     [
@@ -1927,6 +2027,8 @@ Module str.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.call_closure (|
                                                                                                   Ty.path
                                                                                                     "bool",
@@ -1950,6 +2052,8 @@ Module str.
                                                                                                 true
                                                                                             |) in
                                                                                           M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             M.never_to_any (|
                                                                                               M.read (|
                                                                                                 M.return_ (|
@@ -1990,6 +2094,8 @@ Module str.
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
                                                                                           (M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             Value.Tuple
                                                                                               []
                                                                                           |)))
@@ -2015,6 +2121,7 @@ Module str.
                                                                     Value.Bool true
                                                                   |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.never_to_any (|
                                                                     M.read (|
                                                                       M.return_ (|
@@ -2054,7 +2161,10 @@ Module str.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)));
                                                     fun γ =>
@@ -2069,6 +2179,8 @@ Module str.
                                                             M.match_operator (|
                                                               Ty.tuple [],
                                                               M.alloc (|
+                                                                Ty.tuple
+                                                                  [ Ty.path "u8"; Ty.path "u8" ],
                                                                 Value.Tuple
                                                                   [
                                                                     M.read (| first |);
@@ -2093,6 +2205,7 @@ Module str.
                                                                           M.match_operator (|
                                                                             Ty.tuple [],
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |),
                                                                             [
@@ -2101,6 +2214,8 @@ Module str.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "bool",
@@ -2124,6 +2239,7 @@ Module str.
                                                                                         true
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     M.never_to_any (|
                                                                                       M.read (|
                                                                                         M.return_ (|
@@ -2164,6 +2280,7 @@ Module str.
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)))
                                                                             ]
@@ -2205,6 +2322,7 @@ Module str.
                                                                                   240
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)));
                                                                         fun γ =>
@@ -2220,6 +2338,7 @@ Module str.
                                                                                 1
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)));
                                                                         fun γ =>
@@ -2242,6 +2361,7 @@ Module str.
                                                                                   244
                                                                               |) in
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |)))
                                                                       ],
@@ -2251,6 +2371,7 @@ Module str.
                                                                           | [] =>
                                                                             ltac:(M.monadic
                                                                               (M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |)))
                                                                           | _ =>
@@ -2261,6 +2382,7 @@ Module str.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
+                                                                      Ty.tuple [],
                                                                       M.never_to_any (|
                                                                         M.read (|
                                                                           M.return_ (|
@@ -2308,13 +2430,17 @@ Module str.
                                                           M.read (|
                                                             M.match_operator (|
                                                               Ty.tuple [],
-                                                              M.alloc (| Value.Tuple [] |),
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |),
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
+                                                                          Ty.path "bool",
                                                                           M.call_closure (|
                                                                             Ty.path "bool",
                                                                             BinOp.ge,
@@ -2348,6 +2474,8 @@ Module str.
                                                                                       M.match_operator (|
                                                                                         Ty.tuple [],
                                                                                         M.alloc (|
+                                                                                          Ty.tuple
+                                                                                            [],
                                                                                           Value.Tuple
                                                                                             []
                                                                                         |),
@@ -2358,6 +2486,8 @@ Module str.
                                                                                                     γ :=
                                                                                                 M.use
                                                                                                   (M.alloc (|
+                                                                                                    Ty.path
+                                                                                                      "bool",
                                                                                                     M.call_closure (|
                                                                                                       Ty.path
                                                                                                         "bool",
@@ -2382,6 +2512,8 @@ Module str.
                                                                                                     true
                                                                                                 |) in
                                                                                               M.alloc (|
+                                                                                                Ty.tuple
+                                                                                                  [],
                                                                                                 M.never_to_any (|
                                                                                                   M.read (|
                                                                                                     M.return_ (|
@@ -2422,6 +2554,8 @@ Module str.
                                                                                           fun γ =>
                                                                                             ltac:(M.monadic
                                                                                               (M.alloc (|
+                                                                                                Ty.tuple
+                                                                                                  [],
                                                                                                 Value.Tuple
                                                                                                   []
                                                                                               |)))
@@ -2449,6 +2583,7 @@ Module str.
                                                                         Value.Bool true
                                                                       |) in
                                                                     M.alloc (|
+                                                                      Ty.tuple [],
                                                                       M.never_to_any (|
                                                                         M.read (|
                                                                           M.return_ (|
@@ -2491,19 +2626,23 @@ Module str.
                                                                     |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                                    (M.alloc (|
+                                                                      Ty.tuple [],
+                                                                      Value.Tuple []
+                                                                    |)))
                                                               ]
                                                             |)
                                                           |) in
                                                         M.match_operator (|
                                                           Ty.tuple [],
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
+                                                                      Ty.path "bool",
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
                                                                         BinOp.ge,
@@ -2535,6 +2674,7 @@ Module str.
                                                                                   M.match_operator (|
                                                                                     Ty.tuple [],
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       Value.Tuple []
                                                                                     |),
                                                                                     [
@@ -2543,6 +2683,8 @@ Module str.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.call_closure (|
                                                                                                   Ty.path
                                                                                                     "bool",
@@ -2566,6 +2708,8 @@ Module str.
                                                                                                 true
                                                                                             |) in
                                                                                           M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             M.never_to_any (|
                                                                                               M.read (|
                                                                                                 M.return_ (|
@@ -2606,6 +2750,8 @@ Module str.
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
                                                                                           (M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             Value.Tuple
                                                                                               []
                                                                                           |)))
@@ -2631,6 +2777,7 @@ Module str.
                                                                     Value.Bool true
                                                                   |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.never_to_any (|
                                                                     M.read (|
                                                                       M.return_ (|
@@ -2670,12 +2817,16 @@ Module str.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (M.alloc (|
+                                                          Ty.tuple [],
                                                           M.never_to_any (|
                                                             M.read (|
                                                               M.return_ (|
@@ -2727,18 +2878,19 @@ Module str.
                                                   ]
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                         fun γ =>
                                           ltac:(M.monadic
                                             (M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
+                                                          Ty.path "bool",
                                                           LogicalOp.and (|
                                                             M.call_closure (|
                                                               Ty.path "bool",
@@ -2827,13 +2979,17 @@ Module str.
                                                           ltac:(M.monadic
                                                             (M.match_operator (|
                                                               Ty.tuple [],
-                                                              M.alloc (| Value.Tuple [] |),
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |),
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
+                                                                          Ty.path "bool",
                                                                           M.call_closure (|
                                                                             Ty.path "bool",
                                                                             BinOp.lt,
@@ -2946,6 +3102,7 @@ Module str.
                                                                         M.match_operator (|
                                                                           Ty.tuple [],
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |),
                                                                           [
@@ -2954,6 +3111,8 @@ Module str.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
+                                                                                      Ty.path
+                                                                                        "bool",
                                                                                       LogicalOp.or (|
                                                                                         M.read (|
                                                                                           zu
@@ -2970,6 +3129,7 @@ Module str.
                                                                                     Value.Bool true
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.tuple [],
                                                                                   M.never_to_any (|
                                                                                     M.read (|
                                                                                       M.break (||)
@@ -2979,6 +3139,7 @@ Module str.
                                                                             fun γ =>
                                                                               ltac:(M.monadic
                                                                                 (M.alloc (|
+                                                                                  Ty.tuple [],
                                                                                   Value.Tuple []
                                                                                 |)))
                                                                           ]
@@ -2999,10 +3160,14 @@ Module str.
                                                                           ]
                                                                         |)
                                                                       |) in
-                                                                    M.alloc (| Value.Tuple [] |)));
+                                                                    M.alloc (|
+                                                                      Ty.tuple [],
+                                                                      Value.Tuple []
+                                                                    |)));
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (M.alloc (|
+                                                                      Ty.tuple [],
                                                                       M.never_to_any (|
                                                                         M.read (|
                                                                           let~ _ : Ty.tuple [] :=
@@ -3012,6 +3177,7 @@ Module str.
                                                                               |)
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |)
                                                                         |)
@@ -3026,13 +3192,14 @@ Module str.
                                                       ltac:(M.monadic
                                                         (M.match_operator (|
                                                           Ty.tuple [],
-                                                          M.alloc (| Value.Tuple [] |),
+                                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
+                                                                      Ty.path "bool",
                                                                       LogicalOp.and (|
                                                                         M.call_closure (|
                                                                           Ty.path "bool",
@@ -3082,17 +3249,24 @@ Module str.
                                                                       ]
                                                                     |)
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)));
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.never_to_any (|
                                                                     M.read (|
                                                                       let~ _ : Ty.tuple [] :=
                                                                         M.never_to_any (|
                                                                           M.read (| M.break (||) |)
                                                                         |) in
-                                                                      M.alloc (| Value.Tuple [] |)
+                                                                      M.alloc (|
+                                                                        Ty.tuple [],
+                                                                        Value.Tuple []
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)))
@@ -3114,7 +3288,7 @@ Module str.
                                                           ]
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)))
                                       ]
@@ -3122,11 +3296,12 @@ Module str.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Value.Tuple [] |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                         |)
                                       |)
                                     |)))
@@ -3135,6 +3310,10 @@ Module str.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3157,6 +3336,7 @@ Module str.
       Definition value_USIZE_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "usize",
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
@@ -3173,12 +3353,20 @@ Module str.
     Definition value_UTF8_CHAR_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply
+            (Ty.path "&")
+            []
+            [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ] ],
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 256 ]
+                    [ Ty.path "u8" ],
                   Value.Array
                     [
                       Value.Integer IntegerKind.U8 1;
@@ -3458,7 +3646,7 @@ Module str.
       match ε, τ, α with
       | [], [], [ b ] =>
         ltac:(M.monadic
-          (let b := M.alloc (| b |) in
+          (let b := M.alloc (| Ty.path "u8", b |) in
           M.cast
             (Ty.path "usize")
             (M.read (|
@@ -3491,7 +3679,7 @@ Module str.
     Global Typeclasses Opaque utf8_char_width.
     
     Definition value_CONT_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 63 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 63 |))).
     
     Global Instance Instance_IsConstant_value_CONT_MASK :
       M.IsFunction.C "core::str::validations::CONT_MASK" value_CONT_MASK.

@@ -84,8 +84,15 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -112,8 +119,15 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -140,9 +154,16 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key; _value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
-        let _value := M.alloc (| _value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
+        let _value := M.alloc (| V, _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -195,8 +216,15 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -223,8 +251,15 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -251,8 +286,15 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "mapping_integration_tests::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -325,7 +367,11 @@ Module Impl_core_clone_Clone_for_mapping_integration_tests_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "mapping_integration_tests::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "mapping_integration_tests::AccountId",
@@ -379,7 +425,11 @@ Module Impl_mapping_integration_tests_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "mapping_integration_tests::Env" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -541,6 +591,7 @@ Module Impl_mapping_integration_tests_Mappings.
               []
             |) in
           M.alloc (|
+            Ty.path "mapping_integration_tests::Mappings",
             Value.StructRecord
               "mapping_integration_tests::Mappings"
               []
@@ -565,7 +616,11 @@ Module Impl_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "mapping_integration_tests::Mappings" ],
+            self
+          |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.call_closure (|
@@ -580,6 +635,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "mapping_integration_tests::Env",
                     M.call_closure (|
                       Ty.path "mapping_integration_tests::Env",
                       M.get_associated_function (|
@@ -595,6 +651,7 @@ Module Impl_mapping_integration_tests_Mappings.
               ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_associated_function (|
@@ -641,8 +698,12 @@ Module Impl_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [ self; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "mapping_integration_tests::Mappings" ],
+            self
+          |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.call_closure (|
@@ -657,6 +718,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "mapping_integration_tests::Env",
                     M.call_closure (|
                       Ty.path "mapping_integration_tests::Env",
                       M.get_associated_function (|
@@ -672,6 +734,7 @@ Module Impl_mapping_integration_tests_Mappings.
               ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
               M.get_associated_function (|
@@ -716,7 +779,11 @@ Module Impl_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "mapping_integration_tests::Mappings" ],
+            self
+          |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.call_closure (|
@@ -731,6 +798,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "mapping_integration_tests::Env",
                     M.call_closure (|
                       Ty.path "mapping_integration_tests::Env",
                       M.get_associated_function (|
@@ -746,6 +814,7 @@ Module Impl_mapping_integration_tests_Mappings.
               ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
               M.get_associated_function (|
@@ -789,7 +858,11 @@ Module Impl_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "mapping_integration_tests::Mappings" ],
+            self
+          |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.call_closure (|
@@ -804,6 +877,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "mapping_integration_tests::Env",
                     M.call_closure (|
                       Ty.path "mapping_integration_tests::Env",
                       M.get_associated_function (|
@@ -819,6 +893,7 @@ Module Impl_mapping_integration_tests_Mappings.
               ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
@@ -865,7 +940,11 @@ Module Impl_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "mapping_integration_tests::Mappings" ],
+            self
+          |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.call_closure (|
@@ -880,6 +959,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "mapping_integration_tests::Env",
                     M.call_closure (|
                       Ty.path "mapping_integration_tests::Env",
                       M.get_associated_function (|
@@ -918,7 +998,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.read (| caller |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -938,7 +1018,11 @@ Module Impl_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "mapping_integration_tests::Mappings" ],
+            self
+          |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
             M.call_closure (|
@@ -953,6 +1037,7 @@ Module Impl_mapping_integration_tests_Mappings.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "mapping_integration_tests::Env",
                     M.call_closure (|
                       Ty.path "mapping_integration_tests::Env",
                       M.get_associated_function (|
@@ -968,6 +1053,7 @@ Module Impl_mapping_integration_tests_Mappings.
               ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
               M.get_associated_function (|

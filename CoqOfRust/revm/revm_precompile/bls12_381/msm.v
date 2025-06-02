@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module bls12_381.
   Module msm.
     Definition value_MSM_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1000 |))).
     
     Global Instance Instance_IsConstant_value_MSM_MULTIPLIER :
       M.IsFunction.C "revm_precompile::bls12_381::msm::MSM_MULTIPLIER" value_MSM_MULTIPLIER.
@@ -14,7 +14,9 @@ Module bls12_381.
     Definition value_MSM_DISCOUNT_TABLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 128 ] [ Ty.path "u16" ],
           M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 128 ] [ Ty.path "u16" ],
             Value.Array
               [
                 Value.Integer IntegerKind.U16 1200;
@@ -170,24 +172,26 @@ Module bls12_381.
       match ε, τ, α with
       | [], [], [ k; multiplication_cost ] =>
         ltac:(M.monadic
-          (let k := M.alloc (| k |) in
-          let multiplication_cost := M.alloc (| multiplication_cost |) in
+          (let k := M.alloc (| Ty.path "usize", k |) in
+          let multiplication_cost := M.alloc (| Ty.path "u64", multiplication_cost |) in
           M.read (|
             M.catch_return (Ty.path "u64") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "u64",
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.eq,
@@ -200,11 +204,12 @@ Module bls12_381.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -284,6 +289,7 @@ Module bls12_381.
                           |)
                         |)) in
                     M.alloc (|
+                      Ty.path "u64",
                       M.call_closure (|
                         Ty.path "u64",
                         BinOp.Wrap.div,

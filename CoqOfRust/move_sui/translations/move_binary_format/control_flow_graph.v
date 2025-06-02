@@ -93,8 +93,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; entry ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let entry := M.alloc (| entry |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::BasicBlock" ],
+              self
+            |) in
+          let entry := M.alloc (| Ty.path "u16", entry |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -118,6 +125,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "+=======================+
 " |) ]
                                 |)
@@ -128,7 +139,7 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -152,6 +163,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "| Enter:  " |); mk_str (| "            |
 " |) ]
@@ -165,6 +180,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -191,7 +210,7 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -215,6 +234,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "+-----------------------+
 " |) ]
                                 |)
@@ -225,7 +248,7 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -249,6 +272,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "==> Children: " |); mk_str (| "
 " |) ]
                                 |)
@@ -261,6 +288,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -301,7 +332,7 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -325,6 +356,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "+-----------------------+
 " |) ]
                                 |)
@@ -335,7 +370,7 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -359,6 +394,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array
                                     [ mk_str (| "| Exit:   " |); mk_str (| "            |
 " |) ]
@@ -372,6 +411,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -407,7 +450,7 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -431,6 +474,10 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "+=======================+
 " |) ]
                                 |)
@@ -441,9 +488,9 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -454,7 +501,7 @@ Module control_flow_graph.
   End Impl_move_binary_format_control_flow_graph_BasicBlock.
   
   Definition value_ENTRY_BLOCK_ID (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u16", Value.Integer IntegerKind.U16 0 |))).
   
   Global Instance Instance_IsConstant_value_ENTRY_BLOCK_ID :
     M.IsFunction.C "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" value_ENTRY_BLOCK_ID.
@@ -612,7 +659,19 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ code ] =>
         ltac:(M.monadic
-          (let code := M.alloc (| code |) in
+          (let code :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                ],
+              code
+            |) in
           M.read (|
             let~ code_len : Ty.path "u16" :=
               M.cast
@@ -679,6 +738,7 @@ Module control_flow_graph.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         M.get_trait_method (|
@@ -719,7 +779,11 @@ Module control_flow_graph.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -728,6 +792,10 @@ Module control_flow_graph.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -762,6 +830,7 @@ Module control_flow_graph.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -772,7 +841,7 @@ Module control_flow_graph.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let pc := M.copy (| γ0_0 |) in
+                                          let pc := M.copy (| Ty.path "usize", γ0_0 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -797,11 +866,11 @@ Module control_flow_graph.
                                                 |)
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -867,6 +936,7 @@ Module control_flow_graph.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                         M.get_trait_method (|
@@ -907,7 +977,11 @@ Module control_flow_graph.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -916,6 +990,10 @@ Module control_flow_graph.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -950,6 +1028,7 @@ Module control_flow_graph.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -960,18 +1039,19 @@ Module control_flow_graph.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let pc := M.copy (| γ0_0 |) in
+                                          let pc := M.copy (| Ty.path "usize", γ0_0 |) in
                                           let~ co_pc : Ty.path "u16" :=
                                             M.cast (Ty.path "u16") (M.read (| pc |)) in
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
+                                                        Ty.path "bool",
                                                         M.call_closure (|
                                                           Ty.path "bool",
                                                           M.get_associated_function (|
@@ -1129,15 +1209,16 @@ Module control_flow_graph.
                                                         ]
                                                       |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -1157,6 +1238,11 @@ Module control_flow_graph.
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (| Pointer.Kind.Ref, entry |);
@@ -1168,17 +1254,20 @@ Module control_flow_graph.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -1196,6 +1285,7 @@ Module control_flow_graph.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -1205,6 +1295,7 @@ Module control_flow_graph.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -1243,7 +1334,7 @@ Module control_flow_graph.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
@@ -1330,6 +1421,10 @@ Module control_flow_graph.
                         |),
                         [
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.path "u16" ],
                             Value.Array
                               [
                                 M.read (|
@@ -1433,12 +1528,13 @@ Module control_flow_graph.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                   M.get_associated_function (|
@@ -1459,10 +1555,19 @@ Module control_flow_graph.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let block := M.copy (| γ0_0 |) in
+                            let block := M.copy (| Ty.path "u16", γ0_0 |) in
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::entry::Entry")
+                                  []
+                                  [
+                                    Ty.path "u16";
+                                    Ty.path
+                                      "move_binary_format::control_flow_graph::new::Exploration";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -1502,7 +1607,20 @@ Module control_flow_graph.
                                         "alloc::collections::btree::map::entry::Entry::Vacant",
                                         0
                                       |) in
-                                    let entry := M.copy (| γ0_0 |) in
+                                    let entry :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path
+                                            "alloc::collections::btree::map::entry::VacantEntry")
+                                          []
+                                          [
+                                            Ty.path "u16";
+                                            Ty.path
+                                              "move_binary_format::control_flow_graph::new::Exploration";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        γ0_0
+                                      |) in
                                     let~ _ :
                                         Ty.apply
                                           (Ty.path "&mut")
@@ -1564,6 +1682,10 @@ Module control_flow_graph.
                                       (M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "u16" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::slice::iter::Iter")
@@ -1644,7 +1766,14 @@ Module control_flow_graph.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let iter := M.copy (| γ |) in
+                                              (let iter :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [ Ty.path "u16" ],
+                                                  γ
+                                                |) in
                                               M.loop (|
                                                 Ty.tuple [],
                                                 ltac:(M.monadic
@@ -1653,6 +1782,15 @@ Module control_flow_graph.
                                                       M.match_operator (|
                                                         Ty.tuple [],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u16" ]
+                                                            ],
                                                           M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path "core::option::Option")
@@ -1697,6 +1835,7 @@ Module control_flow_graph.
                                                                   "core::option::Option::None"
                                                                 |) in
                                                               M.alloc (|
+                                                                Ty.tuple [],
                                                                 M.never_to_any (|
                                                                   M.read (| M.break (||) |)
                                                                 |)
@@ -1709,12 +1848,32 @@ Module control_flow_graph.
                                                                   "core::option::Option::Some",
                                                                   0
                                                                 |) in
-                                                              let succ := M.copy (| γ0_0 |) in
+                                                              let succ :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "u16" ],
+                                                                  γ0_0
+                                                                |) in
                                                               let~ _ : Ty.tuple [] :=
                                                                 M.read (|
                                                                   M.match_operator (|
                                                                     Ty.tuple [],
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "move_binary_format::control_flow_graph::new::Exploration"
+                                                                            ]
+                                                                        ],
                                                                       M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1768,6 +1927,7 @@ Module control_flow_graph.
                                                                               "core::option::Option::None"
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             M.call_closure (|
                                                                               Ty.tuple [],
                                                                               M.get_associated_function (|
@@ -1946,6 +2106,7 @@ Module control_flow_graph.
                                                                               ]
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |)));
                                                                       fun γ =>
@@ -1964,16 +2125,20 @@ Module control_flow_graph.
                                                                               "move_binary_format::control_flow_graph::new::Exploration::Done"
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |)))
                                                                     ]
                                                                   |)
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)))
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)))
                                                         ]
                                                       |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               |)))
                                         ]
                                       |))));
@@ -1985,10 +2150,30 @@ Module control_flow_graph.
                                         "alloc::collections::btree::map::entry::Entry::Occupied",
                                         0
                                       |) in
-                                    let entry := M.copy (| γ0_0 |) in
+                                    let entry :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path
+                                            "alloc::collections::btree::map::entry::OccupiedEntry")
+                                          []
+                                          [
+                                            Ty.path "u16";
+                                            Ty.path
+                                              "move_binary_format::control_flow_graph::new::Exploration";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        γ0_0
+                                      |) in
                                     M.match_operator (|
                                       Ty.tuple [],
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_binary_format::control_flow_graph::new::Exploration"
+                                          ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "&")
@@ -2025,6 +2210,7 @@ Module control_flow_graph.
                                                 "move_binary_format::control_flow_graph::new::Exploration::Done"
                                               |) in
                                             M.alloc (|
+                                              Ty.tuple [],
                                               M.never_to_any (| M.read (| M.continue (||) |) |)
                                             |)));
                                         fun γ =>
@@ -2083,7 +2269,7 @@ Module control_flow_graph.
                                                     []
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)))
                               ]
@@ -2091,11 +2277,12 @@ Module control_flow_graph.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.tuple [],
                               M.never_to_any (|
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.never_to_any (| M.read (| M.break (||) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)
                               |)
                             |)))
@@ -2283,22 +2470,39 @@ Module control_flow_graph.
                                         ]
                                     ]
                                     (Ty.tuple [ Ty.path "u16"; Ty.path "u16" ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
+                                    α0
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let window := M.copy (| γ |) in
+                                        (let window :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
+                                            γ
+                                          |) in
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.read (|
                                               M.match_operator (|
                                                 Ty.tuple [],
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
+                                                        M.use
+                                                          (M.alloc (|
+                                                            Ty.path "bool",
+                                                            Value.Bool true
+                                                          |)) in
                                                       let _ :=
                                                         is_constant_or_break_match (|
                                                           M.read (| γ |),
@@ -2308,13 +2512,17 @@ Module control_flow_graph.
                                                         M.read (|
                                                           M.match_operator (|
                                                             Ty.tuple [],
-                                                            M.alloc (| Value.Tuple [] |),
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |),
                                                             [
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
+                                                                        Ty.path "bool",
                                                                         UnOp.not (|
                                                                           M.call_closure (|
                                                                             Ty.path "bool",
@@ -2357,6 +2565,7 @@ Module control_flow_graph.
                                                                       Value.Bool true
                                                                     |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple [],
                                                                     M.never_to_any (|
                                                                       M.call_closure (|
                                                                         Ty.path "never",
@@ -2375,17 +2584,22 @@ Module control_flow_graph.
                                                                   |)));
                                                               fun γ =>
                                                                 ltac:(M.monadic
-                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                                  (M.alloc (|
+                                                                    Ty.tuple [],
+                                                                    Value.Tuple []
+                                                                  |)))
                                                             ]
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)));
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [ Ty.path "u16"; Ty.path "u16" ],
                                             Value.Tuple
                                               [
                                                 M.read (|
@@ -2412,6 +2626,7 @@ Module control_flow_graph.
                 ]
               |) in
             M.alloc (|
+              Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
               Value.StructRecord
                 "move_binary_format::control_flow_graph::VMControlFlowGraph"
                 []
@@ -2442,7 +2657,14 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -2450,6 +2672,13 @@ Module control_flow_graph.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Iter")
+                        []
+                        [
+                          Ty.path "u16";
+                          Ty.path "move_binary_format::control_flow_graph::BasicBlock"
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::Iter")
@@ -2494,7 +2723,17 @@ Module control_flow_graph.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::Iter")
+                                []
+                                [
+                                  Ty.path "u16";
+                                  Ty.path "move_binary_format::control_flow_graph::BasicBlock"
+                                ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -2503,6 +2742,22 @@ Module control_flow_graph.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.tuple
+                                            [
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::control_flow_graph::BasicBlock"
+                                                ]
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -2553,6 +2808,7 @@ Module control_flow_graph.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -2565,8 +2821,22 @@ Module control_flow_graph.
                                             |) in
                                           let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let entry := M.copy (| γ1_0 |) in
-                                          let block := M.copy (| γ1_1 |) in
+                                          let entry :=
+                                            M.copy (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                              γ1_0
+                                            |) in
+                                          let block :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::control_flow_graph::BasicBlock"
+                                                ],
+                                              γ1_1
+                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.call_closure (|
                                               Ty.tuple [],
@@ -2585,11 +2855,11 @@ Module control_flow_graph.
                                                 M.read (| M.deref (| M.read (| entry |) |) |)
                                               ]
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -2618,6 +2888,10 @@ Module control_flow_graph.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     Value.Array [ mk_str (| "Traversal: " |); mk_str (| "
 " |) ]
                                   |)
@@ -2632,6 +2906,10 @@ Module control_flow_graph.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -2680,6 +2958,10 @@ Module control_flow_graph.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "core::fmt::rt::Placeholder" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -2730,9 +3012,9 @@ Module control_flow_graph.
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2750,9 +3032,33 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ pc; code; block_ids ] =>
         ltac:(M.monadic
-          (let pc := M.alloc (| pc |) in
-          let code := M.alloc (| code |) in
-          let block_ids := M.alloc (| block_ids |) in
+          (let pc := M.alloc (| Ty.path "u16", pc |) in
+          let code :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                ],
+              code
+            |) in
+          let block_ids :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    []
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                ],
+              block_ids
+            |) in
           LogicalOp.or (|
             M.call_closure (|
               Ty.path "bool",
@@ -2800,6 +3106,7 @@ Module control_flow_graph.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "u16",
                           M.call_closure (|
                             Ty.path "u16",
                             BinOp.Wrap.add,
@@ -2837,9 +3144,33 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ pc; code; block_ids ] =>
         ltac:(M.monadic
-          (let pc := M.alloc (| pc |) in
-          let code := M.alloc (| code |) in
-          let block_ids := M.alloc (| block_ids |) in
+          (let pc := M.alloc (| Ty.path "u16", pc |) in
+          let code :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                ],
+              code
+            |) in
+          let block_ids :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    []
+                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                ],
+              block_ids
+            |) in
           M.read (|
             let~ bytecode :
                 Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ] :=
@@ -2854,12 +3185,16 @@ Module control_flow_graph.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::option::Option")
@@ -2881,7 +3216,8 @@ Module control_flow_graph.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let offset := M.copy (| γ0_0 |) in
+                        let offset :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], γ0_0 |) in
                         let~ _ : Ty.path "bool" :=
                           M.call_closure (|
                             Ty.path "bool",
@@ -2902,20 +3238,21 @@ Module control_flow_graph.
                               M.read (| M.deref (| M.read (| offset |) |) |)
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           LogicalOp.and (|
                             M.call_closure (|
                               Ty.path "bool",
@@ -2984,8 +3321,8 @@ Module control_flow_graph.
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -3027,8 +3364,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.read (|
             let~ ret :
                 Ty.apply
@@ -3111,13 +3455,14 @@ Module control_flow_graph.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     BinOp.lt,
@@ -3211,6 +3556,7 @@ Module control_flow_graph.
                               (M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u16" ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "core::slice::iter::Iter")
@@ -3280,7 +3626,14 @@ Module control_flow_graph.
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let iter := M.copy (| γ |) in
+                                      (let iter :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "core::slice::iter::Iter")
+                                            []
+                                            [ Ty.path "u16" ],
+                                          γ
+                                        |) in
                                       M.loop (|
                                         Ty.tuple [],
                                         ltac:(M.monadic
@@ -3289,6 +3642,10 @@ Module control_flow_graph.
                                               M.match_operator (|
                                                 Ty.tuple [],
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
                                                   M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path "core::option::Option")
@@ -3326,6 +3683,7 @@ Module control_flow_graph.
                                                           "core::option::Option::None"
                                                         |) in
                                                       M.alloc (|
+                                                        Ty.tuple [],
                                                         M.never_to_any (|
                                                           M.read (| M.break (||) |)
                                                         |)
@@ -3338,16 +3696,24 @@ Module control_flow_graph.
                                                           "core::option::Option::Some",
                                                           0
                                                         |) in
-                                                      let block_id := M.copy (| γ0_0 |) in
+                                                      let block_id :=
+                                                        M.copy (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u16" ],
+                                                          γ0_0
+                                                        |) in
                                                       M.match_operator (|
                                                         Ty.tuple [],
-                                                        M.alloc (| Value.Tuple [] |),
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ :=
                                                                 M.use
                                                                   (M.alloc (|
+                                                                    Ty.path "bool",
                                                                     UnOp.not (|
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
@@ -3457,27 +3823,34 @@ Module control_flow_graph.
                                                                     |)
                                                                   ]
                                                                 |) in
-                                                              M.alloc (| Value.Tuple [] |)));
+                                                              M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)));
                                                           fun γ =>
                                                             ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
+                                                              (M.alloc (|
+                                                                Ty.tuple [],
+                                                                Value.Tuple []
+                                                              |)))
                                                         ]
                                                       |)))
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       |)))
                                 ]
                               |))));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.tuple [],
                               M.never_to_any (|
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.never_to_any (| M.read (| M.break (||) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)
                               |)
                             |)))
@@ -3504,8 +3877,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -3543,8 +3923,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.read (| block_id |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3558,8 +3945,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (|
@@ -3616,8 +4010,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3681,30 +4082,38 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -3748,6 +4157,7 @@ Module control_flow_graph.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -3760,16 +4170,18 @@ Module control_flow_graph.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                 M.get_associated_function (|
@@ -3827,8 +4239,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           (* Unsize *)
           M.pointer_coercion
             (* Unsize *)
@@ -3911,7 +4330,14 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloc::vec::Vec")
@@ -4010,7 +4436,14 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
           M.cast
             (Ty.path "u16")
             (M.call_closure (|
@@ -4051,7 +4484,14 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
           M.read (|
             get_constant (|
               "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
@@ -4070,8 +4510,15 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; block_id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -4119,9 +4566,16 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self; cur; next ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let cur := M.alloc (| cur |) in
-          let next := M.alloc (| next |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
+          let cur := M.alloc (| Ty.path "u16", cur |) in
+          let next := M.alloc (| Ty.path "u16", next |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -4232,11 +4686,34 @@ Module control_flow_graph.
                                 ]
                             ]
                             (Ty.path "bool"),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                  []
+                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let back_edges := M.copy (| γ |) in
+                                (let back_edges :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                          []
+                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                      ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_associated_function (|
@@ -4279,7 +4756,14 @@ Module control_flow_graph.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (|
@@ -4391,11 +4875,11 @@ Module control_flow_graph.
                                 ]
                             ]
                             (Ty.path "usize"),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let acc := M.copy (| γ |) in
+                                (let acc := M.copy (| Ty.path "usize", γ |) in
                                 M.match_operator (|
                                   Ty.function
                                     [
@@ -4420,13 +4904,41 @@ Module control_flow_graph.
                                         ]
                                     ]
                                     (Ty.path "usize"),
-                                  M.alloc (| α1 |),
+                                  M.alloc (|
+                                    Ty.tuple
+                                      [
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ];
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                              []
+                                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                          ]
+                                      ],
+                                    α1
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let edges := M.copy (| γ0_1 |) in
+                                        let edges :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::set::BTreeSet")
+                                                  []
+                                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
+                                              ],
+                                            γ0_1
+                                          |) in
                                         M.call_closure (|
                                           Ty.path "usize",
                                           BinOp.Wrap.add,

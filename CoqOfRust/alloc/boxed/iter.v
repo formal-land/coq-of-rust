@@ -20,7 +20,11 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -55,7 +59,11 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
@@ -89,8 +97,12 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "usize", n |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -126,7 +138,7 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -188,7 +200,7 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -272,7 +284,7 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ], self |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -315,7 +327,11 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -350,8 +366,12 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "usize", n |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -404,7 +424,11 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_trait_method (|
@@ -436,7 +460,11 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ I; A ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -503,8 +531,29 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ S; Ty.path "alloc::alloc::Global" ]
+                      ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -602,7 +651,15 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ S; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
@@ -710,7 +767,14 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ I ]; A ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ I; A ],
               M.get_trait_method (|
@@ -777,7 +841,19 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ I ]; A ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::slice::iter::Iter") [] [ I ],
               M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ I ], "iter", [], [] |),
@@ -830,7 +906,19 @@ Module boxed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ I ]; A ]
+                  ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ I ],
               M.get_associated_function (|
@@ -881,7 +969,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -960,7 +1048,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -1013,7 +1101,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -1066,7 +1154,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -1119,7 +1207,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -1173,7 +1261,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
@@ -1228,7 +1316,7 @@ Module boxed.
         match ε, τ, α with
         | [], [ T ], [ iter ] =>
           ltac:(M.monadic
-            (let iter := M.alloc (| iter |) in
+            (let iter := M.alloc (| T, iter |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")

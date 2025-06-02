@@ -20,7 +20,7 @@ Module fmt.
     match ε, τ, α with
     | [], [], [ args ] =>
       ltac:(M.monadic
-        (let args := M.alloc (| args |) in
+        (let args := M.alloc (| Ty.path "core::fmt::Arguments", args |) in
         M.call_closure (|
           Ty.path "alloc::string::String",
           M.get_associated_function (|
@@ -55,7 +55,7 @@ Module fmt.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Ty.function [ Ty.tuple [] ] (Ty.path "alloc::string::String"),
-                        M.alloc (| α0 |),
+                        M.alloc (| Ty.tuple [], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -101,7 +101,7 @@ Module fmt.
       match ε, τ, α with
       | [], [], [ args ] =>
         ltac:(M.monadic
-          (let args := M.alloc (| args |) in
+          (let args := M.alloc (| Ty.path "core::fmt::Arguments", args |) in
           M.read (|
             let~ capacity : Ty.path "usize" :=
               M.call_closure (|

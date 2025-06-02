@@ -83,7 +83,7 @@ Module escape.
     match ε, τ, α with
     | [ N ], [], [ a ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
+        (let a := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", a |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (| get_constant (| "core::escape::backslash_discriminant", Ty.tuple [] |) |) in
@@ -104,6 +104,11 @@ Module escape.
               M.read (| a |)
             |) in
           M.alloc (|
+            Ty.tuple
+              [
+                Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+              ],
             Value.Tuple
               [
                 M.read (| output |);
@@ -147,7 +152,7 @@ Module escape.
     match ε, τ, α with
     | [ N ], [], [ byte ] =>
       ltac:(M.monadic
-        (let byte := M.alloc (| byte |) in
+        (let byte := M.alloc (| Ty.path "u8", byte |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (| get_constant (| "core::escape::hex_escape_discriminant", Ty.tuple [] |) |) in
@@ -216,6 +221,11 @@ Module escape.
               M.read (| lo |)
             |) in
           M.alloc (|
+            Ty.tuple
+              [
+                Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+              ],
             Value.Tuple
               [
                 M.read (| output |);
@@ -253,7 +263,7 @@ Module escape.
     match ε, τ, α with
     | [ N ], [], [ a ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
+        (let a := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", a |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (| get_constant (| "core::escape::verbatim_discriminant", Ty.tuple [] |) |) in
@@ -269,6 +279,11 @@ Module escape.
               M.read (| a |)
             |) in
           M.alloc (|
+            Ty.tuple
+              [
+                Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+              ],
             Value.Tuple
               [
                 M.read (| output |);
@@ -369,7 +384,7 @@ Module escape.
     match ε, τ, α with
     | [ N ], [], [ byte ] =>
       ltac:(M.monadic
-        (let byte := M.alloc (| byte |) in
+        (let byte := M.alloc (| Ty.path "u8", byte |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -424,7 +439,7 @@ Module escape.
                 Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
               ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -439,7 +454,7 @@ Module escape.
                           [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
                       ],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
@@ -456,13 +471,23 @@ Module escape.
                                           γ,
                                           "core::ascii::ascii_char::AsciiChar::Null"
                                         |) in
-                                      M.alloc (| Value.Bool true |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (| Ty.path "bool", Value.Bool false |)))
                                 ]
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                              ],
                             M.call_closure (|
                               Ty.tuple
                                 [
@@ -479,6 +504,14 @@ Module escape.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ N ]
+                                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                              ],
                             M.call_closure (|
                               Ty.tuple
                                 [
@@ -497,6 +530,14 @@ Module escape.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                      ],
                     M.call_closure (|
                       Ty.tuple
                         [
@@ -535,13 +576,14 @@ Module escape.
               ltac:(M.monadic
                 (M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.le,
@@ -555,7 +597,10 @@ Module escape.
                             M.read (|
                               M.match_operator (|
                                 Ty.path "u8",
-                                M.alloc (| M.cast (Ty.path "u8") (M.read (| idx |)) |),
+                                M.alloc (|
+                                  Ty.path "u8",
+                                  M.cast (Ty.path "u8") (M.read (| idx |))
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -565,6 +610,7 @@ Module escape.
                                           Value.Integer IntegerKind.U8 9
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.call_closure (|
                                           Ty.path "u8",
                                           BinOp.Wrap.bit_or,
@@ -582,6 +628,7 @@ Module escape.
                                           Value.Integer IntegerKind.U8 13
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.call_closure (|
                                           Ty.path "u8",
                                           BinOp.Wrap.bit_or,
@@ -599,6 +646,7 @@ Module escape.
                                           Value.Integer IntegerKind.U8 10
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.call_closure (|
                                           Ty.path "u8",
                                           BinOp.Wrap.bit_or,
@@ -616,6 +664,7 @@ Module escape.
                                           Value.Integer IntegerKind.U8 92
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.call_closure (|
                                           Ty.path "u8",
                                           BinOp.Wrap.bit_or,
@@ -633,6 +682,7 @@ Module escape.
                                           Value.Integer IntegerKind.U8 39
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.call_closure (|
                                           Ty.path "u8",
                                           BinOp.Wrap.bit_or,
@@ -650,6 +700,7 @@ Module escape.
                                           Value.Integer IntegerKind.U8 34
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u8",
                                         M.call_closure (|
                                           Ty.path "u8",
                                           BinOp.Wrap.bit_or,
@@ -664,8 +715,12 @@ Module escape.
                                       (M.find_or_pattern (Ty.tuple []) (|
                                         γ,
                                         [
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -673,6 +728,7 @@ Module escape.
                                             | [] =>
                                               ltac:(M.monadic
                                                 (M.alloc (|
+                                                  Ty.path "u8",
                                                   M.call_closure (|
                                                     Ty.path "u8",
                                                     BinOp.Wrap.bit_or,
@@ -687,7 +743,7 @@ Module escape.
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let idx := M.copy (| γ |) in
+                                      (let idx := M.copy (| Ty.path "u8", γ |) in
                                       idx))
                                 ]
                               |)
@@ -703,15 +759,16 @@ Module escape.
                               [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.read (|
                               let~ _ : Ty.tuple [] :=
                                 M.never_to_any (| M.read (| M.break (||) |) |) in
-                              M.alloc (| Value.Tuple [] |)
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                             |)
                           |)
                         |)))
@@ -756,7 +813,7 @@ Module escape.
     match ε, τ, α with
     | [ N ], [], [ c ] =>
       ltac:(M.monadic
-        (let c := M.alloc (| c |) in
+        (let c := M.alloc (| Ty.path "char", c |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -1013,6 +1070,11 @@ Module escape.
               Value.StructTuple "core::ascii::ascii_char::AsciiChar::LeftCurlyBracket" [] [] []
             |) in
           M.alloc (|
+            Ty.tuple
+              [
+                Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+              ],
             Value.Tuple
               [
                 M.read (| output |);
@@ -1058,7 +1120,14 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
           Value.StructRecord
             "core::escape::EscapeIterInner"
             [ N ]
@@ -1147,8 +1216,16 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1188,6 +1265,10 @@ Module escape.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1230,11 +1311,19 @@ Module escape.
       match ε, τ, α with
       | [], [], [ c ] =>
         ltac:(M.monadic
-          (let c := M.alloc (| c |) in
+          (let c := M.alloc (| Ty.path "core::ascii::ascii_char::AsciiChar", c |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -1253,9 +1342,21 @@ Module escape.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let data := M.copy (| γ0_0 |) in
-                    let range := M.copy (| γ0_1 |) in
+                    let data :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                        γ0_0
+                      |) in
+                    let range :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
                       Value.StructRecord
                         "core::escape::EscapeIterInner"
                         [ N ]
@@ -1285,11 +1386,19 @@ Module escape.
       match ε, τ, α with
       | [], [], [ c ] =>
         ltac:(M.monadic
-          (let c := M.alloc (| c |) in
+          (let c := M.alloc (| Ty.path "u8", c |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -1308,9 +1417,21 @@ Module escape.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let data := M.copy (| γ0_0 |) in
-                    let range := M.copy (| γ0_1 |) in
+                    let data :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                        γ0_0
+                      |) in
+                    let range :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
                       Value.StructRecord
                         "core::escape::EscapeIterInner"
                         [ N ]
@@ -1340,11 +1461,19 @@ Module escape.
       match ε, τ, α with
       | [], [], [ c ] =>
         ltac:(M.monadic
-          (let c := M.alloc (| c |) in
+          (let c := M.alloc (| Ty.path "char", c |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ N ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ];
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ]
+                  ],
                 M.call_closure (|
                   Ty.tuple
                     [
@@ -1363,9 +1492,21 @@ Module escape.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let data := M.copy (| γ0_0 |) in
-                    let range := M.copy (| γ0_1 |) in
+                    let data :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ N ]
+                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ],
+                        γ0_0
+                      |) in
+                    let range :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "u8" ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
                       Value.StructRecord
                         "core::escape::EscapeIterInner"
                         [ N ]
@@ -1436,7 +1577,14 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1544,7 +1692,14 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1603,7 +1758,14 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (|
@@ -1668,17 +1830,35 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
           M.read (|
             M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                   M.read (|
                     let~ i : Ty.path "u8" :=
                       M.read (|
                         M.match_operator (|
                           Ty.path "u8",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::convert::Infallible" ];
+                                Ty.path "u8"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1737,8 +1917,16 @@ Module escape.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "u8",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1778,12 +1966,13 @@ Module escape.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1872,17 +2061,35 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
           M.read (|
             M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                   M.read (|
                     let~ i : Ty.path "u8" :=
                       M.read (|
                         M.match_operator (|
                           Ty.path "u8",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::convert::Infallible" ];
+                                Ty.path "u8"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1941,8 +2148,16 @@ Module escape.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "core::convert::Infallible" ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "u8",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1982,12 +2197,13 @@ Module escape.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.path "u8", γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2073,8 +2289,15 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self; n ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let n := M.alloc (| n |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
+          let n := M.alloc (| Ty.path "usize", n |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2126,8 +2349,15 @@ Module escape.
       match ε, τ, α with
       | [], [], [ self; n ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let n := M.alloc (| n |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
+              self
+            |) in
+          let n := M.alloc (| Ty.path "usize", n |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")

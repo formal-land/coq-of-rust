@@ -52,8 +52,24 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; β1 ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let β1 := M.alloc (| β1 |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let β1 :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                β1
+              |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::task::poll::Poll") [] [ T ],
               β1,
@@ -90,8 +106,16 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -107,6 +131,7 @@ Module future.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.call_closure (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
@@ -151,7 +176,14 @@ Module future.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::future::pending::Pending") [] [ T ],
               M.get_function (| "core::future::pending::pending", [], [ T ] |),

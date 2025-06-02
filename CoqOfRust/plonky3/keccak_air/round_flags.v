@@ -5,6 +5,7 @@ Module round_flags.
   Definition value_NUM_ROUNDS_MIN_1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "usize",
         M.call_closure (|
           Ty.path "usize",
           BinOp.Wrap.sub,
@@ -44,7 +45,7 @@ Module round_flags.
     match ε, τ, α with
     | [], [ AB ], [ builder ] =>
       ltac:(M.monadic
-        (let builder := M.alloc (| builder |) in
+        (let builder := M.alloc (| Ty.apply (Ty.path "&mut") [] [ AB ], builder |) in
         M.read (|
           let~ main : Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M" :=
             M.call_closure (|
@@ -55,6 +56,21 @@ Module round_flags.
           M.match_operator (|
             Ty.tuple [],
             M.alloc (|
+              Ty.tuple
+                [
+                  Ty.associated_in_trait
+                    "p3_matrix::Matrix"
+                    []
+                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                    "{{synthetic}}'2";
+                  Ty.associated_in_trait
+                    "p3_matrix::Matrix"
+                    []
+                    [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                    (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                    "{{synthetic}}'2"
+                ],
               Value.Tuple
                 [
                   M.call_closure (|
@@ -100,8 +116,26 @@ Module round_flags.
                 ltac:(M.monadic
                   (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                   let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                  let local := M.copy (| γ0_0 |) in
-                  let next := M.copy (| γ0_1 |) in
+                  let local :=
+                    M.copy (|
+                      Ty.associated_in_trait
+                        "p3_matrix::Matrix"
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                        (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                        "{{synthetic}}'2",
+                      γ0_0
+                    |) in
+                  let next :=
+                    M.copy (|
+                      Ty.associated_in_trait
+                        "p3_matrix::Matrix"
+                        []
+                        [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Var" ]
+                        (Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M")
+                        "{{synthetic}}'2",
+                      γ0_1
+                    |) in
                   let~ local :
                       Ty.apply
                         (Ty.path "&")
@@ -308,6 +342,7 @@ Module round_flags.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                             M.call_closure (|
                               Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                               M.get_trait_method (|
@@ -356,6 +391,7 @@ Module round_flags.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                             M.call_closure (|
                               Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                               M.get_trait_method (|
@@ -537,6 +573,7 @@ Module round_flags.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                             M.call_closure (|
                               Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ],
                               M.get_trait_method (|
@@ -588,11 +625,11 @@ Module round_flags.
                                             []
                                             AB
                                             "Expr"),
-                                        M.alloc (| α0 |),
+                                        M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let i := M.copy (| γ |) in
+                                              (let i := M.copy (| Ty.path "usize", γ |) in
                                               M.call_closure (|
                                                 Ty.associated_in_trait
                                                   "p3_air::air::AirBuilder"
@@ -671,7 +708,7 @@ Module round_flags.
                         |)
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))

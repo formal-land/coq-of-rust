@@ -132,9 +132,29 @@ Module table.
       match ε, τ, α with
       | [], [], [ self; opcode; instruction ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let opcode := M.alloc (| opcode |) in
-          let instruction := M.alloc (| instruction |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
+          let opcode := M.alloc (| Ty.path "u8", opcode |) in
+          let instruction :=
+            M.alloc (|
+              Ty.function
+                [
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ] ];
+                  Ty.apply (Ty.path "&mut") [] [ H ]
+                ]
+                (Ty.tuple []),
+              instruction
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -149,8 +169,42 @@ Module table.
                         "revm_interpreter::table::InstructionTables::Plain",
                         0
                       |) in
-                    let table := M.alloc (| γ1_0 |) in
+                    let table :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 256 ]
+                                  [
+                                    Ty.function
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                              []
+                                              [ WIRE ]
+                                          ];
+                                        Ty.apply (Ty.path "&mut") [] [ H ]
+                                      ]
+                                      (Ty.tuple [])
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
@@ -168,8 +222,27 @@ Module table.
                         "revm_interpreter::table::InstructionTables::Custom",
                         0
                       |) in
-                    let table := M.alloc (| γ1_0 |) in
+                    let table :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 256 ]
+                                  [ CI ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.write (|
                         M.SubPointer.get_array_field (|
                           M.deref (| M.read (| M.deref (| M.read (| table |) |) |) |),
@@ -217,7 +290,15 @@ Module table.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -291,11 +372,45 @@ Module table.
                                         ]
                                     ]
                                     CI,
-                                  M.alloc (| α0 |),
+                                  M.alloc (|
+                                    Ty.function
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                              []
+                                              [ WIRE ]
+                                          ];
+                                        Ty.apply (Ty.path "&mut") [] [ H ]
+                                      ]
+                                      (Ty.tuple []),
+                                    α0
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let i := M.copy (| γ |) in
+                                        (let i :=
+                                          M.copy (|
+                                            Ty.function
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "revm_interpreter::interpreter::Interpreter")
+                                                      []
+                                                      [ WIRE ]
+                                                  ];
+                                                Ty.apply (Ty.path "&mut") [] [ H ]
+                                              ]
+                                              (Ty.tuple []),
+                                            γ
+                                          |) in
                                         M.call_closure (|
                                           CI,
                                           M.get_trait_method (|
@@ -349,8 +464,16 @@ Module table.
       match ε, τ, α with
       | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
+          let f := M.alloc (| F, f |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -376,6 +499,15 @@ Module table.
                                 0
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 256 ]
+                                    [ CI ]
+                                ],
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.deref (|
@@ -418,8 +550,35 @@ Module table.
                                 "revm_interpreter::table::InstructionTables::Custom",
                                 0
                               |) in
-                            let boxed := M.alloc (| γ1_0 |) in
+                            let boxed :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [ CI ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ1_0
+                              |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 256 ]
+                                    [ CI ]
+                                ],
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
@@ -466,8 +625,16 @@ Module table.
       match ε, τ, α with
       | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
+          let f := M.alloc (| F, f |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -488,7 +655,41 @@ Module table.
                             "revm_interpreter::table::InstructionTables::Plain",
                             0
                           |) in
-                        let table := M.alloc (| γ1_0 |) in
+                        let table :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 256 ]
+                                      [
+                                        Ty.function
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&mut")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "revm_interpreter::interpreter::Interpreter")
+                                                  []
+                                                  [ WIRE ]
+                                              ];
+                                            Ty.apply (Ty.path "&mut") [] [ H ]
+                                          ]
+                                          (Ty.tuple [])
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
+                            γ1_0
+                          |) in
                         let~ _ : Ty.tuple [] :=
                           M.write (|
                             M.deref (| M.read (| self |) |),
@@ -569,8 +770,35 @@ Module table.
                                     "revm_interpreter::table::InstructionTables::Custom",
                                     0
                                   |) in
-                                let boxed := M.alloc (| γ1_0 |) in
+                                let boxed :=
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 256 ]
+                                              [ CI ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ],
+                                    γ1_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&mut")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 256 ]
+                                        [ CI ]
+                                    ],
                                   M.borrow (|
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| M.deref (| M.read (| boxed |) |) |) |)
@@ -610,8 +838,16 @@ Module table.
       match ε, τ, α with
       | [], [], [ self; opcode ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let opcode := M.alloc (| opcode |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
+          let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -675,9 +911,17 @@ Module table.
       match ε, τ, α with
       | [], [], [ self; opcode; instruction ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let opcode := M.alloc (| opcode |) in
-          let instruction := M.alloc (| instruction |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
+          let opcode := M.alloc (| Ty.path "u8", opcode |) in
+          let instruction := M.alloc (| CI, instruction |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -701,7 +945,7 @@ Module table.
                 |),
                 M.read (| instruction |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -727,9 +971,17 @@ Module table.
       match ε, τ, α with
       | [], [], [ self; opcode; instruction ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let opcode := M.alloc (| opcode |) in
-          let instruction := M.alloc (| instruction |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::table::InstructionTables") [] [ WIRE; H; CI ]
+                ],
+              self
+            |) in
+          let opcode := M.alloc (| Ty.path "u8", opcode |) in
+          let instruction := M.alloc (| CI, instruction |) in
           M.call_closure (|
             CI,
             M.get_function (| "core::mem::replace", [], [ CI ] |),
@@ -835,8 +1087,31 @@ Module table.
     match ε, τ, α with
     | [], [ W; H; FN; CI ], [ table; f ] =>
       ltac:(M.monadic
-        (let table := M.alloc (| table |) in
-        let f := M.alloc (| f |) in
+        (let table :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "array")
+                  [ Value.Integer IntegerKind.Usize 256 ]
+                  [
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ W ]
+                          ];
+                        Ty.apply (Ty.path "&mut") [] [ H ]
+                      ]
+                      (Ty.tuple [])
+                  ]
+              ],
+            table
+          |) in
+        let f := M.alloc (| FN, f |) in
         M.call_closure (|
           Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ CI ],
           M.get_function (|
@@ -853,11 +1128,11 @@ Module table.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Ty.function [ Ty.tuple [ Ty.path "usize" ] ] CI,
-                        M.alloc (| α0 |),
+                        M.alloc (| Ty.path "usize", α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
+                              (let i := M.copy (| Ty.path "usize", γ |) in
                               M.call_closure (|
                                 CI,
                                 M.get_trait_method (|

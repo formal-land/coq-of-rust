@@ -56,7 +56,8 @@ Module Impl_core_clone_Clone_for_call_builder_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_builder::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "call_builder::AccountId",
@@ -138,7 +139,11 @@ Module Impl_call_builder_Selector.
     match ε, τ, α with
     | [], [], [ bytes ] =>
       ltac:(M.monadic
-        (let bytes := M.alloc (| bytes |) in
+        (let bytes :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            bytes
+          |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -236,9 +241,17 @@ Module Impl_call_builder_CallBuilderTest.
     match ε, τ, α with
     | [], [], [ self; address; selector ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let address := M.alloc (| address |) in
-        let selector := M.alloc (| selector |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "call_builder::CallBuilderTest" ],
+            self
+          |) in
+        let address := M.alloc (| Ty.path "call_builder::AccountId", address |) in
+        let selector :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            selector
+          |) in
         M.read (|
           let~ result :
               Ty.apply
@@ -261,6 +274,10 @@ Module Impl_call_builder_CallBuilderTest.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "call_builder::LangError" ],
                     Value.StructTuple
                       "core::option::Option::None"
                       []
@@ -271,10 +288,14 @@ Module Impl_call_builder_CallBuilderTest.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                  let e := M.copy (| γ0_0 |) in
+                  let e := M.copy (| Ty.path "call_builder::LangError", γ0_0 |) in
                   let _ :=
                     M.is_struct_tuple (| γ0_0, "call_builder::LangError::CouldNotReadInput" |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "call_builder::LangError" ],
                     Value.StructTuple
                       "core::option::Option::Some"
                       []
@@ -286,6 +307,10 @@ Module Impl_call_builder_CallBuilderTest.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.path "call_builder::LangError" ],
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -307,6 +332,10 @@ Module Impl_call_builder_CallBuilderTest.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (|
@@ -323,6 +352,10 @@ Module Impl_call_builder_CallBuilderTest.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 0 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "array")
@@ -371,9 +404,17 @@ Module Impl_call_builder_CallBuilderTest.
     match ε, τ, α with
     | [], [], [ self; address; selector ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let address := M.alloc (| address |) in
-        let selector := M.alloc (| selector |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "call_builder::CallBuilderTest" ],
+            self
+          |) in
+        let address := M.alloc (| Ty.path "call_builder::AccountId", address |) in
+        let selector :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            selector
+          |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -416,10 +457,22 @@ Module Impl_call_builder_CallBuilderTest.
     match ε, τ, α with
     | [], [], [ self; code_hash; selector; init_value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let code_hash := M.alloc (| code_hash |) in
-        let selector := M.alloc (| selector |) in
-        let init_value := M.alloc (| init_value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "call_builder::CallBuilderTest" ],
+            self
+          |) in
+        let code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            code_hash
+          |) in
+        let selector :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            selector
+          |) in
+        let init_value := M.alloc (| Ty.path "bool", init_value |) in
         Value.StructTuple "core::option::Option::None" [] [ Ty.path "call_builder::LangError" ] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -460,10 +513,22 @@ Module Impl_call_builder_CallBuilderTest.
     match ε, τ, α with
     | [], [], [ self; code_hash; selector; init_value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let code_hash := M.alloc (| code_hash |) in
-        let selector := M.alloc (| selector |) in
-        let init_value := M.alloc (| init_value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "call_builder::CallBuilderTest" ],
+            self
+          |) in
+        let code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            code_hash
+          |) in
+        let selector :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            selector
+          |) in
+        let init_value := M.alloc (| Ty.path "bool", init_value |) in
         Value.StructTuple "core::option::Option::None" [] [ Ty.tuple [] ] []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

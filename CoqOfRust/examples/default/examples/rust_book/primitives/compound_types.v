@@ -44,7 +44,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ mutable : Ty.path "i32" := Value.Integer IntegerKind.I32 12 in
         let~ _ : Ty.tuple [] := M.write (| mutable, Value.Integer IntegerKind.I32 21 |) in
         let~ mutable : Ty.path "bool" := Value.Bool true in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

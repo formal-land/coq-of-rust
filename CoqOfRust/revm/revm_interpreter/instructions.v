@@ -14,7 +14,7 @@ Module instructions.
     match ε, τ, α with
     | [], [ WIRE; H ], [ opcode ] =>
       ltac:(M.monadic
-        (let opcode := M.alloc (| opcode |) in
+        (let opcode := M.alloc (| Ty.path "u8", opcode |) in
         M.read (|
           let~ table :
               Ty.apply
@@ -115,6 +115,20 @@ Module instructions.
               M.read (|
                 M.use
                   (M.alloc (|
+                    Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_interpreter::interpreter::Interpreter")
+                              []
+                              [ WIRE ]
+                          ];
+                        Ty.apply (Ty.path "&mut") [] [ H ]
+                      ]
+                      (Ty.tuple []),
                     (* ReifyFnPointer *)
                     M.pointer_coercion
                       (M.get_function (|

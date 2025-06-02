@@ -28,7 +28,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           Value.StructRecord
             "alloy_primitives::sealed::Sealed"
             []
@@ -126,8 +133,16 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -167,6 +182,15 @@ Module sealed.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              []
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -218,8 +242,22 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -312,7 +350,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -323,7 +368,7 @@ Module sealed.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -352,8 +397,15 @@ Module sealed.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -377,6 +429,7 @@ Module sealed.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -433,7 +486,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -473,7 +533,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -519,7 +586,7 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ inner ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
+          (let inner := M.alloc (| T, inner |) in
           M.read (|
             let~ seal :
                 Ty.apply
@@ -543,6 +610,7 @@ Module sealed.
                 [ M.borrow (| Pointer.Kind.Ref, inner |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ],
               Value.StructRecord
                 "alloy_primitives::sealed::Sealed"
                 []
@@ -573,7 +641,7 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ inner ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
+          (let inner := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], inner |) in
           M.read (|
             let~ seal :
                 Ty.apply
@@ -597,6 +665,10 @@ Module sealed.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| inner |) |) |) ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::sealed::Sealed")
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ] ],
               Value.StructRecord
                 "alloy_primitives::sealed::Sealed"
                 []
@@ -631,8 +703,8 @@ Module sealed.
       match ε, τ, α with
       | [], [ F ], [ inner; f ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          let f := M.alloc (| f |) in
+          (let inner := M.alloc (| T, inner |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             let~ seal :
                 Ty.apply
@@ -665,6 +737,7 @@ Module sealed.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ],
               M.call_closure (|
                 Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ],
                 M.get_associated_function (|
@@ -701,8 +774,8 @@ Module sealed.
       match ε, τ, α with
       | [], [ F ], [ inner; f ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          let f := M.alloc (| f |) in
+          (let inner := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], inner |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             let~ seal :
                 Ty.apply
@@ -729,6 +802,10 @@ Module sealed.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::sealed::Sealed")
+                []
+                [ Ty.apply (Ty.path "&") [] [ T ] ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloy_primitives::sealed::Sealed")
@@ -769,8 +846,15 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ inner; seal ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          let seal := M.alloc (| seal |) in
+          (let inner := M.alloc (| T, inner |) in
+          let seal :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
+              seal
+            |) in
           Value.StructRecord
             "alloy_primitives::sealed::Sealed"
             []
@@ -795,7 +879,8 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ], self |) in
           Value.Tuple
             [
               M.read (|
@@ -832,7 +917,8 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ], self |) in
           M.call_closure (|
             Ty.tuple
               [
@@ -869,7 +955,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -902,7 +995,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -929,7 +1029,14 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -956,7 +1063,8 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ], self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,
@@ -983,7 +1091,8 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ], self |) in
           M.call_closure (|
             T,
             M.get_associated_function (|
@@ -1056,7 +1165,7 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Self, self |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ Self ],
             M.get_associated_function (|
@@ -1081,7 +1190,7 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloy_primitives::sealed::Sealed")
@@ -1109,8 +1218,15 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self; seal ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let seal := M.alloc (| seal |) in
+          (let self := M.alloc (| Self, self |) in
+          let seal :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
+              seal
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ Self ],
             M.get_associated_function (|
@@ -1135,8 +1251,15 @@ Module sealed.
       match ε, τ, α with
       | [], [], [ self; seal ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let seal := M.alloc (| seal |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let seal :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
+              seal
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "alloy_primitives::sealed::Sealed")

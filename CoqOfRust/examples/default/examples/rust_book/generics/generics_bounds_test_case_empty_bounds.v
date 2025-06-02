@@ -64,7 +64,7 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
-      (let β0 := M.alloc (| β0 |) in
+      (let β0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], β0 |) in
       M.match_operator (|
         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
         β0,
@@ -87,7 +87,7 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
-      (let β0 := M.alloc (| β0 |) in
+      (let β0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], β0 |) in
       M.match_operator (|
         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
         β0,
@@ -148,6 +148,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "A cardinal is " |); mk_str (| "
 " |) ]
                             |)
@@ -160,6 +164,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -177,6 +185,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_function (|
@@ -211,7 +220,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -235,6 +244,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "A blue jay is " |); mk_str (| "
 " |) ]
                             |)
@@ -247,6 +260,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -264,6 +281,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                               M.call_closure (|
                                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.get_function (|
@@ -298,9 +316,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

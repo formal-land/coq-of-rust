@@ -22,8 +22,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -59,8 +67,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -114,8 +130,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                other
+              |) in
             M.read (|
               let~ b :
                   Ty.apply
@@ -156,8 +180,13 @@ Module array.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -183,7 +212,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -210,8 +239,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                other
+              |) in
             M.read (|
               let~ b :
                   Ty.apply
@@ -252,8 +289,13 @@ Module array.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -279,7 +321,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)))
                 ]
               |)
             |)))
@@ -320,8 +362,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.read (|
               let~ b :
                   Ty.apply
@@ -362,8 +412,13 @@ Module array.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -389,7 +444,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -416,8 +471,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.read (|
               let~ b :
                   Ty.apply
@@ -458,8 +521,13 @@ Module array.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -485,7 +553,7 @@ Module array.
                           "core::result::Result::Err",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)))
                 ]
               |)
             |)))
@@ -522,8 +590,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -562,8 +641,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -618,8 +708,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -658,8 +759,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -712,8 +824,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -752,8 +875,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -808,8 +942,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -848,8 +993,19 @@ Module array.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -918,8 +1074,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ a; b ] =>
           ltac:(M.monadic
-            (let a := M.alloc (| a |) in
-            let b := M.alloc (| b |) in
+            (let a :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                a
+              |) in
+            let b :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Other ] ],
+                b
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -995,8 +1159,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ a; b ] =>
           ltac:(M.monadic
-            (let a := M.alloc (| a |) in
-            let b := M.alloc (| b |) in
+            (let a :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                a
+              |) in
+            let b :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ Other ] ],
+                b
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -1092,8 +1264,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ a; b ] =>
           ltac:(M.monadic
-            (let a := M.alloc (| a |) in
-            let b := M.alloc (| b |) in
+            (let a :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                a
+              |) in
+            let b :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                b
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (|
@@ -1136,8 +1316,16 @@ Module array.
         match ε, τ, α with
         | [], [], [ a; b ] =>
           ltac:(M.monadic
-            (let a := M.alloc (| a |) in
-            let b := M.alloc (| b |) in
+            (let a :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                a
+              |) in
+            let b :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
+                b
+              |) in
             UnOp.not (|
               M.call_closure (|
                 Ty.path "bool",

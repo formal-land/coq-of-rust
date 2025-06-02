@@ -39,7 +39,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
           Value.StructRecord
             "p3_matrix::stack::VerticalPair"
             []
@@ -114,8 +121,16 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -155,6 +170,7 @@ Module stack.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Second ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -219,7 +235,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
+              self
+            |) in
           Value.StructRecord
             "p3_matrix::stack::HorizontalPair"
             []
@@ -294,8 +317,16 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -335,6 +366,7 @@ Module stack.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Second ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -387,19 +419,25 @@ Module stack.
       match ε, τ, α with
       | [], [ T ], [ first; second ] =>
         ltac:(M.monadic
-          (let first := M.alloc (| first |) in
-          let second := M.alloc (| second |) in
+          (let first := M.alloc (| First, first |) in
+          let second := M.alloc (| Second, second |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -418,6 +456,7 @@ Module stack.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -440,17 +479,20 @@ Module stack.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -468,6 +510,7 @@ Module stack.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -477,6 +520,7 @@ Module stack.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -515,13 +559,14 @@ Module stack.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ],
               Value.StructRecord
                 "p3_matrix::stack::VerticalPair"
                 []
@@ -564,19 +609,25 @@ Module stack.
       match ε, τ, α with
       | [], [ T ], [ first; second ] =>
         ltac:(M.monadic
-          (let first := M.alloc (| first |) in
-          let second := M.alloc (| second |) in
+          (let first := M.alloc (| First, first |) in
+          let second := M.alloc (| Second, second |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -595,6 +646,7 @@ Module stack.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "usize",
                             M.call_closure (|
                               Ty.path "usize",
                               M.get_trait_method (|
@@ -617,17 +669,20 @@ Module stack.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -645,6 +700,7 @@ Module stack.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -654,6 +710,7 @@ Module stack.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -692,13 +749,14 @@ Module stack.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ],
               Value.StructRecord
                 "p3_matrix::stack::HorizontalPair"
                 []
@@ -735,7 +793,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (| "p3_matrix::Matrix", First, [], [ T ], "width", [], [] |),
@@ -768,7 +833,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.add,
@@ -825,19 +897,27 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; r; c ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let c := M.alloc (| c |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let c := M.alloc (| Ty.path "usize", c |) in
           M.read (|
             M.match_operator (|
               T,
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.lt,
@@ -870,6 +950,7 @@ Module stack.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_trait_method (|
@@ -898,6 +979,7 @@ Module stack.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_trait_method (|
@@ -991,8 +1073,15 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1002,13 +1091,14 @@ Module stack.
                   Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
                   Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
                 ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.lt,
@@ -1041,6 +1131,13 @@ Module stack.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "p3_matrix::stack::EitherRow")
+                        []
+                        [
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+                        ],
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Left"
                         []
@@ -1077,6 +1174,13 @@ Module stack.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "p3_matrix::stack::EitherRow")
+                        []
+                        [
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "Row";
+                          Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "Row"
+                        ],
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Right"
                         []
@@ -1163,8 +1267,15 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1174,13 +1285,14 @@ Module stack.
                   Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] First "{{synthetic}}'2";
                   Ty.associated_in_trait "p3_matrix::Matrix" [] [ T ] Second "{{synthetic}}'2"
                 ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.lt,
@@ -1213,6 +1325,23 @@ Module stack.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "p3_matrix::stack::EitherRow")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            First
+                            "{{synthetic}}'2";
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            Second
+                            "{{synthetic}}'2"
+                        ],
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Left"
                         []
@@ -1264,6 +1393,23 @@ Module stack.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "p3_matrix::stack::EitherRow")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            First
+                            "{{synthetic}}'2";
+                          Ty.associated_in_trait
+                            "p3_matrix::Matrix"
+                            []
+                            [ T ]
+                            Second
+                            "{{synthetic}}'2"
+                        ],
                       Value.StructTuple
                         "p3_matrix::stack::EitherRow::Right"
                         []
@@ -1383,7 +1529,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.add,
@@ -1436,7 +1589,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (| "p3_matrix::Matrix", First, [], [ T ], "height", [], [] |),
@@ -1473,19 +1633,27 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; r; c ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let c := M.alloc (| c |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let c := M.alloc (| Ty.path "usize", c |) in
           M.read (|
             M.match_operator (|
               T,
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.lt,
@@ -1518,6 +1686,7 @@ Module stack.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_trait_method (|
@@ -1546,6 +1715,7 @@ Module stack.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_trait_method (|
@@ -1635,8 +1805,15 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::chain::Chain")
@@ -1739,8 +1916,16 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::EitherRow") [] [ L; R ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1758,8 +1943,12 @@ Module stack.
                         "p3_matrix::stack::EitherRow::Left",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ L ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1792,8 +1981,12 @@ Module stack.
                         "p3_matrix::stack::EitherRow::Right",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1853,7 +2046,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::EitherRow") [] [ L; R ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -1868,8 +2068,9 @@ Module stack.
                         "p3_matrix::stack::EitherRow::Left",
                         0
                       |) in
-                    let l := M.alloc (| γ1_0 |) in
+                    let l := M.alloc (| Ty.apply (Ty.path "&mut") [] [ L ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         M.get_trait_method (|
@@ -1893,8 +2094,9 @@ Module stack.
                         "p3_matrix::stack::EitherRow::Right",
                         0
                       |) in
-                    let r := M.alloc (| γ1_0 |) in
+                    let r := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         M.get_trait_method (|
@@ -1946,7 +2148,14 @@ Module stack.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::stack::EitherRow") [] [ L; R ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1967,8 +2176,9 @@ Module stack.
                                 "p3_matrix::stack::EitherRow::Left",
                                 0
                               |) in
-                            let l := M.alloc (| γ1_0 |) in
+                            let l := M.alloc (| Ty.apply (Ty.path "&") [] [ L ], γ1_0 |) in
                             M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (|
@@ -2001,8 +2211,9 @@ Module stack.
                                 "p3_matrix::stack::EitherRow::Right",
                                 0
                               |) in
-                            let r := M.alloc (| γ1_0 |) in
+                            let r := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], γ1_0 |) in
                             M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (|

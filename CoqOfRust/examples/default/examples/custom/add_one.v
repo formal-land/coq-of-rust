@@ -10,7 +10,7 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.path "u32", x |) in
       M.call_closure (|
         Ty.path "u32",
         BinOp.Wrap.add,

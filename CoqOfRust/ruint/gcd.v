@@ -21,8 +21,8 @@ Module gcd.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], other |) in
           M.call_closure (|
             Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
             M.get_function (| "ruint::algorithms::gcd::gcd", [ BITS; LIMBS ], [] |),
@@ -53,8 +53,8 @@ Module gcd.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], other |) in
           M.read (|
             let~ other : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
               M.call_closure (|
@@ -97,6 +97,10 @@ Module gcd.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -136,8 +140,8 @@ Module gcd.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [], other |) in
           M.call_closure (|
             Ty.tuple
               [

@@ -37,8 +37,16 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -56,8 +64,12 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -90,8 +102,12 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -141,7 +157,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
@@ -156,8 +179,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -188,8 +212,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -265,8 +290,22 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -289,6 +328,7 @@ Module ops.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -299,7 +339,30 @@ Module ops.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [ B; C ]
+                                ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                    []
+                                    [ B; C ]
+                                ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -312,7 +375,7 @@ Module ops.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -320,8 +383,9 @@ Module ops.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -350,7 +414,7 @@ Module ops.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -358,8 +422,9 @@ Module ops.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -380,6 +445,7 @@ Module ops.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -423,7 +489,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -434,7 +507,7 @@ Module ops.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -464,8 +537,15 @@ Module ops.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -510,8 +590,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -538,8 +619,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ B ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -602,7 +684,16 @@ Module ops.
         match ε, τ, α with
         | [], [], [ output ] =>
           ltac:(M.monadic
-            (let output := M.alloc (| output |) in
+            (let output :=
+              M.alloc (|
+                Ty.associated_in_trait
+                  "core::ops::try_trait::Try"
+                  []
+                  []
+                  (Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ])
+                  "Output",
+                output
+              |) in
             Value.StructTuple
               "core::ops::control_flow::ControlFlow::Continue"
               []
@@ -624,7 +715,11 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -647,8 +742,18 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let c := M.copy (| γ0_0 |) in
+                      let c := M.copy (| C, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [ B; Ty.path "core::convert::Infallible" ];
+                            C
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -669,8 +774,18 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b := M.copy (| B, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [ B; Ty.path "core::convert::Infallible" ];
+                            C
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -732,7 +847,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ residual ] =>
           ltac:(M.monadic
-            (let residual := M.alloc (| residual |) in
+            (let residual :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::ops::control_flow::ControlFlow")
+                  []
+                  [ B; Ty.path "core::convert::Infallible" ],
+                residual
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
@@ -746,8 +868,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b := M.copy (| B, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -811,7 +934,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -825,8 +955,8 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -854,7 +984,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -868,8 +1005,8 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -900,7 +1037,11 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ B ],
@@ -913,7 +1054,10 @@ Module ops.
                           γ,
                           "core::ops::control_flow::ControlFlow::Continue"
                         |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ B ] [] |)));
+                      M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ B ],
+                        Value.StructTuple "core::option::Option::None" [] [ B ] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ0_0 :=
@@ -922,8 +1066,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| B, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ B ],
                         Value.StructTuple "core::option::Option::Some" [] [ B ] [ M.read (| x |) ]
                       |)))
                 ]
@@ -951,8 +1096,12 @@ Module ops.
         match ε, τ, α with
         | [], [ T; impl_FnOnce_B__arrow_T ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+                self
+              |) in
+            let f := M.alloc (| impl_FnOnce_B__arrow_T, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
@@ -966,8 +1115,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| C, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -982,8 +1132,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| B, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ T; C ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -1034,7 +1185,11 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ C ],
@@ -1048,15 +1203,19 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| C, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ C ],
                         Value.StructTuple "core::option::Option::Some" [] [ C ] [ M.read (| x |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::ops::control_flow::ControlFlow::Break" |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] [ C ] [] |)))
+                      M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ C ],
+                        Value.StructTuple "core::option::Option::None" [] [ C ] []
+                      |)))
                 ]
               |)
             |)))
@@ -1087,8 +1246,12 @@ Module ops.
         match ε, τ, α with
         | [], [ T; impl_FnOnce_C__arrow_T ], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ],
+                self
+              |) in
+            let f := M.alloc (| impl_FnOnce_C__arrow_T, f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
@@ -1102,8 +1265,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| C, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -1132,8 +1296,9 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| B, γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; T ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -1173,7 +1338,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [ r ] =>
           ltac:(M.monadic
-            (let r := M.alloc (| r |) in
+            (let r := M.alloc (| R, r |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1181,6 +1346,13 @@ Module ops.
                   []
                   [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ],
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::ops::control_flow::ControlFlow")
+                    []
+                    [
+                      Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual";
+                      Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                    ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1210,8 +1382,17 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v :=
+                        M.copy (|
+                          Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output",
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Continue"
                           []
@@ -1226,8 +1407,17 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v :=
+                        M.copy (|
+                          Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Residual",
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::ops::control_flow::ControlFlow")
+                          []
+                          [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output"
+                          ],
                         Value.StructTuple
                           "core::ops::control_flow::ControlFlow::Break"
                           []
@@ -1280,7 +1470,14 @@ Module ops.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::ops::control_flow::ControlFlow")
+                  []
+                  [ R; Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 R,
@@ -1294,8 +1491,13 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Continue",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v :=
+                        M.copy (|
+                          Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output",
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        R,
                         M.call_closure (|
                           R,
                           M.get_trait_method (|
@@ -1318,7 +1520,7 @@ Module ops.
                           "core::ops::control_flow::ControlFlow::Break",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v := M.copy (| R, γ0_0 |) in
                       v))
                 ]
               |)

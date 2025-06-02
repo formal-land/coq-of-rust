@@ -17,7 +17,8 @@ Module vec.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], s |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
               []
@@ -57,7 +58,11 @@ Module vec.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                s
+              |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
               []
@@ -69,6 +74,7 @@ Module vec.
                     M.read (|
                       M.use
                         (M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                           (* Unsize *)
                           M.pointer_coercion
                             (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |))
@@ -105,7 +111,11 @@ Module vec.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                v
+              |) in
             Value.StructTuple
               "alloc::borrow::Cow::Owned"
               []
@@ -139,7 +149,14 @@ Module vec.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                v
+              |) in
             Value.StructTuple
               "alloc::borrow::Cow::Borrowed"
               []
@@ -197,7 +214,7 @@ Module vec.
         match ε, τ, α with
         | [], [ _ as I ], [ it ] =>
           ltac:(M.monadic
-            (let it := M.alloc (| it |) in
+            (let it := M.alloc (| I, it |) in
             Value.StructTuple
               "alloc::borrow::Cow::Owned"
               []

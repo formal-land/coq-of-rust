@@ -14,7 +14,7 @@ Module unit_.
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| I, iter |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -53,7 +53,7 @@ Module unit_.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Ty.function [ Ty.tuple [ Ty.tuple [] ] ] (Ty.tuple []),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.tuple [], α0 |),
                           [ fun γ => ltac:(M.monadic (Value.Tuple [])) ]
                         |)))
                     | _ => M.impossible "wrong number of arguments"

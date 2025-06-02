@@ -13,8 +13,8 @@ Module collections.
         match ε, τ, α with
         | [], [ T; impl_FnOnce_T__arrow_T ], [ v; change ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            let change := M.alloc (| change |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], v |) in
+            let change := M.alloc (| impl_FnOnce_T__arrow_T, change |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_function (|
@@ -32,11 +32,11 @@ Module collections.
                         ltac:(M.monadic
                           (M.match_operator (|
                             Ty.function [ Ty.tuple [ T ] ] (Ty.tuple [ T; Ty.tuple [] ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| T, α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let value := M.copy (| γ |) in
+                                  (let value := M.copy (| T, γ |) in
                                   Value.Tuple
                                     [
                                       M.call_closure (|
@@ -90,8 +90,8 @@ Module collections.
         match ε, τ, α with
         | [], [ T; R; impl_FnOnce_T__arrow__T__R_ ], [ v; change ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            let change := M.alloc (| change |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], v |) in
+            let change := M.alloc (| impl_FnOnce_T__arrow__T__R_, change |) in
             M.read (|
               let~ guard : Ty.path "alloc::collections::btree::mem::replace::PanicGuard" :=
                 Value.StructTuple "alloc::collections::btree::mem::replace::PanicGuard" [] [] [] in
@@ -104,6 +104,7 @@ Module collections.
               M.match_operator (|
                 R,
                 M.alloc (|
+                  Ty.tuple [ T; R ],
                   M.call_closure (|
                     Ty.tuple [ T; R ],
                     M.get_trait_method (|
@@ -123,8 +124,8 @@ Module collections.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let new_value := M.copy (| γ0_0 |) in
-                      let ret := M.copy (| γ0_1 |) in
+                      let new_value := M.copy (| T, γ0_0 |) in
+                      let ret := M.copy (| R, γ0_1 |) in
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           let~ _ : Ty.tuple [] :=
@@ -139,7 +140,7 @@ Module collections.
                                 M.read (| new_value |)
                               ]
                             |) in
-                          M.alloc (| Value.Tuple [] |)
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                         |) in
                       let~ _ : Ty.tuple [] :=
                         M.call_closure (|
@@ -184,7 +185,14 @@ Module collections.
             match ε, τ, α with
             | [], [], [ self ] =>
               ltac:(M.monadic
-                (let self := M.alloc (| self |) in
+                (let self :=
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "alloc::collections::btree::mem::replace::PanicGuard" ],
+                    self
+                  |) in
                 M.never_to_any (|
                   M.call_closure (|
                     Ty.path "never",

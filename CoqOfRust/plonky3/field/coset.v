@@ -20,7 +20,14 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
           Value.StructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
             []
@@ -112,8 +119,16 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -156,6 +171,7 @@ Module coset.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -201,21 +217,22 @@ Module coset.
       match ε, τ, α with
       | [], [], [ shift; log_size ] =>
         ltac:(M.monadic
-          (let shift := M.alloc (| shift |) in
-          let log_size := M.alloc (| log_size |) in
+          (let shift := M.alloc (| F, shift |) in
+          let log_size := M.alloc (| Ty.path "usize", log_size |) in
           M.read (|
             M.match_operator (|
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
                 [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.le,
@@ -232,6 +249,11 @@ Module coset.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -248,6 +270,11 @@ Module coset.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -282,7 +309,14 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
           M.call_closure (|
             F,
             M.get_trait_method (|
@@ -323,7 +357,14 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -350,7 +391,14 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -377,7 +425,14 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.shl,
@@ -416,8 +471,15 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; log_scale_factor ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let log_scale_factor := M.alloc (| log_scale_factor |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let log_scale_factor := M.alloc (| Ty.path "usize", log_scale_factor |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -462,11 +524,11 @@ Module coset.
                               (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
                               []
                               [ F ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let new_log_size := M.copy (| γ |) in
+                                (let new_log_size := M.copy (| Ty.path "usize", γ |) in
                                 Value.StructRecord
                                   "p3_field::coset::TwoAdicMultiplicativeCoset"
                                   []
@@ -515,8 +577,15 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; log_scale_factor ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let log_scale_factor := M.alloc (| log_scale_factor |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let log_scale_factor := M.alloc (| Ty.path "usize", log_scale_factor |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -577,11 +646,24 @@ Module coset.
                               (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
                               []
                               [ F ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
+                              []
+                              [ F ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let coset := M.copy (| γ |) in
+                                (let coset :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset")
+                                      []
+                                      [ F ],
+                                    γ
+                                  |) in
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.write (|
@@ -644,8 +726,15 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; scale ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let scale := M.alloc (| scale |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let scale := M.alloc (| F, scale |) in
           Value.StructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
             []
@@ -697,8 +786,15 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; shift ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let shift := M.alloc (| shift |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let shift := M.alloc (| F, shift |) in
           Value.StructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
             []
@@ -752,16 +848,25 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; element ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let element := M.alloc (| element |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let element := M.alloc (| F, element |) in
           M.read (|
             M.catch_return (Ty.path "bool") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "bool",
                   M.read (|
                     M.match_operator (|
                       Ty.path "bool",
                       M.alloc (|
+                        Ty.tuple [ F; F ],
                         Value.Tuple
                           [
                             M.read (|
@@ -779,14 +884,18 @@ Module coset.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let shift := M.copy (| γ0_0 |) in
-                            let element := M.copy (| γ0_1 |) in
+                            let shift := M.copy (| F, γ0_0 |) in
+                            let element := M.copy (| F, γ0_1 |) in
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.use
                                   (M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -826,7 +935,14 @@ Module coset.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let iter := M.copy (| γ |) in
+                                          (let iter :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::Range")
+                                                []
+                                                [ Ty.path "usize" ],
+                                              γ
+                                            |) in
                                           M.loop (|
                                             Ty.tuple [],
                                             ltac:(M.monadic
@@ -835,6 +951,10 @@ Module coset.
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "usize" ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -874,6 +994,7 @@ Module coset.
                                                               "core::option::Option::None"
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (| M.break (||) |)
                                                             |)
@@ -890,13 +1011,17 @@ Module coset.
                                                             M.read (|
                                                               M.match_operator (|
                                                                 Ty.tuple [],
-                                                                M.alloc (| Value.Tuple [] |),
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |),
                                                                 [
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
+                                                                            Ty.path "bool",
                                                                             M.call_closure (|
                                                                               Ty.path "bool",
                                                                               M.get_trait_method (|
@@ -926,6 +1051,7 @@ Module coset.
                                                                           Value.Bool true
                                                                         |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (|
                                                                             M.return_ (|
@@ -937,6 +1063,7 @@ Module coset.
                                                                   fun γ =>
                                                                     ltac:(M.monadic
                                                                       (M.alloc (|
+                                                                        Ty.tuple [],
                                                                         Value.Tuple []
                                                                       |)))
                                                                 ]
@@ -986,16 +1113,20 @@ Module coset.
                                                                 ]
                                                               |)
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)))
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)))
                                                     ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           |)))
                                     ]
                                   |))
                               |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -1038,8 +1169,15 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; index ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let index := M.alloc (| Ty.path "usize", index |) in
           M.call_closure (|
             F,
             M.get_trait_method (| "core::ops::arith::Mul", F, [], [ F ], "mul", [], [] |),
@@ -1100,8 +1238,15 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self; exp ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let exp := M.alloc (| exp |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
+          let exp := M.alloc (| Ty.path "usize", exp |) in
           M.read (|
             let~ gen_power : F :=
               M.read (| get_constant (| "p3_field::field::PrimeCharacteristicRing::ONE", F |) |) in
@@ -1148,13 +1293,14 @@ Module coset.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     BinOp.gt,
@@ -1167,13 +1313,14 @@ Module coset.
                               M.read (|
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               M.call_closure (|
                                                 Ty.path "bool",
                                                 BinOp.ne,
@@ -1224,8 +1371,9 @@ Module coset.
                                               |)
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
@@ -1249,15 +1397,16 @@ Module coset.
                                   [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.tuple [],
                               M.never_to_any (|
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.never_to_any (| M.read (| M.break (||) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)
                               |)
                             |)))
@@ -1288,7 +1437,14 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::take::Take")
@@ -1319,6 +1475,7 @@ Module coset.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      F,
                       M.call_closure (|
                         F,
                         M.get_associated_function (|
@@ -1390,7 +1547,11 @@ Module coset.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::take::Take")
