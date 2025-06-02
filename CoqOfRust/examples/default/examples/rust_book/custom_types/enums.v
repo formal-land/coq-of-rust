@@ -93,11 +93,13 @@ Definition inspect (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
                                   Value.Array
                                     [
                                       mk_str (|
-                                        String.append
+                                        PrimString.cat
                                           "page loaded, r"
-                                          (String.String
-                                            "233"
-                                            (String.append "f" (String.String "233" "
+                                          (PrimString.cat
+                                            (PrimString.make 1 (233%int63))
+                                            (PrimString.cat
+                                              "f"
+                                              (PrimString.cat (PrimString.make 1 (233%int63)) "
 ")))
                                       |)
                                     ]

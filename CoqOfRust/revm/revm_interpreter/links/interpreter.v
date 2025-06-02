@@ -14,9 +14,6 @@ Require Export revm.revm_interpreter.links.interpreter_Interpreter.
 
 (* impl<IW: InterpreterTypes> Interpreter<IW> { *)
 Module Impl_Interpreter.
-  Import Impl_InstructionResult.
-  Import Impl_InterpreterAction.
-
   Definition Self
     (IW : Set) `{Link IW}
     {IW_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks IW_types}
@@ -30,19 +27,17 @@ Module Impl_Interpreter.
       FN: CustomInstruction<Wire = IW, Host = H>,
   *)
   Instance run_step
-      (IW : Set) `{Link IW}
+      (IW H FN : Set) `{Link IW} `{Link H} `{Link FN}
       {IW_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks IW_types}
-      (run_InterpreterTypes_for_IW : InterpreterTypes.Run IW IW_types)
-      (H_ : Set) `{Link H_}
-      (FN : Set) `{Link FN}
-      (run_CustomInstruction_for_FN : CustomInstruction.Run FN IW IW_types H_)
+      {run_InterpreterTypes_for_IW : InterpreterTypes.Run IW IW_types}
+      {run_CustomInstruction_for_FN : CustomInstruction.Run FN IW IW_types H}
       (self : Ref.t Pointer.Kind.MutRef (Self IW run_InterpreterTypes_for_IW))
       (instruction_table : Ref.t Pointer.Kind.Ref (array.t FN {| Integer.value := 256 |}))
-      (host : Ref.t Pointer.Kind.MutRef H_) :
+      (host : Ref.t Pointer.Kind.MutRef H) :
     Run.Trait
       (interpreter.Impl_revm_interpreter_interpreter_Interpreter_IW.step (Φ IW))
         []
-        [ Φ FN; Φ H_ ]
+        [ Φ FN; Φ H ]
         [ φ self; φ instruction_table; φ host ]
       unit.
   Proof.
@@ -63,25 +58,24 @@ Module Impl_Interpreter.
       FN: CustomInstruction<Wire = IW, Host = H>,
   *)
   Instance run_run
-      (IW : Set) `{Link IW}
+      (IW H FN : Set) `{Link IW} `{Link H} `{Link FN}
       {IW_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks IW_types}
-      (run_InterpreterTypes_for_IW : InterpreterTypes.Run IW IW_types)
-      (H_ : Set) `{Link H_}
-      (FN : Set) `{Link FN}
-      (run_CustomInstruction_for_FN : CustomInstruction.Run FN IW IW_types H_)
+      {run_InterpreterTypes_for_IW : InterpreterTypes.Run IW IW_types}
+      {run_CustomInstruction_for_FN : CustomInstruction.Run FN IW IW_types H}
       (self : Ref.t Pointer.Kind.MutRef (Self IW run_InterpreterTypes_for_IW))
       (instruction_table : Ref.t Pointer.Kind.Ref (array.t FN {| Integer.value := 256 |}))
-      (host : Ref.t Pointer.Kind.MutRef H_) :
+      (host : Ref.t Pointer.Kind.MutRef H) :
     Run.Trait
       (interpreter.Impl_revm_interpreter_interpreter_Interpreter_IW.run (Φ IW))
         []
-        [ Φ FN; Φ H_ ]
+        [ Φ FN; Φ H ]
         [ φ self; φ instruction_table; φ host ]
       InterpreterAction.t.
   Proof.
     constructor.
-    destruct run_InterpreterTypes_for_IW.
+    destruct run_InterpreterTypes_for_IW eqn:?.
     destruct run_LoopControl_for_Control.
     run_symbolic.
+    now eapply run_step.
   Defined.
 End Impl_Interpreter.

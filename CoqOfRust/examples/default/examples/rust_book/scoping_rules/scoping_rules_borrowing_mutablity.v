@@ -392,7 +392,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
             [
               ("author", mk_str (| "Douglas Hofstadter" |));
-              ("title", mk_str (| String.append "G" (String.String "246" "del, Escher, Bach") |));
+              ("title",
+                mk_str (|
+                  PrimString.cat
+                    "G"
+                    (PrimString.cat (PrimString.make 1 (246%int63)) "del, Escher, Bach")
+                |));
               ("year", Value.Integer IntegerKind.U32 1979)
             ] in
         let~ mutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=

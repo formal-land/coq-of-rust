@@ -3366,7 +3366,9 @@ Module string.
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| mk_str (| String.String "253" "" |) |)
+                            M.deref (|
+                              mk_str (| PrimString.cat (PrimString.make 1 (65533%int63)) "" |)
+                            |)
                           |)
                         ]
                       |)
@@ -3947,7 +3949,11 @@ Module string.
                                   M.read (| string |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| mk_str (| String.String "253" "" |) |)
+                                    M.deref (|
+                                      mk_str (|
+                                        PrimString.cat (PrimString.make 1 (65533%int63)) ""
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4659,7 +4665,9 @@ Module string.
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| mk_str (| String.String "253" "" |) |)
+                            M.deref (|
+                              mk_str (| PrimString.cat (PrimString.make 1 (65533%int63)) "" |)
+                            |)
                           |)
                         ]
                       |)
@@ -5240,7 +5248,11 @@ Module string.
                                   M.read (| string |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| mk_str (| String.String "253" "" |) |)
+                                    M.deref (|
+                                      mk_str (|
+                                        PrimString.cat (PrimString.make 1 (65533%int63)) ""
+                                      |)
+                                    |)
                                   |)
                                 ]
                               |)

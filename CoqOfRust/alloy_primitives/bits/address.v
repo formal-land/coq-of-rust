@@ -915,7 +915,13 @@ Module bits.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| mk_str (| String.String "038" "" |) |)
+                                                M.deref (|
+                                                  mk_str (|
+                                                    PrimString.cat
+                                                      (PrimString.make 1 (8230%int63))
+                                                      ""
+                                                  |)
+                                                |)
                                               |)
                                             ]
                                           |)

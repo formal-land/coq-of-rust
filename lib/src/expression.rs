@@ -398,13 +398,19 @@ fn string_pieces_to_coq(pieces: &[StringPiece]) -> Rc<coq::Expression> {
             if rest.is_empty() {
                 head
             } else {
-                coq::Expression::just_name("String.append")
+                coq::Expression::just_name("PrimString.cat")
                     .apply_many(&[head, string_pieces_to_coq(rest)])
             }
         }
-        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
+        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("PrimString.cat")
             .apply_many(&[
-                Rc::new(coq::Expression::String(format!("{:03}", *c as u8))),
+                coq::Expression::just_name("PrimString.make").apply_many(&[
+                    Rc::new(coq::Expression::U128(1)),
+                    Rc::new(coq::Expression::InScope(
+                        Rc::new(coq::Expression::U128(*c as u128)),
+                        "int63".to_string(),
+                    )),
+                ]),
                 string_pieces_to_coq(rest),
             ]),
     }

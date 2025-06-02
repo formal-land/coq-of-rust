@@ -8472,7 +8472,11 @@ Module time.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| mk_str (| String.String "181" "s" |) |)
+                                            M.deref (|
+                                              mk_str (|
+                                                PrimString.cat (PrimString.make 1 (181%int63)) "s"
+                                              |)
+                                            |)
                                           |)
                                         ]
                                       |)

@@ -498,7 +498,7 @@ Module Impl_Gas.
           self.remaining += returned;
       }
   *)
-  Instance run_erase_cost (self : Ref.t Pointer.Kind.Ref Self) (returned : U64.t) :
+  Instance run_erase_cost (self : Ref.t Pointer.Kind.MutRef Self) (returned : U64.t) :
     Run.Trait gas.Impl_revm_interpreter_gas_Gas.erase_cost [] [] [φ self; φ returned] unit.
   Proof.
     constructor.

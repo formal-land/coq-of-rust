@@ -105,7 +105,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ unicode_codepoint : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          mk_str (| String.String "029" "" |) in
+          mk_str (| PrimString.cat (PrimString.make 1 (8477%int63)) "" |) in
         let~ character_name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
           mk_str (| """DOUBLE-STRUCK CAPITAL R""" |) in
         let~ _ : Ty.tuple [] :=

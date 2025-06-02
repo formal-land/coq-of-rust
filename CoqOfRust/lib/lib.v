@@ -1,3 +1,4 @@
+Require Export Coq.Numbers.Cyclic.Int63.PrimInt63.
 Require Export Coq.Strings.Ascii.
 Require Export Coq.Strings.PrimString.
 Require Export Coq.ZArith.ZArith.
@@ -7,8 +8,8 @@ Require Export CoqOfRust.RecordUpdate.
 Global Set Primitive Projections.
 Global Set Printing Projections.
 Global Open Scope pstring_scope.
-Global Open Scope list_scope.
 Global Open Scope Z_scope.
+Global Open Scope list_scope.
 Global Open Scope type_scope.
 Global Open Scope bool_scope.
 

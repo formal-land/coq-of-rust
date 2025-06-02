@@ -734,3 +734,4 @@ Module Impl_InstructionResult.
     run_symbolic.
   Defined.
 End Impl_InstructionResult.
+Export Impl_InstructionResult.
