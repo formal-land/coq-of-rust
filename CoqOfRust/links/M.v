@@ -869,14 +869,14 @@ Module Run.
     let ref := Ref.immediate Pointer.Kind.Raw value in
     {{ k (φ value) 🔽 R, Output }} ->
     {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k 🔽 R, Output }}
-  | CallPrimitiveStateWrite
-      (value' : Value.t) (of_value : OfValue.t value')
-      (ref' : Value.t)
-      (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value))
+  | CallPrimitiveStateWrite {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
+      (value' : Value.t) (value : A)
       (k : Value.t -> M) :
-    ref' = φ ref ->
+    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
+    value' = φ value ->
     {{ k (φ tt) 🔽 R, Output }} ->
-    {{ LowM.CallPrimitive (Primitive.StateWrite ref' value') k 🔽 R, Output }}
+    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k 🔽 R, Output }}
   | CallPrimitiveGetSubPointer {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (index : Pointer.Index.t)
@@ -1129,7 +1129,7 @@ Proof.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* Write *)
-    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) (OfValue.get_value of_value))).
+    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) value)).
     intros _.
     exact (evaluate _ _ _ _ _ run).
   }
@@ -1260,9 +1260,8 @@ Ltac run_symbolic_state_read_immediate :=
 
 Ltac run_symbolic_state_write :=
   unshelve eapply Run.CallPrimitiveStateWrite; [
-    now repeat smpl of_value |
     |
-    now repeat smpl of_value |
+    repeat smpl of_value |
   ].
 
 Ltac run_symbolic_get_function :=
