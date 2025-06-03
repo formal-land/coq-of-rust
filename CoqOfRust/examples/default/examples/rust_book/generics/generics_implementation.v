@@ -114,13 +114,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ x : Ty.path "generics_implementation::Val" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_implementation::Val"
             []
             []
             [ ("val", M.read (| UnsupportedLiteral |)) ] in
         let~ y : Ty.apply (Ty.path "generics_implementation::GenVal") [] [ Ty.path "i32" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_implementation::GenVal"
             []
             [ Ty.path "i32" ]

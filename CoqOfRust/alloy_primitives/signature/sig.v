@@ -726,7 +726,7 @@ Module signature.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| bytes |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeTo"
                                           []
                                           [ Ty.path "usize" ]
@@ -1414,7 +1414,7 @@ Module signature.
                 s
               |) in
             let v := M.alloc (| Ty.path "alloy_primitives::signature::parity::Parity", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloy_primitives::signature::sig::Signature"
               []
               []
@@ -1716,7 +1716,7 @@ Module signature.
                           []
                           [ Ty.path "alloy_primitives::signature::sig::Signature" ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "alloy_primitives::signature::sig::Signature"
                               []
                               []
@@ -1892,7 +1892,7 @@ Module signature.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeTo"
                                   []
                                   [ Ty.path "usize" ]
@@ -1952,7 +1952,7 @@ Module signature.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -2058,7 +2058,7 @@ Module signature.
                         Ty.path "alloy_primitives::signature::error::SignatureError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloy_primitives::signature::sig::Signature"
                           []
                           []
@@ -2619,7 +2619,7 @@ Module signature.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, sig |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -2706,7 +2706,7 @@ Module signature.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, sig |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -2839,7 +2839,7 @@ Module signature.
             (let self :=
               M.alloc (| Ty.path "alloy_primitives::signature::sig::Signature", self |) in
             let parity := M.alloc (| T, parity |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloy_primitives::signature::sig::Signature"
               []
               []

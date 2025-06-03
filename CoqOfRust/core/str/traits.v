@@ -3528,7 +3528,7 @@ Module str.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3577,7 +3577,7 @@ Module str.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -4154,7 +4154,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -4227,7 +4227,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -4847,7 +4847,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -4920,7 +4920,7 @@ Module str.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]

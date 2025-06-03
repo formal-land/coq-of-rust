@@ -203,7 +203,7 @@ Module utils.
                   |),
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]

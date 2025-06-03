@@ -320,7 +320,7 @@ Module extension.
               self
             |) in
           let r := M.alloc (| Ty.path "usize", r |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_matrix::extension::FlatIter"
             []
             [ F; Ty.associated_in_trait "p3_matrix::Matrix" [] [ EF ] Inner "Row" ]

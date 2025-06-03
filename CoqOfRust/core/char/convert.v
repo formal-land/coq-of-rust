@@ -478,7 +478,7 @@ Module char.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::char::convert::ParseCharError" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::char::convert::ParseCharError"
               []
               []
@@ -1158,7 +1158,7 @@ Module char.
                           []
                           [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::char::convert::ParseCharError"
                               []
                               []
@@ -1207,7 +1207,7 @@ Module char.
                           []
                           [ Ty.path "char"; Ty.path "core::char::convert::ParseCharError" ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::char::convert::ParseCharError"
                               []
                               []

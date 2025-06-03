@@ -28,7 +28,7 @@ Module vec.
         | [], [], [ len ] =>
           ltac:(M.monadic
             (let len := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], len |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::vec::set_len_on_drop::SetLenOnDrop"
               []
               []

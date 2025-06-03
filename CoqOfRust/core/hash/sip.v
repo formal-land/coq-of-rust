@@ -104,7 +104,7 @@ Module hash.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::hash::sip::SipHasher13" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::hash::sip::SipHasher13"
               []
               []
@@ -164,7 +164,7 @@ Module hash.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::hash::sip::SipHasher13"
               []
               []
@@ -303,7 +303,7 @@ Module hash.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::hash::sip::SipHasher24" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::hash::sip::SipHasher24"
               []
               []
@@ -363,7 +363,7 @@ Module hash.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::hash::sip::SipHasher24"
               []
               []
@@ -1810,7 +1810,7 @@ Module hash.
               []
               []
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::hash::sip::SipHasher24"
                   []
                   []
@@ -1883,7 +1883,7 @@ Module hash.
           ltac:(M.monadic
             (let key0 := M.alloc (| Ty.path "u64", key0 |) in
             let key1 := M.alloc (| Ty.path "u64", key1 |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::hash::sip::SipHasher13"
               []
               []
@@ -1947,7 +1947,7 @@ Module hash.
             let key1 := M.alloc (| Ty.path "u64", key1 |) in
             M.read (|
               let~ state : Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::hash::sip::Hasher"
                   []
                   [ S ]
@@ -1956,7 +1956,7 @@ Module hash.
                     ("k1", M.read (| key1 |));
                     ("length", Value.Integer IntegerKind.Usize 0);
                     ("state",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::hash::sip::State"
                         []
                         []
@@ -3529,7 +3529,7 @@ Module hash.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::hash::sip::Hasher") [] [ S ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::hash::sip::Hasher"
               []
               [ S ]

@@ -2221,7 +2221,7 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter::stack::Stack"
               []
               []
@@ -6510,7 +6510,7 @@ Module interpreter.
                                                   |),
                                                   [
                                                     M.borrow (| Pointer.Kind.MutRef, tmp |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeFrom"
                                                       []
                                                       [ Ty.path "usize" ]

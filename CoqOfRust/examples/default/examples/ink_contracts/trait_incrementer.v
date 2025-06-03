@@ -28,7 +28,7 @@ Module Impl_trait_incrementer_Incrementer.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| Ty.path "u64", init_value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "trait_incrementer::Incrementer"
           []
           []

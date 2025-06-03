@@ -300,7 +300,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "generics_phantom_type::PhantomStruct")
               []
               [ Ty.path "char"; Ty.path "f32" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_phantom_type::PhantomStruct"
             []
             [ Ty.path "char"; Ty.path "f32" ]
@@ -313,7 +313,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "generics_phantom_type::PhantomStruct")
               []
               [ Ty.path "char"; Ty.path "f64" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_phantom_type::PhantomStruct"
             []
             [ Ty.path "char"; Ty.path "f64" ]

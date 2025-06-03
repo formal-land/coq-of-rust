@@ -230,7 +230,7 @@ Module tests.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "i32" ]
@@ -504,7 +504,7 @@ Module tests.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "i32" ]

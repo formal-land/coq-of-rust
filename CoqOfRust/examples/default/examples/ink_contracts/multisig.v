@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Mapping"
           []
           [ K; V ]
@@ -755,7 +755,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Transaction"
           []
           []
@@ -1001,7 +1001,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Transactions"
           []
           []
@@ -1337,7 +1337,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Multisig"
           []
           []
@@ -2737,7 +2737,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerAddition"
                       []
                       []
@@ -3471,7 +3471,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerRemoval"
                       []
                       []
@@ -3685,7 +3685,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerRemoval"
                       []
                       []
@@ -3714,7 +3714,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerAddition"
                       []
                       []
@@ -3824,7 +3824,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::RequirementChange"
                       []
                       []
@@ -4132,7 +4132,7 @@ Module Impl_multisig_Multisig.
                               []
                               []
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "multisig::Confirmation"
                                   []
                                   []
@@ -4322,7 +4322,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::Submission"
                       []
                       []
@@ -5040,7 +5040,7 @@ Module Impl_multisig_Multisig.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "multisig::Cancellation"
                               []
                               []
@@ -5383,7 +5383,7 @@ Module Impl_multisig_Multisig.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "multisig::Revocation"
                               []
                               []
@@ -5670,7 +5670,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::Execution"
                       []
                       []

@@ -879,7 +879,7 @@ Module clone.
                   ],
                 data
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::clone::uninit::InitializingSlice"
               []
               [ T ]

@@ -800,7 +800,7 @@ Module errors.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::errors::ExecutionState"
             []
             []
@@ -1286,7 +1286,7 @@ Module errors.
                 ],
               stack_trace
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::errors::ExecutionState"
             []
             []
@@ -1735,7 +1735,7 @@ Module errors.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::errors::VMError_"
             []
             []
@@ -4275,7 +4275,7 @@ Module errors.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "move_binary_format::errors::PartialVMError_"
                                 []
                                 []
@@ -5003,7 +5003,7 @@ Module errors.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError_" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::errors::PartialVMError_"
             []
             []
@@ -5602,7 +5602,7 @@ Module errors.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "move_binary_format::errors::VMError_"
                                 []
                                 []
@@ -5673,7 +5673,7 @@ Module errors.
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "move_binary_format::errors::PartialVMError_"
                     []
                     []

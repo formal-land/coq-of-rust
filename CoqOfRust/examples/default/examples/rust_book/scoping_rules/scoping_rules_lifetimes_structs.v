@@ -327,7 +327,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, x |) |) |) ] in
         let~ double : Ty.path "scoping_rules_lifetimes_structs::NamedBorrowed" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "scoping_rules_lifetimes_structs::NamedBorrowed"
             []
             []

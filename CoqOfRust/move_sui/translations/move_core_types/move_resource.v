@@ -126,7 +126,7 @@ Module move_resource.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::language_storage::StructTag"
             []
             []

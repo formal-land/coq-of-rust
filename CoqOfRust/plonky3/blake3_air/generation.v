@@ -3543,7 +3543,7 @@ Module generation.
                 [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3741,7 +3741,7 @@ Module generation.
                 [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3946,7 +3946,7 @@ Module generation.
                 [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -4235,7 +4235,7 @@ Module generation.
                 [ Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.tuple []) ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]

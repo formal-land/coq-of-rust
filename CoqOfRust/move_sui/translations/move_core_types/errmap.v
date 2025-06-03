@@ -108,7 +108,7 @@ Module errmap.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorDescription" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::errmap::ErrorDescription"
             []
             []
@@ -696,7 +696,7 @@ Module errmap.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::errmap::_'1::deserialize::__Visitor"
                   []
                   []
@@ -1265,7 +1265,7 @@ Module errmap.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::errmap::_'3::deserialize::__Visitor"
                   []
                   []
@@ -1447,7 +1447,7 @@ Module errmap.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::errmap::ErrorMapping" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::errmap::ErrorMapping"
             []
             []
@@ -1573,7 +1573,7 @@ Module errmap.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::errmap::ErrorMapping"
             []
             []

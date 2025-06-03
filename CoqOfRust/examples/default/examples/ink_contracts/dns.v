@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "dns::Mapping"
           []
           [ K; V ]
@@ -858,7 +858,7 @@ Module Impl_core_default_Default_for_dns_DomainNameService.
             |) in
           M.alloc (|
             Ty.path "dns::DomainNameService",
-            Value.StructRecord
+            Value.mkStructRecord
               "dns::DomainNameService"
               []
               []
@@ -1260,7 +1260,7 @@ Module Impl_dns_DomainNameService.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "dns::Register"
                               []
                               []
@@ -1580,7 +1580,7 @@ Module Impl_dns_DomainNameService.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "dns::SetAddress"
                               []
                               []
@@ -1834,7 +1834,7 @@ Module Impl_dns_DomainNameService.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "dns::Transfer"
                               []
                               []

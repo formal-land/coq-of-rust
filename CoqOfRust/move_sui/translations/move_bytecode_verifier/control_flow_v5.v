@@ -243,7 +243,7 @@ Module control_flow_v5.
                       Pointer.Kind.Ref,
                       M.alloc (|
                         Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier"
                           []
                           []
@@ -1434,7 +1434,7 @@ Module control_flow_v5.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -1554,7 +1554,7 @@ Module control_flow_v5.
                                             ]
                                           |)
                                         |),
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_bytecode_verifier::control_flow_v5::Label::Loop"
                                           []
                                           []

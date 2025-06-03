@@ -22,7 +22,7 @@ Module Impl_flipper_Flipper.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| Ty.path "bool", init_value |) in
-        Value.StructRecord "flipper::Flipper" [] [] [ ("value", M.read (| init_value |)) ]))
+        Value.mkStructRecord "flipper::Flipper" [] [] [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   

@@ -1624,7 +1624,7 @@ Module bits.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "i32" ]
@@ -1724,7 +1724,7 @@ Module bits.
                                                       []
                                                     |),
                                                     [
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::Range"
                                                         []
                                                         [ Ty.path "usize" ]

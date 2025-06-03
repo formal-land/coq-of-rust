@@ -176,7 +176,7 @@ Module result.
                 ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::result::ResultAndState"
             []
             [ HaltReasonT ]
@@ -650,7 +650,7 @@ Module result.
                         (Ty.path "revm_context_interface::result::ExecutionResult")
                         []
                         [ HaltReasonT ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::ExecutionResult::Success"
                         []
                         [ HaltReasonT ]
@@ -777,7 +777,7 @@ Module result.
                         (Ty.path "revm_context_interface::result::ExecutionResult")
                         []
                         [ HaltReasonT ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::ExecutionResult::Revert"
                         []
                         [ HaltReasonT ]
@@ -837,7 +837,7 @@ Module result.
                         (Ty.path "revm_context_interface::result::ExecutionResult")
                         []
                         [ HaltReasonT ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::ExecutionResult::Halt"
                         []
                         [ HaltReasonT ]
@@ -7823,7 +7823,7 @@ Module result.
                       |) in
                     M.alloc (|
                       Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee"
                         []
                         []
@@ -7961,7 +7961,7 @@ Module result.
                       M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
                       Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh"
                         []
                         []
@@ -8019,7 +8019,7 @@ Module result.
                       M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
                       Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow"
                         []
                         []
@@ -8205,7 +8205,7 @@ Module result.
                       M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
                     M.alloc (|
                       Ty.path "revm_context_interface::result::InvalidTransaction",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs"
                         []
                         []

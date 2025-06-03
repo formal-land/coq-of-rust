@@ -677,7 +677,7 @@ Module cell.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| T, value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::cell::Cell"
             []
             [ T ]
@@ -2078,7 +2078,7 @@ Module cell.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| T, value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::cell::RefCell"
             []
             [ T ]
@@ -2632,7 +2632,7 @@ Module cell.
                           Ty.path "core::cell::BorrowError"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::Ref"
                             []
                             [ T ]
@@ -2879,7 +2879,7 @@ Module cell.
                           Ty.path "core::cell::BorrowMutError"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::RefMut"
                             []
                             [ T ]
@@ -4466,7 +4466,7 @@ Module cell.
                         []
                         [ Ty.path "core::cell::BorrowRef" ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::BorrowRef"
                             []
                             []
@@ -4803,7 +4803,7 @@ Module cell.
               |) in
             M.alloc (|
               Ty.path "core::cell::BorrowRef",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::cell::BorrowRef"
                 []
                 []
@@ -4939,7 +4939,7 @@ Module cell.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cell::Ref") [] [ T ] ],
               orig
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::cell::Ref"
             []
             [ T ]
@@ -5000,7 +5000,7 @@ Module cell.
         ltac:(M.monadic
           (let orig := M.alloc (| Ty.apply (Ty.path "core::cell::Ref") [] [ T ], orig |) in
           let f := M.alloc (| F, f |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::cell::Ref"
             []
             [ U ]
@@ -5172,7 +5172,7 @@ Module cell.
                           Ty.apply (Ty.path "core::cell::Ref") [] [ T ]
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::Ref"
                             []
                             [ U ]
@@ -5343,7 +5343,7 @@ Module cell.
                         ],
                       Value.Tuple
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::Ref"
                             []
                             [ U ]
@@ -5364,7 +5364,7 @@ Module cell.
                                 |));
                               ("borrow", M.read (| borrow |))
                             ];
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::Ref"
                             []
                             [ V ]
@@ -5620,7 +5620,7 @@ Module cell.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "core::cell::RefMut") [] [ U ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::cell::RefMut"
                 []
                 [ U ]
@@ -5758,7 +5758,7 @@ Module cell.
                           Ty.apply (Ty.path "core::cell::RefMut") [] [ T ]
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::RefMut"
                             []
                             [ U ]
@@ -5928,7 +5928,7 @@ Module cell.
                         ],
                       Value.Tuple
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::RefMut"
                             []
                             [ U ]
@@ -5955,7 +5955,7 @@ Module cell.
                                   [ Ty.apply (Ty.path "&mut") [] [ U ] ]
                                   [])
                             ];
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::RefMut"
                             []
                             [ V ]
@@ -6330,7 +6330,7 @@ Module cell.
                         []
                         [ Ty.path "core::cell::BorrowRefMut" ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::cell::BorrowRefMut"
                             []
                             []
@@ -6534,7 +6534,7 @@ Module cell.
               |) in
             M.alloc (|
               Ty.path "core::cell::BorrowRefMut",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::cell::BorrowRefMut"
                 []
                 []
@@ -6828,7 +6828,7 @@ Module cell.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| T, value |) in
-          Value.StructRecord "core::cell::UnsafeCell" [] [ T ] [ ("value", M.read (| value |)) ]))
+          Value.mkStructRecord "core::cell::UnsafeCell" [] [ T ] [ ("value", M.read (| value |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -7174,13 +7174,13 @@ Module cell.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| T, value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::cell::SyncUnsafeCell"
             []
             [ T ]
             [
               ("value",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::cell::UnsafeCell"
                   []
                   [ T ]

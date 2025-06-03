@@ -949,7 +949,7 @@ Module identifier.
               [
                 M.read (| __deserializer |);
                 mk_str (| "Identifier" |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::identifier::_'2::deserialize::__Visitor"
                   []
                   []

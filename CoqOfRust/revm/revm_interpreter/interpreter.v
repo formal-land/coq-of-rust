@@ -374,7 +374,7 @@ Module interpreter.
                 [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::interpreter::Interpreter"
             []
             [ WIRE ]
@@ -795,7 +795,7 @@ Module interpreter.
           M.read (|
             let~ runtime_flag :
                 Ty.path "revm_interpreter::interpreter::runtime_flags::RuntimeFlags" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
                 []
                 []
@@ -821,7 +821,7 @@ Module interpreter.
                 []
                 [ Ty.apply (Ty.path "revm_interpreter::interpreter::EthInterpreter") [] [ EXT; MG ]
                 ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_interpreter::interpreter::Interpreter"
                 []
                 [ Ty.apply (Ty.path "revm_interpreter::interpreter::EthInterpreter") [] [ EXT; MG ]
@@ -1064,7 +1064,7 @@ Module interpreter.
                 ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::interpreter::EthInstructionProvider"
             []
             [ WIRE; HOST ]
@@ -1194,7 +1194,7 @@ Module interpreter.
                 ],
               _context
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::interpreter::EthInstructionProvider"
             []
             [ WIRE; HOST ]
@@ -2056,13 +2056,13 @@ Module interpreter.
                       |) in
                     M.alloc (|
                       Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_interpreter::interpreter_action::InterpreterAction::Return"
                         []
                         []
                         [
                           ("result",
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "revm_interpreter::interpreter::InterpreterResult"
                               []
                               []
@@ -2188,7 +2188,7 @@ Module interpreter.
                 [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::interpreter::InterpreterResult"
             []
             []
@@ -2616,7 +2616,7 @@ Module interpreter.
             |) in
           let output := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", output |) in
           let gas := M.alloc (| Ty.path "revm_interpreter::gas::Gas", gas |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::interpreter::InterpreterResult"
             []
             []

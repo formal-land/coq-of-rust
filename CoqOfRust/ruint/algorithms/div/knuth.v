@@ -842,7 +842,7 @@ Module algorithms.
                                                                                 |)
                                                                               |)
                                                                             |);
-                                                                            Value.StructRecord
+                                                                            Value.mkStructRecord
                                                                               "core::ops::range::Range"
                                                                               []
                                                                               [ Ty.path "usize" ]
@@ -976,7 +976,7 @@ Module algorithms.
                                                                       M.read (| numerator |)
                                                                     |)
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::Range"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -1048,7 +1048,7 @@ Module algorithms.
                                                                       M.read (| divisor |)
                                                                     |)
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::RangeTo"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -1292,7 +1292,7 @@ Module algorithms.
                                                                                           |)
                                                                                         |)
                                                                                       |);
-                                                                                      Value.StructRecord
+                                                                                      Value.mkStructRecord
                                                                                         "core::ops::range::Range"
                                                                                         []
                                                                                         [
@@ -1379,7 +1379,7 @@ Module algorithms.
                                                                                           |)
                                                                                         |)
                                                                                       |);
-                                                                                      Value.StructRecord
+                                                                                      Value.mkStructRecord
                                                                                         "core::ops::range::RangeTo"
                                                                                         []
                                                                                         [
@@ -3205,7 +3205,7 @@ Module algorithms.
                                                                                                                               |)
                                                                                                                             |)
                                                                                                                           |);
-                                                                                                                          Value.StructRecord
+                                                                                                                          Value.mkStructRecord
                                                                                                                             "core::ops::range::Range"
                                                                                                                             []
                                                                                                                             [
@@ -3303,7 +3303,7 @@ Module algorithms.
                                                                                                                               |)
                                                                                                                             |)
                                                                                                                           |);
-                                                                                                                          Value.StructRecord
+                                                                                                                          Value.mkStructRecord
                                                                                                                             "core::ops::range::RangeTo"
                                                                                                                             []
                                                                                                                             [
@@ -3612,7 +3612,7 @@ Module algorithms.
                                                                                                                               |)
                                                                                                                             |)
                                                                                                                           |);
-                                                                                                                          Value.StructRecord
+                                                                                                                          Value.mkStructRecord
                                                                                                                             "core::ops::range::Range"
                                                                                                                             []
                                                                                                                             [
@@ -3927,7 +3927,7 @@ Module algorithms.
                                                                                                                           |)
                                                                                                                         |)
                                                                                                                       |);
-                                                                                                                      Value.StructRecord
+                                                                                                                      Value.mkStructRecord
                                                                                                                         "core::ops::range::Range"
                                                                                                                         []
                                                                                                                         [
@@ -4015,7 +4015,7 @@ Module algorithms.
                                                                                                                           |)
                                                                                                                         |)
                                                                                                                       |);
-                                                                                                                      Value.StructRecord
+                                                                                                                      Value.mkStructRecord
                                                                                                                         "core::ops::range::RangeTo"
                                                                                                                         []
                                                                                                                         [
@@ -4427,7 +4427,7 @@ Module algorithms.
                                                                                               |)
                                                                                             |)
                                                                                           |);
-                                                                                          Value.StructRecord
+                                                                                          Value.mkStructRecord
                                                                                             "core::ops::range::Range"
                                                                                             []
                                                                                             [
@@ -4617,7 +4617,7 @@ Module algorithms.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| numerator |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeTo"
                                           []
                                           [ Ty.path "usize" ]
@@ -4649,7 +4649,7 @@ Module algorithms.
                               Pointer.Kind.MutRef,
                               M.deref (| M.read (| numerator |) |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeFrom"
                               []
                               [ Ty.path "usize" ]
@@ -4702,7 +4702,7 @@ Module algorithms.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| numerator |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]

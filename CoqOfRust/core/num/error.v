@@ -462,7 +462,7 @@ Module num.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::num::error::ParseIntError" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::num::error::ParseIntError"
               []
               []

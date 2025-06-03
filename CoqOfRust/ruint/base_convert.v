@@ -861,7 +861,7 @@ Module base_convert.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "ruint::base_convert::SpigotLittle") [ LIMBS ] [],
-              Value.StructRecord
+              Value.mkStructRecord
                 "ruint::base_convert::SpigotLittle"
                 [ LIMBS ]
                 []
@@ -962,7 +962,7 @@ Module base_convert.
               |) in
             M.alloc (|
               Ty.path "ruint::base_convert::to_base_be::OwnedVecIterator",
-              Value.StructRecord
+              Value.mkStructRecord
                 "ruint::base_convert::to_base_be::OwnedVecIterator"
                 []
                 []

@@ -199,7 +199,7 @@ Module algorithms.
                                 Pointer.Kind.MutRef,
                                 M.deref (| M.read (| divisor |) |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeToInclusive"
                                 []
                                 [ Ty.path "usize" ]
@@ -619,7 +619,7 @@ Module algorithms.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| numerator |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeToInclusive"
                                             []
                                             [ Ty.path "usize" ]

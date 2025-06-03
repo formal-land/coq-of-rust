@@ -452,7 +452,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     | [], [], [ name ] =>
       ltac:(M.monadic
         (let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "traits::Sheep"
           []
           []

@@ -13,7 +13,7 @@ Module future.
       | [], [ T ], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| T, value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::future::async_drop::AsyncDropOwning"
             []
             [ T ]
@@ -1083,7 +1083,7 @@ Module future.
       | [], [ T ], [ inner ] =>
         ltac:(M.monadic
           (let inner := M.alloc (| T, inner |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::future::async_drop::Fuse"
             []
             [ T ]
@@ -1457,7 +1457,7 @@ Module future.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]

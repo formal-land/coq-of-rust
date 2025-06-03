@@ -29,10 +29,10 @@ Module CreateInputs.
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [] [] [
         ("caller", φ x.(caller));
-        ("scheme", φ x.(scheme));
-        ("value", φ x.(value));
+        ("gas_limit", φ x.(gas_limit));
         ("init_code", φ x.(init_code));
-        ("gas_limit", φ x.(gas_limit))
+        ("scheme", φ x.(scheme));
+        ("value", φ x.(value))
       ];
   }.
 
@@ -54,10 +54,10 @@ Module CreateInputs.
     gas_limit' = φ gas_limit ->
     Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [] [] [
       ("caller", caller');
-      ("scheme", scheme');
-      ("value", value');
+      ("gas_limit", gas_limit');
       ("init_code", init_code');
-      ("gas_limit", gas_limit')
+      ("scheme", scheme');
+      ("value", value')
     ] = φ (Build_t caller scheme value init_code gas_limit).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
@@ -75,10 +75,10 @@ Module CreateInputs.
     gas_limit' = φ gas_limit ->
     OfValue.t (Value.StructRecord "revm_interpreter::interpreter_action::create_inputs::CreateInputs" [] [] [
       ("caller", caller');
-      ("scheme", scheme');
-      ("value", value');
+      ("gas_limit", gas_limit');
       ("init_code", init_code');
-      ("gas_limit", gas_limit')
+      ("scheme", scheme');
+      ("value", value')
     ]).
   Proof. intros; eapply OfValue.Make; apply of_value_with; eassumption. Defined.
   Smpl Add eapply of_value : of_value.

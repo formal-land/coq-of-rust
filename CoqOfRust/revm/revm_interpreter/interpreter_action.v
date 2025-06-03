@@ -1098,7 +1098,7 @@ Module interpreter_action.
                       |) in
                     M.alloc (|
                       Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_interpreter::interpreter_action::InterpreterAction::Return"
                         []
                         []

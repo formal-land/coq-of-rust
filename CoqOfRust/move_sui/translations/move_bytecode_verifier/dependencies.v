@@ -931,7 +931,7 @@ Module dependencies.
                 |)
               |) in
             let~ context : Ty.path "move_bytecode_verifier::dependencies::Context" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_bytecode_verifier::dependencies::Context"
                 []
                 []

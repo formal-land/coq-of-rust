@@ -14,7 +14,7 @@ Module iter.
         | [], [ A; F ], [ gen ] =>
           ltac:(M.monadic
             (let gen := M.alloc (| F, gen |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::iter::sources::once_with::OnceWith"
               []
               [ F ]
@@ -56,7 +56,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::sources::once_with::OnceWith") [] [ F ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::sources::once_with::OnceWith"
                 []
                 [ F ]

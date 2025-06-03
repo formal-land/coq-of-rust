@@ -282,7 +282,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| Ty.path "bool", init_value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "constructors_return_value::ConstructorsReturnValue"
           []
           []

@@ -960,7 +960,7 @@ Module collections.
                     ],
                   leaf
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [
@@ -1471,7 +1471,7 @@ Module collections.
                         V;
                         Ty.path "alloc::collections::btree::node::marker::Internal"
                       ] :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::NodeRef"
                     []
                     [
@@ -1667,7 +1667,7 @@ Module collections.
                     []
                     [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Internal"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::NodeRef"
                     []
                     [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Internal"
@@ -1832,7 +1832,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [
@@ -3358,7 +3358,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V; Type_ ]
@@ -3855,7 +3855,7 @@ Module collections.
                                                   ],
                                                 γ
                                               |) in
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "alloc::collections::btree::node::Handle"
                                               []
                                               [
@@ -4996,7 +4996,7 @@ Module collections.
                                         "keys"
                                       |)
                                     |));
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -5398,7 +5398,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ]
@@ -5653,7 +5653,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; K; V; Type_ ]
@@ -6115,7 +6115,7 @@ Module collections.
                     [ Ty.path "alloc::collections::btree::node::marker::DormantMut"; K; V; Type_ ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ]
@@ -6771,7 +6771,7 @@ Module collections.
                       V;
                       Ty.path "alloc::collections::btree::node::marker::Leaf"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::NodeRef"
                     []
                     [
@@ -6926,7 +6926,7 @@ Module collections.
                       V;
                       Ty.path "alloc::collections::btree::node::marker::Internal"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::NodeRef"
                     []
                     [
@@ -7399,7 +7399,7 @@ Module collections.
                                             [ K; V ]
                                         ]
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::collections::btree::node::BalancingContext"
                                             []
                                             [ K; V ]
@@ -7818,7 +7818,7 @@ Module collections.
                                                     [ K; V ]
                                                 ]
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "alloc::collections::btree::node::BalancingContext"
                                                     []
                                                     [ K; V ]
@@ -8629,7 +8629,7 @@ Module collections.
                       V;
                       Ty.path "alloc::collections::btree::node::marker::Internal"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::NodeRef"
                     []
                     [
@@ -9079,7 +9079,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Mut"; K; V; Type_ ]
@@ -9144,7 +9144,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::ValMut"; K; V; Type_ ]
@@ -9207,7 +9207,7 @@ Module collections.
                     [ Ty.path "alloc::collections::btree::node::marker::Owned"; K; V; Type_ ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Dying"; K; V; Type_ ]
@@ -9541,7 +9541,7 @@ Module collections.
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::collections::btree::node::NodeRef"
                         []
                         [
@@ -9732,7 +9732,7 @@ Module collections.
                     [ BorrowType; K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::NodeRef"
                 []
                 [
@@ -9927,7 +9927,7 @@ Module collections.
                                 ]
                             ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::node::NodeRef"
                                 []
                                 [
@@ -10018,7 +10018,7 @@ Module collections.
                                 ]
                             ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::node::NodeRef"
                                 []
                                 [
@@ -10355,7 +10355,7 @@ Module collections.
                         [ BorrowType; K; V; NodeType ];
                       Ty.path "alloc::collections::btree::node::marker::KV"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::Handle"
                     []
                     [
@@ -10805,7 +10805,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::Handle"
                 []
                 [
@@ -10917,7 +10917,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::Handle"
                 []
                 [
@@ -11012,7 +11012,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::Handle"
                 []
                 [
@@ -11126,7 +11126,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::Handle"
                 []
                 [
@@ -11313,7 +11313,7 @@ Module collections.
                         [ BorrowType; K; V; NodeType ];
                       Ty.path "alloc::collections::btree::node::marker::Edge"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::Handle"
                     []
                     [
@@ -12423,7 +12423,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -12502,7 +12502,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -15233,7 +15233,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -15312,7 +15312,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -15425,7 +15425,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -15523,7 +15523,7 @@ Module collections.
                           "node"
                         |)
                       |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -16577,7 +16577,7 @@ Module collections.
                       V;
                       Ty.path "alloc::collections::btree::node::marker::LeafOrInternal"
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::NodeRef"
                     []
                     [
@@ -18582,7 +18582,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -18660,7 +18660,7 @@ Module collections.
                                       "keys"
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -18734,7 +18734,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -18812,7 +18812,7 @@ Module collections.
                                       "vals"
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -19703,7 +19703,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::node::SplitResult")
                     []
                     [ K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::SplitResult"
                     []
                     [ K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ]
@@ -19856,7 +19856,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -19934,7 +19934,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -20349,7 +20349,7 @@ Module collections.
                                   "node"
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -20454,7 +20454,7 @@ Module collections.
                                       "edges"
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -20528,7 +20528,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::node::SplitResult")
                     []
                     [ K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::SplitResult"
                     []
                     [ K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ]
@@ -20720,7 +20720,7 @@ Module collections.
                     (Ty.path "alloc::collections::btree::node::BalancingContext")
                     []
                     [ K; V ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::BalancingContext"
                     []
                     [ K; V ]
@@ -21630,7 +21630,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, parent_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -21759,7 +21759,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, right_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -21818,7 +21818,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, left_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -21899,7 +21899,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, parent_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -22028,7 +22028,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, right_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -22087,7 +22087,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, left_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -22253,7 +22253,7 @@ Module collections.
                                                 |),
                                                 [
                                                   M.borrow (| Pointer.Kind.MutRef, parent_node |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -22307,7 +22307,7 @@ Module collections.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, parent_node |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -22594,7 +22594,7 @@ Module collections.
                                                 |),
                                                 [
                                                   M.borrow (| Pointer.Kind.MutRef, right_node |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -22690,7 +22690,7 @@ Module collections.
                                                 |),
                                                 [
                                                   M.borrow (| Pointer.Kind.MutRef, left_node |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -22746,7 +22746,7 @@ Module collections.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, left_node |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -24448,7 +24448,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| right_node |) |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -24521,7 +24521,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| right_node |) |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -24594,7 +24594,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| left_node |) |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -24666,7 +24666,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| right_node |) |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -24745,7 +24745,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| left_node |) |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -24817,7 +24817,7 @@ Module collections.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| right_node |) |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -25465,7 +25465,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -25577,7 +25577,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, left |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -25676,7 +25676,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -25707,7 +25707,7 @@ Module collections.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, right |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -26478,7 +26478,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| right_node |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -26550,7 +26550,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| left_node |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -26634,7 +26634,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| right_node |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -26706,7 +26706,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| left_node |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -26790,7 +26790,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| right_node |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -26864,7 +26864,7 @@ Module collections.
                                             Pointer.Kind.MutRef,
                                             M.deref (| M.read (| right_node |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -27215,7 +27215,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -27295,7 +27295,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, left |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -27415,7 +27415,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -27457,7 +27457,7 @@ Module collections.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, left |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -27499,7 +27499,7 @@ Module collections.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, right |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -28098,7 +28098,7 @@ Module collections.
                                 ]
                             ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::node::Handle"
                                 []
                                 [
@@ -28221,7 +28221,7 @@ Module collections.
                                 ]
                             ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::node::Handle"
                                 []
                                 [
@@ -28380,7 +28380,7 @@ Module collections.
                         ];
                       Type_
                     ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::node::Handle"
                     []
                     [
@@ -28924,7 +28924,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, left_node |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -28985,7 +28985,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right_node |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -29054,7 +29054,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, left_node |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -29115,7 +29115,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right_node |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -29402,7 +29402,7 @@ Module collections.
                                             |),
                                             [
                                               M.borrow (| Pointer.Kind.MutRef, left |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -29504,7 +29504,7 @@ Module collections.
                                             |),
                                             [
                                               M.borrow (| Pointer.Kind.MutRef, right |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -29551,7 +29551,7 @@ Module collections.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.MutRef, right |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -29690,7 +29690,7 @@ Module collections.
                     [ K; V; Ty.path "alloc::collections::btree::node::marker::Leaf" ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::SplitResult"
                 []
                 [ K; V; Ty.path "alloc::collections::btree::node::marker::LeafOrInternal" ]
@@ -29814,7 +29814,7 @@ Module collections.
                     [ K; V; Ty.path "alloc::collections::btree::node::marker::Internal" ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::node::SplitResult"
                 []
                 [ K; V; Ty.path "alloc::collections::btree::node::marker::LeafOrInternal" ]

@@ -2266,7 +2266,7 @@ Module annotated_visitor.
               layout
             |) in
           let len := M.alloc (| Ty.path "u64", len |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_visitor::VecDriver"
             []
             []
@@ -3040,7 +3040,7 @@ Module annotated_visitor.
                 [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ],
               layout
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_visitor::StructDriver"
             []
             []

@@ -279,7 +279,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ rectangle : Ty.path "generics_bounds::Rectangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_bounds::Rectangle"
             []
             []
@@ -288,7 +288,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ("height", M.read (| UnsupportedLiteral |))
             ] in
         let~ _triangle : Ty.path "generics_bounds::Triangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_bounds::Triangle"
             []
             []

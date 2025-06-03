@@ -22,7 +22,7 @@ Module mem.
                     (Ty.path "core::mem::transmutability::TransmuteFrom::transmute::Transmute")
                     []
                     [ Src; Self ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
                   []
                   [ Src; Self ]
@@ -447,7 +447,7 @@ Module mem.
         ltac:(M.monadic
           (M.alloc (|
             Ty.path "core::mem::transmutability::Assume",
-            Value.StructRecord
+            Value.mkStructRecord
               "core::mem::transmutability::Assume"
               []
               []
@@ -569,7 +569,7 @@ Module mem.
             (let self := M.alloc (| Ty.path "core::mem::transmutability::Assume", self |) in
             let other_assumptions :=
               M.alloc (| Ty.path "core::mem::transmutability::Assume", other_assumptions |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::mem::transmutability::Assume"
               []
               []
@@ -671,7 +671,7 @@ Module mem.
             (let self := M.alloc (| Ty.path "core::mem::transmutability::Assume", self |) in
             let other_assumptions :=
               M.alloc (| Ty.path "core::mem::transmutability::Assume", other_assumptions |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::mem::transmutability::Assume"
               []
               []

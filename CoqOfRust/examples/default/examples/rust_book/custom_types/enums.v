@@ -448,7 +448,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             ] in
         let~ click : Ty.path "enums::WebEvent" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "enums::WebEvent::Click"
             []
             []

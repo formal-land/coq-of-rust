@@ -3527,7 +3527,7 @@ Module fmt.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "ruint::fmt::DisplayBuffer"
             [ SIZE ]
             []
@@ -3685,7 +3685,7 @@ Module fmt.
                                   |)
                                 |)
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]

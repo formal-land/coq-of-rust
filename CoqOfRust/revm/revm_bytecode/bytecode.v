@@ -2316,7 +2316,7 @@ Module bytecode.
                               |)
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeTo"
                             []
                             [ Ty.path "usize" ]

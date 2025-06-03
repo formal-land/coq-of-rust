@@ -127,7 +127,7 @@ Module Impl_basic_contract_caller_OtherContract.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| Ty.path "bool", init_value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "basic_contract_caller::OtherContract"
           []
           []
@@ -252,7 +252,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
             |) in
           M.alloc (|
             Ty.path "basic_contract_caller::BasicContractCaller",
-            Value.StructRecord
+            Value.mkStructRecord
               "basic_contract_caller::BasicContractCaller"
               []
               []

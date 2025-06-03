@@ -188,7 +188,7 @@ Module limits.
                     [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ limit_check : Ty.path "move_bytecode_verifier::limits::LimitsVerifier" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::limits::LimitsVerifier"
                         []
                         []

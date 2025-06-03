@@ -197,7 +197,7 @@ Module signature.
                   M.read (|
                     let~ sig_check :
                         Ty.path "move_bytecode_verifier::signature::SignatureChecker" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::signature::SignatureChecker"
                         []
                         []
@@ -936,7 +936,7 @@ Module signature.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]

@@ -4205,7 +4205,7 @@ Module collections.
                     (Ty.path "alloc::collections::vec_deque::write_iter_wrapping::Guard")
                     []
                     [ T; A ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::vec_deque::write_iter_wrapping::Guard"
                   []
                   [ T; A ]
@@ -4908,7 +4908,7 @@ Module collections.
         | [], [], [ alloc ] =>
           ltac:(M.monadic
             (let alloc := M.alloc (| A, alloc |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::vec_deque::VecDeque"
               []
               [ T; A ]
@@ -4953,7 +4953,7 @@ Module collections.
           ltac:(M.monadic
             (let capacity := M.alloc (| Ty.path "usize", capacity |) in
             let alloc := M.alloc (| A, alloc |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::vec_deque::VecDeque"
               []
               [ T; A ]
@@ -5167,7 +5167,7 @@ Module collections.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::vec_deque::VecDeque"
                   []
                   [ T; A ]
@@ -7781,7 +7781,7 @@ Module collections.
                             (Ty.path "alloc::collections::vec_deque::shrink_to::Guard")
                             []
                             [ T; A ] :=
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::collections::vec_deque::shrink_to::Guard"
                           []
                           [ T; A ]
@@ -8598,7 +8598,7 @@ Module collections.
                                                         Pointer.Kind.MutRef,
                                                         M.deref (| M.read (| back |) |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::RangeFrom"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -8685,7 +8685,7 @@ Module collections.
                                                         Pointer.Kind.MutRef,
                                                         M.deref (| M.read (| front |) |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::RangeFrom"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -9488,7 +9488,7 @@ Module collections.
                     M.get_function (| "core::slice::index::range", [], [ R ] |),
                     [
                       M.read (| range |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::RangeTo"
                         []
                         [ Ty.path "usize" ]
@@ -9555,7 +9555,7 @@ Module collections.
                                   ],
                                 Value.Tuple
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -9563,7 +9563,7 @@ Module collections.
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_", Value.Integer IntegerKind.Usize 0)
                                       ];
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -9666,7 +9666,7 @@ Module collections.
                                           ],
                                         Value.Tuple
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -9679,7 +9679,7 @@ Module collections.
                                                     [ M.read (| wrapped_start |); M.read (| len |) ]
                                                   |))
                                               ];
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -9711,7 +9711,7 @@ Module collections.
                                           ],
                                         Value.Tuple
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -9738,7 +9738,7 @@ Module collections.
                                                     ]
                                                   |))
                                               ];
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -10198,7 +10198,7 @@ Module collections.
                     M.get_function (| "core::slice::index::range", [], [ R ] |),
                     [
                       M.read (| range |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::RangeTo"
                         []
                         [ Ty.path "usize" ]
@@ -14978,7 +14978,7 @@ Module collections.
                                                                         M.read (| self |)
                                                                       |)
                                                                     |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::Range"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -15161,7 +15161,7 @@ Module collections.
                                                                         M.read (| self |)
                                                                       |)
                                                                     |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::Range"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -17069,7 +17069,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::vec_deque::VecDeque"
               []
               [ T; Ty.path "alloc::alloc::Global" ]
@@ -17195,7 +17195,7 @@ Module collections.
                         Ty.path "alloc::collections::TryReserveError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::collections::vec_deque::VecDeque"
                           []
                           [ T; Ty.path "alloc::alloc::Global" ]
@@ -21998,7 +21998,7 @@ Module collections.
                       let alloc := M.copy (| A, γ0_3 |) in
                       M.alloc (|
                         Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::collections::vec_deque::VecDeque"
                           []
                           [ T; A ]

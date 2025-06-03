@@ -43,7 +43,7 @@ Module mem.
                   [ Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::mem::manually_drop::ManuallyDrop"
               []
               [ T ]
@@ -163,7 +163,7 @@ Module mem.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::mem::manually_drop::ManuallyDrop"
               []
               [ T ]
@@ -518,7 +518,7 @@ Module mem.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| T, value |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::mem::manually_drop::ManuallyDrop"
               []
               [ T ]

@@ -627,7 +627,7 @@ Module slice.
                                                                             M.read (| v |)
                                                                           |)
                                                                         |);
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "core::ops::range::RangeFrom"
                                                                           []
                                                                           [ Ty.path "usize" ]
@@ -1867,7 +1867,7 @@ Module slice.
                                                       [ T ]
                                                   ]
                                                   [
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::slice::sort::unstable::quicksort::GapGuard"
                                                       []
                                                       [ T ]
@@ -2583,7 +2583,7 @@ Module slice.
                               (Ty.path "core::slice::sort::unstable::quicksort::PartitionState")
                               []
                               [ T ] :=
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::slice::sort::unstable::quicksort::PartitionState"
                             []
                             [ T ]
@@ -2601,7 +2601,7 @@ Module slice.
                                   [ M.read (| v_base |); Value.Integer IntegerKind.Usize 1 ]
                                 |));
                               ("gap",
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::slice::sort::unstable::quicksort::GapGuardRaw"
                                   []
                                   [ T ]

@@ -1332,7 +1332,7 @@ Module Impl_payment_channel_PaymentChannel.
       ltac:(M.monadic
         (let recipient := M.alloc (| Ty.path "payment_channel::AccountId", recipient |) in
         let close_duration := M.alloc (| Ty.path "u64", close_duration |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "payment_channel::PaymentChannel"
           []
           []
@@ -2318,7 +2318,7 @@ Module Impl_payment_channel_PaymentChannel.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "payment_channel::SenderCloseStarted"
                               []
                               []

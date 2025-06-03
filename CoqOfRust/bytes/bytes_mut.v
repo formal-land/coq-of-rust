@@ -5894,7 +5894,7 @@ Module bytes_mut.
               |) in
             M.alloc (|
               Ty.path "bytes::bytes_mut::BytesMut",
-              Value.StructRecord
+              Value.mkStructRecord
                 "bytes::bytes_mut::BytesMut"
                 []
                 []
@@ -7195,7 +7195,7 @@ Module bytes_mut.
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "bytes::bytes_mut::Shared"
                     []
                     []
@@ -14543,7 +14543,7 @@ Module bytes_mut.
         Ty.path "bytes::bytes::Vtable",
         M.alloc (|
           Ty.path "bytes::bytes::Vtable",
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::bytes::Vtable"
             []
             []
@@ -15081,7 +15081,7 @@ Module bytes_mut.
                     |) in
                   M.alloc (|
                     Ty.path "bytes::bytes_mut::BytesMut",
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "bytes::bytes_mut::BytesMut"
                       []
                       []

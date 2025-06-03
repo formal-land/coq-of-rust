@@ -2459,7 +2459,7 @@ Module reference_safety.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
               []
               []
@@ -3157,7 +3157,7 @@ Module reference_safety.
               let~ state :
                   Ty.path
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
                   []
                   []
@@ -16412,7 +16412,7 @@ Module reference_safety.
               let~ canonical_state :
                   Ty.path
                     "move_bytecode_verifier::reference_safety::abstract_state::AbstractState" :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
                   []
                   []
@@ -18310,7 +18310,7 @@ Module reference_safety.
                 |) in
               M.alloc (|
                 Ty.path "move_bytecode_verifier::reference_safety::abstract_state::AbstractState",
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier::reference_safety::abstract_state::AbstractState"
                   []
                   []

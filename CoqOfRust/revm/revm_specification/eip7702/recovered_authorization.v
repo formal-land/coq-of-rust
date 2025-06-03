@@ -138,7 +138,7 @@ Module eip7702.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
               []
               []
@@ -519,7 +519,7 @@ Module eip7702.
                   [ Ty.path "alloy_primitives::bits::address::Address" ],
                 authority
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
               []
               []

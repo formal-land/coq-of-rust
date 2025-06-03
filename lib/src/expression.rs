@@ -723,7 +723,7 @@ impl Expr {
                 fields,
                 base,
             } => match base {
-                None => coq::Expression::just_name("Value.StructRecord").apply_many(&[
+                None => coq::Expression::just_name("Value.mkStructRecord").apply_many(&[
                     Rc::new(coq::Expression::String(path.to_string())),
                     Rc::new(coq::Expression::List {
                         exprs: arg_consts

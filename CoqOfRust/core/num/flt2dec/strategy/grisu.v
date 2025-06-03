@@ -787,7 +787,7 @@ Module num.
                           Value.Tuple
                             [
                               M.read (| k |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::diy_float::Fp"
                                 []
                                 []
@@ -2260,7 +2260,7 @@ Module num.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Ty.path "core::num::diy_float::Fp",
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::num::diy_float::Fp"
                                       []
                                       []
@@ -2313,7 +2313,7 @@ Module num.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Ty.path "core::num::diy_float::Fp",
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::num::diy_float::Fp"
                                       []
                                       []
@@ -2373,7 +2373,7 @@ Module num.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Ty.path "core::num::diy_float::Fp",
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::num::diy_float::Fp"
                                       []
                                       []
@@ -3440,7 +3440,7 @@ Module num.
                                                                                                       |)
                                                                                                     |)
                                                                                                   |);
-                                                                                                  Value.StructRecord
+                                                                                                  Value.mkStructRecord
                                                                                                     "core::ops::range::RangeTo"
                                                                                                     []
                                                                                                     [
@@ -4224,7 +4224,7 @@ Module num.
                                                                                                         |)
                                                                                                       |)
                                                                                                     |);
-                                                                                                    Value.StructRecord
+                                                                                                    Value.mkStructRecord
                                                                                                       "core::ops::range::RangeTo"
                                                                                                       []
                                                                                                       [
@@ -5775,7 +5775,7 @@ Module num.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Ty.path "core::num::diy_float::Fp",
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::num::diy_float::Fp"
                                       []
                                       []
@@ -8303,7 +8303,7 @@ Module num.
                                                                               M.read (| buf |)
                                                                             |)
                                                                           |);
-                                                                          Value.StructRecord
+                                                                          Value.mkStructRecord
                                                                             "core::ops::range::RangeTo"
                                                                             []
                                                                             [ Ty.path "usize" ]
@@ -8506,7 +8506,7 @@ Module num.
                                                                                             |)
                                                                                           |)
                                                                                         |);
-                                                                                        Value.StructRecord
+                                                                                        Value.mkStructRecord
                                                                                           "core::ops::range::RangeTo"
                                                                                           []
                                                                                           [
@@ -8779,7 +8779,7 @@ Module num.
                                                                               M.read (| buf |)
                                                                             |)
                                                                           |);
-                                                                          Value.StructRecord
+                                                                          Value.mkStructRecord
                                                                             "core::ops::range::RangeTo"
                                                                             []
                                                                             [ Ty.path "usize" ]

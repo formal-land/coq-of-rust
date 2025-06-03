@@ -39,7 +39,7 @@ Module interpreter_action.
                   [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
               []
               []

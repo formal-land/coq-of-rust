@@ -538,7 +538,7 @@ Module eof.
                                                         Pointer.Kind.Ref,
                                                         M.deref (| M.read (| code |) |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::Range"
                                                         []
                                                         [ Ty.path "usize" ]

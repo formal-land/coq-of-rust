@@ -183,7 +183,7 @@ Module ffi.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::FromBytesWithNulError" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ffi::c_str::FromBytesWithNulError"
               []
               []
@@ -814,7 +814,7 @@ Module ffi.
         | [], [], [ pos ] =>
           ltac:(M.monadic
             (let pos := M.alloc (| Ty.path "usize", pos |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ffi::c_str::FromBytesWithNulError"
               []
               []
@@ -843,7 +843,7 @@ Module ffi.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::ffi::c_str::FromBytesWithNulError"
               []
               []
@@ -3189,7 +3189,7 @@ Module ffi.
                                               Pointer.Kind.Ref,
                                               M.deref (| M.read (| bytes |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeFrom"
                                               []
                                               [ Ty.path "usize" ]
@@ -3476,7 +3476,7 @@ Module ffi.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::Bytes" ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ffi::c_str::Bytes"
               []
               []
@@ -3691,7 +3691,7 @@ Module ffi.
           ltac:(M.monadic
             (let s :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ], s |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ffi::c_str::Bytes"
               []
               []

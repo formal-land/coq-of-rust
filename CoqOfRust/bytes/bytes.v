@@ -135,7 +135,7 @@ Module bytes.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
               bytes
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::bytes::Bytes"
             []
             []
@@ -1693,7 +1693,7 @@ Module bytes.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -2880,7 +2880,7 @@ Module bytes.
             |) in
           let vtable :=
             M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Vtable" ], vtable |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::bytes::Bytes"
             []
             []
@@ -5984,7 +5984,7 @@ Module bytes.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "bytes::bytes::Shared"
                             []
                             []
@@ -6106,7 +6106,7 @@ Module bytes.
                       |) in
                     M.alloc (|
                       Ty.path "bytes::bytes::Bytes",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "bytes::bytes::Bytes"
                         []
                         []
@@ -6381,7 +6381,7 @@ Module bytes.
                               |) in
                             M.alloc (|
                               Ty.path "bytes::bytes::Bytes",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "bytes::bytes::Bytes"
                                 []
                                 []
@@ -6443,7 +6443,7 @@ Module bytes.
                           ltac:(M.monadic
                             (M.alloc (|
                               Ty.path "bytes::bytes::Bytes",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "bytes::bytes::Bytes"
                                 []
                                 []
@@ -7078,7 +7078,7 @@ Module bytes.
     ltac:(M.monadic
       (M.alloc (|
         Ty.path "bytes::bytes::Vtable",
-        Value.StructRecord
+        Value.mkStructRecord
           "bytes::bytes::Vtable"
           []
           []
@@ -7394,7 +7394,7 @@ Module bytes.
         Ty.path "bytes::bytes::Vtable",
         M.alloc (|
           Ty.path "bytes::bytes::Vtable",
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::bytes::Vtable"
             []
             []
@@ -7438,7 +7438,7 @@ Module bytes.
         Ty.path "bytes::bytes::Vtable",
         M.alloc (|
           Ty.path "bytes::bytes::Vtable",
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::bytes::Vtable"
             []
             []
@@ -10306,7 +10306,7 @@ Module bytes.
         Ty.path "bytes::bytes::Vtable",
         M.alloc (|
           Ty.path "bytes::bytes::Vtable",
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::bytes::Vtable"
             []
             []
@@ -11428,7 +11428,7 @@ Module bytes.
             |) in
           M.alloc (|
             Ty.path "bytes::bytes::Bytes",
-            Value.StructRecord
+            Value.mkStructRecord
               "bytes::bytes::Bytes"
               []
               []
@@ -11583,7 +11583,7 @@ Module bytes.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "bytes::bytes::Shared"
                   []
                   []
@@ -11816,7 +11816,7 @@ Module bytes.
                     |) in
                   M.alloc (|
                     Ty.path "bytes::bytes::Bytes",
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "bytes::bytes::Bytes"
                       []
                       []

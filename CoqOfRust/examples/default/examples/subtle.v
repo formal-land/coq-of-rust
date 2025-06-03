@@ -4201,7 +4201,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
             Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
             self
           |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "subtle::CtOption"
           []
           [ T ]
@@ -4481,7 +4481,7 @@ Module Impl_subtle_CtOption_T.
       ltac:(M.monadic
         (let value := M.alloc (| T, value |) in
         let is_some := M.alloc (| Ty.path "subtle::Choice", is_some |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "subtle::CtOption"
           []
           [ T ]

@@ -259,7 +259,7 @@ Module io.
                 |) in
               M.alloc (|
                 Ty.path "core::io::borrowed_buf::BorrowedBuf",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::io::borrowed_buf::BorrowedBuf"
                   []
                   []
@@ -410,7 +410,7 @@ Module io.
                   ],
                 buf
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::io::borrowed_buf::BorrowedBuf"
               []
               []
@@ -626,7 +626,7 @@ Module io.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -754,7 +754,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -882,7 +882,7 @@ Module io.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -1007,7 +1007,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -1084,7 +1084,7 @@ Module io.
                 Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::io::borrowed_buf::BorrowedCursor"
               []
               []
@@ -1357,7 +1357,7 @@ Module io.
                 Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::io::borrowed_buf::BorrowedCursor"
               []
               []
@@ -1623,7 +1623,7 @@ Module io.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -1783,7 +1783,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -1942,7 +1942,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeFrom"
                               []
                               [ Ty.path "usize" ]
@@ -2059,7 +2059,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeFrom"
                               []
                               [ Ty.path "usize" ]
@@ -2828,7 +2828,7 @@ Module io.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]

@@ -209,7 +209,11 @@ Module Impl_contract_ref_FlipperRef.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| Ty.path "bool", init_value |) in
-        Value.StructRecord "contract_ref::FlipperRef" [] [] [ ("value", M.read (| init_value |)) ]))
+        Value.mkStructRecord
+          "contract_ref::FlipperRef"
+          []
+          []
+          [ ("value", M.read (| init_value |)) ]))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -442,7 +446,7 @@ Module Impl_contract_ref_ContractRef.
             |) in
           M.alloc (|
             Ty.path "contract_ref::ContractRef",
-            Value.StructRecord
+            Value.mkStructRecord
               "contract_ref::ContractRef"
               []
               []
@@ -523,7 +527,7 @@ Module Impl_contract_ref_ContractRef.
             |) in
           M.alloc (|
             Ty.path "contract_ref::ContractRef",
-            Value.StructRecord
+            Value.mkStructRecord
               "contract_ref::ContractRef"
               []
               []

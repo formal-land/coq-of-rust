@@ -159,7 +159,7 @@ Module absint.
                 ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_bytecode_verifier::absint::BlockInvariant"
             []
             [ State ]
@@ -635,7 +635,7 @@ Module absint.
                         [
                           M.borrow (| Pointer.Kind.MutRef, inv_map |);
                           M.read (| entry_block_id |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "move_bytecode_verifier::absint::BlockInvariant"
                             []
                             [
@@ -2407,7 +2407,7 @@ Module absint.
                                                                                     |)
                                                                                   |)
                                                                                 |);
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "move_bytecode_verifier::absint::BlockInvariant"
                                                                                   []
                                                                                   [
@@ -3361,7 +3361,7 @@ Module absint.
                 [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
               function_handle
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_bytecode_verifier::absint::FunctionContext"
             []
             []

@@ -420,7 +420,7 @@ Module Matrix.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "p3_matrix::Dimensions"
           []
           []
@@ -527,7 +527,7 @@ Module Matrix.
             ]
           |),
           [
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::Range"
               []
               [ Ty.path "usize" ]
@@ -625,7 +625,7 @@ Module Matrix.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -843,7 +843,7 @@ Module Matrix.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -971,7 +971,7 @@ Module Matrix.
                 [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -1092,7 +1092,7 @@ Module Matrix.
                 [ T; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] T ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -1251,7 +1251,7 @@ Module Matrix.
                 [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -1415,7 +1415,7 @@ Module Matrix.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -1559,7 +1559,7 @@ Module Matrix.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -1709,7 +1709,7 @@ Module Matrix.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -1829,7 +1829,7 @@ Module Matrix.
                 [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -2061,7 +2061,7 @@ Module Matrix.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -2214,7 +2214,7 @@ Module Matrix.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -2409,7 +2409,7 @@ Module Matrix.
                         [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -2583,7 +2583,7 @@ Module Matrix.
                         [ P; Ty.function [ Ty.tuple [ Ty.path "usize" ] ] P ]
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -5575,7 +5575,7 @@ Module Matrix.
                                                       ]
                                                     |),
                                                     [
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::Range"
                                                         []
                                                         [ Ty.path "usize" ]

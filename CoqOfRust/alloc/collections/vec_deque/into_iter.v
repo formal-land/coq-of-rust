@@ -36,7 +36,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::vec_deque::into_iter::IntoIter"
                 []
                 [ T; A ]
@@ -102,7 +102,7 @@ Module collections.
                   Ty.apply (Ty.path "alloc::collections::vec_deque::VecDeque") [] [ T; A ],
                   inner
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::vec_deque::into_iter::IntoIter"
                 []
                 [ T; A ]
@@ -523,7 +523,7 @@ Module collections.
                                       "inner"
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -728,7 +728,7 @@ Module collections.
                               (Ty.path "alloc::collections::vec_deque::into_iter::try_fold::Guard")
                               []
                               [ T; A ] :=
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::vec_deque::into_iter::try_fold::Guard"
                             []
                             [ T; A ]
@@ -2363,7 +2363,7 @@ Module collections.
                                                 |),
                                                 [
                                                   M.read (| raw_arr |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -2755,7 +2755,7 @@ Module collections.
                               (Ty.path "alloc::collections::vec_deque::into_iter::try_rfold::Guard")
                               []
                               [ T; A ] :=
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::vec_deque::into_iter::try_rfold::Guard"
                             []
                             [ T; A ]

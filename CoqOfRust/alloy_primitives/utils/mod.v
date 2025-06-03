@@ -2379,7 +2379,7 @@ Module utils.
               Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::Keccak256" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::utils::Keccak256"
             []
             []
@@ -2535,7 +2535,7 @@ Module utils.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::utils::Keccak256"
             []
             []

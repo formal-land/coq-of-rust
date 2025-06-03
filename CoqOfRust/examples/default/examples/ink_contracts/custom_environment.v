@@ -152,7 +152,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "custom_environment::EventWithTopics"
           []
           []

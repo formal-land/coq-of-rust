@@ -150,7 +150,7 @@
 
 ## Contract/Call
 
-- [ ] `call`
+- [x] `call`
 
 ## Contract/Call_code
 
@@ -203,6 +203,6 @@
 ## Summary
 
 - Total: 120
-- Admitted: 24
-- Defined: 96
-- Percentage: 80.00%
+- Admitted: 23
+- Defined: 97
+- Percentage: 80.83%

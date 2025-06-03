@@ -30,7 +30,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::map_while::MapWhile") [] [ I; P ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::map_while::MapWhile"
                 []
                 [ I; P ]
@@ -105,7 +105,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let predicate := M.alloc (| P, predicate |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::map_while::MapWhile"
                 []
                 [ I; P ]

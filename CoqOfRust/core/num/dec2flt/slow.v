@@ -1265,7 +1265,7 @@ Module num.
                         |) in
                       M.alloc (|
                         Ty.path "core::num::dec2flt::common::BiasedFp",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::dec2flt::common::BiasedFp"
                           []
                           []

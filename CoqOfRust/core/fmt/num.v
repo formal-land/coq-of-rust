@@ -1224,7 +1224,7 @@ Module fmt.
                   |),
                   [
                     (* Unsize *) M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |));
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeFrom"
                       []
                       [ Ty.path "usize" ]
@@ -11658,7 +11658,7 @@ Module fmt.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -12866,7 +12866,7 @@ Module fmt.
                           |)
                         |) in
                       let~ formatted : Ty.path "core::num::fmt::Formatted" :=
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::fmt::Formatted"
                           []
                           []
@@ -15887,7 +15887,7 @@ Module fmt.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -17087,7 +17087,7 @@ Module fmt.
                         |)
                       |) in
                     let~ formatted : Ty.path "core::num::fmt::Formatted" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::num::fmt::Formatted"
                         []
                         []

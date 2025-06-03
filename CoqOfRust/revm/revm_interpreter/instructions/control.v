@@ -5629,13 +5629,13 @@ Module instructions.
                                       "control"
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "revm_interpreter::interpreter_action::InterpreterAction::Return"
                                     []
                                     []
                                     [
                                       ("result",
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "revm_interpreter::interpreter::InterpreterResult"
                                           []
                                           []

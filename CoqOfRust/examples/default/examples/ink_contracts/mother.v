@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "mother::Mapping"
           []
           [ K; V ]
@@ -1629,7 +1629,7 @@ Module Impl_core_clone_Clone_for_mother_Auction.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "mother::Auction" ], self |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "mother::Auction"
           []
           []
@@ -1875,7 +1875,7 @@ Module Impl_core_default_Default_for_mother_Auction.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "mother::Auction"
           []
           []
@@ -2262,7 +2262,7 @@ Module Impl_core_default_Default_for_mother_Mother.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "mother::Mother"
           []
           []
@@ -2375,7 +2375,7 @@ Module Impl_mother_Mother.
     | [], [], [ auction ] =>
       ltac:(M.monadic
         (let auction := M.alloc (| Ty.path "mother::Auction", auction |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "mother::Mother"
           []
           []
@@ -2576,7 +2576,7 @@ Module Impl_mother_Mother.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "mother::AuctionEchoed"
                       []
                       []

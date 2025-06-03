@@ -83,7 +83,7 @@ Module Impl_mutual_loop_LoopB.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "mutual_loop::LoopB::Item"
           []
           []

@@ -229,7 +229,7 @@ Module num.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "core::num::dec2flt::number::Number"
                 []
                 []

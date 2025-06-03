@@ -2374,7 +2374,7 @@ Module ascii.
                                           |),
                                           [
                                             M.borrow (| Pointer.Kind.Ref, buf |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]

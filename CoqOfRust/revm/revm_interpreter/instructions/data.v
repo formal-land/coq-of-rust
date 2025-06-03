@@ -655,7 +655,7 @@ Module instructions.
                                         |),
                                         [
                                           M.borrow (| Pointer.Kind.MutRef, word |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -1086,7 +1086,7 @@ Module instructions.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, word |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]

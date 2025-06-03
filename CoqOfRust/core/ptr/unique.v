@@ -55,7 +55,7 @@ Module ptr.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::ptr::unique::Unique"
               []
               [ T ]
@@ -98,7 +98,7 @@ Module ptr.
         | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], ptr |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::unique::Unique"
               []
               [ T ]
@@ -191,7 +191,7 @@ Module ptr.
                           []
                           [ Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ] ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ptr::unique::Unique"
                               []
                               [ T ]
@@ -429,7 +429,7 @@ Module ptr.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::unique::Unique"
               []
               [ U ]
@@ -774,7 +774,7 @@ Module ptr.
           ltac:(M.monadic
             (let pointer :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], pointer |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::unique::Unique"
               []
               [ T ]

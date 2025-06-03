@@ -33,7 +33,7 @@ Module my.
       | [], [], [ contents ] =>
         ltac:(M.monadic
           (let contents := M.alloc (| T, contents |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "struct_visibility::my::ClosedBox"
             []
             [ T ]
@@ -84,7 +84,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "struct_visibility::my::OpenBox")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "struct_visibility::my::OpenBox"
             []
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]

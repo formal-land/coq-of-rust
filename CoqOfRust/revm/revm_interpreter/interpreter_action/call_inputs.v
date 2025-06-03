@@ -41,7 +41,7 @@ Module interpreter_action.
                   [ Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::call_inputs::CallInputs"
               []
               []

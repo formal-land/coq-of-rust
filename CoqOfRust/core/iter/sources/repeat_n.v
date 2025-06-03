@@ -76,7 +76,7 @@ Module iter.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::iter::sources::repeat_n::RepeatN"
                   []
                   [ T ]
@@ -397,7 +397,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::sources::repeat_n::RepeatN"
                 []
                 [ A ]

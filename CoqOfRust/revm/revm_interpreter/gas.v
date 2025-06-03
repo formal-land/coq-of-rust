@@ -197,7 +197,7 @@ Module gas.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_interpreter::gas::Gas"
             []
             []
@@ -632,7 +632,7 @@ Module gas.
       | [], [], [ limit ] =>
         ltac:(M.monadic
           (let limit := M.alloc (| Ty.path "u64", limit |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::gas::Gas"
             []
             []
@@ -674,7 +674,7 @@ Module gas.
       | [], [], [ limit ] =>
         ltac:(M.monadic
           (let limit := M.alloc (| Ty.path "u64", limit |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::gas::Gas"
             []
             []
@@ -1467,7 +1467,7 @@ Module gas.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_interpreter::gas::MemoryGas"
             []
             []
@@ -1827,7 +1827,7 @@ Module gas.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_interpreter::gas::MemoryGas"
             []
             []

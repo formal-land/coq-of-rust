@@ -4091,7 +4091,7 @@ Module utils.
                                               |),
                                               [
                                                 M.borrow (| Pointer.Kind.Ref, amount |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeFrom"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -4172,7 +4172,7 @@ Module utils.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| amount |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeTo"
                                           []
                                           [ Ty.path "usize" ]

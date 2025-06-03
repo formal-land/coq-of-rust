@@ -193,7 +193,7 @@ Module slice.
                   ]
                 |) in
               let~ guard : Ty.apply (Ty.path "alloc::slice::hack::to_vec::DropGuard") [] [ T; A ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::slice::hack::to_vec::DropGuard"
                   []
                   [ T; A ]
@@ -1593,7 +1593,7 @@ Module slice.
                                                     []
                                                   |),
                                                   [
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::Range"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -2215,7 +2215,7 @@ Module slice.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]

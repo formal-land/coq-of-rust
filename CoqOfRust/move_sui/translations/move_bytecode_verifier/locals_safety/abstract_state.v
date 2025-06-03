@@ -382,7 +382,7 @@ Module locals_safety.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
               []
               []
@@ -1100,7 +1100,7 @@ Module locals_safety.
                                 ]
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -1926,7 +1926,7 @@ Module locals_safety.
                             Ty.path "move_binary_format::errors::PartialVMError"
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
                               []
                               []
@@ -3592,7 +3592,7 @@ Module locals_safety.
                 |) in
               M.alloc (|
                 Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
                   []
                   []

@@ -1075,7 +1075,7 @@ Module net.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 input
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::parser::Parser"
               []
               []
@@ -5062,7 +5062,7 @@ Module net.
                                                                   Pointer.Kind.MutRef,
                                                                   tail
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -5138,7 +5138,7 @@ Module net.
                                                                     Pointer.Kind.MutRef,
                                                                     head
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::Range"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -5206,7 +5206,7 @@ Module net.
                                                                         Pointer.Kind.Ref,
                                                                         tail
                                                                       |);
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "core::ops::range::RangeTo"
                                                                         []
                                                                         [ Ty.path "usize" ]

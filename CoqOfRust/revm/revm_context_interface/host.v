@@ -1210,7 +1210,7 @@ Module host.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::host::SStoreResult"
             []
             []
@@ -1446,7 +1446,7 @@ Module host.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::host::SStoreResult"
             []
             []
@@ -2068,7 +2068,7 @@ Module host.
                 [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::host::SelfDestructResult"
             []
             []
@@ -2278,7 +2278,7 @@ Module host.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::host::SelfDestructResult"
             []
             []

@@ -32,7 +32,7 @@ Module interpreter_action.
                   [ Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
               []
               []
@@ -380,7 +380,7 @@ Module interpreter_action.
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                 memory_offset
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::call_outcome::CallOutcome"
               []
               []

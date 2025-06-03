@@ -3488,7 +3488,7 @@ Module num.
                                                                       Pointer.Kind.MutRef,
                                                                       M.deref (| M.read (| buf |) |)
                                                                     |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::RangeTo"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -3641,7 +3641,7 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| buf |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -4859,7 +4859,7 @@ Module num.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -5120,7 +5120,7 @@ Module num.
                                                                                                           |)
                                                                                                         |)
                                                                                                       |);
-                                                                                                      Value.StructRecord
+                                                                                                      Value.mkStructRecord
                                                                                                         "core::ops::range::Range"
                                                                                                         []
                                                                                                         [
@@ -5463,7 +5463,7 @@ Module num.
                                                                                                               |)
                                                                                                             |)
                                                                                                           |);
-                                                                                                          Value.StructRecord
+                                                                                                          Value.mkStructRecord
                                                                                                             "core::ops::range::RangeTo"
                                                                                                             []
                                                                                                             [
@@ -6535,7 +6535,7 @@ Module num.
                                                                                 M.read (| buf |)
                                                                               |)
                                                                             |);
-                                                                            Value.StructRecord
+                                                                            Value.mkStructRecord
                                                                               "core::ops::range::RangeTo"
                                                                               []
                                                                               [ Ty.path "usize" ]
@@ -6766,7 +6766,7 @@ Module num.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| buf |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]

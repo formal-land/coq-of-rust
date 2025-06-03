@@ -846,7 +846,7 @@ Module array_serialization.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]

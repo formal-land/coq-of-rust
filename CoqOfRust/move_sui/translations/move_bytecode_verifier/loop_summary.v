@@ -1010,7 +1010,7 @@ Module loop_summary.
                                             Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                             γ
                                           |) in
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
                                           []
                                           []
@@ -1856,7 +1856,7 @@ Module loop_summary.
                                                 |),
                                                 [
                                                   M.borrow (| Pointer.Kind.MutRef, stack |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "move_bytecode_verifier::loop_summary::new::Frontier::Finish"
                                                     []
                                                     []
@@ -2090,7 +2090,7 @@ Module loop_summary.
                                                                               [ Ty.path "u16" ],
                                                                             γ
                                                                           |) in
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
                                                                           []
                                                                           []
@@ -2137,7 +2137,7 @@ Module loop_summary.
               |) in
             M.alloc (|
               Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_bytecode_verifier::loop_summary::LoopSummary"
                 []
                 []
@@ -2322,7 +2322,7 @@ Module loop_summary.
               ]
             |),
             [
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]
@@ -2691,7 +2691,7 @@ Module loop_summary.
               |) in
             M.alloc (|
               Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_bytecode_verifier::loop_summary::LoopPartition"
                 []
                 []
@@ -2756,7 +2756,7 @@ Module loop_summary.
                             ]
                           |),
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]

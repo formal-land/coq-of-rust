@@ -859,7 +859,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'1::deserialize::__Visitor"
                   []
                   []
@@ -1800,7 +1800,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'3::deserialize::__Visitor"
                   []
                   []
@@ -2328,7 +2328,7 @@ Module abi.
                                         M.alloc (|
                                           Ty.path
                                             "move_core_types::abi::_'4::serialize::__SerializeWith",
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "move_core_types::abi::_'4::serialize::__SerializeWith"
                                             []
                                             []
@@ -2773,7 +2773,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'5::deserialize::__Visitor"
                   []
                   []
@@ -3317,7 +3317,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'7::deserialize::__Visitor"
                   []
                   []
@@ -3734,7 +3734,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'9::deserialize::__Visitor"
                   []
                   []
@@ -3804,7 +3804,7 @@ Module abi.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::ScriptFunctionABI"
             []
             []
@@ -4639,7 +4639,7 @@ Module abi.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::TransactionScriptABI"
             []
             []
@@ -5476,7 +5476,7 @@ Module abi.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::ArgumentABI"
             []
             []
@@ -5895,7 +5895,7 @@ Module abi.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::TypeArgumentABI"
             []
             []
@@ -6221,7 +6221,7 @@ Module abi.
                 [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
               args
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::TransactionScriptABI"
             []
             []
@@ -6572,7 +6572,7 @@ Module abi.
                 [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
               args
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::ScriptFunctionABI"
             []
             []
@@ -7467,7 +7467,7 @@ Module abi.
           (let name := M.alloc (| Ty.path "alloc::string::String", name |) in
           let type_tag :=
             M.alloc (| Ty.path "move_core_types::language_storage::TypeTag", type_tag |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::ArgumentABI"
             []
             []
@@ -7580,7 +7580,7 @@ Module abi.
       | [], [], [ name ] =>
         ltac:(M.monadic
           (let name := M.alloc (| Ty.path "alloc::string::String", name |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::abi::TypeArgumentABI"
             []
             []

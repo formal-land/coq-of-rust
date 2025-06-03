@@ -34,7 +34,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ person : Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "scoping_rules_ownership_and_rules_partial_moves::main::Person"
             []
             []

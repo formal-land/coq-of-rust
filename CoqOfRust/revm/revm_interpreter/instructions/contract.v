@@ -3607,7 +3607,7 @@ Module instructions.
                                                             Pointer.Kind.MutRef,
                                                             output
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeFrom"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -3634,7 +3634,7 @@ Module instructions.
                                                       |)
                                                     |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3739,13 +3739,13 @@ Module instructions.
                                               "control"
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "revm_interpreter::interpreter_action::InterpreterAction::Return"
                                             []
                                             []
                                             [
                                               ("result",
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "revm_interpreter::interpreter::InterpreterResult"
                                                   []
                                                   []
@@ -5319,7 +5319,7 @@ Module instructions.
                                                                     Pointer.Kind.Ref,
                                                                     target_address
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::RangeTo"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -6041,7 +6041,7 @@ Module instructions.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                         []
                                                                         []
@@ -6139,7 +6139,7 @@ Module instructions.
                                                                           ("is_eof",
                                                                             Value.Bool true);
                                                                           ("return_memory_offset",
-                                                                            Value.StructRecord
+                                                                            Value.mkStructRecord
                                                                               "core::ops::range::Range"
                                                                               []
                                                                               [ Ty.path "usize" ]
@@ -6514,7 +6514,7 @@ Module instructions.
                                                               []
                                                             |),
                                                             [
-                                                              Value.StructRecord
+                                                              Value.mkStructRecord
                                                                 "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                 []
                                                                 []
@@ -6678,7 +6678,7 @@ Module instructions.
                                                                     |));
                                                                   ("is_eof", Value.Bool true);
                                                                   ("return_memory_offset",
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::Range"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -7051,7 +7051,7 @@ Module instructions.
                                                               []
                                                             |),
                                                             [
-                                                              Value.StructRecord
+                                                              Value.mkStructRecord
                                                                 "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                 []
                                                                 []
@@ -7141,7 +7141,7 @@ Module instructions.
                                                                   ("is_static", Value.Bool true);
                                                                   ("is_eof", Value.Bool true);
                                                                   ("return_memory_offset",
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::Range"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -9156,7 +9156,7 @@ Module instructions.
                                                 M.alloc (|
                                                   Ty.path
                                                     "revm_context_interface::cfg::CreateScheme",
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "revm_context_interface::cfg::CreateScheme::Create2"
                                                     []
                                                     []
@@ -9616,7 +9616,7 @@ Module instructions.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
                                                 []
                                                 []
@@ -10458,7 +10458,7 @@ Module instructions.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                         []
                                                                         []
@@ -11323,7 +11323,7 @@ Module instructions.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                         []
                                                                         []
@@ -12211,7 +12211,7 @@ Module instructions.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                         []
                                                                         []
@@ -13140,7 +13140,7 @@ Module instructions.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "revm_interpreter::interpreter_action::call_inputs::CallInputs"
                                                                         []
                                                                         []

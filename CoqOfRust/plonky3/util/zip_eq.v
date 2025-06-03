@@ -123,7 +123,7 @@ Module zip_eq.
                       []
                       [ Ty.apply (Ty.path "p3_util::zip_eq::ZipEq") [] [ AIter; BIter ]; Error ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "p3_util::zip_eq::ZipEq"
                           []
                           [ AIter; BIter ]

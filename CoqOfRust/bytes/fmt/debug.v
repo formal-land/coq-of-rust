@@ -1844,7 +1844,7 @@ Module fmt.
                                                                                                                       Ty.path
                                                                                                                         "u8"
                                                                                                                     ],
-                                                                                                                  Value.StructRecord
+                                                                                                                  Value.mkStructRecord
                                                                                                                     "core::ops::range::Range"
                                                                                                                     []
                                                                                                                     [

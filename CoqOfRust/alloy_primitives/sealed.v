@@ -36,7 +36,7 @@ Module sealed.
                 [ Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::sealed::Sealed"
             []
             [ T ]
@@ -611,7 +611,7 @@ Module sealed.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloy_primitives::sealed::Sealed") [] [ T ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloy_primitives::sealed::Sealed"
                 []
                 [ T ]
@@ -669,7 +669,7 @@ Module sealed.
                 (Ty.path "alloy_primitives::sealed::Sealed")
                 []
                 [ Ty.apply (Ty.path "&") [] [ T ] ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloy_primitives::sealed::Sealed"
                 []
                 [ Ty.apply (Ty.path "&") [] [ T ] ]
@@ -855,7 +855,7 @@ Module sealed.
                 [],
               seal
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::sealed::Sealed"
             []
             [ T ]

@@ -774,7 +774,7 @@ Module vec.
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -838,7 +838,7 @@ Module vec.
                         ltac:(M.monadic
                           (M.alloc (|
                             Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -2162,7 +2162,7 @@ Module vec.
                                                                   |),
                                                                   [
                                                                     M.read (| raw_ary |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::Range"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -2414,7 +2414,7 @@ Module vec.
                                                 |),
                                                 [
                                                   M.read (| raw_ary |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]

@@ -402,7 +402,7 @@ Module slice.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::slice::iter::Iter"
                   []
                   [ T ]
@@ -485,7 +485,7 @@ Module slice.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Iter"
               []
               [ T ]
@@ -879,7 +879,7 @@ Module slice.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::slice::iter::IterMut"
                   []
                   [ T ]
@@ -1393,7 +1393,7 @@ Module slice.
                 slice
               |) in
             let pred := M.alloc (| P, pred |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Split"
               []
               [ T; P ]
@@ -1664,7 +1664,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::Split") [] [ T; P ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Split"
               []
               [ T; P ]
@@ -2024,7 +2024,7 @@ Module slice.
                                               |)
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -2060,7 +2060,7 @@ Module slice.
                                               |)
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -2574,7 +2574,7 @@ Module slice.
                                               |)
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -2610,7 +2610,7 @@ Module slice.
                                               |)
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -2873,7 +2873,7 @@ Module slice.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::slice::iter::SplitInclusive") [] [ T; P ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::slice::iter::SplitInclusive"
                   []
                   [ T; P ]
@@ -3062,7 +3062,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::SplitInclusive") [] [ T; P ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::SplitInclusive"
               []
               [ T; P ]
@@ -3492,7 +3492,7 @@ Module slice.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -3547,7 +3547,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeFrom"
                                         []
                                         [ Ty.path "usize" ]
@@ -3896,7 +3896,7 @@ Module slice.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -4168,7 +4168,7 @@ Module slice.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]
@@ -4223,7 +4223,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -4300,7 +4300,7 @@ Module slice.
                 slice
               |) in
             let pred := M.alloc (| P, pred |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::SplitMut"
               []
               [ T; P ]
@@ -5018,7 +5018,7 @@ Module slice.
                                                           Pointer.Kind.MutRef,
                                                           M.deref (| M.read (| head |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -5602,7 +5602,7 @@ Module slice.
                                                           Pointer.Kind.MutRef,
                                                           M.deref (| M.read (| tail |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeFrom"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -5701,7 +5701,7 @@ Module slice.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::slice::iter::SplitInclusiveMut") [] [ T; P ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::slice::iter::SplitInclusiveMut"
                   []
                   [ T; P ]
@@ -6677,7 +6677,7 @@ Module slice.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -7094,7 +7094,7 @@ Module slice.
                 slice
               |) in
             let pred := M.alloc (| P, pred |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RSplit"
               []
               [ T; P ]
@@ -7300,7 +7300,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::RSplit") [] [ T; P ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RSplit"
               []
               [ T; P ]
@@ -7618,7 +7618,7 @@ Module slice.
                 slice
               |) in
             let pred := M.alloc (| P, pred |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RSplitMut"
               []
               [ T; P ]
@@ -8513,13 +8513,13 @@ Module slice.
           ltac:(M.monadic
             (let s := M.alloc (| Ty.apply (Ty.path "core::slice::iter::Split") [] [ T; P ], s |) in
             let n := M.alloc (| Ty.path "usize", n |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::SplitN"
               []
               [ T; P ]
               [
                 ("inner",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::slice::iter::GenericSplitN"
                     []
                     [ Ty.apply (Ty.path "core::slice::iter::Split") [] [ T; P ] ]
@@ -8668,13 +8668,13 @@ Module slice.
           ltac:(M.monadic
             (let s := M.alloc (| Ty.apply (Ty.path "core::slice::iter::RSplit") [] [ T; P ], s |) in
             let n := M.alloc (| Ty.path "usize", n |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RSplitN"
               []
               [ T; P ]
               [
                 ("inner",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::slice::iter::GenericSplitN"
                     []
                     [ Ty.apply (Ty.path "core::slice::iter::RSplit") [] [ T; P ] ]
@@ -8827,13 +8827,13 @@ Module slice.
             (let s :=
               M.alloc (| Ty.apply (Ty.path "core::slice::iter::SplitMut") [] [ T; P ], s |) in
             let n := M.alloc (| Ty.path "usize", n |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::SplitNMut"
               []
               [ T; P ]
               [
                 ("inner",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::slice::iter::GenericSplitN"
                     []
                     [ Ty.apply (Ty.path "core::slice::iter::SplitMut") [] [ T; P ] ]
@@ -8986,13 +8986,13 @@ Module slice.
             (let s :=
               M.alloc (| Ty.apply (Ty.path "core::slice::iter::RSplitMut") [] [ T; P ], s |) in
             let n := M.alloc (| Ty.path "usize", n |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RSplitNMut"
               []
               [ T; P ]
               [
                 ("inner",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::slice::iter::GenericSplitN"
                     []
                     [ Ty.apply (Ty.path "core::slice::iter::RSplitMut") [] [ T; P ] ]
@@ -9242,7 +9242,7 @@ Module slice.
                 Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                 size
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Windows"
               []
               [ T ]
@@ -9278,7 +9278,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::Windows") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Windows"
               []
               [ T ]
@@ -9470,7 +9470,7 @@ Module slice.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -9548,7 +9548,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeFrom"
                                         []
                                         [ Ty.path "usize" ]
@@ -9988,7 +9988,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -10042,7 +10042,7 @@ Module slice.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -10289,7 +10289,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeFrom"
                                           []
                                           [ Ty.path "usize" ]
@@ -10570,7 +10570,7 @@ Module slice.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]
@@ -10677,7 +10677,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -10936,7 +10936,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -11021,7 +11021,7 @@ Module slice.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -11281,7 +11281,7 @@ Module slice.
                 slice
               |) in
             let size := M.alloc (| Ty.path "usize", size |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Chunks"
               []
               [ T ]
@@ -11317,7 +11317,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::Chunks") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::Chunks"
               []
               [ T ]
@@ -12127,7 +12127,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -12184,7 +12184,7 @@ Module slice.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -12400,7 +12400,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeFrom"
                                           []
                                           [ Ty.path "usize" ]
@@ -13153,7 +13153,7 @@ Module slice.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -13207,7 +13207,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -13475,7 +13475,7 @@ Module slice.
                 slice
               |) in
             let size := M.alloc (| Ty.path "usize", size |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::ChunksMut"
               []
               [ T ]
@@ -14600,7 +14600,7 @@ Module slice.
                                                 "v"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeFrom"
                                               []
                                               [ Ty.path "usize" ]
@@ -15866,7 +15866,7 @@ Module slice.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ T ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::slice::iter::ChunksExact"
                           []
                           [ T ]
@@ -15946,7 +15946,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::ChunksExact"
               []
               [ T ]
@@ -17141,7 +17141,7 @@ Module slice.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -17195,7 +17195,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -17613,7 +17613,7 @@ Module slice.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "core::slice::iter::ChunksExactMut") [] [ T ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::slice::iter::ChunksExactMut"
                           []
                           [ T ]
@@ -19385,7 +19385,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::ArrayWindows") [ N ] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::ArrayWindows"
               [ N ]
               [ T ]
@@ -19559,7 +19559,7 @@ Module slice.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::slice::iter::ArrayWindows") [ N ] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::slice::iter::ArrayWindows"
                   [ N ]
                   [ T ]
@@ -21007,7 +21007,7 @@ Module slice.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "core::slice::iter::ArrayChunks") [ N ] [ T ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::slice::iter::ArrayChunks"
                           [ N ]
                           [ T ]
@@ -21118,7 +21118,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::ArrayChunks") [ N ] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::ArrayChunks"
               [ N ]
               [ T ]
@@ -21982,7 +21982,7 @@ Module slice.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "core::slice::iter::ArrayChunksMut") [ N ] [ T ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::slice::iter::ArrayChunksMut"
                           [ N ]
                           [ T ]
@@ -22818,7 +22818,7 @@ Module slice.
                 slice
               |) in
             let size := M.alloc (| Ty.path "usize", size |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RChunks"
               []
               [ T ]
@@ -22854,7 +22854,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::RChunks") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RChunks"
               []
               [ T ]
@@ -23651,7 +23651,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -23708,7 +23708,7 @@ Module slice.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -23940,7 +23940,7 @@ Module slice.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -24616,7 +24616,7 @@ Module slice.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -24670,7 +24670,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeFrom"
                                         []
                                         [ Ty.path "usize" ]
@@ -24938,7 +24938,7 @@ Module slice.
                 slice
               |) in
             let size := M.alloc (| Ty.path "usize", size |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RChunksMut"
               []
               [ T ]
@@ -26090,7 +26090,7 @@ Module slice.
                                                 "v"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -27258,7 +27258,7 @@ Module slice.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ T ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::slice::iter::RChunksExact"
                           []
                           [ T ]
@@ -27338,7 +27338,7 @@ Module slice.
                   [ Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::RChunksExact"
               []
               [ T ]
@@ -28634,7 +28634,7 @@ Module slice.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -28688,7 +28688,7 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeFrom"
                                         []
                                         [ Ty.path "usize" ]
@@ -29058,7 +29058,7 @@ Module slice.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "core::slice::iter::RChunksExactMut") [] [ T ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::slice::iter::RChunksExactMut"
                           []
                           [ T ]
@@ -30821,7 +30821,7 @@ Module slice.
                 slice
               |) in
             let predicate := M.alloc (| P, predicate |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::ChunkBy"
               []
               [ T; P ]
@@ -31920,7 +31920,7 @@ Module slice.
                 slice
               |) in
             let predicate := M.alloc (| P, predicate |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::iter::ChunkByMut"
               []
               [ T; P ]

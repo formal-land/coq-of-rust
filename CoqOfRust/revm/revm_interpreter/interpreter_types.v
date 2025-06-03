@@ -41,7 +41,7 @@ Module interpreter_types.
             |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]

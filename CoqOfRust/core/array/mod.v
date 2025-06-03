@@ -7355,7 +7355,7 @@ Module array.
                   ],
                 M.read (|
                   let~ guard : Ty.apply (Ty.path "core::array::Guard") [] [ T ] :=
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::array::Guard"
                       []
                       [ T ]
@@ -8048,7 +8048,7 @@ Module array.
                                       |)
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -8216,7 +8216,7 @@ Module array.
                           |),
                           [
                             M.read (| array |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -8282,7 +8282,7 @@ Module array.
         let iter := M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Iterator_Item___T_ ], iter |) in
         M.read (|
           let~ guard : Ty.apply (Ty.path "core::array::Guard") [] [ T ] :=
-            Value.StructRecord
+            Value.mkStructRecord
               "core::array::Guard"
               []
               [ T ]

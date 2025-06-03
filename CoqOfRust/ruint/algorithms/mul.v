@@ -2000,7 +2000,7 @@ Module algorithms.
                                                                                             |)
                                                                                           |)
                                                                                         |);
-                                                                                        Value.StructRecord
+                                                                                        Value.mkStructRecord
                                                                                           "core::ops::range::RangeTo"
                                                                                           []
                                                                                           [
@@ -2097,7 +2097,7 @@ Module algorithms.
                                                                               M.read (| lhs |)
                                                                             |)
                                                                           |);
-                                                                          Value.StructRecord
+                                                                          Value.mkStructRecord
                                                                             "core::ops::range::RangeFrom"
                                                                             []
                                                                             [ Ty.path "usize" ]

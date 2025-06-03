@@ -55,7 +55,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ z : Ty.path "foreign_function_interface::Complex" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "foreign_function_interface::Complex"
             []
             []

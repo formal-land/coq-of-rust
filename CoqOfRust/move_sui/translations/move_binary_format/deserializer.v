@@ -543,7 +543,7 @@ Module deserializer.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::deserializer::Table" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::deserializer::Table"
             []
             []
@@ -762,7 +762,7 @@ Module deserializer.
             M.alloc (| Ty.path "move_binary_format::file_format_common::TableType", kind |) in
           let offset := M.alloc (| Ty.path "u32", offset |) in
           let count := M.alloc (| Ty.path "u32", count |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::deserializer::Table"
             []
             []
@@ -6827,7 +6827,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "u8" ]
@@ -20235,7 +20235,7 @@ Module deserializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| module_handles |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_binary_format::file_format::ModuleHandle"
                                           []
                                           []
@@ -21188,7 +21188,7 @@ Module deserializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| struct_handles |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_binary_format::file_format::StructHandle"
                                           []
                                           []
@@ -22314,7 +22314,7 @@ Module deserializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| function_handles |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_binary_format::file_format::FunctionHandle"
                                           []
                                           []
@@ -22880,7 +22880,7 @@ Module deserializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| struct_insts |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_binary_format::file_format::StructDefInstantiation"
                                           []
                                           []
@@ -23448,7 +23448,7 @@ Module deserializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| func_insts |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_binary_format::file_format::FunctionInstantiation"
                                           []
                                           []
@@ -24603,7 +24603,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -25793,7 +25793,7 @@ Module deserializer.
                         Ty.path "move_binary_format::errors::PartialVMError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "move_binary_format::file_format::Constant"
                           []
                           []
@@ -26645,7 +26645,7 @@ Module deserializer.
                         Ty.path "move_binary_format::errors::PartialVMError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "move_core_types::metadata::Metadata"
                           []
                           []
@@ -28024,7 +28024,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "u64" ]
@@ -30282,7 +30282,7 @@ Module deserializer.
                                                                 M.alloc (|
                                                                   Ty.path
                                                                     "move_binary_format::deserializer::load_signature_token::TypeBuilder",
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "move_binary_format::deserializer::load_signature_token::TypeBuilder::StructInst"
                                                                     []
                                                                     []
@@ -31999,7 +31999,7 @@ Module deserializer.
                               (M.alloc (|
                                 Ty.path
                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder",
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "move_binary_format::deserializer::load_signature_token::TypeBuilder::StructInst"
                                   []
                                   []
@@ -33953,7 +33953,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -34567,7 +34567,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -35348,7 +35348,7 @@ Module deserializer.
                         Ty.path "move_binary_format::errors::PartialVMError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "move_binary_format::file_format::StructTypeParameter"
                           []
                           []
@@ -36296,7 +36296,7 @@ Module deserializer.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| struct_defs |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_binary_format::file_format::StructDefinition"
                                           []
                                           []
@@ -36608,7 +36608,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "u64" ]
@@ -37314,7 +37314,7 @@ Module deserializer.
                         Ty.path "move_binary_format::errors::PartialVMError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "move_binary_format::file_format::FieldDefinition"
                           []
                           []
@@ -38247,7 +38247,7 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| field_handles |) |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "move_binary_format::file_format::FieldHandle"
                                   []
                                   []
@@ -38796,7 +38796,7 @@ Module deserializer.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| field_insts |) |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "move_binary_format::file_format::FieldInstantiation"
                                   []
                                   []
@@ -41395,7 +41395,7 @@ Module deserializer.
                                 Ty.path "move_binary_format::errors::PartialVMError"
                               ]
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "move_binary_format::file_format::FunctionDefinition"
                                   []
                                   []
@@ -41691,7 +41691,7 @@ Module deserializer.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "u64" ]
@@ -42233,7 +42233,7 @@ Module deserializer.
                       |)
                     |) in
                   let~ code_unit : Ty.path "move_binary_format::file_format::CodeUnit" :=
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "move_binary_format::file_format::CodeUnit"
                       []
                       []
@@ -58235,7 +58235,7 @@ Module deserializer.
                       |) in
                     let~ versioned_cursor :
                         Ty.path "move_binary_format::deserializer::VersionedCursor" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::deserializer::VersionedCursor"
                         []
                         []
@@ -59096,7 +59096,7 @@ Module deserializer.
                           Ty.path "move_binary_format::errors::PartialVMError"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "move_binary_format::deserializer::VersionedBinary"
                             []
                             []
@@ -59240,7 +59240,7 @@ Module deserializer.
             |) in
           let start := M.alloc (| Ty.path "usize", start |) in
           let end_ := M.alloc (| Ty.path "usize", end_ |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::deserializer::VersionedCursor"
             []
             []
@@ -59301,7 +59301,7 @@ Module deserializer.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -59414,7 +59414,7 @@ Module deserializer.
                           |)
                         |)
                       |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]

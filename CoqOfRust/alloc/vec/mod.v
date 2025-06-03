@@ -26,7 +26,7 @@ Module vec.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloc::vec::Vec"
             []
             [ T; Ty.path "alloc::alloc::Global" ]
@@ -225,7 +225,7 @@ Module vec.
       | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::vec::Vec"
             []
             [ T; A ]
@@ -269,7 +269,7 @@ Module vec.
         ltac:(M.monadic
           (let capacity := M.alloc (| Ty.path "usize", capacity |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::vec::Vec"
             []
             [ T; A ]
@@ -339,7 +339,7 @@ Module vec.
                       Ty.path "alloc::collections::TryReserveError"
                     ]
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::vec::Vec"
                         []
                         [ T; A ]
@@ -531,7 +531,7 @@ Module vec.
           let length := M.alloc (| Ty.path "usize", length |) in
           let capacity := M.alloc (| Ty.path "usize", capacity |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::vec::Vec"
             []
             [ T; A ]
@@ -578,7 +578,7 @@ Module vec.
           let length := M.alloc (| Ty.path "usize", length |) in
           let capacity := M.alloc (| Ty.path "usize", capacity |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::vec::Vec"
             []
             [ T; A ]
@@ -3338,7 +3338,7 @@ Module vec.
                       |) in
                     let~ g :
                         Ty.apply (Ty.path "alloc::vec::retain_mut::BackshiftOnDrop") [] [ T; A ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::vec::retain_mut::BackshiftOnDrop"
                         []
                         [ T; A ]
@@ -3974,7 +3974,7 @@ Module vec.
                       |) in
                     let~ gap :
                         Ty.apply (Ty.path "alloc::vec::dedup_by::FillGapOnDrop") [] [ T; A ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::vec::dedup_by::FillGapOnDrop"
                         []
                         [ T; A ]
@@ -5336,7 +5336,7 @@ Module vec.
                   M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| range |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -5412,7 +5412,7 @@ Module vec.
                       |) in
                     M.alloc (|
                       Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::vec::drain::Drain"
                         []
                         [ T; A ]
@@ -6832,7 +6832,7 @@ Module vec.
                 M.get_function (| "core::slice::index::range", [], [ R ] |),
                 [
                   M.read (| src |);
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::ops::range::RangeTo"
                     []
                     [ Ty.path "usize" ]
@@ -7031,7 +7031,7 @@ Module vec.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -8234,7 +8234,7 @@ Module vec.
             |) in
           let range := M.alloc (| R, range |) in
           let replace_with := M.alloc (| I, replace_with |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::vec::splice::Splice"
             []
             [
@@ -8343,7 +8343,7 @@ Module vec.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::vec::extract_if::ExtractIf") [] [ T; F; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::vec::extract_if::ExtractIf"
                 []
                 [ T; F; A ]
@@ -10311,7 +10311,7 @@ Module vec.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::vec::into_iter::IntoIter"
                 []
                 [ T; A ]

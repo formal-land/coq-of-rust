@@ -5595,7 +5595,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -7877,7 +7877,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -10159,7 +10159,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -12441,7 +12441,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -14747,7 +14747,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -17068,7 +17068,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -19517,7 +19517,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -21830,7 +21830,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -24143,7 +24143,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -26456,7 +26456,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -28796,7 +28796,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []
@@ -31153,7 +31153,7 @@ Module num.
                             |)
                           ]
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::num::error::ParseIntError"
                           []
                           []

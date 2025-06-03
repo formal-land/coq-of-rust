@@ -23,7 +23,7 @@ Module collections.
               Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::collections::TryReserveError"
             []
             []
@@ -377,7 +377,7 @@ Module collections.
                     let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ1_1 |) in
                     M.alloc (|
                       Ty.path "alloc::collections::TryReserveErrorKind",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::collections::TryReserveErrorKind::AllocError"
                         []
                         []
@@ -802,7 +802,7 @@ Module collections.
       | [], [], [ kind ] =>
         ltac:(M.monadic
           (let kind := M.alloc (| Ty.path "alloc::collections::TryReserveErrorKind", kind |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::collections::TryReserveError"
             []
             []

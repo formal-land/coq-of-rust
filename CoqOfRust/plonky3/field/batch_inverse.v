@@ -1650,7 +1650,7 @@ Module batch_inverse.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -1876,7 +1876,7 @@ Module batch_inverse.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]

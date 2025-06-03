@@ -427,7 +427,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ p : Ty.path "unpacking_options_via_question_mark::Person" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "unpacking_options_via_question_mark::Person"
             []
             []
@@ -438,7 +438,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                   [ Ty.path "unpacking_options_via_question_mark::Job" ]
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "unpacking_options_via_question_mark::Job"
                       []
                       []
@@ -449,7 +449,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                             [ Ty.path "unpacking_options_via_question_mark::PhoneNumber" ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "unpacking_options_via_question_mark::PhoneNumber"
                                 []
                                 []

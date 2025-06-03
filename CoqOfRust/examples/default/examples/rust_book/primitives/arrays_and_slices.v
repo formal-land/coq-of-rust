@@ -731,7 +731,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, ys |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -1260,7 +1260,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::ops::range::Range"
                     []
                     [ Ty.path "usize" ]

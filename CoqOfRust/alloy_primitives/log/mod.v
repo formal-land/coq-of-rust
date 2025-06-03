@@ -229,7 +229,7 @@ Module log.
               Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -410,7 +410,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -768,7 +768,7 @@ Module log.
               topics
             |) in
           let data := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", data |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -866,7 +866,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -1416,7 +1416,7 @@ Module log.
                 [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ T ]
@@ -1578,7 +1578,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ T ]
@@ -2058,7 +2058,7 @@ Module log.
                               ltac:(M.monadic
                                 (let data :=
                                   M.copy (| Ty.path "alloy_primitives::log::LogData", γ |) in
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "alloy_primitives::log::Log"
                                   []
                                   [ Ty.path "alloy_primitives::log::LogData" ]
@@ -2103,7 +2103,7 @@ Module log.
               topics
             |) in
           let data := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", data |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ Ty.path "alloy_primitives::log::LogData" ]
@@ -2138,7 +2138,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ Ty.path "alloy_primitives::log::LogData" ]
@@ -2192,7 +2192,7 @@ Module log.
           (let address :=
             M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
           let data := M.alloc (| T, data |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ T ]
@@ -2330,7 +2330,7 @@ Module log.
                 [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ Ty.path "alloy_primitives::log::LogData" ]

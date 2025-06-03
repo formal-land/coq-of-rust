@@ -1602,7 +1602,7 @@ Module str.
                                                                                                         "core::str::error::Utf8Error"
                                                                                                     ]
                                                                                                     [
-                                                                                                      Value.StructRecord
+                                                                                                      Value.mkStructRecord
                                                                                                         "core::str::error::Utf8Error"
                                                                                                         []
                                                                                                         []
@@ -1669,7 +1669,7 @@ Module str.
                                                                               "core::str::error::Utf8Error"
                                                                           ]
                                                                           [
-                                                                            Value.StructRecord
+                                                                            Value.mkStructRecord
                                                                               "core::str::error::Utf8Error"
                                                                               []
                                                                               []
@@ -1788,7 +1788,7 @@ Module str.
                                                                                                 "core::str::error::Utf8Error"
                                                                                             ]
                                                                                             [
-                                                                                              Value.StructRecord
+                                                                                              Value.mkStructRecord
                                                                                                 "core::str::error::Utf8Error"
                                                                                                 []
                                                                                                 []
@@ -1946,7 +1946,7 @@ Module str.
                                                                                   "core::str::error::Utf8Error"
                                                                               ]
                                                                               [
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "core::str::error::Utf8Error"
                                                                                   []
                                                                                   []
@@ -2067,7 +2067,7 @@ Module str.
                                                                                                         "core::str::error::Utf8Error"
                                                                                                     ]
                                                                                                     [
-                                                                                                      Value.StructRecord
+                                                                                                      Value.mkStructRecord
                                                                                                         "core::str::error::Utf8Error"
                                                                                                         []
                                                                                                         []
@@ -2134,7 +2134,7 @@ Module str.
                                                                               "core::str::error::Utf8Error"
                                                                           ]
                                                                           [
-                                                                            Value.StructRecord
+                                                                            Value.mkStructRecord
                                                                               "core::str::error::Utf8Error"
                                                                               []
                                                                               []
@@ -2253,7 +2253,7 @@ Module str.
                                                                                                 "core::str::error::Utf8Error"
                                                                                             ]
                                                                                             [
-                                                                                              Value.StructRecord
+                                                                                              Value.mkStructRecord
                                                                                                 "core::str::error::Utf8Error"
                                                                                                 []
                                                                                                 []
@@ -2395,7 +2395,7 @@ Module str.
                                                                                   "core::str::error::Utf8Error"
                                                                               ]
                                                                               [
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "core::str::error::Utf8Error"
                                                                                   []
                                                                                   []
@@ -2527,7 +2527,7 @@ Module str.
                                                                                                             "core::str::error::Utf8Error"
                                                                                                         ]
                                                                                                         [
-                                                                                                          Value.StructRecord
+                                                                                                          Value.mkStructRecord
                                                                                                             "core::str::error::Utf8Error"
                                                                                                             []
                                                                                                             []
@@ -2596,7 +2596,7 @@ Module str.
                                                                                   "core::str::error::Utf8Error"
                                                                               ]
                                                                               [
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "core::str::error::Utf8Error"
                                                                                   []
                                                                                   []
@@ -2723,7 +2723,7 @@ Module str.
                                                                                                         "core::str::error::Utf8Error"
                                                                                                     ]
                                                                                                     [
-                                                                                                      Value.StructRecord
+                                                                                                      Value.mkStructRecord
                                                                                                         "core::str::error::Utf8Error"
                                                                                                         []
                                                                                                         []
@@ -2790,7 +2790,7 @@ Module str.
                                                                               "core::str::error::Utf8Error"
                                                                           ]
                                                                           [
-                                                                            Value.StructRecord
+                                                                            Value.mkStructRecord
                                                                               "core::str::error::Utf8Error"
                                                                               []
                                                                               []
@@ -2839,7 +2839,7 @@ Module str.
                                                                       "core::str::error::Utf8Error"
                                                                   ]
                                                                   [
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::str::error::Utf8Error"
                                                                       []
                                                                       []

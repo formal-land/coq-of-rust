@@ -461,7 +461,7 @@ Module error.
               Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::error::Source"
             []
             []
@@ -846,7 +846,7 @@ Module error.
                 (Ty.path "core::error::Tagged")
                 []
                 [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ] :=
-            Value.StructRecord
+            Value.mkStructRecord
               "core::error::Tagged"
               []
               [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
@@ -2608,7 +2608,7 @@ Module error.
         ltac:(M.monadic
           (let self :=
             M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Source" ], self |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::error::Source"
             []
             []

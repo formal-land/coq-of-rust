@@ -467,7 +467,7 @@ Module alloc.
                             Ty.path "core::alloc::layout::LayoutError"
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::alloc::layout::Layout"
                               []
                               []
@@ -806,7 +806,7 @@ Module alloc.
                             Ty.path "core::alloc::layout::LayoutError"
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::alloc::layout::Layout"
                               []
                               []
@@ -889,7 +889,7 @@ Module alloc.
                 |) in
               M.alloc (|
                 Ty.path "core::alloc::layout::Layout",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::alloc::layout::Layout"
                   []
                   []

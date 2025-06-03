@@ -30,7 +30,7 @@ Module char.
                   [ Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::char::decode::DecodeUtf16"
               []
               [ I ]
@@ -273,7 +273,7 @@ Module char.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::char::decode::DecodeUtf16Error"
               []
               []
@@ -428,7 +428,7 @@ Module char.
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| I, iter |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::char::decode::DecodeUtf16"
             []
             [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"
@@ -881,7 +881,7 @@ Module char.
                                                 Ty.path "core::char::decode::DecodeUtf16Error"
                                               ]
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::char::decode::DecodeUtf16Error"
                                                   []
                                                   []
@@ -972,7 +972,7 @@ Module char.
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                 ]
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                     []
                                                                     []
@@ -1064,7 +1064,7 @@ Module char.
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                 ]
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                     []
                                                                     []

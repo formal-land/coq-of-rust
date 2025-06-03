@@ -34,7 +34,7 @@ Module interface.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_precompile::interface::PrecompileOutput"
             []
             []
@@ -431,7 +431,7 @@ Module interface.
         ltac:(M.monadic
           (let gas_used := M.alloc (| Ty.path "u64", gas_used |) in
           let bytes := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", bytes |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_precompile::interface::PrecompileOutput"
             []
             []
@@ -553,7 +553,7 @@ Module interface.
                       |) in
                     M.alloc (|
                       Ty.path "revm_precompile::interface::PrecompileErrors",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "revm_precompile::interface::PrecompileErrors::Fatal"
                         []
                         []

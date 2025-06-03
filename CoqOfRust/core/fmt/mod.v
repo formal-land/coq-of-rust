@@ -708,7 +708,7 @@ Module fmt.
               Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ],
               buf
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::fmt::Formatter"
             []
             []
@@ -756,7 +756,7 @@ Module fmt.
           (let self :=
             M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], self |) in
           let wrap := M.alloc (| F, wrap |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::fmt::Formatter"
             []
             []
@@ -2991,7 +2991,7 @@ Module fmt.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| s |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3715,7 +3715,7 @@ Module fmt.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -5898,7 +5898,7 @@ Module fmt.
                                                                                                   |)
                                                                                                 |)
                                                                                               |);
-                                                                                              Value.StructRecord
+                                                                                              Value.mkStructRecord
                                                                                                 "core::ops::range::RangeTo"
                                                                                                 []
                                                                                                 [
@@ -6208,7 +6208,7 @@ Module fmt.
                                                                                           Pointer.Kind.MutRef,
                                                                                           s
                                                                                         |);
-                                                                                        Value.StructRecord
+                                                                                        Value.mkStructRecord
                                                                                           "core::ops::range::RangeTo"
                                                                                           []
                                                                                           [
@@ -6578,7 +6578,7 @@ Module fmt.
                                                                                         Pointer.Kind.Ref,
                                                                                         s
                                                                                       |);
-                                                                                      Value.StructRecord
+                                                                                      Value.mkStructRecord
                                                                                         "core::ops::range::RangeTo"
                                                                                         []
                                                                                         [
@@ -9978,7 +9978,7 @@ Module fmt.
               M.read (| get_constant (| "core::fmt::new_const_discriminant", Ty.tuple [] |) |) in
             M.alloc (|
               Ty.path "core::fmt::Arguments",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::Arguments"
                 []
                 []
@@ -10062,7 +10062,7 @@ Module fmt.
               M.read (| get_constant (| "core::fmt::new_v1_discriminant", Ty.tuple [] |) |) in
             M.alloc (|
               Ty.path "core::fmt::Arguments",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::Arguments"
                 []
                 []
@@ -10135,7 +10135,7 @@ Module fmt.
               fmt
             |) in
           let _unsafe_arg := M.alloc (| Ty.path "core::fmt::rt::UnsafeArg", _unsafe_arg |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::fmt::Arguments"
             []
             []
@@ -13232,7 +13232,7 @@ Module fmt.
         ltac:(M.monadic
           (let fill := M.alloc (| Ty.path "char", fill |) in
           let padding := M.alloc (| Ty.path "usize", padding |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::fmt::PostPadding"
             []
             []
@@ -13294,7 +13294,7 @@ Module fmt.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -14978,7 +14978,7 @@ Module fmt.
                       |) in
                     let~ printable_range :
                         Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -15212,7 +15212,7 @@ Module fmt.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| rest |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeFrom"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -15297,7 +15297,7 @@ Module fmt.
                                                             |),
                                                             [
                                                               M.read (| c |);
-                                                              Value.StructRecord
+                                                              Value.mkStructRecord
                                                                 "core::char::methods::EscapeDebugExtArgs"
                                                                 []
                                                                 []
@@ -16361,7 +16361,7 @@ Module fmt.
                         M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
                         [
                           M.read (| M.deref (| M.read (| self |) |) |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::char::methods::EscapeDebugExtArgs"
                             []
                             []

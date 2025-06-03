@@ -37,7 +37,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::zip::Zip"
                 []
                 [ A; B ]
@@ -1031,7 +1031,7 @@ Module iter.
             ltac:(M.monadic
               (let a := M.alloc (| A, a |) in
               let b := M.alloc (| B, b |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::zip::Zip"
                 []
                 [ A; B ]
@@ -1799,7 +1799,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -1975,7 +1975,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -2895,7 +2895,7 @@ Module iter.
             ltac:(M.monadic
               (let a := M.alloc (| A, a |) in
               let b := M.alloc (| B, b |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::zip::Zip"
                 []
                 [ A; B ]
@@ -3663,7 +3663,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -3839,7 +3839,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -4574,7 +4574,7 @@ Module iter.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -4825,7 +4825,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::iter::adapters::zip::Zip"
                     []
                     [ A; B ]
@@ -5959,7 +5959,7 @@ Module iter.
                                                               []
                                                             |),
                                                             [
-                                                              Value.StructRecord
+                                                              Value.mkStructRecord
                                                                 "core::ops::range::Range"
                                                                 []
                                                                 [ Ty.path "usize" ]
@@ -6484,7 +6484,7 @@ Module iter.
                                                       []
                                                     |),
                                                     [
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::Range"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -8084,7 +8084,7 @@ Module iter.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]

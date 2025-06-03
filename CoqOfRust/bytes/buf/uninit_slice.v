@@ -482,7 +482,7 @@ Module buf.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeFrom"
                                   []
                                   [ Ty.path "usize" ]

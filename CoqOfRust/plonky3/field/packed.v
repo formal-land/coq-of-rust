@@ -3056,7 +3056,7 @@ Module packed.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -3202,7 +3202,7 @@ Module packed.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_field::field::Powers") [] [ Self ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_field::field::Powers"
                 []
                 [ Self ]
@@ -3857,7 +3857,7 @@ Module packed.
                                             ]
                                           |),
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]

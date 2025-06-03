@@ -34,7 +34,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ foo : Ty.path "match_destructuring_structs::Foo" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "match_destructuring_structs::Foo"
             []
             []

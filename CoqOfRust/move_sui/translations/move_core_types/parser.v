@@ -6589,7 +6589,7 @@ Module parser.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| s |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -6680,7 +6680,7 @@ Module parser.
       | [], [ T ], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| T, v |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::parser::Parser"
             []
             [ I ]
@@ -11098,7 +11098,7 @@ Module parser.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "move_core_types::language_storage::StructTag"
                                             []
                                             []

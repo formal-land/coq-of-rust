@@ -3779,7 +3779,7 @@ Module opcode.
               |) in
             M.alloc (|
               Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_bytecode::opcode::OpCodeInfo"
                 []
                 []
@@ -4620,7 +4620,7 @@ Module opcode.
             []
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "revm_bytecode::opcode::OpCode"
             ],
-          Value.StructRecord
+          Value.mkStructRecord
             "phf::map::Map"
             []
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "revm_bytecode::opcode::OpCode" ]

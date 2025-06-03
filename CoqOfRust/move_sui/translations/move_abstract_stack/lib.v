@@ -27,7 +27,7 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "move_abstract_stack::AbstractStack"
           []
           [ T ]
@@ -180,7 +180,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "move_abstract_stack::AbstractStack"
           []
           [ T ]

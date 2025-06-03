@@ -191,7 +191,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ age : Ty.path "u8" := Value.Integer IntegerKind.U8 27 in
         let~ peter : Ty.path "structures::Person" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "structures::Person"
             []
             []
@@ -267,7 +267,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ point : Ty.path "structures::Point" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "structures::Point"
             []
             []
@@ -503,13 +503,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let left_edge := M.copy (| Ty.path "f32", γ0_0 |) in
                 let top_edge := M.copy (| Ty.path "f32", γ0_1 |) in
                 let~ _rectangle : Ty.path "structures::Rectangle" :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "structures::Rectangle"
                     []
                     []
                     [
                       ("top_left",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "structures::Point"
                           []
                           []

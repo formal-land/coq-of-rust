@@ -47,7 +47,7 @@ Module stack.
                 [ Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_matrix::stack::VerticalPair"
             []
             [ First; Second ]
@@ -243,7 +243,7 @@ Module stack.
                 [ Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_matrix::stack::HorizontalPair"
             []
             [ First; Second ]
@@ -567,7 +567,7 @@ Module stack.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_matrix::stack::VerticalPair") [] [ First; Second ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_matrix::stack::VerticalPair"
                 []
                 [ First; Second ]
@@ -757,7 +757,7 @@ Module stack.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_matrix::stack::HorizontalPair") [] [ First; Second ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_matrix::stack::HorizontalPair"
                 []
                 [ First; Second ]

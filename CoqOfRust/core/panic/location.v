@@ -980,7 +980,7 @@ Module panic.
             (let file := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], file |) in
             let line := M.alloc (| Ty.path "u32", line |) in
             let col := M.alloc (| Ty.path "u32", col |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::panic::location::Location"
               []
               []

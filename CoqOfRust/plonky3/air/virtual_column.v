@@ -39,7 +39,7 @@ Module virtual_column.
                 [ Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -491,7 +491,7 @@ Module virtual_column.
               column_weights
             |) in
           let constant := M.alloc (| F, constant |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -886,7 +886,7 @@ Module virtual_column.
       | [], [], [ x ] =>
         ltac:(M.monadic
           (let x := M.alloc (| F, x |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -939,7 +939,7 @@ Module virtual_column.
       | [], [], [ column ] =>
         ltac:(M.monadic
           (let column := M.alloc (| Ty.path "p3_air::virtual_column::PairCol", column |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]

@@ -40,7 +40,7 @@ Module eof.
                 Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::header::EofHeader" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_bytecode::eof::header::EofHeader"
               []
               []
@@ -476,7 +476,7 @@ Module eof.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_bytecode::eof::header::EofHeader"
               []
               []
@@ -2520,7 +2520,7 @@ Module eof.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -2881,7 +2881,7 @@ Module eof.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]

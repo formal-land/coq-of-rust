@@ -86,7 +86,7 @@ Module check_bounds.
                     [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ bounds_check : Ty.path "move_binary_format::check_bounds::BoundsChecker" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::check_bounds::BoundsChecker"
                         []
                         []

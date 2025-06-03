@@ -30,7 +30,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::skip::Skip") [] [ I ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::skip::Skip"
                 []
                 [ I ]
@@ -200,7 +200,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let n := M.alloc (| Ty.path "usize", n |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::skip::Skip"
                 []
                 [ I ]
@@ -2564,7 +2564,7 @@ Module iter.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]

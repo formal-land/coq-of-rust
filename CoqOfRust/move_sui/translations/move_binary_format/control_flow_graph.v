@@ -751,7 +751,7 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -949,7 +949,7 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -1152,7 +1152,7 @@ Module control_flow_graph.
                                                   let~ bb :
                                                       Ty.path
                                                         "move_binary_format::control_flow_graph::BasicBlock" :=
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "move_binary_format::control_flow_graph::BasicBlock"
                                                       []
                                                       []
@@ -2627,7 +2627,7 @@ Module control_flow_graph.
               |) in
             M.alloc (|
               Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_binary_format::control_flow_graph::VMControlFlowGraph"
                 []
                 []

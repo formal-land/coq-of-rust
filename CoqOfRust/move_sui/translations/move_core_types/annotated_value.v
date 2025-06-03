@@ -333,7 +333,7 @@ Module annotated_value.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::annotated_value::MoveStruct" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_value::MoveStruct"
             []
             []
@@ -2378,7 +2378,7 @@ Module annotated_value.
                 [ Ty.path "move_core_types::annotated_value::MoveFieldLayout" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_value::MoveFieldLayout"
             []
             []
@@ -2969,7 +2969,7 @@ Module annotated_value.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::annotated_value::_'1::deserialize::__Visitor"
                   []
                   []
@@ -3524,7 +3524,7 @@ Module annotated_value.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::annotated_value::_'3::deserialize::__Visitor"
                   []
                   []
@@ -4116,7 +4116,7 @@ Module annotated_value.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::annotated_value::_'5::deserialize::__Visitor"
                   []
                   []
@@ -4165,7 +4165,7 @@ Module annotated_value.
           (let name := M.alloc (| Ty.path "move_core_types::identifier::Identifier", name |) in
           let layout :=
             M.alloc (| Ty.path "move_core_types::annotated_value::MoveTypeLayout", layout |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_value::MoveFieldLayout"
             []
             []
@@ -4308,7 +4308,7 @@ Module annotated_value.
                 [ Ty.path "move_core_types::annotated_value::MoveStructLayout" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_value::MoveStructLayout"
             []
             []
@@ -6551,7 +6551,7 @@ Module annotated_value.
                 ],
               fields
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_value::MoveStruct"
             []
             []
@@ -7626,7 +7626,7 @@ Module annotated_value.
                 ],
               fields
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::annotated_value::MoveStructLayout"
             []
             []
@@ -11373,7 +11373,7 @@ Module annotated_value.
                           Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "move_core_types::annotated_value::MoveStruct"
                             []
                             []

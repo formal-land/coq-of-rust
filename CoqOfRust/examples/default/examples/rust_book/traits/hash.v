@@ -215,7 +215,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ person1 : Ty.path "hash::Person" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash::Person"
             []
             []
@@ -238,7 +238,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ("phone", Value.Integer IntegerKind.U64 5556667777)
             ] in
         let~ person2 : Ty.path "hash::Person" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash::Person"
             []
             []

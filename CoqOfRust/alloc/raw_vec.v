@@ -213,7 +213,7 @@ Module raw_vec.
       | [], [], [ capacity ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| Ty.path "usize", capacity |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVec"
             []
             [ T; Ty.path "alloc::alloc::Global" ]
@@ -273,7 +273,7 @@ Module raw_vec.
       | [], [], [ capacity ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| Ty.path "usize", capacity |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVec"
             []
             [ T; Ty.path "alloc::alloc::Global" ]
@@ -540,7 +540,7 @@ Module raw_vec.
       | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVec"
             []
             [ T; A ]
@@ -594,7 +594,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let capacity := M.alloc (| Ty.path "usize", capacity |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVec"
             []
             [ T; A ]
@@ -719,7 +719,7 @@ Module raw_vec.
                           Ty.path "alloc::collections::TryReserveError"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::raw_vec::RawVec"
                             []
                             [ T; A ]
@@ -783,7 +783,7 @@ Module raw_vec.
         ltac:(M.monadic
           (let capacity := M.alloc (| Ty.path "usize", capacity |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVec"
             []
             [ T; A ]
@@ -1181,7 +1181,7 @@ Module raw_vec.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::raw_vec::RawVec"
                 []
                 [ T; A ]
@@ -1254,7 +1254,7 @@ Module raw_vec.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::raw_vec::RawVec"
                 []
                 [ T; A ]
@@ -1914,7 +1914,7 @@ Module raw_vec.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::raw_vec::RawVecInner"
                 []
                 [ A ]
@@ -2705,7 +2705,7 @@ Module raw_vec.
                                                 []
                                               |),
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "alloc::collections::TryReserveErrorKind::AllocError"
                                                   []
                                                   []
@@ -2739,7 +2739,7 @@ Module raw_vec.
                           Ty.path "alloc::collections::TryReserveError"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::raw_vec::RawVecInner"
                             []
                             [ A ]
@@ -2827,7 +2827,7 @@ Module raw_vec.
           (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], ptr |) in
           let cap := M.alloc (| Ty.path "alloc::raw_vec::Cap", cap |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVecInner"
             []
             [ A ]
@@ -2877,7 +2877,7 @@ Module raw_vec.
             |) in
           let cap := M.alloc (| Ty.path "alloc::raw_vec::Cap", cap |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::raw_vec::RawVecInner"
             []
             [ A ]
@@ -6649,7 +6649,7 @@ Module raw_vec.
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
-                                                                          (Value.StructRecord
+                                                                          (Value.mkStructRecord
                                                                             "alloc::collections::TryReserveErrorKind::AllocError"
                                                                             []
                                                                             []
@@ -7613,7 +7613,7 @@ Module raw_vec.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "alloc::collections::TryReserveErrorKind::AllocError"
                                                 []
                                                 []

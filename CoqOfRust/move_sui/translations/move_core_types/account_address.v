@@ -760,7 +760,7 @@ Module account_address.
               self
             |) in
           let with_prefix := M.alloc (| Ty.path "bool", with_prefix |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::account_address::to_canonical_display::HexDisplay"
             []
             []
@@ -1236,7 +1236,7 @@ Module account_address.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -1411,7 +1411,7 @@ Module account_address.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| literal |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -1502,7 +1502,7 @@ Module account_address.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| literal |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]

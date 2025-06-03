@@ -31,7 +31,7 @@ Module collections.
           | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::dedup_sorted_iter::DedupSortedIter"
                 []
                 [ K; V; I ]

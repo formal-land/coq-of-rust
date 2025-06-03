@@ -106,7 +106,7 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
               []
               []
@@ -448,7 +448,7 @@ Module interpreter.
           ltac:(M.monadic
             (let idx := M.alloc (| Ty.path "usize", idx |) in
             let pc := M.alloc (| Ty.path "usize", pc |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
               []
               []
@@ -497,7 +497,7 @@ Module interpreter.
                   [ Ty.path "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl"
               []
               []
@@ -679,7 +679,7 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl"
               []
               []
@@ -924,7 +924,7 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter::subroutine_stack::SubRoutineImpl"
               []
               []
@@ -1350,7 +1350,7 @@ Module interpreter.
                                 "return_stack"
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "revm_interpreter::interpreter::subroutine_stack::SubRoutineReturnFrame"
                               []
                               []

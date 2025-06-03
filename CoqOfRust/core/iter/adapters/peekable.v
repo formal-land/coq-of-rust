@@ -50,7 +50,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::peekable::Peekable") [] [ I ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::peekable::Peekable"
                 []
                 [ I ]
@@ -269,7 +269,7 @@ Module iter.
           | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::peekable::Peekable"
                 []
                 [ I ]

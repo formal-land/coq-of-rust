@@ -200,7 +200,7 @@ Module mem.
         | [], [], [ val ] =>
           ltac:(M.monadic
             (let val := M.alloc (| T, val |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::mem::maybe_uninit::MaybeUninit"
               []
               [ T ]
@@ -236,7 +236,7 @@ Module mem.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::mem::maybe_uninit::MaybeUninit"
               []
               [ T ]
@@ -1598,7 +1598,7 @@ Module mem.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -1608,7 +1608,7 @@ Module mem.
                       |)
                     |) in
                   let~ guard : Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] :=
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::mem::maybe_uninit::Guard"
                       []
                       [ T ]
@@ -1636,7 +1636,7 @@ Module mem.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -1974,7 +1974,7 @@ Module mem.
               M.deref (|
                 M.read (|
                   let~ guard : Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] :=
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::mem::maybe_uninit::Guard"
                       []
                       [ T ]
@@ -2359,7 +2359,7 @@ Module mem.
                   [ M.read (| it |) ]
                 |) in
               let~ guard : Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::mem::maybe_uninit::Guard"
                   []
                   [ T ]
@@ -3626,7 +3626,7 @@ Module mem.
                             |)
                           |)
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::RangeTo"
                           []
                           [ Ty.path "usize" ]
@@ -3736,7 +3736,7 @@ Module mem.
             let value := M.alloc (| T, value |) in
             M.read (|
               let~ guard : Ty.apply (Ty.path "core::mem::maybe_uninit::Guard") [] [ T ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::mem::maybe_uninit::Guard"
                   []
                   [ T ]

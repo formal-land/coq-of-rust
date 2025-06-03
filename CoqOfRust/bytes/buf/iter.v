@@ -95,7 +95,7 @@ Module buf.
         | [], [], [ inner ] =>
           ltac:(M.monadic
             (let inner := M.alloc (| T, inner |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "bytes::buf::iter::IntoIter"
               []
               [ T ]

@@ -1773,7 +1773,7 @@ Module check_duplication.
                       |) in
                     let~ checker :
                         Ty.path "move_bytecode_verifier::check_duplication::DuplicationChecker" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::check_duplication::DuplicationChecker"
                         []
                         []
@@ -6009,7 +6009,7 @@ Module check_duplication.
                                               (Ty.path "core::ops::range::Range")
                                               []
                                               [ Ty.path "usize" ],
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -7784,7 +7784,7 @@ Module check_duplication.
                                               (Ty.path "core::ops::range::Range")
                                               []
                                               [ Ty.path "usize" ],
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]

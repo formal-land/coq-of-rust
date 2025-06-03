@@ -217,7 +217,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
                 let~ point : Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "scoping_rules_borrowing_the_ref_pattern::Point"
                     []
                     []

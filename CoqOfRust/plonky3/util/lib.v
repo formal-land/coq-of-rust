@@ -1025,7 +1025,7 @@ Definition reverse_slice_index_bits (ε : list Value.t) (τ : list Ty.t) (α : l
                                                 Pointer.Kind.MutRef,
                                                 M.deref (| M.read (| vals |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -1183,7 +1183,7 @@ Definition reverse_slice_index_bits_small
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -1401,7 +1401,7 @@ Definition reverse_slice_index_bits_small
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -1558,7 +1558,7 @@ Definition reverse_slice_index_bits_small
                                                     []
                                                   |),
                                                   [
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::Range"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -1862,7 +1862,7 @@ Definition reverse_slice_index_bits_chunks
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::ops::range::Range"
                     []
                     [ Ty.path "usize" ]
@@ -3046,7 +3046,7 @@ Definition apply_to_chunks (ε : list Value.t) (τ : list Ty.t) (α : list Value
                                     [
                                       (* Unsize *)
                                       M.pointer_coercion (M.borrow (| Pointer.Kind.Ref, buf |));
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]

@@ -419,7 +419,7 @@ Module block.
                 |) in
               M.alloc (|
                 Ty.path "revm_context_interface::block::blob::BlobExcessGasAndPrice",
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_context_interface::block::blob::BlobExcessGasAndPrice"
                   []
                   []

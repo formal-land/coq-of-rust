@@ -23,7 +23,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "mapping_integration_tests::Mapping"
           []
           [ K; V ]
@@ -468,7 +468,7 @@ Module Impl_core_default_Default_for_mapping_integration_tests_Mappings.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "mapping_integration_tests::Mappings"
           []
           []
@@ -592,7 +592,7 @@ Module Impl_mapping_integration_tests_Mappings.
             |) in
           M.alloc (|
             Ty.path "mapping_integration_tests::Mappings",
-            Value.StructRecord
+            Value.mkStructRecord
               "mapping_integration_tests::Mappings"
               []
               []

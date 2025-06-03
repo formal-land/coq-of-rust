@@ -85,7 +85,7 @@ Module boxed.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::boxed::thin::ThinBox"
                   []
                   [ T ]
@@ -197,7 +197,7 @@ Module boxed.
                                           Ty.path "alloc::boxed::thin::WithOpaqueHeader",
                                           γ
                                         |) in
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::boxed::thin::ThinBox"
                                         []
                                         [ T ]
@@ -509,7 +509,7 @@ Module boxed.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ Dyn ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::boxed::thin::ThinBox"
                           []
                           [ Dyn ]
@@ -576,7 +576,7 @@ Module boxed.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ Dyn ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::boxed::thin::ThinBox"
                           []
                           [ Dyn ]
@@ -2550,7 +2550,7 @@ Module boxed.
             let value := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], value |) in
             M.read (|
               let~ _guard : Ty.apply (Ty.path "alloc::boxed::thin::drop::DropGuard") [] [ H ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::boxed::thin::drop::DropGuard"
                   []
                   [ H ]

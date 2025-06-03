@@ -499,7 +499,7 @@ Module algorithms.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| left |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -533,7 +533,7 @@ Module algorithms.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| right |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -604,7 +604,7 @@ Module algorithms.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]

@@ -1739,7 +1739,7 @@ Module transaction_argument.
                                   M.alloc (|
                                     Ty.path
                                       "move_core_types::transaction_argument::_::serialize::__SerializeWith",
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "move_core_types::transaction_argument::_::serialize::__SerializeWith"
                                       []
                                       []
@@ -2006,7 +2006,7 @@ Module transaction_argument.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::transaction_argument::_'1::deserialize::__Visitor"
                   []
                   []
@@ -2066,7 +2066,7 @@ Module transaction_argument.
               [
                 M.read (| __deserializer |);
                 mk_str (| "VecBytes" |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::transaction_argument::_'2::deserialize::__Visitor"
                   []
                   []

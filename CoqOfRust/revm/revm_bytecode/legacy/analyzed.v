@@ -32,7 +32,7 @@ Module legacy.
                   [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
               []
               []
@@ -994,7 +994,7 @@ Module legacy.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
               []
               []
@@ -1200,7 +1200,7 @@ Module legacy.
                                               |)
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -1257,7 +1257,7 @@ Module legacy.
             let original_len := M.alloc (| Ty.path "usize", original_len |) in
             let jump_table :=
               M.alloc (| Ty.path "revm_bytecode::legacy::jump_map::JumpTable", jump_table |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode"
               []
               []
@@ -1377,7 +1377,7 @@ Module legacy.
                     "bytecode"
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::RangeTo"
                   []
                   [ Ty.path "usize" ]
@@ -1485,7 +1485,7 @@ Module legacy.
                             |)
                           |)
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::RangeTo"
                           []
                           [ Ty.path "usize" ]

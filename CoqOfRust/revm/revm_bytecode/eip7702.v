@@ -75,7 +75,7 @@ Module eip7702.
               Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_bytecode::eip7702::Eip7702Bytecode"
             []
             []
@@ -1409,7 +1409,7 @@ Module eip7702.
                           Ty.path "revm_bytecode::eip7702::Eip7702DecodeError"
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "revm_bytecode::eip7702::Eip7702Bytecode"
                             []
                             []
@@ -1553,7 +1553,7 @@ Module eip7702.
                                                         |)
                                                       |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeFrom"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -1724,7 +1724,7 @@ Module eip7702.
               |) in
             M.alloc (|
               Ty.path "revm_bytecode::eip7702::Eip7702Bytecode",
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_bytecode::eip7702::Eip7702Bytecode"
                 []
                 []

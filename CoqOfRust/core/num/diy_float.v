@@ -380,7 +380,7 @@ Module num.
                 |) in
               M.alloc (|
                 Ty.path "core::num::diy_float::Fp",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::num::diy_float::Fp"
                   []
                   []
@@ -892,7 +892,7 @@ Module num.
                 |) in
               M.alloc (|
                 Ty.path "core::num::diy_float::Fp",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::num::diy_float::Fp"
                   []
                   []
@@ -1121,7 +1121,7 @@ Module num.
                 |) in
               M.alloc (|
                 Ty.path "core::num::diy_float::Fp",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::num::diy_float::Fp"
                   []
                   []

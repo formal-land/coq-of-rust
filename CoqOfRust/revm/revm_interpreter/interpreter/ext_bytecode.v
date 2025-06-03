@@ -238,7 +238,7 @@ Module interpreter.
                 |) in
               M.alloc (|
                 Ty.path "revm_interpreter::interpreter::ext_bytecode::ExtBytecode",
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_interpreter::interpreter::ext_bytecode::ExtBytecode"
                   []
                   []

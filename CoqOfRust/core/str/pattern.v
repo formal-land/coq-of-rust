@@ -630,7 +630,7 @@ Module str.
                                       Pointer.Kind.Ref,
                                       M.deref (| M.read (| haystack |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]
@@ -1009,7 +1009,7 @@ Module str.
                                       Pointer.Kind.Ref,
                                       M.deref (| M.read (| haystack |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -2604,7 +2604,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::str::pattern::CharSearcher" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::pattern::CharSearcher"
               []
               []
@@ -3175,7 +3175,7 @@ Module str.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -3557,7 +3557,7 @@ Module str.
                                                 |)
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -3936,7 +3936,7 @@ Module str.
                                                                 |)
                                                               |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -4086,7 +4086,7 @@ Module str.
                                                                                       "utf8_encoded"
                                                                                     |)
                                                                                   |);
-                                                                                  Value.StructRecord
+                                                                                  Value.mkStructRecord
                                                                                     "core::ops::range::Range"
                                                                                     []
                                                                                     [
@@ -4307,7 +4307,7 @@ Module str.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -4701,7 +4701,7 @@ Module str.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| M.read (| haystack |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::Range"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -5021,7 +5021,7 @@ Module str.
                                                                         M.read (| haystack |)
                                                                       |)
                                                                     |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::Range"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -5207,7 +5207,7 @@ Module str.
                                                                                               "utf8_encoded"
                                                                                             |)
                                                                                           |);
-                                                                                          Value.StructRecord
+                                                                                          Value.mkStructRecord
                                                                                             "core::ops::range::Range"
                                                                                             []
                                                                                             [
@@ -5554,7 +5554,7 @@ Module str.
                 |) in
               M.alloc (|
                 Ty.path "core::str::pattern::CharSearcher",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::str::pattern::CharSearcher"
                   []
                   []
@@ -6405,7 +6405,7 @@ Module str.
                   [ Ty.apply (Ty.path "core::str::pattern::MultiCharEqSearcher") [] [ C ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::pattern::MultiCharEqSearcher"
               []
               [ C ]
@@ -6637,7 +6637,7 @@ Module str.
                 self
               |) in
             let haystack := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], haystack |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::pattern::MultiCharEqSearcher"
               []
               [ C ]
@@ -12422,7 +12422,7 @@ Module str.
                                       Pointer.Kind.Ref,
                                       M.deref (| M.read (| haystack |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]
@@ -12671,7 +12671,7 @@ Module str.
                                       Pointer.Kind.Ref,
                                       M.deref (| M.read (| haystack |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -12793,7 +12793,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::str::pattern::StrSearcher" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::pattern::StrSearcher"
               []
               []
@@ -13292,7 +13292,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::str::pattern::EmptyNeedle" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::pattern::EmptyNeedle"
               []
               []
@@ -13634,7 +13634,7 @@ Module str.
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Ty.path "core::str::pattern::StrSearcher",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::str::pattern::StrSearcher"
                           []
                           []
@@ -13649,7 +13649,7 @@ Module str.
                                 []
                                 []
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::str::pattern::EmptyNeedle"
                                     []
                                     []
@@ -13682,7 +13682,7 @@ Module str.
                     ltac:(M.monadic
                       (M.alloc (|
                         Ty.path "core::str::pattern::StrSearcher",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::str::pattern::StrSearcher"
                           []
                           []
@@ -14011,7 +14011,7 @@ Module str.
                                                           |)
                                                         |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::RangeFrom"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -15121,7 +15121,7 @@ Module str.
                                                           |)
                                                         |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::RangeTo"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -16017,7 +16017,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::str::pattern::TwoWaySearcher" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::pattern::TwoWaySearcher"
               []
               []
@@ -16762,7 +16762,7 @@ Module str.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| needle |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -16808,7 +16808,7 @@ Module str.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| needle |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::Range"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -16909,7 +16909,7 @@ Module str.
                                                 |) in
                                               M.alloc (|
                                                 Ty.path "core::str::pattern::TwoWaySearcher",
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::str::pattern::TwoWaySearcher"
                                                   []
                                                   []
@@ -16969,7 +16969,7 @@ Module str.
                                                                           M.read (| needle |)
                                                                         |)
                                                                       |);
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "core::ops::range::RangeTo"
                                                                         []
                                                                         [ Ty.path "usize" ]
@@ -17013,7 +17013,7 @@ Module str.
                                             ltac:(M.monadic
                                               (M.alloc (|
                                                 Ty.path "core::str::pattern::TwoWaySearcher",
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::str::pattern::TwoWaySearcher"
                                                   []
                                                   []
@@ -17850,7 +17850,7 @@ Module str.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -18258,7 +18258,7 @@ Module str.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -19329,7 +19329,7 @@ Module str.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -19757,7 +19757,7 @@ Module str.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -21595,7 +21595,7 @@ Module str.
                                               (Ty.path "core::ops::range::Range")
                                               []
                                               [ Ty.path "usize" ],
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -22049,7 +22049,7 @@ Module str.
                             |),
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| needle |) |) |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeFrom"
                                 []
                                 [ Ty.path "usize" ]
@@ -22319,7 +22319,7 @@ Module str.
                                                                                                 |)
                                                                                               |)
                                                                                             |);
-                                                                                            Value.StructRecord
+                                                                                            Value.mkStructRecord
                                                                                               "core::ops::range::RangeFrom"
                                                                                               []
                                                                                               [
@@ -22336,7 +22336,7 @@ Module str.
                                                                                         |)
                                                                                       |)
                                                                                     |);
-                                                                                    Value.StructRecord
+                                                                                    Value.mkStructRecord
                                                                                       "core::ops::range::RangeTo"
                                                                                       []
                                                                                       [
@@ -22949,7 +22949,7 @@ Module str.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -23158,7 +23158,7 @@ Module str.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]

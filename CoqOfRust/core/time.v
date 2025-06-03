@@ -964,7 +964,7 @@ Module time.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "core::time::Duration"
             []
             []
@@ -1175,7 +1175,7 @@ Module time.
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Ty.path "core::time::Duration",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::time::Duration"
                         []
                         []
@@ -1237,7 +1237,7 @@ Module time.
                       |) in
                     M.alloc (|
                       Ty.path "core::time::Duration",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::time::Duration"
                         []
                         []
@@ -1271,7 +1271,7 @@ Module time.
       | [], [], [ secs ] =>
         ltac:(M.monadic
           (let secs := M.alloc (| Ty.path "u64", secs |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::time::Duration"
             []
             []
@@ -1348,7 +1348,7 @@ Module time.
                 ] in
             M.alloc (|
               Ty.path "core::time::Duration",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::time::Duration"
                 []
                 []
@@ -1417,7 +1417,7 @@ Module time.
                 ] in
             M.alloc (|
               Ty.path "core::time::Duration",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::time::Duration"
                 []
                 []
@@ -1477,7 +1477,7 @@ Module time.
               Value.StructTuple "core::time::Nanoseconds" [] [] [ M.read (| subsec_nanos |) ] in
             M.alloc (|
               Ty.path "core::time::Duration",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::time::Duration"
                 []
                 []
@@ -4966,7 +4966,7 @@ Module time.
                                             Ty.path "core::time::TryFromFloatSecsError"
                                           ]
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::time::TryFromFloatSecsError"
                                               []
                                               []
@@ -5713,7 +5713,7 @@ Module time.
                                                                     "core::time::TryFromFloatSecsError"
                                                                 ]
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::time::TryFromFloatSecsError"
                                                                     []
                                                                     []
@@ -5853,7 +5853,7 @@ Module time.
                                             Ty.path "core::time::TryFromFloatSecsError"
                                           ]
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::time::TryFromFloatSecsError"
                                               []
                                               []
@@ -6600,7 +6600,7 @@ Module time.
                                                                     "core::time::TryFromFloatSecsError"
                                                                 ]
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::time::TryFromFloatSecsError"
                                                                     []
                                                                     []
@@ -8638,7 +8638,7 @@ Module time.
               Ty.apply (Ty.path "&") [] [ Ty.path "core::time::TryFromFloatSecsError" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::time::TryFromFloatSecsError"
             []
             []

@@ -189,13 +189,13 @@ Module strided.
                 (Ty.path "p3_matrix::row_index_mapped::RowIndexMappedView")
                 []
                 [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap"; Inner ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_matrix::row_index_mapped::RowIndexMappedView"
                 []
                 [ Ty.path "p3_matrix::strided::VerticallyStridedRowIndexMap"; Inner ]
                 [
                   ("index_map",
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "p3_matrix::strided::VerticallyStridedRowIndexMap"
                       []
                       []

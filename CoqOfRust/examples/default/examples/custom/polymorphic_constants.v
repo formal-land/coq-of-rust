@@ -34,7 +34,7 @@ Module Impl_polymorphic_constants_Foo_N_A.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "polymorphic_constants::Foo") [ N ] [ A ], self |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "polymorphic_constants::Foo"
           [ Value.Integer IntegerKind.Usize 0 ]
           [ B ]
@@ -84,7 +84,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "polymorphic_constants::Foo")
               [ Value.Integer IntegerKind.Usize 3 ]
               [ Ty.path "i32" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "polymorphic_constants::Foo"
             [ Value.Integer IntegerKind.Usize 3 ]
             [ Ty.path "i32" ]

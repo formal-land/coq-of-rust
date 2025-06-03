@@ -30,7 +30,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::filter::Filter") [] [ I; P ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::filter::Filter"
                 []
                 [ I; P ]
@@ -105,7 +105,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let predicate := M.alloc (| P, predicate |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::filter::Filter"
                 []
                 [ I; P ]
@@ -740,7 +740,7 @@ Module iter.
                                 |),
                                 [
                                   M.read (| array |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]

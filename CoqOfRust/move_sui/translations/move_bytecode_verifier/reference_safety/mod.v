@@ -96,7 +96,7 @@ Module reference_safety.
                 ],
               name_def_map
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_bytecode_verifier::reference_safety::ReferenceSafetyAnalysis"
             []
             []
@@ -2837,7 +2837,7 @@ Module reference_safety.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -25938,7 +25938,7 @@ Module reference_safety.
                                             []
                                           |),
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]

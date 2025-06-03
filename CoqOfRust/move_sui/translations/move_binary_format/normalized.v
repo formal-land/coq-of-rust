@@ -266,7 +266,7 @@ Module normalized.
                       |) in
                     M.alloc (|
                       Ty.path "move_binary_format::normalized::Type",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::normalized::Type::Struct"
                         []
                         []
@@ -5103,7 +5103,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'1::deserialize::__Visitor"
                   []
                   []
@@ -5647,7 +5647,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'3::deserialize::__Visitor"
                   []
                   []
@@ -6196,7 +6196,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'5::deserialize::__Visitor"
                   []
                   []
@@ -6884,7 +6884,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'7::deserialize::__Visitor"
                   []
                   []
@@ -7970,7 +7970,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'9::deserialize::__Visitor"
                   []
                   []
@@ -8514,7 +8514,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'11::deserialize::__Visitor"
                   []
                   []
@@ -9058,7 +9058,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'13::deserialize::__Visitor"
                   []
                   []
@@ -14936,7 +14936,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'15::deserialize::__Visitor"
                   []
                   []
@@ -16286,7 +16286,7 @@ Module normalized.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::normalized::_'17::deserialize::__Visitor"
                   []
                   []
@@ -16345,7 +16345,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Field" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Field"
             []
             []
@@ -16963,7 +16963,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Constant" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Constant"
             []
             []
@@ -17619,7 +17619,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Struct" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Struct"
             []
             []
@@ -18577,7 +18577,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Function" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Function"
             []
             []
@@ -20345,7 +20345,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::FieldRef" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::FieldRef"
             []
             []
@@ -20946,7 +20946,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::FunctionRef" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::FunctionRef"
             []
             []
@@ -37152,7 +37152,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Constant" ],
               constant
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Constant"
             []
             []
@@ -37287,7 +37287,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::normalized::Module" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Module"
             []
             []
@@ -39099,7 +39099,7 @@ Module normalized.
               |) in
             M.alloc (|
               Ty.path "move_binary_format::normalized::Module",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_binary_format::normalized::Module"
                 []
                 []
@@ -39474,7 +39474,7 @@ Module normalized.
                       |) in
                     M.alloc (|
                       Ty.path "move_binary_format::normalized::Type",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::normalized::Type::Struct"
                         []
                         []
@@ -39760,7 +39760,7 @@ Module normalized.
                               |) in
                             M.alloc (|
                               Ty.path "move_binary_format::normalized::Type",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "move_binary_format::normalized::Type::Struct"
                                 []
                                 []
@@ -41422,7 +41422,7 @@ Module normalized.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "move_core_types::language_storage::StructTag"
                                                     []
                                                     []
@@ -42390,7 +42390,7 @@ Module normalized.
                       |) in
                     M.alloc (|
                       Ty.path "move_binary_format::normalized::Type",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::normalized::Type::Struct"
                         []
                         []
@@ -42775,7 +42775,7 @@ Module normalized.
                 [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
               f
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::Field"
             []
             []
@@ -43318,7 +43318,7 @@ Module normalized.
                 ]
               |) in
             let~ s : Ty.path "move_binary_format::normalized::Struct" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_binary_format::normalized::Struct"
                 []
                 []
@@ -44203,7 +44203,7 @@ Module normalized.
                 ]
               |) in
             let~ f : Ty.path "move_binary_format::normalized::Function" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_binary_format::normalized::Function"
                 []
                 []
@@ -45436,7 +45436,7 @@ Module normalized.
                       |) in
                     M.alloc (|
                       Ty.path "move_binary_format::normalized::Type",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::normalized::Type::Struct"
                         []
                         []
@@ -45686,7 +45686,7 @@ Module normalized.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::FieldHandle" ],
               field_handle
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::FieldRef"
             []
             []
@@ -45846,7 +45846,7 @@ Module normalized.
                 [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
               function_handle
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::normalized::FunctionRef"
             []
             []

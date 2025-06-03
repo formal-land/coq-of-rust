@@ -105,7 +105,7 @@ Module buf.
         ltac:(M.monadic
           (let inner := M.alloc (| T, inner |) in
           let limit := M.alloc (| Ty.path "usize", limit |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "bytes::buf::take::Take"
             []
             [ T ]
@@ -407,7 +407,7 @@ Module buf.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]

@@ -315,7 +315,7 @@ Module ptr.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ptr::non_null::NonNull"
                   []
                   [ T ]
@@ -439,7 +439,7 @@ Module ptr.
         | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], r |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]
@@ -474,7 +474,7 @@ Module ptr.
         | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], r |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]
@@ -990,7 +990,7 @@ Module ptr.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ U ]
@@ -1040,7 +1040,7 @@ Module ptr.
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], self |) in
             let count := M.alloc (| Ty.path "isize", count |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]
@@ -1097,7 +1097,7 @@ Module ptr.
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], self |) in
             let count := M.alloc (| Ty.path "isize", count |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]
@@ -1157,7 +1157,7 @@ Module ptr.
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], self |) in
             let count := M.alloc (| Ty.path "usize", count |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]
@@ -1214,7 +1214,7 @@ Module ptr.
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], self |) in
             let count := M.alloc (| Ty.path "usize", count |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]
@@ -1350,7 +1350,7 @@ Module ptr.
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ], self |) in
             let count := M.alloc (| Ty.path "usize", count |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ptr::non_null::NonNull"
               []
               [ T ]

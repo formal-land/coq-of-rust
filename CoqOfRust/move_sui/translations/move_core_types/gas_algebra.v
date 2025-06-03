@@ -620,7 +620,7 @@ Module gas_algebra.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::gas_algebra::_'1::deserialize::__Visitor"
                   []
                   [ U ]
@@ -812,7 +812,7 @@ Module gas_algebra.
       | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| Ty.path "u64", val |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::gas_algebra::GasQuantity"
             []
             [ U ]

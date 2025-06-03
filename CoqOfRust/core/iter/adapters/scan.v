@@ -35,7 +35,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::scan::Scan") [] [ I; St; F ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::scan::Scan"
                 []
                 [ I; St; F ]
@@ -131,7 +131,7 @@ Module iter.
               (let iter := M.alloc (| I, iter |) in
               let state := M.alloc (| St, state |) in
               let f := M.alloc (| F, f |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::scan::Scan"
                 []
                 [ I; St; F ]

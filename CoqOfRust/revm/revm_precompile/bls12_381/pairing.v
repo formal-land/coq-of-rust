@@ -607,7 +607,7 @@ Module bls12_381.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -867,7 +867,7 @@ Module bls12_381.
                                                                                   |)
                                                                                 |)
                                                                               |);
-                                                                              Value.StructRecord
+                                                                              Value.mkStructRecord
                                                                                 "core::ops::range::Range"
                                                                                 []
                                                                                 [ Ty.path "usize" ]
@@ -1203,7 +1203,7 @@ Module bls12_381.
                                                                                   |)
                                                                                 |)
                                                                               |);
-                                                                              Value.StructRecord
+                                                                              Value.mkStructRecord
                                                                                 "core::ops::range::Range"
                                                                                 []
                                                                                 [ Ty.path "usize" ]

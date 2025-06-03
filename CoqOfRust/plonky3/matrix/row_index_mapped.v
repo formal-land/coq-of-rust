@@ -78,7 +78,7 @@ Module row_index_mapped.
                       ]
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -233,7 +233,7 @@ Module row_index_mapped.
                 ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_matrix::row_index_mapped::RowIndexMappedView"
             []
             [ IndexMap; Inner ]

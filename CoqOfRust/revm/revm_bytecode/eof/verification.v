@@ -6519,7 +6519,7 @@ Module eof.
                   [ Ty.path "revm_bytecode::eof::verification::AccessTracker" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_bytecode::eof::verification::AccessTracker"
               []
               []
@@ -7213,7 +7213,7 @@ Module eof.
                   |)
                 |) in
               let~ this : Ty.path "revm_bytecode::eof::verification::AccessTracker" :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_bytecode::eof::verification::AccessTracker"
                   []
                   []
@@ -9595,7 +9595,7 @@ Module eof.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::Range"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -11684,7 +11684,7 @@ Module eof.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "revm_bytecode::eof::verification::validate_eof_code::InstructionInfo"
                 []
                 []

@@ -91,7 +91,7 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
             Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
             self
           |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "revm_precompile::Precompiles"
           []
           []
@@ -221,7 +221,7 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "revm_precompile::Precompiles"
           []
           []

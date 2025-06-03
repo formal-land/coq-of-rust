@@ -86,7 +86,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::navigate::LeafRange"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
@@ -246,7 +246,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::navigate::LeafRange"
                 []
                 [ B; K; V ]
@@ -321,7 +321,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::navigate::LeafRange"
                 []
                 [ BorrowType; K; V ]
@@ -518,7 +518,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::navigate::LeafRange"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
@@ -4117,7 +4117,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::navigate::LazyLeafRange"
                 []
                 [ B; K; V ]
@@ -4188,7 +4188,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::navigate::LazyLeafRange"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
@@ -4307,7 +4307,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::navigate::LazyLeafRange"
                 []
                 [ BorrowType; K; V ]
@@ -4375,7 +4375,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::navigate::LazyLeafRange"
                 []
                 [ Ty.path "alloc::collections::btree::node::marker::Immut"; K; V ]
@@ -8416,7 +8416,7 @@ Module collections.
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "alloc::collections::btree::navigate::LeafRange"
                                                             []
                                                             [ BorrowType; K; V ]
@@ -10773,7 +10773,7 @@ Module collections.
                   ],
                 root2
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::btree::navigate::LazyLeafRange"
               []
               [ BorrowType; K; V ]

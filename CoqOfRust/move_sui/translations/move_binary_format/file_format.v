@@ -9155,7 +9155,7 @@ Module file_format.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::ModuleHandle"
             []
             []
@@ -9864,7 +9864,7 @@ Module file_format.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::StructHandle" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::StructHandle"
             []
             []
@@ -12485,7 +12485,7 @@ Module file_format.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::_'1::deserialize::__Visitor"
                   []
                   []
@@ -12718,7 +12718,7 @@ Module file_format.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::_'3::deserialize::__Visitor"
                   []
                   []
@@ -12838,7 +12838,7 @@ Module file_format.
               [
                 M.read (| __deserializer |);
                 mk_str (| "AbilitySet" |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::_'5::deserialize::__Visitor"
                   []
                   []
@@ -12910,7 +12910,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FunctionHandle"
             []
             []
@@ -13724,7 +13724,7 @@ Module file_format.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::FieldHandle" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FieldHandle"
             []
             []
@@ -14643,7 +14643,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::StructDefInstantiation" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::StructDefInstantiation"
             []
             []
@@ -15083,7 +15083,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::FunctionInstantiation" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FunctionInstantiation"
             []
             []
@@ -15523,7 +15523,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::FieldInstantiation" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FieldInstantiation"
             []
             []
@@ -15963,7 +15963,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::StructDefinition" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::StructDefinition"
             []
             []
@@ -16860,7 +16860,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::FieldDefinition" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FieldDefinition"
             []
             []
@@ -17856,7 +17856,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::FunctionDefinition" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FunctionDefinition"
             []
             []
@@ -18183,7 +18183,7 @@ Module file_format.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::file_format::FunctionDefinition"
             []
             []
@@ -19037,7 +19037,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::FunctionSignature" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::FunctionSignature"
             []
             []
@@ -23756,7 +23756,7 @@ Module file_format.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.path "move_binary_format::file_format::AbilitySet", self |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::AbilitySetIterator"
             []
             []
@@ -31840,7 +31840,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::SignatureTokenPreorderTraversalIter"
             []
             []
@@ -31964,7 +31964,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::SignatureToken" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::SignatureTokenPreorderTraversalIterWithDepth"
             []
             []
@@ -32127,7 +32127,7 @@ Module file_format.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Constant" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::Constant"
             []
             []
@@ -32575,7 +32575,7 @@ Module file_format.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CodeUnit" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::CodeUnit"
             []
             []
@@ -32761,7 +32761,7 @@ Module file_format.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::file_format::CodeUnit"
             []
             []
@@ -47609,7 +47609,7 @@ Module file_format.
                 [ Ty.path "move_binary_format::file_format::CompiledModule" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format::CompiledModule"
             []
             []
@@ -48730,7 +48730,7 @@ Module file_format.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::file_format::CompiledModule"
             []
             []
@@ -57802,7 +57802,7 @@ Module file_format.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "move_binary_format::file_format::CompiledModule"
           []
           []
@@ -57870,7 +57870,7 @@ Module file_format.
                               [ Ty.path "move_binary_format::file_format::ModuleHandle" ],
                             Value.Array
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "move_binary_format::file_format::ModuleHandle"
                                   []
                                   []
@@ -58496,7 +58496,7 @@ Module file_format.
                     "function_handles"
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::FunctionHandle"
                   []
                   []
@@ -58672,7 +58672,7 @@ Module file_format.
                     "function_defs"
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::FunctionDefinition"
                   []
                   []
@@ -58719,7 +58719,7 @@ Module file_format.
                         []
                         [ Ty.path "move_binary_format::file_format::CodeUnit" ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "move_binary_format::file_format::CodeUnit"
                             []
                             []
@@ -58836,7 +58836,7 @@ Module file_format.
                     "struct_handles"
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::StructHandle"
                   []
                   []
@@ -59008,7 +59008,7 @@ Module file_format.
                     "struct_defs"
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_binary_format::file_format::StructDefinition"
                   []
                   []
@@ -59089,7 +59089,7 @@ Module file_format.
                                           ],
                                         Value.Array
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "move_binary_format::file_format::FieldDefinition"
                                               []
                                               []

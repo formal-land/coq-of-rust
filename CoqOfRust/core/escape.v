@@ -112,7 +112,7 @@ Module escape.
             Value.Tuple
               [
                 M.read (| output |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "u8" ]
@@ -229,7 +229,7 @@ Module escape.
             Value.Tuple
               [
                 M.read (| output |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "u8" ]
@@ -287,7 +287,7 @@ Module escape.
             Value.Tuple
               [
                 M.read (| output |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "u8" ]
@@ -1078,7 +1078,7 @@ Module escape.
             Value.Tuple
               [
                 M.read (| output |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "u8" ]
@@ -1128,7 +1128,7 @@ Module escape.
                 [ Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::escape::EscapeIterInner"
             [ N ]
             []
@@ -1357,7 +1357,7 @@ Module escape.
                       |) in
                     M.alloc (|
                       Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::escape::EscapeIterInner"
                         [ N ]
                         []
@@ -1432,7 +1432,7 @@ Module escape.
                       |) in
                     M.alloc (|
                       Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::escape::EscapeIterInner"
                         [ N ]
                         []
@@ -1507,7 +1507,7 @@ Module escape.
                       |) in
                     M.alloc (|
                       Ty.apply (Ty.path "core::escape::EscapeIterInner") [ N ] [],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::escape::EscapeIterInner"
                         [ N ]
                         []
@@ -1535,7 +1535,7 @@ Module escape.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "core::escape::EscapeIterInner"
             [ N ]
             []
@@ -1546,7 +1546,7 @@ Module escape.
                   N
                 |));
               ("alive",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "u8" ]
@@ -1611,7 +1611,7 @@ Module escape.
                         "data"
                       |)
                     |));
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::ops::range::Range"
                     []
                     [ Ty.path "usize" ]

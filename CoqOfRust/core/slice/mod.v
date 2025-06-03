@@ -3328,7 +3328,7 @@ Module slice.
                 (Ty.path "core::ops::range::Range")
                 []
                 [ Ty.apply (Ty.path "*const") [] [ T ] ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.apply (Ty.path "*const") [] [ T ] ]
@@ -3402,7 +3402,7 @@ Module slice.
                 (Ty.path "core::ops::range::Range")
                 []
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.apply (Ty.path "*mut") [] [ T ] ]
@@ -8190,7 +8190,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -8231,7 +8231,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -8526,7 +8526,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -8567,7 +8567,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -8732,7 +8732,7 @@ Module slice.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -8867,7 +8867,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -12577,7 +12577,7 @@ Module slice.
                   M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| src |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -14884,7 +14884,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| self |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -15255,7 +15255,7 @@ Module slice.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| self |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -17881,7 +17881,7 @@ Module slice.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -18412,7 +18412,7 @@ Module slice.
                                               []
                                           ]
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::slice::GetManyMutError"
                                               [ N ]
                                               []
@@ -19137,7 +19137,7 @@ Module slice.
                                     [ Ty.path "usize" ]
                                 ]
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -19835,7 +19835,7 @@ Module slice.
                     |),
                     [
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::RangeTo"
                         []
                         [ Ty.path "usize" ]
@@ -19861,7 +19861,7 @@ Module slice.
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -20455,7 +20455,7 @@ Module slice.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| indices |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeTo"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -20649,7 +20649,7 @@ Module slice.
                 [ Ty.apply (Ty.path "core::slice::GetManyMutError") [ N ] [] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::slice::GetManyMutError"
             [ N ]
             []

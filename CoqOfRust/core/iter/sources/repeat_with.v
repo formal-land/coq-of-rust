@@ -14,7 +14,7 @@ Module iter.
         | [], [ A; F ], [ repeater ] =>
           ltac:(M.monadic
             (let repeater := M.alloc (| F, repeater |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::iter::sources::repeat_with::RepeatWith"
               []
               [ F ]
@@ -67,7 +67,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::sources::repeat_with::RepeatWith") [] [ F ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::sources::repeat_with::RepeatWith"
                 []
                 [ F ]

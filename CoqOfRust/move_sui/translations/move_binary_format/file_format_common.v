@@ -3201,7 +3201,7 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::file_format_common::BinaryData"
             []
             []
@@ -3329,7 +3329,7 @@ Module file_format_common.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::file_format_common::BinaryData"
             []
             []
@@ -4399,7 +4399,7 @@ Module file_format_common.
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               vec
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::file_format_common::BinaryData"
             []
             []

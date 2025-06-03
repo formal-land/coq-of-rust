@@ -399,7 +399,7 @@ Module kzg_point_evaluation.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -479,7 +479,7 @@ Module kzg_point_evaluation.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -693,7 +693,7 @@ Module kzg_point_evaluation.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -792,7 +792,7 @@ Module kzg_point_evaluation.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -891,7 +891,7 @@ Module kzg_point_evaluation.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]

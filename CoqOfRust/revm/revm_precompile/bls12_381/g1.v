@@ -104,7 +104,7 @@ Module bls12_381.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, out |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -173,7 +173,7 @@ Module bls12_381.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, out |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeFrom"
                                     []
                                     [ Ty.path "usize" ]
@@ -292,7 +292,7 @@ Module bls12_381.
                     ],
                   M.read (|
                     let~ out : Ty.path "blst::blst_p1_affine" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "blst::blst_p1_affine"
                         []
                         []
@@ -1166,7 +1166,7 @@ Module bls12_381.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| M.read (| input |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeTo"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -1428,7 +1428,7 @@ Module bls12_381.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| M.read (| input |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::Range"
                                                   []
                                                   [ Ty.path "usize" ]

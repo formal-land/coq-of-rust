@@ -109,7 +109,7 @@ Definition fibonacci (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (Value.StructRecord
+      (Value.mkStructRecord
         "iterators::Fibonacci"
         []
         []
@@ -166,7 +166,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ sequence : Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "core::ops::range::Range"
             []
             [ Ty.path "i32" ]
@@ -683,7 +683,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "i32" ]

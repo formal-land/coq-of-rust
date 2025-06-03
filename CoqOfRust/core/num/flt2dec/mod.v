@@ -157,7 +157,7 @@ Module num.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -335,7 +335,7 @@ Module num.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -1055,7 +1055,7 @@ Module num.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| parts |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -1152,7 +1152,7 @@ Module num.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| parts |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -1268,7 +1268,7 @@ Module num.
                                                       Pointer.Kind.Ref,
                                                       M.deref (| M.read (| buf |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -1376,7 +1376,7 @@ Module num.
                                                       Pointer.Kind.Ref,
                                                       M.deref (| M.read (| buf |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeFrom"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -1588,7 +1588,7 @@ Module num.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| parts |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeTo"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -1692,7 +1692,7 @@ Module num.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| parts |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeTo"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -1977,7 +1977,7 @@ Module num.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| parts |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeTo"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -2081,7 +2081,7 @@ Module num.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| parts |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeTo"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -2387,7 +2387,7 @@ Module num.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -2552,7 +2552,7 @@ Module num.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| M.read (| buf |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeFrom"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -3005,7 +3005,7 @@ Module num.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| parts |) |) |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -3680,7 +3680,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -3764,7 +3764,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -3829,7 +3829,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -3913,7 +3913,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -4031,7 +4031,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -4123,7 +4123,7 @@ Module num.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| parts |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -4185,7 +4185,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -4277,7 +4277,7 @@ Module num.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| parts |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -4400,7 +4400,7 @@ Module num.
                                     let exp := M.copy (| Ty.path "i16", γ0_1 |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -4799,7 +4799,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -4883,7 +4883,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -4948,7 +4948,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -5032,7 +5032,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -5256,7 +5256,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -5340,7 +5340,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -5625,7 +5625,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -6008,7 +6008,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -6092,7 +6092,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -6157,7 +6157,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -6241,7 +6241,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -6462,7 +6462,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -6554,7 +6554,7 @@ Module num.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| parts |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -6674,7 +6674,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -6766,7 +6766,7 @@ Module num.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| parts |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -7066,7 +7066,7 @@ Module num.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| buf |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -7104,7 +7104,7 @@ Module num.
                                     let exp := M.copy (| Ty.path "i16", γ0_1 |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -7432,7 +7432,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -7516,7 +7516,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -7581,7 +7581,7 @@ Module num.
                               |) in
                             M.alloc (|
                               Ty.path "core::num::fmt::Formatted",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::num::fmt::Formatted"
                                 []
                                 []
@@ -7665,7 +7665,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| parts |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -7783,7 +7783,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -7875,7 +7875,7 @@ Module num.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| parts |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -7937,7 +7937,7 @@ Module num.
                                       |) in
                                     M.alloc (|
                                       Ty.path "core::num::fmt::Formatted",
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::num::fmt::Formatted"
                                         []
                                         []
@@ -8029,7 +8029,7 @@ Module num.
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (| M.read (| parts |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeTo"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -8306,7 +8306,7 @@ Module num.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| buf |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -8690,7 +8690,7 @@ Module num.
                                                       |) in
                                                     M.alloc (|
                                                       Ty.path "core::num::fmt::Formatted",
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::num::fmt::Formatted"
                                                         []
                                                         []
@@ -8796,7 +8796,7 @@ Module num.
                                                                                     |)
                                                                                   |)
                                                                                 |);
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "core::ops::range::RangeTo"
                                                                                   []
                                                                                   [ Ty.path "usize"
@@ -8865,7 +8865,7 @@ Module num.
                                                       |) in
                                                     M.alloc (|
                                                       Ty.path "core::num::fmt::Formatted",
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::num::fmt::Formatted"
                                                         []
                                                         []
@@ -8971,7 +8971,7 @@ Module num.
                                                                                     |)
                                                                                   |)
                                                                                 |);
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "core::ops::range::RangeTo"
                                                                                   []
                                                                                   [ Ty.path "usize"
@@ -9000,7 +9000,7 @@ Module num.
                                           ltac:(M.monadic
                                             (M.alloc (|
                                               Ty.path "core::num::fmt::Formatted",
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::num::fmt::Formatted"
                                                 []
                                                 []

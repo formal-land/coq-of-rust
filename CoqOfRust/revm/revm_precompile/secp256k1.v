@@ -614,7 +614,7 @@ Module secp256k1.
                                       |)
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeFrom"
                                     []
                                     [ Ty.path "usize" ]
@@ -662,7 +662,7 @@ Module secp256k1.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, hash |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -1043,7 +1043,7 @@ Module secp256k1.
                                                                 |)
                                                               |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -1394,7 +1394,7 @@ Module secp256k1.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -1594,7 +1594,7 @@ Module secp256k1.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]

@@ -295,7 +295,7 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "alloc::collections::linked_list::LinkedList"
                                                         []
                                                         [ T; Ty.path "alloc::alloc::Global" ]
@@ -652,7 +652,7 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "alloc::collections::linked_list::LinkedList"
                                                         []
                                                         [ T; Ty.path "alloc::alloc::Global" ]
@@ -782,7 +782,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::IntoIter") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::IntoIter"
               []
               [ T; A ]
@@ -948,7 +948,7 @@ Module collections.
         | [], [], [ element ] =>
           ltac:(M.monadic
             (let element := M.alloc (| T, element |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::Node"
               []
               [ T ]
@@ -3694,7 +3694,7 @@ Module collections.
                             (Ty.path "alloc::collections::linked_list::LinkedList")
                             []
                             [ T; A ] :=
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::collections::linked_list::LinkedList"
                           []
                           [ T; A ]
@@ -4174,7 +4174,7 @@ Module collections.
                             (Ty.path "alloc::collections::linked_list::LinkedList")
                             []
                             [ T; A ] :=
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::collections::linked_list::LinkedList"
                           []
                           [ T; A ]
@@ -4358,7 +4358,7 @@ Module collections.
         | [], [], [ alloc ] =>
           ltac:(M.monadic
             (let alloc := M.alloc (| A, alloc |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::LinkedList"
               []
               [ T; A ]
@@ -4426,7 +4426,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::Iter"
               []
               [ T ]
@@ -4494,7 +4494,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::IterMut"
               []
               [ T ]
@@ -4567,7 +4567,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::Cursor"
               []
               [ T; A ]
@@ -4615,7 +4615,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::CursorMut"
               []
               [ T; A ]
@@ -4663,7 +4663,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::Cursor"
               []
               [ T; A ]
@@ -4737,7 +4737,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::CursorMut"
               []
               [ T; A ]
@@ -4917,7 +4917,7 @@ Module collections.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "alloc::collections::linked_list::LinkedList"
                       []
                       [ T; Ty.apply (Ty.path "&") [] [ A ] ]
@@ -7004,7 +7004,7 @@ Module collections.
                                                 []
                                               |),
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::Range"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -7214,7 +7214,7 @@ Module collections.
                                                 []
                                               |),
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::Range"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -7617,7 +7617,7 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -7798,7 +7798,7 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -8291,7 +8291,7 @@ Module collections.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "alloc::collections::linked_list::ExtractIf") [] [ T; F; A ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::linked_list::ExtractIf"
                   []
                   [ T; F; A ]
@@ -8377,7 +8377,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::linked_list::LinkedList"
               []
               [ T; Ty.path "alloc::alloc::Global" ]
@@ -9745,7 +9745,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::linked_list::Iter"
               []
               [ T ]
@@ -10541,7 +10541,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::linked_list::IterMut"
               []
               [ T ]
@@ -10721,7 +10721,7 @@ Module collections.
                         |) in
                       M.alloc (|
                         Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ],
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::collections::linked_list::Cursor"
                           []
                           [ T; A ]
@@ -14115,7 +14115,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::linked_list::CursorMut") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::Cursor"
               []
               [ T; A ]
@@ -15665,7 +15665,7 @@ Module collections.
                               [ T; A ]
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "alloc::collections::linked_list::LinkedList"
                               []
                               [ T; A ]
@@ -18942,7 +18942,7 @@ Module collections.
                 Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::linked_list::IntoIter"
               []
               [ T; A ]

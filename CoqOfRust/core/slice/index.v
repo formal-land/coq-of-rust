@@ -3610,7 +3610,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3666,7 +3666,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3725,7 +3725,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3784,7 +3784,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -3840,7 +3840,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -3901,7 +3901,7 @@ Module slice.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -3987,7 +3987,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -4053,7 +4053,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -4122,7 +4122,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -4191,7 +4191,7 @@ Module slice.
                 []
               |),
               [
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -6857,7 +6857,7 @@ Module slice.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]
@@ -7370,7 +7370,7 @@ Module slice.
                                     [ Ty.path "usize" ]
                                 ]
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -7529,7 +7529,7 @@ Module slice.
                       |) in
                     M.alloc (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -7979,7 +7979,7 @@ Module slice.
                                     [ Ty.path "usize" ]
                                 ]
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -8245,7 +8245,7 @@ Module slice.
                       |) in
                     M.alloc (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]

@@ -24,7 +24,7 @@ Module range.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::Range") [] [ Idx ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::range::Range"
             []
             [ Idx ]
@@ -105,7 +105,7 @@ Module range.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "core::range::Range"
             []
             [ Idx ]
@@ -1202,7 +1202,7 @@ Module range.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| Ty.apply (Ty.path "core::range::Range") [] [ T ], value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::ops::range::Range"
             []
             [ T ]
@@ -1244,7 +1244,7 @@ Module range.
         ltac:(M.monadic
           (let value :=
             M.alloc (| Ty.apply (Ty.path "core::ops::range::Range") [] [ T ], value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::range::Range"
             []
             [ T ]
@@ -1301,7 +1301,7 @@ Module range.
                 [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Idx ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::range::RangeInclusive"
             []
             [ Idx ]
@@ -2288,7 +2288,7 @@ Module range.
               Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::range::Range"
             []
             [ Ty.path "usize" ]
@@ -2700,7 +2700,7 @@ Module range.
                     let end_ := M.copy (| T, γ0_1 |) in
                     M.alloc (|
                       Ty.apply (Ty.path "core::range::RangeInclusive") [] [ T ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::range::RangeInclusive"
                         []
                         [ T ]
@@ -2745,7 +2745,7 @@ Module range.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Idx ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::range::RangeFrom"
             []
             [ Idx ]
@@ -3594,7 +3594,7 @@ Module range.
       | [], [], [ value ] =>
         ltac:(M.monadic
           (let value := M.alloc (| Ty.apply (Ty.path "core::range::RangeFrom") [] [ T ], value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::ops::range::RangeFrom"
             []
             [ T ]
@@ -3636,7 +3636,7 @@ Module range.
         ltac:(M.monadic
           (let value :=
             M.alloc (| Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ T ], value |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::range::RangeFrom"
             []
             [ T ]

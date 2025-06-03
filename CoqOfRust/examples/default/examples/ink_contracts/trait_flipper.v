@@ -26,7 +26,7 @@ Module Impl_trait_flipper_Flipper.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "trait_flipper::Flipper"
           []
           []

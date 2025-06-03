@@ -377,7 +377,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::BTreeSet"
                 []
                 [ T; A ]
@@ -2328,7 +2328,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::set::BTreeSet"
                 []
                 [ T; Ty.path "alloc::alloc::Global" ]
@@ -2384,7 +2384,7 @@ Module collections.
           | [], [], [ alloc ] =>
             ltac:(M.monadic
               (let alloc := M.alloc (| A, alloc |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::BTreeSet"
                 []
                 [ T; A ]
@@ -2440,7 +2440,7 @@ Module collections.
                   self
                 |) in
               let range := M.alloc (| R, range |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Range"
                 []
                 [ T ]
@@ -2664,7 +2664,7 @@ Module collections.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::collections::btree::set::Difference"
                                             []
                                             [ T; A ]
@@ -2829,7 +2829,7 @@ Module collections.
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "alloc::collections::btree::set::Difference"
                                                     []
                                                     [ T; A ]
@@ -2885,7 +2885,7 @@ Module collections.
                                             (Ty.path "alloc::collections::btree::set::Difference")
                                             []
                                             [ T; A ],
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::collections::btree::set::Difference"
                                             []
                                             [ T; A ]
@@ -3304,7 +3304,7 @@ Module collections.
                                                                 "alloc::collections::btree::set::DifferenceInner")
                                                               []
                                                               [ T; A ],
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "alloc::collections::btree::set::DifferenceInner::Search"
                                                               []
                                                               [ T; A ]
@@ -3350,7 +3350,7 @@ Module collections.
                                                                 "alloc::collections::btree::set::DifferenceInner")
                                                               []
                                                               [ T; A ],
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "alloc::collections::btree::set::DifferenceInner::Stitch"
                                                               []
                                                               [ T; A ]
@@ -3722,7 +3722,7 @@ Module collections.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::collections::btree::set::Intersection"
                                             []
                                             [ T; A ]
@@ -3869,7 +3869,7 @@ Module collections.
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "alloc::collections::btree::set::Intersection"
                                                     []
                                                     [ T; A ]
@@ -3907,7 +3907,7 @@ Module collections.
                                             (Ty.path "alloc::collections::btree::set::Intersection")
                                             []
                                             [ T; A ],
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::collections::btree::set::Intersection"
                                             []
                                             [ T; A ]
@@ -4219,7 +4219,7 @@ Module collections.
                                                                 "alloc::collections::btree::set::IntersectionInner")
                                                               []
                                                               [ T; A ],
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "alloc::collections::btree::set::IntersectionInner::Search"
                                                               []
                                                               [ T; A ]
@@ -4334,7 +4334,7 @@ Module collections.
                                                                 "alloc::collections::btree::set::IntersectionInner")
                                                               []
                                                               [ T; A ],
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "alloc::collections::btree::set::IntersectionInner::Search"
                                                               []
                                                               [ T; A ]
@@ -4380,7 +4380,7 @@ Module collections.
                                                                 "alloc::collections::btree::set::IntersectionInner")
                                                               []
                                                               [ T; A ],
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "alloc::collections::btree::set::IntersectionInner::Stitch"
                                                               []
                                                               [ T; A ]
@@ -7254,7 +7254,7 @@ Module collections.
                             []
                             [ T; A ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::set::entry::OccupiedEntry"
                                 []
                                 [ T; A ]
@@ -7287,7 +7287,7 @@ Module collections.
                             []
                             [ T; A ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::set::entry::VacantEntry"
                                 []
                                 [ T; A ]
@@ -7736,7 +7736,7 @@ Module collections.
                   self
                 |) in
               let value := M.alloc (| Ty.apply (Ty.path "&") [] [ Q ], value |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::BTreeSet"
                 []
                 [ T; A ]
@@ -7868,7 +7868,7 @@ Module collections.
                             (Ty.path "alloc::collections::btree::set::ExtractIf")
                             []
                             [ T; F; A ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::set::ExtractIf"
                             []
                             [ T; F; A ]
@@ -7908,7 +7908,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Iter"
                 []
                 [ T ]
@@ -8082,7 +8082,7 @@ Module collections.
                     [ Ty.apply (Ty.path "&") [] [ Q ] ],
                   bound
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Cursor"
                 []
                 [ T ]
@@ -8159,7 +8159,7 @@ Module collections.
                     [ Ty.apply (Ty.path "&") [] [ Q ] ],
                   bound
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::CursorMut"
                 []
                 [ T; A ]
@@ -8236,7 +8236,7 @@ Module collections.
                     [ Ty.apply (Ty.path "&") [] [ Q ] ],
                   bound
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Cursor"
                 []
                 [ T ]
@@ -8313,7 +8313,7 @@ Module collections.
                     [ Ty.apply (Ty.path "&") [] [ Q ] ],
                   bound
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::CursorMut"
                 []
                 [ T; A ]
@@ -8486,7 +8486,7 @@ Module collections.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::set::BTreeSet"
                     []
                     [ T; A ]
@@ -9016,7 +9016,7 @@ Module collections.
                             (Ty.path "alloc::collections::btree::set::BTreeSet")
                             []
                             [ T; Ty.path "alloc::alloc::Global" ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::set::BTreeSet"
                             []
                             [ T; Ty.path "alloc::alloc::Global" ]
@@ -9070,7 +9070,7 @@ Module collections.
                   Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::IntoIter"
                 []
                 [ T; A ]
@@ -10951,7 +10951,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::Iter") [] [ T ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Iter"
                 []
                 [ T ]
@@ -11549,7 +11549,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::set::Iter"
                 []
                 [ T ]
@@ -11800,7 +11800,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::set::IntoIter"
                 []
                 [ T; A ]
@@ -11861,7 +11861,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::Range") [] [ T ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Range"
                 []
                 [ T ]
@@ -12364,7 +12364,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::set::Range"
                 []
                 [ T ]
@@ -12436,7 +12436,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::Difference") [] [ T; A ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Difference"
                 []
                 [ T; A ]
@@ -12519,7 +12519,7 @@ Module collections.
                                   (Ty.path "alloc::collections::btree::set::DifferenceInner")
                                   []
                                   [ T; A ],
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "alloc::collections::btree::set::DifferenceInner::Stitch"
                                   []
                                   [ T; A ]
@@ -12637,7 +12637,7 @@ Module collections.
                                   (Ty.path "alloc::collections::btree::set::DifferenceInner")
                                   []
                                   [ T; A ],
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "alloc::collections::btree::set::DifferenceInner::Search"
                                   []
                                   [ T; A ]
@@ -14755,7 +14755,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Intersection"
                 []
                 [ T; A ]
@@ -14833,7 +14833,7 @@ Module collections.
                                   (Ty.path "alloc::collections::btree::set::IntersectionInner")
                                   []
                                   [ T; A ],
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "alloc::collections::btree::set::IntersectionInner::Stitch"
                                   []
                                   [ T; A ]
@@ -14941,7 +14941,7 @@ Module collections.
                                   (Ty.path "alloc::collections::btree::set::IntersectionInner")
                                   []
                                   [ T; A ],
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "alloc::collections::btree::set::IntersectionInner::Search"
                                   []
                                   [ T; A ]
@@ -16992,7 +16992,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::Cursor") [] [ K ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Cursor"
                 []
                 [ K ]
@@ -18446,7 +18446,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::set::CursorMut") [] [ T; A ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Cursor"
                 []
                 [ T ]
@@ -18507,7 +18507,7 @@ Module collections.
                   Ty.apply (Ty.path "alloc::collections::btree::set::CursorMut") [] [ T; A ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::CursorMutKey"
                 []
                 [ T; A ]
@@ -19648,7 +19648,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::set::Cursor"
                 []
                 [ T ]

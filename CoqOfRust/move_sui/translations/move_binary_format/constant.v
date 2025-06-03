@@ -1211,7 +1211,7 @@ Module constant.
                     []
                     [ Ty.path "move_binary_format::file_format::Constant" ]
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_binary_format::file_format::Constant"
                         []
                         []

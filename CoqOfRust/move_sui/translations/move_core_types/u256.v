@@ -584,7 +584,7 @@ Module u256.
         ltac:(M.monadic
           (let val := M.alloc (| T, val |) in
           let kind := M.alloc (| Ty.path "move_core_types::u256::U256CastErrorKind", kind |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::u256::U256CastError"
             []
             []
@@ -7045,7 +7045,7 @@ Module u256.
               |) in
             M.alloc (|
               Ty.path "move_core_types::u256::UniformU256",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_core_types::u256::UniformU256"
                 []
                 []

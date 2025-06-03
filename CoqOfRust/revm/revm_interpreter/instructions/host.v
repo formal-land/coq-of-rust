@@ -9003,7 +9003,7 @@ Module instructions.
                                           (Ty.path "alloy_primitives::log::Log")
                                           []
                                           [ Ty.path "alloy_primitives::log::LogData" ] :=
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloy_primitives::log::Log"
                                         []
                                         [ Ty.path "alloy_primitives::log::LogData" ]

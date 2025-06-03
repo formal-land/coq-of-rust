@@ -764,7 +764,7 @@ Module bits.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| checksum |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeTo"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -1045,7 +1045,7 @@ Module bits.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| M.read (| checksum |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeFrom"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -1214,7 +1214,7 @@ Module bits.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, word |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]
@@ -1300,7 +1300,7 @@ Module bits.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, word |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeFrom"
                               []
                               [ Ty.path "usize" ]
@@ -1895,7 +1895,7 @@ Module bits.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| buf |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeFrom"
                                       []
                                       [ Ty.path "usize" ]
@@ -2071,7 +2071,7 @@ Module bits.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| buf |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeFrom"
                                           []
                                           [ Ty.path "usize" ]
@@ -2184,7 +2184,7 @@ Module bits.
                                           Pointer.Kind.MutRef,
                                           M.deref (| M.read (| buf |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeFrom"
                                           []
                                           [ Ty.path "usize" ]
@@ -2741,7 +2741,7 @@ Module bits.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, bytes |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -2836,7 +2836,7 @@ Module bits.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, bytes |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -2885,7 +2885,7 @@ Module bits.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, bytes |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -3185,7 +3185,7 @@ Module bits.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, digest |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeFrom"
                                   []
                                   [ Ty.path "usize" ]

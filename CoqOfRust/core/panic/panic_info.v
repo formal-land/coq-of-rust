@@ -164,7 +164,7 @@ Module panic.
               |) in
             let can_unwind := M.alloc (| Ty.path "bool", can_unwind |) in
             let force_no_backtrace := M.alloc (| Ty.path "bool", force_no_backtrace |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::panic::panic_info::PanicInfo"
               []
               []
@@ -195,7 +195,7 @@ Module panic.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::panic_info::PanicInfo" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::panic::panic_info::PanicMessage"
               []
               []

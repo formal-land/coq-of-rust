@@ -33,7 +33,7 @@ Module net.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::net::display_buffer::DisplayBuffer"
               [ SIZE ]
               []
@@ -158,7 +158,7 @@ Module net.
                                     "buf"
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeTo"
                                   []
                                   [ Ty.path "usize" ]
@@ -324,7 +324,7 @@ Module net.
                                     "buf"
                                   |)
                                 |));
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]

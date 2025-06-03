@@ -42,7 +42,7 @@ Module binary_config.
                 [ Ty.path "move_binary_format::binary_config::TableConfig" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::binary_config::TableConfig"
             []
             []
@@ -851,7 +851,7 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::binary_config::TableConfig"
             []
             []
@@ -922,7 +922,7 @@ Module binary_config.
                 [ Ty.path "move_binary_format::binary_config::BinaryConfig" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1159,7 +1159,7 @@ Module binary_config.
             M.alloc (| Ty.path "bool", check_no_extraneous_bytes |) in
           let table_config :=
             M.alloc (| Ty.path "move_binary_format::binary_config::TableConfig", table_config |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1192,7 +1192,7 @@ Module binary_config.
             M.alloc (| Ty.path "u32", max_binary_format_version |) in
           let check_no_extraneous_bytes :=
             M.alloc (| Ty.path "bool", check_no_extraneous_bytes |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1237,7 +1237,7 @@ Module binary_config.
         ltac:(M.monadic
           (let check_no_extraneous_bytes :=
             M.alloc (| Ty.path "bool", check_no_extraneous_bytes |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1283,7 +1283,7 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []

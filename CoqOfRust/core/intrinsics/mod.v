@@ -9641,7 +9641,7 @@ Module slice.
                                               Pointer.Kind.Ref,
                                               M.deref (| M.read (| text |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]

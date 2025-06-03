@@ -3395,7 +3395,7 @@ Module collections.
                       (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
                       []
                       [ K; V; A ],
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "alloc::collections::btree::map::entry::OccupiedEntry"
                       []
                       [ K; V; A ]

@@ -32,7 +32,7 @@ Module collections.
             ltac:(M.monadic
               (let i1 := M.alloc (| Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ], i1 |) in
               let i2 := M.alloc (| Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ], i2 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::vec_deque::iter::Iter"
                 []
                 [ T ]
@@ -329,7 +329,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::vec_deque::iter::Iter"
                 []
                 [ T ]
@@ -398,7 +398,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::vec_deque::iter::Iter") [] [ T ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::vec_deque::iter::Iter"
                 []
                 [ T ]

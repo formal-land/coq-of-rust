@@ -124,7 +124,7 @@ Module fmt.
             let flags := M.alloc (| Ty.path "u32", flags |) in
             let precision := M.alloc (| Ty.path "core::fmt::rt::Count", precision |) in
             let width := M.alloc (| Ty.path "core::fmt::rt::Count", width |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::fmt::rt::Placeholder"
               []
               []
@@ -663,13 +663,13 @@ Module fmt.
                     [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
                 f
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::fmt::rt::Argument"
               []
               []
               [
                 ("ty",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::fmt::rt::ArgumentType::Placeholder"
                     []
                     []
@@ -1106,7 +1106,7 @@ Module fmt.
         | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], x |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::fmt::rt::Argument"
               []
               []
@@ -1337,7 +1337,11 @@ Module fmt.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord "core::fmt::rt::UnsafeArg" [] [] [ ("_private", Value.Tuple []) ]))
+            (Value.mkStructRecord
+              "core::fmt::rt::UnsafeArg"
+              []
+              []
+              [ ("_private", Value.Tuple []) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

@@ -87,7 +87,7 @@ Module host.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_context_interface::host::dummy::DummyHost"
               []
               [ BLOCK; TX; CFG ]
@@ -594,7 +594,7 @@ Module host.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_context_interface::host::dummy::DummyHost"
               []
               [ BLOCK; TX; CFG ]
@@ -803,7 +803,7 @@ Module host.
           ltac:(M.monadic
             (let tx := M.alloc (| TX, tx |) in
             let block := M.alloc (| BLOCK, block |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_context_interface::host::dummy::DummyHost"
               []
               [ BLOCK; TX; CFG ]
@@ -2206,13 +2206,13 @@ Module host.
                       [ Ty.path "revm_context_interface::host::SStoreResult" ]
                   ]
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "revm_context_interface::journaled_state::StateLoad"
                       []
                       [ Ty.path "revm_context_interface::host::SStoreResult" ]
                       [
                         ("data",
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "revm_context_interface::host::SStoreResult"
                             []
                             []

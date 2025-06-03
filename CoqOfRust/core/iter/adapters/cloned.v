@@ -30,7 +30,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::cloned::Cloned"
                 []
                 [ I ]
@@ -155,7 +155,7 @@ Module iter.
           | [], [], [ it ] =>
             ltac:(M.monadic
               (let it := M.alloc (| I, it |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::cloned::Cloned"
                 []
                 [ I ]

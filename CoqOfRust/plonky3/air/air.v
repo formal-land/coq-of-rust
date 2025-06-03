@@ -98,7 +98,7 @@ Module air.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           let condition := M.alloc (| I, condition |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_air::air::FilteredAirBuilder"
             []
             [ Self ]

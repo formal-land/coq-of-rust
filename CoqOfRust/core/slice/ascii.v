@@ -771,7 +771,7 @@ Module slice.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::ascii::EscapeAscii"
               []
               []
@@ -1196,7 +1196,7 @@ Module slice.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::slice::ascii::EscapeAscii" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::slice::ascii::EscapeAscii"
               []
               []
@@ -3011,7 +3011,7 @@ Module slice.
                                                                                   M.read (| bytes |)
                                                                                 |)
                                                                               |);
-                                                                              Value.StructRecord
+                                                                              Value.mkStructRecord
                                                                                 "core::ops::range::RangeFrom"
                                                                                 []
                                                                                 [ Ty.path "usize" ]

@@ -112,7 +112,7 @@ Module collections.
                   Value.Tuple
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| new_ref |) |) |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::collections::btree::borrow::DormantMutRef"
                         []
                         [ T ]

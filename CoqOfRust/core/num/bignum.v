@@ -663,7 +663,7 @@ Module num.
                 |) in
               M.alloc (|
                 Ty.path "core::num::bignum::Big32x40",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::num::bignum::Big32x40"
                   []
                   []
@@ -782,7 +782,7 @@ Module num.
                 |) in
               M.alloc (|
                 Ty.path "core::num::bignum::Big32x40",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::num::bignum::Big32x40"
                   []
                   []
@@ -840,7 +840,7 @@ Module num.
                             "base"
                           |)
                         |);
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::RangeTo"
                           []
                           [ Ty.path "usize" ]
@@ -1374,7 +1374,7 @@ Module num.
                                                 "base"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -1417,7 +1417,7 @@ Module num.
                                                 "base"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -2062,7 +2062,7 @@ Module num.
                                                 "base"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -2105,7 +2105,7 @@ Module num.
                                                 "base"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -2434,7 +2434,7 @@ Module num.
                                             "base"
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeTo"
                                           []
                                           [ Ty.path "usize" ]
@@ -2864,7 +2864,7 @@ Module num.
                                                                           "base"
                                                                         |)
                                                                       |);
-                                                                      Value.StructRecord
+                                                                      Value.mkStructRecord
                                                                         "core::ops::range::RangeFrom"
                                                                         []
                                                                         [ Ty.path "usize" ]
@@ -3157,7 +3157,7 @@ Module num.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -3311,7 +3311,7 @@ Module num.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -3597,7 +3597,7 @@ Module num.
                                                 []
                                               |),
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::Range"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -4019,7 +4019,7 @@ Module num.
                                         []
                                       |),
                                       [
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -4609,7 +4609,7 @@ Module num.
                                                 "base"
                                               |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -5270,7 +5270,7 @@ Module num.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -5749,7 +5749,7 @@ Module num.
                                                                       "base"
                                                                     |)
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::RangeFrom"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -5972,7 +5972,7 @@ Module num.
                                                                       "base"
                                                                     |)
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::RangeFrom"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -6405,7 +6405,7 @@ Module num.
                                         "base"
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -6511,7 +6511,7 @@ Module num.
                                         "base"
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -6590,7 +6590,7 @@ Module num.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::num::bignum::Big32x40" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::num::bignum::Big32x40"
               []
               []
@@ -7118,7 +7118,7 @@ Module num.
                                                         "base"
                                                       |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -7671,7 +7671,7 @@ Module num.
                   |) in
                 M.alloc (|
                   Ty.path "core::num::bignum::tests::Big8x3",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::num::bignum::tests::Big8x3"
                     []
                     []
@@ -7793,7 +7793,7 @@ Module num.
                   |) in
                 M.alloc (|
                   Ty.path "core::num::bignum::tests::Big8x3",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::num::bignum::tests::Big8x3"
                     []
                     []
@@ -7854,7 +7854,7 @@ Module num.
                               "base"
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeTo"
                             []
                             [ Ty.path "usize" ]
@@ -8389,7 +8389,7 @@ Module num.
                                                   "base"
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -8432,7 +8432,7 @@ Module num.
                                                   "base"
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -9095,7 +9095,7 @@ Module num.
                                                   "base"
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -9138,7 +9138,7 @@ Module num.
                                                   "base"
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -9485,7 +9485,7 @@ Module num.
                                               "base"
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -9935,7 +9935,7 @@ Module num.
                                                                             "base"
                                                                           |)
                                                                         |);
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "core::ops::range::RangeFrom"
                                                                           []
                                                                           [ Ty.path "usize" ]
@@ -10242,7 +10242,7 @@ Module num.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -10399,7 +10399,7 @@ Module num.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -10691,7 +10691,7 @@ Module num.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -11122,7 +11122,7 @@ Module num.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -11731,7 +11731,7 @@ Module num.
                                                   "base"
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -12406,7 +12406,7 @@ Module num.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -12906,7 +12906,7 @@ Module num.
                                                                         "base"
                                                                       |)
                                                                     |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::RangeFrom"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -13131,7 +13131,7 @@ Module num.
                                                                         "base"
                                                                       |)
                                                                     |);
-                                                                    Value.StructRecord
+                                                                    Value.mkStructRecord
                                                                       "core::ops::range::RangeFrom"
                                                                       []
                                                                       [ Ty.path "usize" ]
@@ -13571,7 +13571,7 @@ Module num.
                                           "base"
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -13677,7 +13677,7 @@ Module num.
                                           "base"
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -13756,7 +13756,7 @@ Module num.
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::num::bignum::tests::Big8x3" ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::num::bignum::tests::Big8x3"
                 []
                 []
@@ -14288,7 +14288,7 @@ Module num.
                                                           "base"
                                                         |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::RangeTo"
                                                         []
                                                         [ Ty.path "usize" ]

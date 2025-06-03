@@ -53,6 +53,56 @@ Module List.
       end
     end.
 
+  (** Code taken from the standard library without the use of a functor and properties. *)
+  Module Sort.
+    Fixpoint merge {A : Set} (leb : A -> A -> bool) (l1 l2 : list A) : list A :=
+      let fix merge_aux l2 :=
+      match l1, l2 with
+      | [], _ => l2
+      | _, [] => l1
+      | a1::l1', a2::l2' =>
+          if leb a1 a2 then
+            a1 :: merge leb l1' l2
+          else
+            a2 :: merge_aux l2'
+      end
+      in merge_aux l2.
+
+    Fixpoint merge_list_to_stack {A : Set} (leb : A -> A -> bool) stack l :=
+      match stack with
+      | [] => [Some l]
+      | None :: stack' => Some l :: stack'
+      | Some l' :: stack' => None :: merge_list_to_stack leb stack' (merge leb l' l)
+      end.
+
+    Fixpoint merge_stack {A : Set} (leb : A -> A -> bool) stack :=
+      match stack with
+      | [] => []
+      | None :: stack' => merge_stack leb stack'
+      | Some l :: stack' => merge leb l (merge_stack leb stack')
+      end.
+
+    Fixpoint iter_merge {A : Set} (leb : A -> A -> bool) stack l :=
+      match l with
+      | [] => merge_stack leb stack
+      | a::l' => iter_merge leb (merge_list_to_stack leb stack [a]) l'
+      end.
+
+    Definition sort {A : Set} (leb : A -> A -> bool) (l : list A) : list A :=
+      iter_merge leb [] l.
+  End Sort.
+
+  Definition sort_assoc {A : Set} (l : list (string * A)) : list (string * A) :=
+    let leb x y :=
+      match PrimString.compare (fst x) (fst y) with
+      | Lt | Eq => true
+      | Gt => false
+      end in
+    Sort.sort leb l.
+
+  Goal sort_assoc [("2", 2); ("1", 1); ("3", 3)] = [("1", 1); ("2", 2); ("3", 3)].
+  Proof. reflexivity. Qed.
+
   (** Update the list at the position given by [index]. Note that we silently
       fail in case the index is out of bounds. *)
   Fixpoint replace_at {A : Set} (l : list A) (index : nat) (update : A) :
@@ -206,6 +256,18 @@ Module Value.
   (** To implement the ability to declare a variable but not give it a value
       yet. *)
   | DeclaredButUndefined.
+
+  (** We use this smart constructor to ensure that the fields are sorted, and hence in a
+      canonical form. We do not sort the fields in the source code as we must keep the order in
+      which they are created, in case of side-effects. *)
+  Definition mkStructRecord
+      (constructor : string)
+      (consts : list t)
+      (tys : list Ty.t)
+      (fields : list (string * t)) :
+      t :=
+    StructRecord constructor consts tys (List.sort_assoc fields).
+  Arguments mkStructRecord /.
 
   (** Read the part of the value that is at a given pointer index. It might return [None] if the
       index does not have a shape compatible with the value. *)

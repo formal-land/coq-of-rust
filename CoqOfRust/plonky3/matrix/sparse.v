@@ -242,7 +242,7 @@ Module sparse.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]
@@ -648,7 +648,7 @@ Module sparse.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| rng |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::Range"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -792,7 +792,7 @@ Module sparse.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_matrix::sparse::CsrMatrix"
                 []
                 [ T ]

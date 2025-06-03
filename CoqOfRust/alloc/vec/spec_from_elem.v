@@ -125,7 +125,7 @@ Module vec.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::vec::Vec"
                                             []
                                             [ T; A ]
@@ -255,7 +255,7 @@ Module vec.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::vec::Vec"
                                             []
                                             [ Ty.path "i8"; A ]
@@ -410,7 +410,7 @@ Module vec.
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::vec::Vec"
                                             []
                                             [ Ty.path "u8"; A ]

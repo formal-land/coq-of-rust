@@ -47,7 +47,7 @@ Module dense.
                 [ Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; V ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_matrix::dense::DenseMatrix"
             []
             [ T; V ]
@@ -1509,7 +1509,7 @@ Module dense.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_matrix::dense::_'1::deserialize::__Visitor"
                   []
                   [ T; V ]
@@ -3317,7 +3317,7 @@ Module dense.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "p3_matrix::dense::DenseMatrix") [] [ T; S ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_matrix::dense::DenseMatrix"
                 []
                 [ T; S ]
@@ -4466,7 +4466,7 @@ Module dense.
                               |)
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -6732,7 +6732,7 @@ Module dense.
                                                 Pointer.Kind.MutRef,
                                                 M.deref (| M.read (| lo |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -6741,7 +6741,7 @@ Module dense.
                                           |)
                                         |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -6791,7 +6791,7 @@ Module dense.
                                         Pointer.Kind.MutRef,
                                         M.deref (| M.read (| hi |) |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -8406,7 +8406,7 @@ Module dense.
                               |)
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -8518,7 +8518,7 @@ Module dense.
                       |)
                     |)
                   |);
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::ops::range::Range"
                     []
                     [ Ty.path "usize" ]
@@ -8715,7 +8715,7 @@ Module dense.
                           |)
                         |)
                       |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -8966,7 +8966,7 @@ Module dense.
                           |)
                         |)
                       |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]

@@ -82,7 +82,7 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
           []
           []

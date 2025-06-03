@@ -262,7 +262,7 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::Range"
               []
               [ Idx ]
@@ -331,7 +331,7 @@ Module ops.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::ops::range::Range"
               []
               [ Idx ]
@@ -1252,7 +1252,7 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::RangeFrom"
               []
               [ Idx ]
@@ -1931,7 +1931,7 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::RangeTo"
               []
               [ Idx ]
@@ -2596,7 +2596,7 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::RangeInclusive"
               []
               [ Idx ]
@@ -2983,7 +2983,7 @@ Module ops.
           ltac:(M.monadic
             (let start := M.alloc (| Idx, start |) in
             let end_ := M.alloc (| Idx, end_ |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::RangeInclusive"
               []
               [ Idx ]
@@ -3313,7 +3313,7 @@ Module ops.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -4091,7 +4091,7 @@ Module ops.
                   [ Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::range::RangeToInclusive"
               []
               [ Idx ]

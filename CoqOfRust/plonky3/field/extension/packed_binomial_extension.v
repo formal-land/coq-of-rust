@@ -61,7 +61,7 @@ Module extension.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -863,7 +863,7 @@ Module extension.
                                                     "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith")
                                                   [ D ]
                                                   [ F; PF ],
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "p3_field::extension::packed_binomial_extension::_::serialize::__SerializeWith"
                                                   [ D ]
                                                   [ F; PF ]
@@ -1125,7 +1125,7 @@ Module extension.
                         ]
                     |)
                   |);
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "p3_field::extension::packed_binomial_extension::_'1::deserialize::__Visitor"
                     [ D ]
                     [ F; PF ]
@@ -1397,7 +1397,7 @@ Module extension.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| Ty.apply (Ty.path "array") [ D ] [ PF ], value |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1437,7 +1437,7 @@ Module extension.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1522,7 +1522,7 @@ Module extension.
                   [ F; F ],
                 x
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1593,7 +1593,7 @@ Module extension.
         | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| PF, x |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1693,7 +1693,7 @@ Module extension.
                 "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
               [ D ]
               [ F; PF ],
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1732,7 +1732,7 @@ Module extension.
                 "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
               [ D ]
               [ F; PF ],
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1774,7 +1774,7 @@ Module extension.
                 "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
               [ D ]
               [ F; PF ],
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -1816,7 +1816,7 @@ Module extension.
                 "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
               [ D ]
               [ F; PF ],
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -2481,7 +2481,7 @@ Module extension.
         | [], [ Fn ], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| Fn, f |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -3451,7 +3451,7 @@ Module extension.
                                           ]
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -3873,7 +3873,7 @@ Module extension.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, powers |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeTo"
                                   []
                                   [ Ty.path "usize" ]
@@ -3966,7 +3966,7 @@ Module extension.
                       [ D ]
                       [ F; Ty.associated_in_trait "p3_field::field::Field" [] [] F "Packing" ]
                   ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_field::field::Powers"
                   []
                   [
@@ -4045,7 +4045,7 @@ Module extension.
                   [ F; PF ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]
@@ -4186,7 +4186,7 @@ Module extension.
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                   [ D ]
                   [ F; PF ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
                   [ F; PF ]
@@ -4309,7 +4309,7 @@ Module extension.
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                   [ D ]
                   [ F; PF ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
                   [ F; PF ]
@@ -4493,7 +4493,7 @@ Module extension.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -4694,7 +4694,7 @@ Module extension.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -5250,7 +5250,7 @@ Module extension.
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                   [ D ]
                   [ F; PF ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
                   [ F; PF ]
@@ -5373,7 +5373,7 @@ Module extension.
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                   [ D ]
                   [ F; PF ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
                   [ F; PF ]
@@ -5480,7 +5480,7 @@ Module extension.
                     "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField")
                   [ D ]
                   [ F; PF ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
                   [ D ]
                   [ F; PF ]
@@ -6141,7 +6141,7 @@ Module extension.
                 self
               |) in
             let rhs := M.alloc (| PF, rhs |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::packed_binomial_extension::PackedBinomialExtensionField"
               [ D ]
               [ F; PF ]

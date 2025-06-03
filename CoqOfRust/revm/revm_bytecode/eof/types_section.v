@@ -178,7 +178,7 @@ Module eof.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_bytecode::eof::types_section::TypesSection"
               []
               []
@@ -968,7 +968,7 @@ Module eof.
             (let inputs := M.alloc (| Ty.path "u8", inputs |) in
             let outputs := M.alloc (| Ty.path "u8", outputs |) in
             let max_stack_size := M.alloc (| Ty.path "u16", max_stack_size |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_bytecode::eof::types_section::TypesSection"
               []
               []
@@ -2064,7 +2064,7 @@ Module eof.
                                               let~ section :
                                                   Ty.path
                                                     "revm_bytecode::eof::types_section::TypesSection" :=
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "revm_bytecode::eof::types_section::TypesSection"
                                                   []
                                                   []

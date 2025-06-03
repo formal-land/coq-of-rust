@@ -74,7 +74,7 @@ Module num.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -142,7 +142,7 @@ Module num.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeTo"
                             []
                             [ Ty.path "usize" ]
@@ -778,7 +778,7 @@ Module num.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "core::num::dec2flt::common::BiasedFp"
                 []
                 []
@@ -837,7 +837,7 @@ Module num.
           | [], [], [ e ] =>
             ltac:(M.monadic
               (let e := M.alloc (| Ty.path "i32", e |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::num::dec2flt::common::BiasedFp"
                 []
                 []

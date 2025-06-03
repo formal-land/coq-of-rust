@@ -386,7 +386,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ immutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "scoping_rules_borrowing_mutablity::Book"
             []
             []

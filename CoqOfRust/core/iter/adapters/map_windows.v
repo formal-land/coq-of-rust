@@ -324,7 +324,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "core::iter::adapters::map_windows::MapWindows") [ N ] [ I; F ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::iter::adapters::map_windows::MapWindows"
                     [ N ]
                     [ I; F ]
@@ -381,7 +381,7 @@ Module iter.
           | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::map_windows::MapWindowsInner"
                 [ N ]
                 [ I ]
@@ -1759,7 +1759,7 @@ Module iter.
                                 [ T ]
                             ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::iter::adapters::map_windows::Buffer"
                                 [ N ]
                                 [ T ]
@@ -3035,7 +3035,7 @@ Module iter.
               M.read (|
                 let~ buffer :
                     Ty.apply (Ty.path "core::iter::adapters::map_windows::Buffer") [ N ] [ T ] :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::iter::adapters::map_windows::Buffer"
                     [ N ]
                     [ T ]
@@ -3195,7 +3195,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::map_windows::MapWindowsInner"
                 [ N ]
                 [ I ]
@@ -4067,7 +4067,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::map_windows::MapWindows"
                 [ N ]
                 [ I; F ]

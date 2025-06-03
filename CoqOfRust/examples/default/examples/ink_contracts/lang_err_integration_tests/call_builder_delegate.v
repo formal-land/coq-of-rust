@@ -39,7 +39,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
           []
           []
@@ -84,7 +84,7 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| Ty.path "i32", value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
           []
           []

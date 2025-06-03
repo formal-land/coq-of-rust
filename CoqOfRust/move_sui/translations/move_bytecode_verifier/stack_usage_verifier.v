@@ -93,7 +93,7 @@ Module stack_usage_verifier.
                     let~ verifier :
                         Ty.path
                           "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::stack_usage_verifier::StackUsageVerifier"
                         []
                         []

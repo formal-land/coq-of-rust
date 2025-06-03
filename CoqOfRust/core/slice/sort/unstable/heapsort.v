@@ -93,7 +93,7 @@ Module slice.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -295,7 +295,7 @@ Module slice.
                                                               Pointer.Kind.MutRef,
                                                               M.deref (| M.read (| v |) |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::RangeTo"
                                                               []
                                                               [ Ty.path "usize" ]

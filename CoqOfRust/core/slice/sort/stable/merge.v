@@ -309,7 +309,7 @@ Module slice.
                               (Ty.path "core::slice::sort::stable::merge::MergeState")
                               []
                               [ T ] :=
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::slice::sort::stable::merge::MergeState"
                             []
                             [ T ]

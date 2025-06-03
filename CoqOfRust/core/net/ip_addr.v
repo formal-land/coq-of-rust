@@ -2468,7 +2468,7 @@ Module net.
             let b := M.alloc (| Ty.path "u8", b |) in
             let c := M.alloc (| Ty.path "u8", c |) in
             let d := M.alloc (| Ty.path "u8", d |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv4Addr"
               []
               []
@@ -2533,7 +2533,7 @@ Module net.
         | [], [], [ bits ] =>
           ltac:(M.monadic
             (let bits := M.alloc (| Ty.path "u32", bits |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv4Addr"
               []
               []
@@ -2667,7 +2667,7 @@ Module net.
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
                 octets
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv4Addr"
               []
               []
@@ -3922,7 +3922,7 @@ Module net.
                       let d := M.copy (| Ty.path "u8", γ0_3 |) in
                       M.alloc (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::net::ip_addr::Ipv6Addr"
                           []
                           []
@@ -4007,7 +4007,7 @@ Module net.
                       let d := M.copy (| Ty.path "u8", γ0_3 |) in
                       M.alloc (|
                         Ty.path "core::net::ip_addr::Ipv6Addr",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::net::ip_addr::Ipv6Addr"
                           []
                           []
@@ -5487,7 +5487,7 @@ Module net.
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
                 octets
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv4Addr"
               []
               []
@@ -5644,7 +5644,7 @@ Module net.
                   ] in
               M.alloc (|
                 Ty.path "core::net::ip_addr::Ipv6Addr",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::net::ip_addr::Ipv6Addr"
                   []
                   []
@@ -5731,7 +5731,7 @@ Module net.
         | [], [], [ bits ] =>
           ltac:(M.monadic
             (let bits := M.alloc (| Ty.path "u128", bits |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv6Addr"
               []
               []
@@ -8420,7 +8420,7 @@ Module net.
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
                 octets
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv6Addr"
               []
               []
@@ -9443,7 +9443,7 @@ Module net.
                                                                             Pointer.Kind.Ref,
                                                                             segments
                                                                           |);
-                                                                          Value.StructRecord
+                                                                          Value.mkStructRecord
                                                                             "core::ops::range::RangeTo"
                                                                             []
                                                                             [ Ty.path "usize" ]
@@ -9774,7 +9774,7 @@ Module net.
                                                                   Pointer.Kind.Ref,
                                                                   segments
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeFrom"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -10718,7 +10718,7 @@ Module net.
                 Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
                 octets
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::ip_addr::Ipv6Addr"
               []
               []

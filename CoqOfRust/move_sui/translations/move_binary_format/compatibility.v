@@ -565,7 +565,7 @@ Module compatibility.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::compatibility::Compatibility"
             []
             []
@@ -645,7 +645,7 @@ Module compatibility.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::compatibility::Compatibility"
             []
             []

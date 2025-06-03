@@ -831,7 +831,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
             |) in
           M.alloc (|
             Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-            Value.StructRecord "ruint::Uint" [ BITS; LIMBS ] [] [ ("limbs", M.read (| limbs |)) ]
+            Value.mkStructRecord "ruint::Uint" [ BITS; LIMBS ] [] [ ("limbs", M.read (| limbs |)) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1185,7 +1185,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, limbs |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeTo"
                                   []
                                   [ Ty.path "usize" ]

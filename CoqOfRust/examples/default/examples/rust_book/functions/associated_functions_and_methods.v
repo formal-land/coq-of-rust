@@ -21,7 +21,7 @@ Module Impl_associated_functions_and_methods_Point.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "associated_functions_and_methods::Point"
           []
           []
@@ -44,7 +44,7 @@ Module Impl_associated_functions_and_methods_Point.
       ltac:(M.monadic
         (let x := M.alloc (| Ty.path "f64", x |) in
         let y := M.alloc (| Ty.path "f64", y |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "associated_functions_and_methods::Point"
           []
           []
@@ -643,7 +643,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ rectangle : Ty.path "associated_functions_and_methods::Rectangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "associated_functions_and_methods::Rectangle"
             []
             []
@@ -848,7 +848,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ square : Ty.path "associated_functions_and_methods::Rectangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "associated_functions_and_methods::Rectangle"
             []
             []

@@ -64,7 +64,7 @@ Module Impl_integration_flipper_Flipper.
     | [], [], [ init_value ] =>
       ltac:(M.monadic
         (let init_value := M.alloc (| Ty.path "bool", init_value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "integration_flipper::Flipper"
           []
           []

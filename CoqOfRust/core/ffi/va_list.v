@@ -296,7 +296,7 @@ Module ffi.
                 Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ffi::va_list::VaListImpl" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ffi::va_list::VaList"
               []
               []

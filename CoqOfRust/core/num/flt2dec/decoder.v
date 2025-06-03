@@ -1079,7 +1079,7 @@ Module num.
                                       []
                                       []
                                       [
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::num::flt2dec::decoder::Decoded"
                                           []
                                           []
@@ -1158,7 +1158,7 @@ Module num.
                                               []
                                               []
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   []
                                                   []
@@ -1196,7 +1196,7 @@ Module num.
                                               []
                                               []
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::num::flt2dec::decoder::Decoded"
                                                   []
                                                   []

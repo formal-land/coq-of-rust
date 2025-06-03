@@ -21,7 +21,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "core::future::pending::Pending"
             []
             [ T ]

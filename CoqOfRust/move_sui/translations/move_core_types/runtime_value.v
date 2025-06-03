@@ -2416,7 +2416,7 @@ Module runtime_value.
               [
                 M.read (| __deserializer |);
                 mk_str (| "MoveStructLayout" |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::runtime_value::_'1::deserialize::__Visitor"
                   []
                   []
@@ -3008,7 +3008,7 @@ Module runtime_value.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::runtime_value::_'3::deserialize::__Visitor"
                   []
                   []
@@ -5966,7 +5966,7 @@ Module runtime_value.
                               |) in
                             M.alloc (|
                               Ty.path "move_core_types::annotated_value::MoveStruct",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "move_core_types::annotated_value::MoveStruct"
                                 []
                                 []

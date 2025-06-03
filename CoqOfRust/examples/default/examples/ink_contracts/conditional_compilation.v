@@ -319,7 +319,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "conditional_compilation::ConditionalCompilation"
           []
           []
@@ -356,7 +356,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| Ty.path "bool", value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "conditional_compilation::ConditionalCompilation"
           []
           []
@@ -378,7 +378,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| Ty.path "bool", value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "conditional_compilation::ConditionalCompilation"
           []
           []
@@ -400,7 +400,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
     | [], [], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| Ty.path "bool", value |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "conditional_compilation::ConditionalCompilation"
           []
           []
@@ -512,7 +512,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "conditional_compilation::Changes"
                       []
                       []
@@ -669,7 +669,7 @@ Module Impl_conditional_compilation_ConditionalCompilation.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "conditional_compilation::ChangesDated"
                       []
                       []
@@ -849,7 +849,7 @@ Module Impl_conditional_compilation_Flip_for_conditional_compilation_Conditional
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "conditional_compilation::Changes"
                       []
                       []

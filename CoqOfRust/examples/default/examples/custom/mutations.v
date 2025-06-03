@@ -284,7 +284,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ numbers : Ty.path "mutations::Numbers" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "mutations::Numbers"
             []
             []

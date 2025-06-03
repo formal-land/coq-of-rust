@@ -31,7 +31,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::filter_map::FilterMap"
                 []
                 [ I; F ]
@@ -106,7 +106,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let f := M.alloc (| F, f |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::filter_map::FilterMap"
                 []
                 [ I; F ]
@@ -636,7 +636,7 @@ Module iter.
                       (Ty.path "core::iter::adapters::filter_map::next_chunk::Guard")
                       []
                       [ B ] :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::iter::adapters::filter_map::next_chunk::Guard"
                     []
                     [ B ]
@@ -1246,7 +1246,7 @@ Module iter.
                                 |),
                                 [
                                   M.read (| array |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]

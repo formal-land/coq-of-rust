@@ -362,7 +362,7 @@ Module ffi.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloc::ffi::c_str::CString" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::ffi::c_str::CString"
               []
               []
@@ -1197,7 +1197,7 @@ Module ffi.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloc::ffi::c_str::FromVecWithNulError" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::ffi::c_str::FromVecWithNulError"
               []
               []
@@ -1636,7 +1636,7 @@ Module ffi.
                 Ty.apply (Ty.path "&") [] [ Ty.path "alloc::ffi::c_str::IntoStringError" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::ffi::c_str::IntoStringError"
               []
               []
@@ -2256,7 +2256,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 Ty.path "alloc::ffi::c_str::CString",
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::ffi::c_str::CString"
                   []
                   []
@@ -2338,7 +2338,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 Ty.path "alloc::ffi::c_str::CString",
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::ffi::c_str::CString"
                   []
                   []
@@ -2523,7 +2523,7 @@ Module ffi.
                                 ltac:(M.monadic
                                   (let e :=
                                     M.copy (| Ty.path "alloc::string::FromUtf8Error", γ |) in
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "alloc::ffi::c_str::IntoStringError"
                                     []
                                     []
@@ -2943,7 +2943,7 @@ Module ffi.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -3472,7 +3472,7 @@ Module ffi.
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                 v
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::ffi::c_str::CString"
               []
               []
@@ -3677,7 +3677,7 @@ Module ffi.
                             Ty.path "alloc::ffi::c_str::FromVecWithNulError"
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "alloc::ffi::c_str::FromVecWithNulError"
                               []
                               []
@@ -3711,7 +3711,7 @@ Module ffi.
                             Ty.path "alloc::ffi::c_str::FromVecWithNulError"
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "alloc::ffi::c_str::FromVecWithNulError"
                               []
                               []
@@ -4454,7 +4454,7 @@ Module ffi.
                   |)) in
               M.alloc (|
                 Ty.path "alloc::ffi::c_str::CString",
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::ffi::c_str::CString"
                   []
                   []
@@ -6296,7 +6296,7 @@ Module ffi.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::ffi::c_str::CString"
               []
               []

@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "erc1155::Mapping"
           []
           [ K; V ]
@@ -833,7 +833,7 @@ Module Impl_core_default_Default_for_erc1155_Contract.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "erc1155::Contract"
           []
           []
@@ -1107,7 +1107,7 @@ Module Impl_erc1155_Contract.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "erc1155::TransferSingle"
                       []
                       []
@@ -1389,7 +1389,7 @@ Module Impl_erc1155_Contract.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "erc1155::TransferSingle"
                               []
                               []
@@ -1688,7 +1688,7 @@ Module Impl_erc1155_Contract.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "erc1155::TransferSingle"
                       []
                       []
@@ -4104,7 +4104,7 @@ Module Impl_erc1155_Erc1155_for_erc1155_Contract.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "erc1155::ApprovalForAll"
                               []
                               []

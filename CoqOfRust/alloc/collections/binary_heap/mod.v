@@ -1037,7 +1037,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::BinaryHeap"
               []
               [ T; A ]
@@ -1404,7 +1404,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::binary_heap::BinaryHeap"
               []
               [ T; Ty.path "alloc::alloc::Global" ]
@@ -1446,7 +1446,7 @@ Module collections.
         | [], [], [ capacity ] =>
           ltac:(M.monadic
             (let capacity := M.alloc (| Ty.path "usize", capacity |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::BinaryHeap"
               []
               [ T; Ty.path "alloc::alloc::Global" ]
@@ -1488,7 +1488,7 @@ Module collections.
         | [], [], [ alloc ] =>
           ltac:(M.monadic
             (let alloc := M.alloc (| A, alloc |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::BinaryHeap"
               []
               [ T; A ]
@@ -1531,7 +1531,7 @@ Module collections.
           ltac:(M.monadic
             (let capacity := M.alloc (| Ty.path "usize", capacity |) in
             let alloc := M.alloc (| A, alloc |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::BinaryHeap"
               []
               [ T; A ]
@@ -1647,7 +1647,7 @@ Module collections.
                               [ T; A ]
                           ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "alloc::collections::binary_heap::PeekMut"
                               []
                               [ T; A ]
@@ -3849,7 +3849,7 @@ Module collections.
                                         []
                                       |),
                                       [
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -4335,7 +4335,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::DrainSorted"
               []
               [ T; A ]
@@ -4386,7 +4386,7 @@ Module collections.
             M.read (|
               let~ guard :
                   Ty.apply (Ty.path "alloc::collections::binary_heap::RebuildOnDrop") [] [ T; A ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::binary_heap::RebuildOnDrop"
                   []
                   [ T; A ]
@@ -4572,7 +4572,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::Iter"
               []
               [ T ]
@@ -4646,7 +4646,7 @@ Module collections.
                 Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::IntoIterSorted"
               []
               [ T; A ]
@@ -5343,7 +5343,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::Drain"
               []
               [ T; A ]
@@ -5559,7 +5559,7 @@ Module collections.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "alloc::collections::binary_heap::Hole") [] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::binary_heap::Hole"
                   []
                   [ T ]
@@ -6310,7 +6310,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::binary_heap::Iter"
               []
               [ T ]
@@ -6486,7 +6486,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::binary_heap::Iter") [] [ T ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::Iter"
               []
               [ T ]
@@ -6832,7 +6832,7 @@ Module collections.
                   [ Ty.apply (Ty.path "alloc::collections::binary_heap::IntoIter") [] [ T; A ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::IntoIter"
               []
               [ T; A ]
@@ -7331,7 +7331,7 @@ Module collections.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloc::collections::binary_heap::IntoIter"
               []
               [ T; Ty.path "alloc::alloc::Global" ]
@@ -7603,7 +7603,7 @@ Module collections.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::IntoIterSorted"
               []
               [ T; A ]
@@ -8823,7 +8823,7 @@ Module collections.
             M.read (|
               let~ heap :
                   Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::binary_heap::BinaryHeap"
                   []
                   [ T; A ]
@@ -9064,7 +9064,7 @@ Module collections.
                 Ty.apply (Ty.path "alloc::collections::binary_heap::BinaryHeap") [] [ T; A ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloc::collections::binary_heap::IntoIter"
               []
               [ T; A ]
@@ -9197,7 +9197,7 @@ Module collections.
             M.read (|
               let~ guard :
                   Ty.apply (Ty.path "alloc::collections::binary_heap::RebuildOnDrop") [] [ T; A ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::binary_heap::RebuildOnDrop"
                   []
                   [ T; A ]

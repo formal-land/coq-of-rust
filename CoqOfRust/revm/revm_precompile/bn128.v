@@ -1346,7 +1346,7 @@ Module bn128.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -1513,7 +1513,7 @@ Module bn128.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| input |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -1696,7 +1696,7 @@ Module bn128.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| input |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -2333,7 +2333,7 @@ Module bn128.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -2547,7 +2547,7 @@ Module bn128.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -2770,7 +2770,7 @@ Module bn128.
                                                   |),
                                                   [
                                                     M.borrow (| Pointer.Kind.MutRef, output |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -2858,7 +2858,7 @@ Module bn128.
                                                   |),
                                                   [
                                                     M.borrow (| Pointer.Kind.MutRef, output |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeFrom"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -3202,7 +3202,7 @@ Module bn128.
                                                   |)
                                                 |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeTo"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -3383,7 +3383,7 @@ Module bn128.
                                             |)
                                           |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -3531,7 +3531,7 @@ Module bn128.
                                                   |),
                                                   [
                                                     M.borrow (| Pointer.Kind.MutRef, output |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -3619,7 +3619,7 @@ Module bn128.
                                                   |),
                                                   [
                                                     M.borrow (| Pointer.Kind.MutRef, output |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeFrom"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -4120,7 +4120,7 @@ Module bn128.
                                             []
                                           |),
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -4499,7 +4499,7 @@ Module bn128.
                                                                                             |)
                                                                                           |)
                                                                                         |);
-                                                                                        Value.StructRecord
+                                                                                        Value.mkStructRecord
                                                                                           "core::ops::range::Range"
                                                                                           []
                                                                                           [

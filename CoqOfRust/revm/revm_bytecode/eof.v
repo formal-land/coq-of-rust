@@ -101,7 +101,7 @@ Module eof.
         ltac:(M.monadic
           (let self :=
             M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_bytecode::eof::Eof"
             []
             []
@@ -1019,7 +1019,7 @@ Module eof.
         ltac:(M.monadic
           (M.read (|
             let~ body : Ty.path "revm_bytecode::eof::body::EofBody" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_bytecode::eof::body::EofBody"
                 []
                 []
@@ -1606,7 +1606,7 @@ Module eof.
                               |)
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeFrom"
                             []
                             [ Ty.path "usize" ]
@@ -1683,7 +1683,7 @@ Module eof.
                                               Pointer.Kind.Ref,
                                               M.deref (| M.read (| bytes |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -2583,7 +2583,7 @@ Module eof.
                                 [
                                   Value.Tuple
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "revm_bytecode::eof::Eof"
                                         []
                                         []
@@ -3069,7 +3069,7 @@ Module eof.
                                   Ty.path "revm_bytecode::eof::EofDecodeError"
                                 ]
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "revm_bytecode::eof::Eof"
                                     []
                                     []

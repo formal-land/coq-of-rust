@@ -674,7 +674,7 @@ Module slice.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "core::slice::sort::stable::AlignedStorage"
                 [ N ]
                 [ T ]

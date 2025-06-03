@@ -30,7 +30,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [] [ I ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::copied::Copied"
                 []
                 [ I ]
@@ -155,7 +155,7 @@ Module iter.
           | [], [], [ it ] =>
             ltac:(M.monadic
               (let it := M.alloc (| I, it |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::copied::Copied"
                 []
                 [ I ]
@@ -1659,7 +1659,7 @@ Module iter.
                                                                               M.read (|
                                                                                 raw_array
                                                                               |);
-                                                                              Value.StructRecord
+                                                                              Value.mkStructRecord
                                                                                 "core::ops::range::Range"
                                                                                 []
                                                                                 [ Ty.path "usize" ]
@@ -1968,7 +1968,7 @@ Module iter.
                                                           |),
                                                           [
                                                             M.read (| raw_array |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]

@@ -21,7 +21,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::sync::exclusive::Exclusive"
               []
               [ T ]
@@ -145,7 +145,7 @@ Module sync.
         | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| T, t |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::exclusive::Exclusive"
               []
               [ T ]

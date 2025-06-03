@@ -91,7 +91,7 @@ Module buf.
       | [], [ B ], [ buf ] =>
         ltac:(M.monadic
           (let buf := M.alloc (| B, buf |) in
-          Value.StructRecord "bytes::buf::writer::Writer" [] [ B ] [ ("buf", M.read (| buf |)) ]))
+          Value.mkStructRecord "bytes::buf::writer::Writer" [] [ B ] [ ("buf", M.read (| buf |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -321,7 +321,7 @@ Module buf.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]

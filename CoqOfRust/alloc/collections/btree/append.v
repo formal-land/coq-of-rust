@@ -1093,7 +1093,7 @@ Module collections.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "core::ops::range::Range"
                                                                           []
                                                                           [ Ty.path "usize" ]

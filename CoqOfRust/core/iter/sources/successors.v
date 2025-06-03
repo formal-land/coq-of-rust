@@ -21,7 +21,7 @@ Module iter.
           ltac:(M.monadic
             (let first := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], first |) in
             let succ := M.alloc (| F, succ |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::iter::sources::successors::Successors"
               []
               [ T; F ]
@@ -61,7 +61,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::sources::successors::Successors"
                 []
                 [ T; F ]

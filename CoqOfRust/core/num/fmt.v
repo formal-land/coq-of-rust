@@ -921,7 +921,7 @@ Module num.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| out |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::RangeTo"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -1163,7 +1163,7 @@ Module num.
                                                               Pointer.Kind.MutRef,
                                                               M.deref (| M.read (| out |) |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::RangeTo"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -1384,7 +1384,7 @@ Module num.
                                                   Pointer.Kind.MutRef,
                                                   M.deref (| M.read (| out |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeTo"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -1477,7 +1477,7 @@ Module num.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::num::fmt::Formatted" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::num::fmt::Formatted"
               []
               []
@@ -1929,7 +1929,7 @@ Module num.
                                       Pointer.Kind.MutRef,
                                       M.deref (| M.read (| out |) |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -2251,7 +2251,7 @@ Module num.
                                                                                     M.read (| out |)
                                                                                   |)
                                                                                 |);
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "core::ops::range::RangeFrom"
                                                                                   []
                                                                                   [ Ty.path "usize"

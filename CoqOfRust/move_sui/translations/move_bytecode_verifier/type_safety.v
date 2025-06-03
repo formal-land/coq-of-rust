@@ -51,7 +51,7 @@ Module type_safety.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Signature" ],
               locals
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_bytecode_verifier::type_safety::Locals"
             []
             []
@@ -387,7 +387,7 @@ Module type_safety.
               |) in
             M.alloc (|
               Ty.path "move_bytecode_verifier::type_safety::TypeSafetyChecker",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_bytecode_verifier::type_safety::TypeSafetyChecker"
                 []
                 []

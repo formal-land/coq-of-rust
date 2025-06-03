@@ -1096,7 +1096,7 @@ Module collections.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::collections::btree::map::entry::VacantEntry"
                                         []
                                         [
@@ -1953,7 +1953,7 @@ Module collections.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "alloc::collections::btree::map::entry::VacantEntry"
                                                 []
                                                 [
@@ -2215,7 +2215,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::Iter"
                 []
                 [ K; V ]
@@ -2304,7 +2304,7 @@ Module collections.
               M.read (|
                 let~ range :
                     Ty.apply (Ty.path "alloc::collections::btree::map::Iter") [] [ K; V ] :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::map::Iter"
                     []
                     [ K; V ]
@@ -2441,7 +2441,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::IterMut"
                 []
                 [ K; V ]
@@ -2527,7 +2527,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Iter"
                 []
                 [ K; V ]
@@ -3302,7 +3302,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::IntoIter"
                 []
                 [ K; V; A ]
@@ -4445,7 +4445,7 @@ Module collections.
               M.read (|
                 let~ range :
                     Ty.apply (Ty.path "alloc::collections::btree::map::Range") [] [ K; V ] :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::map::Range"
                     []
                     [ K; V ]
@@ -4577,7 +4577,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::BTreeMap"
                 []
                 [ K; V; Ty.path "alloc::alloc::Global" ]
@@ -4678,7 +4678,7 @@ Module collections.
                       ]
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::collections::btree::map::BTreeMap"
                         []
                         [ K; V; A ]
@@ -4836,7 +4836,7 @@ Module collections.
           | [], [], [ alloc ] =>
             ltac:(M.monadic
               (let alloc := M.alloc (| A, alloc |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::BTreeMap"
                 []
                 [ K; V; A ]
@@ -7529,7 +7529,7 @@ Module collections.
                                         [ K; V; A ]
                                     ]
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::collections::btree::map::entry::OccupiedEntry"
                                         []
                                         [ K; V; A ]
@@ -9376,7 +9376,7 @@ Module collections.
                                         [ K; V; A ]
                                     ]
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::collections::btree::map::entry::OccupiedEntry"
                                         []
                                         [ K; V; A ]
@@ -10480,7 +10480,7 @@ Module collections.
                                 [ K; V; A ]
                             ]
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::map::entry::OccupiedError"
                                 []
                                 [ K; V; A ]
@@ -11202,7 +11202,7 @@ Module collections.
                                                   []
                                                 |),
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "alloc::collections::btree::map::entry::OccupiedEntry"
                                                     []
                                                     [ K; V; A ]
@@ -12283,7 +12283,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Range") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Range"
                             []
                             [ K; V ]
@@ -12354,7 +12354,7 @@ Module collections.
                       ltac:(M.monadic
                         (M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Range") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Range"
                             []
                             [ K; V ]
@@ -12495,7 +12495,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::RangeMut") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::RangeMut"
                             []
                             [ K; V ]
@@ -12575,7 +12575,7 @@ Module collections.
                       ltac:(M.monadic
                         (M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::RangeMut") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::RangeMut"
                             []
                             [ K; V ]
@@ -12791,7 +12791,7 @@ Module collections.
                                     []
                                     [ K; V; A ]
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::collections::btree::map::entry::VacantEntry"
                                         []
                                         [ K; V; A ]
@@ -13037,7 +13037,7 @@ Module collections.
                                             []
                                             [ K; V; A ]
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "alloc::collections::btree::map::entry::OccupiedEntry"
                                                 []
                                                 [ K; V; A ]
@@ -13145,7 +13145,7 @@ Module collections.
                                             []
                                             [ K; V; A ]
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "alloc::collections::btree::map::entry::VacantEntry"
                                                 []
                                                 [ K; V; A ]
@@ -13696,7 +13696,7 @@ Module collections.
                                     (Ty.path "alloc::collections::btree::map::BTreeMap")
                                     []
                                     [ K; V; A ],
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "alloc::collections::btree::map::BTreeMap"
                                     []
                                     [ K; V; A ]
@@ -13859,7 +13859,7 @@ Module collections.
                             (Ty.path "alloc::collections::btree::map::ExtractIf")
                             []
                             [ K; V; F; A ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::ExtractIf"
                             []
                             [ K; V; F; A ]
@@ -14283,7 +14283,7 @@ Module collections.
                                     ],
                                   Value.Tuple
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::collections::btree::map::ExtractIfInner"
                                         []
                                         [ K; V ]
@@ -14417,7 +14417,7 @@ Module collections.
                             ],
                           Value.Tuple
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::collections::btree::map::ExtractIfInner"
                                 []
                                 [ K; V ]
@@ -14563,7 +14563,7 @@ Module collections.
                   Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::IntoKeys"
                 []
                 [ K; V; A ]
@@ -14615,7 +14615,7 @@ Module collections.
                   Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::IntoValues"
                 []
                 [ K; V; A ]
@@ -14816,7 +14816,7 @@ Module collections.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "alloc::collections::btree::map::BTreeMap") [] [ K; V; A ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::btree::map::BTreeMap"
                     []
                     [ K; V; A ]
@@ -15015,7 +15015,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Iter") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Iter"
                             []
                             [ K; V ]
@@ -15035,7 +15035,7 @@ Module collections.
                       ltac:(M.monadic
                         (M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Iter") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Iter"
                             []
                             [ K; V ]
@@ -15233,7 +15233,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::IterMut") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::IterMut"
                             []
                             [ K; V ]
@@ -15259,7 +15259,7 @@ Module collections.
                       ltac:(M.monadic
                         (M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::IterMut") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::IterMut"
                             []
                             [ K; V ]
@@ -15329,7 +15329,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Keys"
                 []
                 [ K; V ]
@@ -15382,7 +15382,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Values"
                 []
                 [ K; V ]
@@ -15435,7 +15435,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::ValuesMut"
                 []
                 [ K; V ]
@@ -15714,7 +15714,7 @@ Module collections.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "alloc::collections::btree::map::Cursor"
                                               []
                                               [ K; V ]
@@ -15921,7 +15921,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Cursor") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Cursor"
                             []
                             [ K; V ]
@@ -16401,13 +16401,13 @@ Module collections.
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "alloc::collections::btree::map::CursorMut"
                                                       []
                                                       [ K; V; A ]
                                                       [
                                                         ("inner",
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "alloc::collections::btree::map::CursorMutKey"
                                                             []
                                                             [ K; V; A ]
@@ -16659,13 +16659,13 @@ Module collections.
                                     (Ty.path "alloc::collections::btree::map::CursorMut")
                                     []
                                     [ K; V; A ],
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "alloc::collections::btree::map::CursorMut"
                                     []
                                     [ K; V; A ]
                                     [
                                       ("inner",
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "alloc::collections::btree::map::CursorMutKey"
                                           []
                                           [ K; V; A ]
@@ -16932,7 +16932,7 @@ Module collections.
                                       M.never_to_any (|
                                         M.read (|
                                           M.return_ (|
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "alloc::collections::btree::map::Cursor"
                                               []
                                               [ K; V ]
@@ -17139,7 +17139,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Cursor") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Cursor"
                             []
                             [ K; V ]
@@ -17619,13 +17619,13 @@ Module collections.
                                               M.never_to_any (|
                                                 M.read (|
                                                   M.return_ (|
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "alloc::collections::btree::map::CursorMut"
                                                       []
                                                       [ K; V; A ]
                                                       [
                                                         ("inner",
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "alloc::collections::btree::map::CursorMutKey"
                                                             []
                                                             [ K; V; A ]
@@ -17877,13 +17877,13 @@ Module collections.
                                     (Ty.path "alloc::collections::btree::map::CursorMut")
                                     []
                                     [ K; V; A ],
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "alloc::collections::btree::map::CursorMut"
                                     []
                                     [ K; V; A ]
                                     [
                                       ("inner",
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "alloc::collections::btree::map::CursorMutKey"
                                           []
                                           [ K; V; A ]
@@ -18608,7 +18608,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::map::Iter") [] [ K; V ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Iter"
                 []
                 [ K; V ]
@@ -19326,7 +19326,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::map::IterMut") [] [ K; V ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Iter"
                 []
                 [ K; V ]
@@ -19631,7 +19631,7 @@ Module collections.
                             (Ty.path "alloc::collections::btree::map::IntoIter")
                             []
                             [ K; V; A ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::IntoIter"
                             []
                             [ K; V; A ]
@@ -19745,7 +19745,7 @@ Module collections.
                             (Ty.path "alloc::collections::btree::map::IntoIter")
                             []
                             [ K; V; A ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::IntoIter"
                             []
                             [ K; V; A ]
@@ -21165,7 +21165,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::map::Keys") [] [ K; V ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Keys"
                 []
                 [ K; V ]
@@ -21221,7 +21221,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::Keys"
                 []
                 [ K; V ]
@@ -21694,7 +21694,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::map::Values") [] [ K; V ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Values"
                 []
                 [ K; V ]
@@ -21750,7 +21750,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::Values"
                 []
                 [ K; V ]
@@ -24513,7 +24513,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::Range"
                 []
                 [ K; V ]
@@ -24566,7 +24566,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::RangeMut"
                 []
                 [ K; V ]
@@ -25055,7 +25055,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::ValuesMut"
                 []
                 [ K; V ]
@@ -25525,7 +25525,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::IntoKeys"
                 []
                 [ K; V; A ]
@@ -25928,7 +25928,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::btree::map::IntoValues"
                 []
                 [ K; V; A ]
@@ -26065,7 +26065,7 @@ Module collections.
                     [ Ty.apply (Ty.path "alloc::collections::btree::map::Range") [] [ K; V ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Range"
                 []
                 [ K; V ]
@@ -28527,7 +28527,7 @@ Module collections.
                           |) in
                         M.alloc (|
                           Ty.apply (Ty.path "alloc::collections::btree::map::Cursor") [] [ K; V ],
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::collections::btree::map::Cursor"
                             []
                             [ K; V ]
@@ -35539,7 +35539,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::map::Cursor"
                 []
                 [ K; V ]

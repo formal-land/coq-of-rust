@@ -31,7 +31,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::skip_while::SkipWhile"
                 []
                 [ I; P ]
@@ -134,7 +134,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let predicate := M.alloc (| P, predicate |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::skip_while::SkipWhile"
                 []
                 [ I; P ]

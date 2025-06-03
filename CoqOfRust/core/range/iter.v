@@ -164,7 +164,7 @@ Module range.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::range::iter::IterRange") [] [ A ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::range::Range"
               []
               [ A ]
@@ -1498,7 +1498,7 @@ Module range.
                           []
                           [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ A ] ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::range::RangeInclusive"
                               []
                               [ A ]
@@ -2454,7 +2454,7 @@ Module range.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "core::range::iter::IterRangeFrom") [] [ A ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::range::RangeFrom"
               []
               [ A ]

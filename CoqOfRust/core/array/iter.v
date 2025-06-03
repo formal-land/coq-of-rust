@@ -86,7 +86,7 @@ Module array.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::array::iter::IntoIter"
                   [ N ]
                   [ T ]
@@ -230,7 +230,7 @@ Module array.
                 |) in
               M.alloc (|
                 Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::array::iter::IntoIter"
                   [ N ]
                   [ T ]
@@ -284,7 +284,7 @@ Module array.
                 |) in
               let~ initialized :
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::range::Range"
                   []
                   [ Ty.path "usize" ]
@@ -2320,7 +2320,7 @@ Module array.
               |) in
             M.read (|
               let~ new : Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::array::iter::IntoIter"
                   [ N ]
                   [ T ]

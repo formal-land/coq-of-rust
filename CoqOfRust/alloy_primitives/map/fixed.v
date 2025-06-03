@@ -156,7 +156,7 @@ Module map.
                   [ Ty.apply (Ty.path "alloy_primitives::map::fixed::FbBuildHasher") [ N ] [] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloy_primitives::map::fixed::FbBuildHasher"
               [ N ]
               []
@@ -247,7 +247,7 @@ Module map.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloy_primitives::map::fixed::FbBuildHasher"
               [ N ]
               []
@@ -401,7 +401,7 @@ Module map.
                   [ Ty.apply (Ty.path "alloy_primitives::map::fixed::FbBuildHasher") [ N ] [] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloy_primitives::map::fixed::FbHasher"
               [ N ]
               []
@@ -493,7 +493,7 @@ Module map.
                   [ Ty.apply (Ty.path "alloy_primitives::map::fixed::FbHasher") [ N ] [] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "alloy_primitives::map::fixed::FbHasher"
               [ N ]
               []
@@ -591,7 +591,7 @@ Module map.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "alloy_primitives::map::fixed::FbHasher"
               [ N ]
               []

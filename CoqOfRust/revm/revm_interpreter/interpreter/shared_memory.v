@@ -41,7 +41,7 @@ Module interpreter.
                   [ Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter::shared_memory::SharedMemory"
               []
               []
@@ -503,7 +503,7 @@ Module interpreter.
       ltac:(M.monadic
         (M.alloc (|
           Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_interpreter::interpreter::shared_memory::SharedMemory"
             []
             []
@@ -1826,7 +1826,7 @@ Module interpreter.
         | [], [], [ capacity ] =>
           ltac:(M.monadic
             (let capacity := M.alloc (| Ty.path "usize", capacity |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter::shared_memory::SharedMemory"
               []
               []
@@ -2338,7 +2338,7 @@ Module interpreter.
                   |),
                   [
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -2905,7 +2905,7 @@ Module interpreter.
                                       |)
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -3994,7 +3994,7 @@ Module interpreter.
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -4150,7 +4150,7 @@ Module interpreter.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -4241,7 +4241,7 @@ Module interpreter.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -4394,7 +4394,7 @@ Module interpreter.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]

@@ -736,13 +736,13 @@ Module bound.
       | [], [], [ config ] =>
         ltac:(M.monadic
           (let config := M.alloc (| Ty.path "move_vm_config::verifier::MeterConfig", config |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_bytecode_verifier_meter::bound::BoundMeter"
             []
             []
             [
               ("pkg_bounds",
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier_meter::bound::Bounds"
                   []
                   []
@@ -772,7 +772,7 @@ Module bound.
                       |))
                   ]);
               ("mod_bounds",
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier_meter::bound::Bounds"
                   []
                   []
@@ -802,7 +802,7 @@ Module bound.
                       |))
                   ]);
               ("fun_bounds",
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_bytecode_verifier_meter::bound::Bounds"
                   []
                   []

@@ -92,7 +92,7 @@ Module horizontally_truncated.
                 (Ty.path "p3_matrix::horizontally_truncated::HorizontallyTruncated")
                 []
                 [ T; Inner ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "p3_matrix::horizontally_truncated::HorizontallyTruncated"
                 []
                 [ T; Inner ]

@@ -34,7 +34,7 @@ Module interpreter.
         | [], [], [ gas_limit ] =>
           ltac:(M.monadic
             (let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter::loop_control::LoopControl"
               []
               []

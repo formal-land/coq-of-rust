@@ -363,7 +363,7 @@ Module num.
                                                         Pointer.Kind.Ref,
                                                         M.deref (| M.read (| s |) |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::RangeFrom"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -1980,7 +1980,7 @@ Module num.
                                             [
                                               Value.Tuple
                                                 [
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::num::dec2flt::number::Number"
                                                     []
                                                     []
@@ -2358,7 +2358,7 @@ Module num.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (| M.read (| s |) |)
                                                                   |);
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::ops::range::RangeFrom"
                                                                     []
                                                                     [ Ty.path "usize" ]
@@ -2479,7 +2479,7 @@ Module num.
                           [
                             Value.Tuple
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::num::dec2flt::number::Number"
                                   []
                                   []

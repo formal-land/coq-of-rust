@@ -145,7 +145,7 @@ Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   match ε, τ, α with
   | [], [], [] =>
     ltac:(M.monadic
-      (Value.StructRecord
+      (Value.mkStructRecord
         "box_stack_heap::Point"
         []
         []
@@ -182,7 +182,7 @@ Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
           []
         |),
         [
-          Value.StructRecord
+          Value.mkStructRecord
             "box_stack_heap::Point"
             []
             []
@@ -262,7 +262,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |) in
         let~ rectangle : Ty.path "box_stack_heap::Rectangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "box_stack_heap::Rectangle"
             []
             []
@@ -274,7 +274,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   []
                 |));
               ("bottom_right",
-                Value.StructRecord
+                Value.mkStructRecord
                   "box_stack_heap::Point"
                   []
                   []
@@ -301,7 +301,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               []
             |),
             [
-              Value.StructRecord
+              Value.mkStructRecord
                 "box_stack_heap::Rectangle"
                 []
                 []
@@ -313,7 +313,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       []
                     |));
                   ("bottom_right",
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "box_stack_heap::Point"
                       []
                       []

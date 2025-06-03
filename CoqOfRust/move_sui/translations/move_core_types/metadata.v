@@ -35,7 +35,7 @@ Module metadata.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::metadata::Metadata" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::metadata::Metadata"
             []
             []
@@ -900,7 +900,7 @@ Module metadata.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::metadata::_'1::deserialize::__Visitor"
                   []
                   []

@@ -1659,7 +1659,7 @@ Module vec.
                               "Src";
                             T
                           ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop"
                         []
                         [
@@ -2956,7 +2956,7 @@ Module vec.
             let end_ := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], end_ |) in
             M.read (|
               let~ sink : Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::vec::in_place_drop::InPlaceDrop"
                   []
                   [ T ]
@@ -3177,7 +3177,7 @@ Module vec.
                 |) in
               let~ drop_guard :
                   Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDrop") [] [ T ] :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::vec::in_place_drop::InPlaceDrop"
                   []
                   [ T ]
@@ -3201,7 +3201,7 @@ Module vec.
                             []
                           |),
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]

@@ -29,7 +29,7 @@ Module async_iter.
                   [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::async_iter::from_iter::FromIter"
               []
               [ I ]
@@ -163,7 +163,7 @@ Module async_iter.
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
           (let iter := M.alloc (| I, iter |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::async_iter::from_iter::FromIter"
             []
             [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"

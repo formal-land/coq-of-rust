@@ -3134,7 +3134,7 @@ Module net.
           ltac:(M.monadic
             (let ip := M.alloc (| Ty.path "core::net::ip_addr::Ipv4Addr", ip |) in
             let port := M.alloc (| Ty.path "u16", port |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::socket_addr::SocketAddrV4"
               []
               []
@@ -3294,7 +3294,7 @@ Module net.
             let port := M.alloc (| Ty.path "u16", port |) in
             let flowinfo := M.alloc (| Ty.path "u32", flowinfo |) in
             let scope_id := M.alloc (| Ty.path "u32", scope_id |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::net::socket_addr::SocketAddrV6"
               []
               []

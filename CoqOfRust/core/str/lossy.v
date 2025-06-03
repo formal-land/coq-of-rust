@@ -20,7 +20,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::lossy::Utf8Chunks"
               []
               []
@@ -60,7 +60,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunk" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::lossy::Utf8Chunk"
               []
               []
@@ -1155,7 +1155,7 @@ Module str.
                                                                                                                               |)
                                                                                                                             |)
                                                                                                                           |);
-                                                                                                                          Value.StructRecord
+                                                                                                                          Value.mkStructRecord
                                                                                                                             "core::ops::range::Range"
                                                                                                                             []
                                                                                                                             [
@@ -1820,7 +1820,7 @@ Module str.
                                                                                         |)
                                                                                       |)
                                                                                     |);
-                                                                                    Value.StructRecord
+                                                                                    Value.mkStructRecord
                                                                                       "core::ops::range::RangeFrom"
                                                                                       []
                                                                                       [
@@ -2555,7 +2555,7 @@ Module str.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::str::lossy::Utf8Chunks" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::str::lossy::Utf8Chunks"
               []
               []
@@ -3867,7 +3867,7 @@ Module str.
                                           []
                                           [ Ty.path "core::str::lossy::Utf8Chunk" ]
                                           [
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::str::lossy::Utf8Chunk"
                                               []
                                               []

@@ -107,7 +107,7 @@ Module bls12_381.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, out |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeTo"
                                 []
                                 [ Ty.path "usize" ]
@@ -179,7 +179,7 @@ Module bls12_381.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, out |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -265,7 +265,7 @@ Module bls12_381.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, out |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -358,7 +358,7 @@ Module bls12_381.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, out |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -527,7 +527,7 @@ Module bls12_381.
                       Ty.path "revm_precompile::interface::PrecompileError"
                     ]
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "blst::blst_p2_affine"
                         []
                         []
@@ -1200,7 +1200,7 @@ Module bls12_381.
                         |)
                       |) in
                     let~ fp2 : Ty.path "blst::blst_fp2" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "blst::blst_fp2"
                         []
                         []
@@ -1690,7 +1690,7 @@ Module bls12_381.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -1966,7 +1966,7 @@ Module bls12_381.
                                                                                         |)
                                                                                       |)
                                                                                     |);
-                                                                                    Value.StructRecord
+                                                                                    Value.mkStructRecord
                                                                                       "core::ops::range::Range"
                                                                                       []
                                                                                       [

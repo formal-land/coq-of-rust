@@ -179,7 +179,7 @@ Module struct_defs.
                   M.read (|
                     let~ checker :
                         Ty.path "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::struct_defs::RecursiveStructDefChecker"
                         []
                         []
@@ -1023,7 +1023,7 @@ Module struct_defs.
               |) in
             M.alloc (|
               Ty.path "move_bytecode_verifier::struct_defs::StructDefGraphBuilder",
-              Value.StructRecord
+              Value.mkStructRecord
                 "move_bytecode_verifier::struct_defs::StructDefGraphBuilder"
                 []
                 []
@@ -1166,7 +1166,7 @@ Module struct_defs.
                                   []
                                 |),
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]

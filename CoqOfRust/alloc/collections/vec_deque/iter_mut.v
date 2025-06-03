@@ -34,7 +34,7 @@ Module collections.
                 M.alloc (| Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ], i1 |) in
               let i2 :=
                 M.alloc (| Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ], i2 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::vec_deque::iter_mut::IterMut"
                 []
                 [ T ]
@@ -495,7 +495,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "alloc::collections::vec_deque::iter_mut::IterMut"
                 []
                 [ T ]

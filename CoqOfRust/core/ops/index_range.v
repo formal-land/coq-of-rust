@@ -24,7 +24,7 @@ Module ops.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::ops::index_range::IndexRange" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::index_range::IndexRange"
               []
               []
@@ -359,7 +359,7 @@ Module ops.
                 |) in
               M.alloc (|
                 Ty.path "core::ops::index_range::IndexRange",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::index_range::IndexRange"
                   []
                   []
@@ -384,7 +384,7 @@ Module ops.
         | [], [], [ end_ ] =>
           ltac:(M.monadic
             (let end_ := M.alloc (| Ty.path "usize", end_ |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::ops::index_range::IndexRange"
               []
               []
@@ -840,7 +840,7 @@ Module ops.
                   |)
                 |) in
               let~ prefix : Ty.path "core::ops::index_range::IndexRange" :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::index_range::IndexRange"
                   []
                   []
@@ -970,7 +970,7 @@ Module ops.
                   |)
                 |) in
               let~ suffix : Ty.path "core::ops::index_range::IndexRange" :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::ops::index_range::IndexRange"
                   []
                   []

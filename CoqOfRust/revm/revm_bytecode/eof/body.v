@@ -47,7 +47,7 @@ Module eof.
                 Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::body::EofBody" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_bytecode::eof::body::EofBody"
               []
               []
@@ -496,7 +496,7 @@ Module eof.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_bytecode::eof::body::EofBody"
               []
               []
@@ -2155,7 +2155,7 @@ Module eof.
                                                       "code"
                                                     |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeTo"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -2329,7 +2329,7 @@ Module eof.
                                                       "code"
                                                     |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::Range"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -2447,7 +2447,7 @@ Module eof.
             M.read (|
               let~ prev_value : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
               let~ header : Ty.path "revm_bytecode::eof::header::EofHeader" :=
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_bytecode::eof::header::EofHeader"
                   []
                   []
@@ -3231,7 +3231,7 @@ Module eof.
                 |) in
               M.alloc (|
                 Ty.path "revm_bytecode::eof::Eof",
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_bytecode::eof::Eof"
                   []
                   []
@@ -4417,7 +4417,7 @@ Module eof.
                                     |)
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeFrom"
                                   []
                                   [ Ty.path "usize" ]
@@ -4451,7 +4451,7 @@ Module eof.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -5267,7 +5267,7 @@ Module eof.
                             |),
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -5644,7 +5644,7 @@ Module eof.
                                                                 Pointer.Kind.Ref,
                                                                 M.deref (| M.read (| input |) |)
                                                               |);
-                                                              Value.StructRecord
+                                                              Value.mkStructRecord
                                                                 "core::ops::range::Range"
                                                                 []
                                                                 [ Ty.path "usize" ]
@@ -5705,7 +5705,7 @@ Module eof.
                             |),
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| input |) |) |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::RangeFrom"
                                 []
                                 [ Ty.path "usize" ]

@@ -179,7 +179,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::array_chunks::ArrayChunks"
                 [ N ]
                 [ I ]
@@ -365,7 +365,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "core::iter::adapters::array_chunks::ArrayChunks") [ N ] [ I ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::iter::adapters::array_chunks::ArrayChunks"
                     [ N ]
                     [ I ]

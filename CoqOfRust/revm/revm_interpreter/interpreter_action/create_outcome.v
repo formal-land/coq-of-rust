@@ -129,7 +129,7 @@ Module interpreter_action.
                   [ Ty.path "revm_interpreter::interpreter_action::create_outcome::CreateOutcome" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
               []
               []
@@ -403,7 +403,7 @@ Module interpreter_action.
                   [ Ty.path "alloy_primitives::bits::address::Address" ],
                 address
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::create_outcome::CreateOutcome"
               []
               []

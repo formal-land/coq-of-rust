@@ -43,7 +43,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let f := M.alloc (| F, f |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::flatten::FlatMap"
                 []
                 [ I; U; F ]
@@ -239,7 +239,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ I; U; F ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::flatten::FlatMap"
                 []
                 [ I; U; F ]
@@ -1746,7 +1746,7 @@ Module iter.
           | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::flatten::Flatten"
                 []
                 [ I ]
@@ -1932,7 +1932,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::flatten::Flatten") [] [ I ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::flatten::Flatten"
                 []
                 [ I ]
@@ -2846,7 +2846,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::flatten::FlattenCompat"
                 []
                 [ I; U ]
@@ -3071,7 +3071,7 @@ Module iter.
           | [], [], [ iter ] =>
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::flatten::FlattenCompat"
                 []
                 [ I; U ]

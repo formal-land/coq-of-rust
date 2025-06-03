@@ -28,7 +28,7 @@ Module coset.
                 [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
             []
             [ F ]
@@ -260,7 +260,7 @@ Module coset.
                         [ Ty.apply (Ty.path "p3_field::coset::TwoAdicMultiplicativeCoset") [] [ F ]
                         ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "p3_field::coset::TwoAdicMultiplicativeCoset"
                             []
                             [ F ]
@@ -529,7 +529,7 @@ Module coset.
                             fun γ =>
                               ltac:(M.monadic
                                 (let new_log_size := M.copy (| Ty.path "usize", γ |) in
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "p3_field::coset::TwoAdicMultiplicativeCoset"
                                   []
                                   [ F ]
@@ -735,7 +735,7 @@ Module coset.
               self
             |) in
           let scale := M.alloc (| F, scale |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
             []
             [ F ]
@@ -795,7 +795,7 @@ Module coset.
               self
             |) in
           let shift := M.alloc (| F, shift |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_field::coset::TwoAdicMultiplicativeCoset"
             []
             [ F ]
@@ -914,7 +914,7 @@ Module coset.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]

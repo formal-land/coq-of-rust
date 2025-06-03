@@ -217,7 +217,7 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
                 vtable
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::RawWaker"
               []
               []
@@ -659,7 +659,7 @@ Module task.
                 Ty.function [ Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ] ] (Ty.tuple []),
                 drop
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::RawWakerVTable"
               []
               []
@@ -1413,7 +1413,7 @@ Module task.
                 |) in
               M.alloc (|
                 Ty.path "core::task::wake::ContextBuilder",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::task::wake::ContextBuilder"
                   []
                   []
@@ -1553,7 +1553,7 @@ Module task.
                 |) in
               M.alloc (|
                 Ty.path "core::task::wake::ContextBuilder",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::task::wake::ContextBuilder"
                   []
                   []
@@ -1777,7 +1777,7 @@ Module task.
                         |) in
                       M.alloc (|
                         Ty.path "core::task::wake::Context",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::task::wake::Context"
                           []
                           []
@@ -2174,13 +2174,13 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
                 vtable
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::Waker"
               []
               []
               [
                 ("waker",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::task::wake::RawWaker"
                     []
                     []
@@ -2203,7 +2203,7 @@ Module task.
         | [], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| Ty.path "core::task::wake::RawWaker", waker |) in
-            Value.StructRecord "core::task::wake::Waker" [] [] [ ("waker", M.read (| waker |)) ]))
+            Value.mkStructRecord "core::task::wake::Waker" [] [] [ ("waker", M.read (| waker |)) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2313,7 +2313,7 @@ Module task.
           ltac:(M.monadic
             (let self :=
               M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::Waker" ], self |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::Waker"
               []
               []
@@ -3030,13 +3030,13 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::RawWakerVTable" ],
                 vtable
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::LocalWaker"
               []
               []
               [
                 ("waker",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::task::wake::RawWaker"
                     []
                     []
@@ -3059,7 +3059,7 @@ Module task.
         | [], [], [ waker ] =>
           ltac:(M.monadic
             (let waker := M.alloc (| Ty.path "core::task::wake::RawWaker", waker |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::LocalWaker"
               []
               []
@@ -3182,7 +3182,7 @@ Module task.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::task::wake::LocalWaker" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::task::wake::LocalWaker"
               []
               []

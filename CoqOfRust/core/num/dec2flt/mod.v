@@ -166,7 +166,7 @@ Module num.
                 Ty.apply (Ty.path "&") [] [ Ty.path "core::num::dec2flt::ParseFloatError" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::num::dec2flt::ParseFloatError"
               []
               []
@@ -703,7 +703,7 @@ Module num.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "core::num::dec2flt::ParseFloatError"
             []
             []
@@ -725,7 +725,7 @@ Module num.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "core::num::dec2flt::ParseFloatError"
             []
             []
@@ -1038,7 +1038,7 @@ Module num.
                                                   Pointer.Kind.Ref,
                                                   M.deref (| M.read (| s |) |)
                                                 |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeFrom"
                                                   []
                                                   [ Ty.path "usize" ]

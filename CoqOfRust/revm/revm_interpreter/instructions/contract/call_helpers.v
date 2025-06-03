@@ -1578,7 +1578,7 @@ Module instructions.
                           []
                           [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]

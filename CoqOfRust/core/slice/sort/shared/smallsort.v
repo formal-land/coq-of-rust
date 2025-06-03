@@ -2115,7 +2115,7 @@ Module slice.
                                                                 []
                                                               |),
                                                               [
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::Range"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -2357,7 +2357,7 @@ Module slice.
                               (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
                               []
                               [ T ] :=
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::slice::sort::shared::smallsort::CopyOnDrop"
                             []
                             [ T ]
@@ -4894,7 +4894,7 @@ Module slice.
                               (Ty.path "core::slice::sort::shared::smallsort::CopyOnDrop")
                               []
                               [ T ] :=
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::slice::sort::shared::smallsort::CopyOnDrop"
                             []
                             [ T ]
@@ -6572,7 +6572,7 @@ Module slice.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]

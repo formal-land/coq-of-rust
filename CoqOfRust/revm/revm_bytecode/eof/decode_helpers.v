@@ -180,7 +180,7 @@ Module eof.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]

@@ -560,7 +560,7 @@ Module acquires_list_verifier.
                     let~ verifier :
                         Ty.path
                           "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier"
                         []
                         []

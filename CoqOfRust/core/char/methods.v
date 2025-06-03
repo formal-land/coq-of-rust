@@ -2505,7 +2505,7 @@ Module char.
         ltac:(M.monadic
           (M.alloc (|
             Ty.path "core::char::methods::EscapeDebugExtArgs",
-            Value.StructRecord
+            Value.mkStructRecord
               "core::char::methods::EscapeDebugExtArgs"
               []
               []

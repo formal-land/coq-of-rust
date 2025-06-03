@@ -395,7 +395,7 @@ Module rc.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::rc::RcInner"
                                 []
                                 [ T ]
@@ -1057,7 +1057,7 @@ Module rc.
                                                     []
                                                   |),
                                                   [
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "alloc::rc::RcInner"
                                                       []
                                                       [ T ]
@@ -3364,7 +3364,7 @@ Module rc.
               ptr
             |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::rc::Rc"
             []
             [ T; A ]
@@ -3467,7 +3467,7 @@ Module rc.
           M.read (|
             let~ _weak :
                 Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.apply (Ty.path "&") [] [ A ] ] :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::Weak"
                 []
                 [ T; Ty.apply (Ty.path "&") [] [ A ] ]
@@ -4117,7 +4117,7 @@ Module rc.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::rc::RcInner"
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
@@ -4277,7 +4277,7 @@ Module rc.
                         [ M.read (| uninit_ptr |) ]
                       |) in
                     let~ weak : Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::rc::Weak"
                         []
                         [ T; A ]
@@ -4809,7 +4809,7 @@ Module rc.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "alloc::rc::RcInner"
                                             []
                                             [ T ]
@@ -6304,7 +6304,7 @@ Module rc.
                         ]
                       |) in
                     let~ _weak : Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::rc::Weak"
                         []
                         [ T; A ]
@@ -6970,7 +6970,7 @@ Module rc.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::Weak"
                 []
                 [ T; A ]
@@ -9628,7 +9628,7 @@ Module rc.
                   |)
                 |)) in
             let~ guard : Ty.apply (Ty.path "alloc::rc::from_iter_exact::Guard") [] [ T ] :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::from_iter_exact::Guard"
                 []
                 [ T ]
@@ -11851,7 +11851,7 @@ Module rc.
                                 |),
                                 []
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::rc::RcInner"
                                 []
                                 [ T ]
@@ -14983,7 +14983,7 @@ Module rc.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloc::rc::Weak"
             []
             [ T; Ty.path "alloc::alloc::Global" ]
@@ -15082,7 +15082,7 @@ Module rc.
       | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::rc::Weak"
             []
             [ T; A ]
@@ -15574,7 +15574,7 @@ Module rc.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::Weak"
                 []
                 [ T; A ]
@@ -16245,7 +16245,7 @@ Module rc.
                               |) in
                             M.alloc (|
                               Ty.path "alloc::rc::WeakInner",
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::rc::WeakInner"
                                 []
                                 []
@@ -16766,7 +16766,7 @@ Module rc.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::Weak"
                 []
                 [ T; A ]
@@ -17955,7 +17955,7 @@ Module rc.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::rc::RcInner"
                           []
                           [ T ]
@@ -18006,7 +18006,7 @@ Module rc.
                     let alloc := M.copy (| A, γ0_1 |) in
                     M.alloc (|
                       Ty.apply (Ty.path "alloc::rc::UniqueRc") [] [ T; A ],
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::rc::UniqueRc"
                         []
                         [ T; A ]
@@ -18331,7 +18331,7 @@ Module rc.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::Weak"
                 []
                 [ T; A ]
@@ -19004,7 +19004,7 @@ Module rc.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::rc::UniqueRcUninit") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::rc::UniqueRcUninit"
                 []
                 [ T; A ]

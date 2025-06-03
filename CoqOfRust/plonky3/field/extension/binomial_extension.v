@@ -64,7 +64,7 @@ Module extension.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::binomial_extension::BinomialExtensionField"
               [ D ]
               [ F; A ]
@@ -988,7 +988,7 @@ Module extension.
                                                     "p3_field::extension::binomial_extension::_::serialize::__SerializeWith")
                                                   [ D ]
                                                   [ F; A ],
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "p3_field::extension::binomial_extension::_::serialize::__SerializeWith"
                                                   [ D ]
                                                   [ F; A ]
@@ -1470,7 +1470,7 @@ Module extension.
                         ]
                     |)
                   |);
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "p3_field::extension::binomial_extension::_'1::deserialize::__Visitor"
                     [ D ]
                     [ F; A ]
@@ -1879,7 +1879,7 @@ Module extension.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| Ty.apply (Ty.path "array") [ D ] [ A ], value |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "p3_field::extension::binomial_extension::BinomialExtensionField"
               [ D ]
               [ F; A ]
@@ -2560,7 +2560,7 @@ Module extension.
                                     "value"
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeFrom"
                                   []
                                   [ Ty.path "usize" ]
@@ -3276,7 +3276,7 @@ Module extension.
                             []
                           |),
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -3465,7 +3465,7 @@ Module extension.
                             []
                           |),
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -7283,7 +7283,7 @@ Module extension.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -8056,7 +8056,7 @@ Module extension.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -10049,7 +10049,7 @@ Module extension.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -10154,7 +10154,7 @@ Module extension.
                                                         []
                                                       |),
                                                       [
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::Range"
                                                           []
                                                           [ Ty.path "usize" ]

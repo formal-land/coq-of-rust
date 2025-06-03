@@ -1966,7 +1966,7 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::result::Iter"
             []
             [ T ]
@@ -2027,7 +2027,7 @@ Module result.
                 [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::result::IterMut"
             []
             [ T ]
@@ -3818,7 +3818,7 @@ Module result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::result::IntoIter"
             []
             [ T ]
@@ -4292,7 +4292,7 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Iter") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::result::Iter"
             []
             [ T ]
@@ -4653,7 +4653,7 @@ Module result.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::IntoIter") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::result::IntoIter"
             []
             [ T ]

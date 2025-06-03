@@ -514,7 +514,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "bool", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicBool"
               []
               []
@@ -2572,7 +2572,7 @@ Module sync.
         | [], [], [ p ] =>
           ltac:(M.monadic
             (let p := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], p |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicPtr"
               []
               [ T ]
@@ -4514,7 +4514,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "i8", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI8"
               []
               []
@@ -6106,7 +6106,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "u8", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU8"
               []
               []
@@ -7708,7 +7708,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "i16", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI16"
               []
               []
@@ -9316,7 +9316,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "u16", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU16"
               []
               []
@@ -10924,7 +10924,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "i32", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI32"
               []
               []
@@ -12532,7 +12532,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "u32", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU32"
               []
               []
@@ -14140,7 +14140,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "i64", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI64"
               []
               []
@@ -15748,7 +15748,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "u64", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU64"
               []
               []
@@ -17356,7 +17356,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "isize", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicIsize"
               []
               []
@@ -18978,7 +18978,7 @@ Module sync.
         | [], [], [ v ] =>
           ltac:(M.monadic
             (let v := M.alloc (| Ty.path "usize", v |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::sync::atomic::AtomicUsize"
               []
               []

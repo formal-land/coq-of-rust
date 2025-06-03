@@ -34,7 +34,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::chain::Chain") [] [ A; B ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::chain::Chain"
                 []
                 [ A; B ]
@@ -215,7 +215,7 @@ Module iter.
             ltac:(M.monadic
               (let a := M.alloc (| A, a |) in
               let b := M.alloc (| B, b |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::chain::Chain"
                 []
                 [ A; B ]

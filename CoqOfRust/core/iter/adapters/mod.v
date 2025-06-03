@@ -45,7 +45,7 @@ Module iter.
             let~ residual : Ty.apply (Ty.path "core::option::Option") [] [ R ] :=
               Value.StructTuple "core::option::Option::None" [] [ R ] [] in
             let~ shunt : Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::GenericShunt"
                 []
                 [ I; R ]

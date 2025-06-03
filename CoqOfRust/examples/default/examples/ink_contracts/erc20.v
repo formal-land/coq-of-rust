@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "erc20::Mapping"
           []
           [ K; V ]
@@ -261,7 +261,7 @@ Module Impl_core_default_Default_for_erc20_Erc20.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "erc20::Erc20"
           []
           []
@@ -618,7 +618,7 @@ Module Impl_erc20_Erc20.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "erc20::Transfer"
                       []
                       []
@@ -642,7 +642,7 @@ Module Impl_erc20_Erc20.
             |) in
           M.alloc (|
             Ty.path "erc20::Erc20",
-            Value.StructRecord
+            Value.mkStructRecord
               "erc20::Erc20"
               []
               []
@@ -1084,7 +1084,7 @@ Module Impl_erc20_Erc20.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "erc20::Transfer"
                               []
                               []
@@ -1272,7 +1272,7 @@ Module Impl_erc20_Erc20.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "erc20::Approval"
                       []
                       []

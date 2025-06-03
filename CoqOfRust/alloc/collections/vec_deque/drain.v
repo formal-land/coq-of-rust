@@ -95,7 +95,7 @@ Module collections.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "alloc::collections::vec_deque::drain::Drain") [] [ T; A ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::collections::vec_deque::drain::Drain"
                     []
                     [ T; A ]
@@ -235,7 +235,7 @@ Module collections.
                   |) in
                 let~ logical_remaining_range :
                     Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::ops::range::Range"
                     []
                     [ Ty.path "usize" ]

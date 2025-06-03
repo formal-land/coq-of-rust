@@ -511,7 +511,7 @@ Module instruction_consistency.
                                                           let~ checker :
                                                               Ty.path
                                                                 "move_bytecode_verifier::instruction_consistency::InstructionConsistency" :=
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "move_bytecode_verifier::instruction_consistency::InstructionConsistency"
                                                               []
                                                               []

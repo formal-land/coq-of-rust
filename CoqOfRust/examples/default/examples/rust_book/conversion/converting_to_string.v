@@ -125,7 +125,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ circle : Ty.path "converting_to_string::Circle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "converting_to_string::Circle"
             []
             []

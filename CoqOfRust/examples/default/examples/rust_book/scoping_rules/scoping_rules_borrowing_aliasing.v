@@ -72,7 +72,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ point : Ty.path "scoping_rules_borrowing_aliasing::Point" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "scoping_rules_borrowing_aliasing::Point"
             []
             []

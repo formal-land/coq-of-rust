@@ -60,7 +60,7 @@ Module cell.
         | [], [], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| F, f |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::cell::lazy::LazyCell"
               []
               [ T; F ]

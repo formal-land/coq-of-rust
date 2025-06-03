@@ -166,7 +166,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::intersperse::Intersperse"
                 []
                 [ I ]
@@ -361,7 +361,7 @@ Module iter.
                   Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] I "Item",
                   separator
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::intersperse::Intersperse"
                 []
                 [ I ]
@@ -1374,7 +1374,7 @@ Module iter.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::intersperse::IntersperseWith"
                 []
                 [ I; G ]
@@ -1498,7 +1498,7 @@ Module iter.
             ltac:(M.monadic
               (let iter := M.alloc (| I, iter |) in
               let separator := M.alloc (| G, separator |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::intersperse::IntersperseWith"
                 []
                 [ I; G ]

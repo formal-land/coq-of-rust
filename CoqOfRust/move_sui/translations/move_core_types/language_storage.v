@@ -868,7 +868,7 @@ Module language_storage.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::language_storage::_'1::deserialize::__Visitor"
                   []
                   []
@@ -1677,7 +1677,7 @@ Module language_storage.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::language_storage::_'3::deserialize::__Visitor"
                   []
                   []
@@ -2224,7 +2224,7 @@ Module language_storage.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::language_storage::_'5::deserialize::__Visitor"
                   []
                   []
@@ -2768,7 +2768,7 @@ Module language_storage.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::language_storage::_'7::deserialize::__Visitor"
                   []
                   []
@@ -4622,7 +4622,7 @@ Module language_storage.
               self
             |) in
           let with_prefix := M.alloc (| Ty.path "bool", with_prefix |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
             []
             []
@@ -5596,7 +5596,7 @@ Module language_storage.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::StructTag" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::StructTag"
             []
             []
@@ -7003,7 +7003,7 @@ Module language_storage.
               self
             |) in
           let with_prefix := M.alloc (| Ty.path "bool", with_prefix |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
             []
             []
@@ -7925,7 +7925,7 @@ Module language_storage.
                 [ Ty.path "move_core_types::language_storage::ResourceKey" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::ResourceKey"
             []
             []
@@ -8373,7 +8373,7 @@ Module language_storage.
             M.alloc (| Ty.path "move_core_types::account_address::AccountAddress", address |) in
           let type_ :=
             M.alloc (| Ty.path "move_core_types::language_storage::StructTag", type_ |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::ResourceKey"
             []
             []
@@ -8736,7 +8736,7 @@ Module language_storage.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::language_storage::ModuleId" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::ModuleId"
             []
             []
@@ -9152,7 +9152,7 @@ Module language_storage.
           (let address :=
             M.alloc (| Ty.path "move_core_types::account_address::AccountAddress", address |) in
           let name := M.alloc (| Ty.path "move_core_types::identifier::Identifier", name |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::ModuleId"
             []
             []
@@ -9506,7 +9506,7 @@ Module language_storage.
               self
             |) in
           let with_prefix := M.alloc (| Ty.path "bool", with_prefix |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::language_storage::to_canonical_display::IdDisplay"
             []
             []

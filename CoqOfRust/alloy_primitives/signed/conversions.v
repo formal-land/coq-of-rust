@@ -678,7 +678,7 @@ Module signed.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| s |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -740,7 +740,7 @@ Module signed.
                                                 Pointer.Kind.Ref,
                                                 M.deref (| M.read (| s |) |)
                                               |);
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::RangeFrom"
                                                 []
                                                 [ Ty.path "usize" ]

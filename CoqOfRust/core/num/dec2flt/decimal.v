@@ -38,7 +38,7 @@ Module num.
                   Ty.apply (Ty.path "&") [] [ Ty.path "core::num::dec2flt::decimal::Decimal" ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::num::dec2flt::decimal::Decimal"
                 []
                 []
@@ -186,7 +186,7 @@ Module num.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic
-              (Value.StructRecord
+              (Value.mkStructRecord
                 "core::num::dec2flt::decimal::Decimal"
                 []
                 []
@@ -750,7 +750,7 @@ Module num.
                                       []
                                     |),
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::Range"
                                         []
                                         [ Ty.path "usize" ]
@@ -3281,7 +3281,7 @@ Module num.
                                                             "digits"
                                                           |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeFrom"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -3369,7 +3369,7 @@ Module num.
                                                             Pointer.Kind.Ref,
                                                             M.deref (| M.read (| s |) |)
                                                           |);
-                                                          Value.StructRecord
+                                                          Value.mkStructRecord
                                                             "core::ops::range::RangeFrom"
                                                             []
                                                             [ Ty.path "usize" ]
@@ -3659,7 +3659,7 @@ Module num.
                                                           Pointer.Kind.Ref,
                                                           M.deref (| M.read (| start |) |)
                                                         |);
-                                                        Value.StructRecord
+                                                        Value.mkStructRecord
                                                           "core::ops::range::RangeTo"
                                                           []
                                                           [ Ty.path "usize" ]
@@ -4474,7 +4474,7 @@ Module num.
                             []
                           |),
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -4801,7 +4801,7 @@ Module num.
                                       [ Ty.path "u8" ]
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeFrom"
                                   []
                                   [ Ty.path "usize" ]

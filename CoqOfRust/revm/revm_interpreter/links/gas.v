@@ -19,16 +19,16 @@ pub struct MemoryGas {
 *)
 Module MemoryGas.
   Record t : Set := {
-    words_num : Usize.t;
     expansion_cost : U64.t;
+    words_num : Usize.t;
   }.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::gas::MemoryGas";
     φ x :=
       Value.StructRecord "revm_interpreter::gas::MemoryGas" [] [] [
-        ("words_num", φ x.(words_num));
-        ("expansion_cost", φ x.(expansion_cost))
+        ("expansion_cost", φ x.(expansion_cost));
+        ("words_num", φ x.(words_num))
       ];
   }.
 
@@ -40,9 +40,9 @@ Module MemoryGas.
     words_num' = φ words_num ->
     expansion_cost' = φ expansion_cost ->
     Value.StructRecord "revm_interpreter::gas::MemoryGas" [] [] [
-      ("words_num", words_num');
-      ("expansion_cost", expansion_cost')
-    ] = φ (Build_t words_num expansion_cost).
+      ("expansion_cost", expansion_cost');
+      ("words_num", words_num')
+    ] = φ (Build_t expansion_cost words_num).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
 
@@ -51,8 +51,8 @@ Module MemoryGas.
     expansion_cost' = φ expansion_cost ->
     OfValue.t (
       Value.StructRecord "revm_interpreter::gas::MemoryGas" [] [] [
-        ("words_num", words_num');
-        ("expansion_cost", expansion_cost')
+        ("expansion_cost", expansion_cost');
+        ("words_num", words_num')
       ]
     ).
   Proof. econstructor; apply of_value_with; eassumption. Defined.
@@ -232,9 +232,9 @@ End MemoryExtensionResult.
 Module Gas.
   Record t : Set := {
     limit : U64.t;
-    remaining : U64.t;
-    refunded : I64.t;
     memory : MemoryGas.t;
+    refunded : I64.t;
+    remaining : U64.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -242,9 +242,9 @@ Module Gas.
     φ x :=
       Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
         ("limit", φ x.(limit));
-        ("remaining", φ x.(remaining));
+        ("memory", φ x.(memory));
         ("refunded", φ x.(refunded));
-        ("memory", φ x.(memory))
+        ("remaining", φ x.(remaining))
       ];
   }.
 
@@ -252,35 +252,39 @@ Module Gas.
   Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
   Smpl Add apply of_ty : of_ty.
 
-  Lemma of_value_with limit limit' remaining remaining' refunded refunded' memory memory' :
+  Lemma of_value_with
+      limit limit'
+      memory memory'
+      refunded refunded'
+      remaining remaining' :
     limit' = φ limit ->
-    remaining' = φ remaining ->
-    refunded' = φ refunded ->
     memory' = φ memory ->
+    refunded' = φ refunded ->
+    remaining' = φ remaining ->
     Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
       ("limit", limit');
-      ("remaining", remaining');
+      ("memory", memory');
       ("refunded", refunded');
-      ("memory", memory')
-    ] = φ (Build_t limit remaining refunded memory).
+      ("remaining", remaining')
+    ] = φ (Build_t limit memory refunded remaining).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
 
   Definition of_value
       (limit : U64.t) limit'
-      (remaining : U64.t) remaining'
+      (memory : MemoryGas.t) memory'
       (refunded : I64.t) refunded'
-      (memory : MemoryGas.t) memory' :
+      (remaining : U64.t) remaining' :
     limit' = φ limit ->
-    remaining' = φ remaining ->
-    refunded' = φ refunded ->
     memory' = φ memory ->
+    refunded' = φ refunded ->
+    remaining' = φ remaining ->
     OfValue.t (
       Value.StructRecord "revm_interpreter::gas::Gas" [] [] [
         ("limit", limit');
-        ("remaining", remaining');
+        ("memory", memory');
         ("refunded", refunded');
-        ("memory", memory')
+        ("remaining", remaining')
       ]
     ).
   Proof. econstructor; apply of_value_with; eassumption. Defined.

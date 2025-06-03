@@ -393,7 +393,7 @@ Module collections.
                     ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::merge_iter::MergeIterInner"
                 []
                 [ I ]
@@ -677,7 +677,7 @@ Module collections.
             ltac:(M.monadic
               (let a := M.alloc (| I, a |) in
               let b := M.alloc (| I, b |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::collections::btree::merge_iter::MergeIterInner"
                 []
                 [ I ]

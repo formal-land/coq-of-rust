@@ -2185,13 +2185,13 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::option::Iter"
             []
             [ T ]
             [
               ("inner",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::option::Item"
                   []
                   [ Ty.apply (Ty.path "&") [] [ T ] ]
@@ -2236,13 +2236,13 @@ Module option.
               Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::option::IterMut"
             []
             [ T ]
             [
               ("inner",
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::option::Item"
                   []
                   [ Ty.apply (Ty.path "&mut") [] [ T ] ]
@@ -4150,13 +4150,13 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ T ], self |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::option::IntoIter"
             []
             [ T ]
             [
               ("inner",
-                Value.StructRecord "core::option::Item" [] [ T ] [ ("opt", M.read (| self |)) ])
+                Value.mkStructRecord "core::option::Item" [] [ T ] [ ("opt", M.read (| self |)) ])
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4867,7 +4867,7 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Item") [] [ A ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::option::Item"
             []
             [ A ]
@@ -5514,7 +5514,7 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::Iter") [] [ A ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::option::Iter"
             []
             [ A ]
@@ -5859,7 +5859,7 @@ Module option.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::option::IntoIter") [] [ A ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "core::option::IntoIter"
             []
             [ A ]

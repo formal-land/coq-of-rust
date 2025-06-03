@@ -495,7 +495,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
             M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ logon : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash_map_alternate_or_custom_key_types::Account"
             []
             []
@@ -867,7 +867,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |) in
         let~ account : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash_map_alternate_or_custom_key_types::Account"
             []
             []
@@ -878,7 +878,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |))
             ] in
         let~ account_info : Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash_map_alternate_or_custom_key_types::AccountInfo"
             []
             []

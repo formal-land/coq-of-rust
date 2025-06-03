@@ -2413,7 +2413,7 @@ Module bits.
                                                             []
                                                           |),
                                                           [
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -2714,7 +2714,7 @@ Module bits.
                                                                 []
                                                               |),
                                                               [
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::Range"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -3200,7 +3200,7 @@ Module bits.
                                                                 "limbs"
                                                               |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::RangeTo"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -3287,7 +3287,7 @@ Module bits.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -3627,7 +3627,7 @@ Module bits.
                                               []
                                             |),
                                             [
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "core::ops::range::Range"
                                                 []
                                                 [ Ty.path "usize" ]
@@ -4187,7 +4187,7 @@ Module bits.
                                               "limbs"
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -4609,7 +4609,7 @@ Module bits.
                                                             []
                                                           |),
                                                           [
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -4786,7 +4786,7 @@ Module bits.
                                                             []
                                                           |),
                                                           [
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -4989,7 +4989,7 @@ Module bits.
                                                                 "limbs"
                                                               |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::RangeFrom"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -5095,7 +5095,7 @@ Module bits.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -5661,7 +5661,7 @@ Module bits.
                                               "limbs"
                                             |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -6637,7 +6637,7 @@ Module bits.
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -7159,7 +7159,7 @@ Module bits.
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]
@@ -7681,7 +7681,7 @@ Module bits.
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]

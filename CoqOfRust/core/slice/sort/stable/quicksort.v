@@ -817,7 +817,7 @@ Module slice.
                                                                   Pointer.Kind.MutRef,
                                                                   M.deref (| M.read (| v |) |)
                                                                 |);
-                                                                Value.StructRecord
+                                                                Value.mkStructRecord
                                                                   "core::ops::range::RangeFrom"
                                                                   []
                                                                   [ Ty.path "usize" ]
@@ -1903,7 +1903,7 @@ Module slice.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -2133,7 +2133,7 @@ Module slice.
                 (let scan := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], scan |) in
                 let scratch := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], scratch |) in
                 let len := M.alloc (| Ty.path "usize", len |) in
-                Value.StructRecord
+                Value.mkStructRecord
                   "core::slice::sort::stable::quicksort::PartitionState"
                   []
                   [ T ]

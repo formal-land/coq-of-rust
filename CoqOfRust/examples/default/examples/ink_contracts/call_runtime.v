@@ -609,7 +609,7 @@ Module Impl_call_runtime_RuntimeCaller.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "call_runtime::BalancesCall::Transfer"
                               []
                               []

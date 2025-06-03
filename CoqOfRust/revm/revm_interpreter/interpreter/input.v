@@ -37,7 +37,7 @@ Module interpreter.
                   [ Ty.path "revm_interpreter::interpreter::input::InputsImpl" ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter::input::InputsImpl"
               []
               []
@@ -308,7 +308,7 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter::input::InputsImpl"
               []
               []

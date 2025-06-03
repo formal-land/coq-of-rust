@@ -31,7 +31,7 @@ Module cell.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::cell::once::OnceCell"
               []
               [ T ]
@@ -2113,7 +2113,7 @@ Module cell.
         | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| T, value |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "core::cell::once::OnceCell"
               []
               [ T ]

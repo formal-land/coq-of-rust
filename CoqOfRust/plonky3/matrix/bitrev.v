@@ -98,13 +98,13 @@ Module bitrev.
       | [], [ T; Inner ], [ inner ] =>
         ltac:(M.monadic
           (let inner := M.alloc (| Inner, inner |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_matrix::row_index_mapped::RowIndexMappedView"
             []
             [ Ty.path "p3_matrix::bitrev::BitReversalPerm"; Inner ]
             [
               ("index_map",
-                Value.StructRecord
+                Value.mkStructRecord
                   "p3_matrix::bitrev::BitReversalPerm"
                   []
                   []

@@ -36,7 +36,7 @@ Module fmt.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::fmt::builders::PadAdapterState"
               []
               []
@@ -174,7 +174,7 @@ Module fmt.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| slot |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::fmt::builders::PadAdapter"
                                               []
                                               []
@@ -1213,7 +1213,7 @@ Module fmt.
               |) in
             M.alloc (|
               Ty.path "core::fmt::builders::DebugStruct",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::builders::DebugStruct"
                 []
                 []
@@ -3997,7 +3997,7 @@ Module fmt.
               |) in
             M.alloc (|
               Ty.path "core::fmt::builders::DebugTuple",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::builders::DebugTuple"
                 []
                 []
@@ -7306,13 +7306,13 @@ Module fmt.
               |) in
             M.alloc (|
               Ty.path "core::fmt::builders::DebugSet",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::builders::DebugSet"
                 []
                 []
                 [
                   ("inner",
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::fmt::builders::DebugInner"
                       []
                       []
@@ -8482,13 +8482,13 @@ Module fmt.
               |) in
             M.alloc (|
               Ty.path "core::fmt::builders::DebugList",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::builders::DebugList"
                 []
                 []
                 [
                   ("inner",
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::fmt::builders::DebugInner"
                       []
                       []
@@ -9609,7 +9609,7 @@ Module fmt.
               |) in
             M.alloc (|
               Ty.path "core::fmt::builders::DebugMap",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::fmt::builders::DebugMap"
                 []
                 []

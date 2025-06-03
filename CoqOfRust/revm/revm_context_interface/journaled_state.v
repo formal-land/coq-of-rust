@@ -631,7 +631,7 @@ Module journaled_state.
                 ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::StateLoad"
             []
             [ T ]
@@ -796,7 +796,7 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::journaled_state::StateLoad"
             []
             [ T ]
@@ -1112,7 +1112,7 @@ Module journaled_state.
         ltac:(M.monadic
           (let data := M.alloc (| T, data |) in
           let is_cold := M.alloc (| Ty.path "bool", is_cold |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::StateLoad"
             []
             [ T ]
@@ -1230,7 +1230,7 @@ Module journaled_state.
                 [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::AccountLoad"
             []
             []
@@ -1402,7 +1402,7 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::journaled_state::AccountLoad"
             []
             []
@@ -1752,7 +1752,7 @@ Module journaled_state.
                 ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -1938,7 +1938,7 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -2316,7 +2316,7 @@ Module journaled_state.
               Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ],
               state_load
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -2354,7 +2354,7 @@ Module journaled_state.
         ltac:(M.monadic
           (let data := M.alloc (| T, data |) in
           let is_cold := M.alloc (| Ty.path "bool", is_cold |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -2471,7 +2471,7 @@ Module journaled_state.
                       "data"
                     |)
                   |);
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "revm_context_interface::journaled_state::Eip7702CodeLoad"
                     []
                     [ Ty.tuple [] ]
@@ -2587,7 +2587,7 @@ Module journaled_state.
               state_load
             |) in
           let is_delegate_account_cold := M.alloc (| Ty.path "bool", is_delegate_account_cold |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]

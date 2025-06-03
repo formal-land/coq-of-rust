@@ -1355,7 +1355,7 @@ Module effects.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::effects::AccountChangeSet"
             []
             []
@@ -3100,7 +3100,7 @@ Module effects.
                 ],
               resources
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::effects::AccountChangeSet"
             []
             []
@@ -3125,7 +3125,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::effects::AccountChangeSet"
             []
             []
@@ -4748,7 +4748,7 @@ Module effects.
               Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_core_types::effects::ChangeSet"
             []
             []
@@ -5144,7 +5144,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::effects::ChangeSet"
             []
             []

@@ -1230,21 +1230,21 @@ Defined.
 
 Ltac run_symbolic_pure :=
   (
-    eapply Run.PureSuccess;
+    eapply Run.PureSuccess; cbn;
     repeat (smpl of_value || reflexivity)
   ) ||
   (
-    eapply Run.PureException;
+    eapply Run.PureException; cbn;
     repeat smpl of_output;
     repeat (smpl of_value || reflexivity)
   ).
 
 Ltac run_symbolic_state_alloc :=
-  unshelve eapply Run.CallPrimitiveStateAlloc; [
+  unshelve eapply Run.CallPrimitiveStateAlloc; cbn; [
     now repeat (smpl of_ty || smpl of_value) |
     |
     repeat (smpl of_value) |
-    cbn; intro
+    intro
   ].
 
 (* Ltac run_symbolic_state_alloc_immediate :=
@@ -1259,7 +1259,7 @@ Ltac run_symbolic_state_read_immediate :=
   apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
-  unshelve eapply Run.CallPrimitiveStateWrite; [
+  unshelve eapply Run.CallPrimitiveStateWrite; cbn; [
     |
     repeat smpl of_value |
   ].

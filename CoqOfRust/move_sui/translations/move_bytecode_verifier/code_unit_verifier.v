@@ -2137,7 +2137,7 @@ Module code_unit_verifier.
                       |) in
                     let~ code_unit_verifier :
                         Ty.path "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier" :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "move_bytecode_verifier::code_unit_verifier::CodeUnitVerifier"
                         []
                         []

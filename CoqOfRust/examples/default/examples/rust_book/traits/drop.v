@@ -154,17 +154,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _a : Ty.path "drop::Droppable" :=
-          Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "a" |)) ] in
+          Value.mkStructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "a" |)) ] in
         let~ _ : Ty.tuple [] :=
           M.read (|
             let~ _b : Ty.path "drop::Droppable" :=
-              Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "b" |)) ] in
+              Value.mkStructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "b" |)) ] in
             let~ _ : Ty.tuple [] :=
               M.read (|
                 let~ _c : Ty.path "drop::Droppable" :=
-                  Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "c" |)) ] in
+                  Value.mkStructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "c" |)) ] in
                 let~ _d : Ty.path "drop::Droppable" :=
-                  Value.StructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "d" |)) ] in
+                  Value.mkStructRecord "drop::Droppable" [] [] [ ("name", mk_str (| "d" |)) ] in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     let~ _ : Ty.tuple [] :=

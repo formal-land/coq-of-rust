@@ -412,7 +412,7 @@ Module instantiation_loops.
                 [ Ty.path "move_binary_format::file_format::CompiledModule" ],
               module
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_bytecode_verifier::instantiation_loops::InstantiationLoopChecker"
             []
             []

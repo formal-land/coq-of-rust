@@ -362,7 +362,7 @@ Module blake2.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -654,7 +654,7 @@ Module blake2.
                                         []
                                       |),
                                       [
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -890,7 +890,7 @@ Module blake2.
                                                                             M.read (| input |)
                                                                           |)
                                                                         |);
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "core::ops::range::Range"
                                                                           []
                                                                           [ Ty.path "usize" ]
@@ -1043,7 +1043,7 @@ Module blake2.
                                         []
                                       |),
                                       [
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -1279,7 +1279,7 @@ Module blake2.
                                                                             M.read (| input |)
                                                                           |)
                                                                         |);
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "core::ops::range::Range"
                                                                           []
                                                                           [ Ty.path "usize" ]
@@ -1406,7 +1406,7 @@ Module blake2.
                                               Pointer.Kind.Ref,
                                               M.deref (| M.read (| input |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -1513,7 +1513,7 @@ Module blake2.
                                               Pointer.Kind.Ref,
                                               M.deref (| M.read (| input |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::Range"
                                               []
                                               [ Ty.path "usize" ]
@@ -1693,7 +1693,7 @@ Module blake2.
                                         []
                                       |),
                                       [
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::Range"
                                           []
                                           [ Ty.path "usize" ]
@@ -1896,7 +1896,7 @@ Module blake2.
                                                                 Pointer.Kind.MutRef,
                                                                 out
                                                               |);
-                                                              Value.StructRecord
+                                                              Value.mkStructRecord
                                                                 "core::ops::range::Range"
                                                                 []
                                                                 [ Ty.path "usize" ]
@@ -2611,7 +2611,7 @@ Module blake2.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, v |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeTo"
                             []
                             [ Ty.path "usize" ]
@@ -2676,7 +2676,7 @@ Module blake2.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, v |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeFrom"
                             []
                             [ Ty.path "usize" ]
@@ -2803,7 +2803,7 @@ Module blake2.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -3301,7 +3301,7 @@ Module blake2.
                       []
                     |),
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "core::ops::range::Range"
                         []
                         [ Ty.path "usize" ]

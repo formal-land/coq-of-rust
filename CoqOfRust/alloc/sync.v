@@ -242,7 +242,7 @@ Module sync.
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::sync::ArcInner"
                     []
                     [ T ]
@@ -1210,7 +1210,7 @@ Module sync.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "alloc::sync::ArcInner"
                                       []
                                       [ T ]
@@ -3531,7 +3531,7 @@ Module sync.
               ptr
             |) in
           let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::sync::Arc"
             []
             [ T; A ]
@@ -3650,7 +3650,7 @@ Module sync.
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "alloc::sync::ArcInner"
                     []
                     [ T ]
@@ -4275,7 +4275,7 @@ Module sync.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloc::sync::ArcInner"
                           []
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
@@ -4435,7 +4435,7 @@ Module sync.
                         [ M.read (| uninit_ptr |) ]
                       |) in
                     let~ weak : Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::sync::Weak"
                         []
                         [ T; A ]
@@ -5213,7 +5213,7 @@ Module sync.
                                     []
                                   |),
                                   [
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "alloc::sync::ArcInner"
                                       []
                                       [ T ]
@@ -6736,7 +6736,7 @@ Module sync.
                         ]
                       |) in
                     let~ _weak : Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] :=
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::sync::Weak"
                         []
                         [ T; A ]
@@ -7090,7 +7090,7 @@ Module sync.
                           [ Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] ]
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::sync::Weak"
                             []
                             [ T; A ]
@@ -8045,7 +8045,7 @@ Module sync.
                                                 |)
                                               |) in
                                             M.return_ (|
-                                              Value.StructRecord
+                                              Value.mkStructRecord
                                                 "alloc::sync::Weak"
                                                 []
                                                 [ T; A ]
@@ -8515,7 +8515,7 @@ Module sync.
           M.read (|
             let~ _weak :
                 Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; Ty.apply (Ty.path "&") [] [ A ] ] :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::sync::Weak"
                 []
                 [ T; Ty.apply (Ty.path "&") [] [ A ] ]
@@ -9511,7 +9511,7 @@ Module sync.
                                       |) in
                                     let~ _weak :
                                         Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ] :=
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "alloc::sync::Weak"
                                         []
                                         [ T; A ]
@@ -11523,7 +11523,7 @@ Module sync.
                   |)
                 |)) in
             let~ guard : Ty.apply (Ty.path "alloc::sync::from_iter_exact::Guard") [] [ T ] :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::sync::from_iter_exact::Guard"
                 []
                 [ T ]
@@ -14141,7 +14141,7 @@ Module sync.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloc::sync::Weak"
             []
             [ T; Ty.path "alloc::alloc::Global" ]
@@ -14240,7 +14240,7 @@ Module sync.
       | [], [], [ alloc ] =>
         ltac:(M.monadic
           (let alloc := M.alloc (| A, alloc |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::sync::Weak"
             []
             [ T; A ]
@@ -14747,7 +14747,7 @@ Module sync.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::sync::Weak"
                 []
                 [ T; A ]
@@ -15514,7 +15514,7 @@ Module sync.
                         []
                         [ Ty.path "alloc::sync::WeakInner" ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::sync::WeakInner"
                             []
                             []
@@ -15813,7 +15813,7 @@ Module sync.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::sync::Weak") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::sync::Weak"
                 []
                 [ T; A ]
@@ -17557,7 +17557,7 @@ Module sync.
                                 |),
                                 []
                               |);
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "alloc::sync::ArcInner"
                                 []
                                 [ T ]
@@ -17657,13 +17657,13 @@ Module sync.
         Ty.path "alloc::sync::SliceArcInnerForStatic",
         M.alloc (|
           Ty.path "alloc::sync::SliceArcInnerForStatic",
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::sync::SliceArcInnerForStatic"
             []
             []
             [
               ("inner",
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::sync::ArcInner"
                   []
                   [
@@ -21011,7 +21011,7 @@ Module sync.
               |) in
             M.alloc (|
               Ty.apply (Ty.path "alloc::sync::UniqueArcUninit") [] [ T; A ],
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::sync::UniqueArcUninit"
                 []
                 [ T; A ]

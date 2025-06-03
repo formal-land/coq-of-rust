@@ -31,7 +31,7 @@ Module iter.
                     [ Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ] ],
                   self
                 |) in
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::iter::adapters::step_by::StepBy"
                 []
                 [ I ]
@@ -300,7 +300,7 @@ Module iter.
                   |) in
                 M.alloc (|
                   Ty.apply (Ty.path "core::iter::adapters::step_by::StepBy") [] [ I ],
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::iter::adapters::step_by::StepBy"
                     []
                     [ I ]
@@ -4470,7 +4470,7 @@ Module iter.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "u8" ]
@@ -5606,7 +5606,7 @@ Module iter.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "u16" ]
@@ -6742,7 +6742,7 @@ Module iter.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "u32" ]
@@ -7878,7 +7878,7 @@ Module iter.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "u64" ]
@@ -9028,7 +9028,7 @@ Module iter.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]

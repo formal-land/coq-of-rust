@@ -904,7 +904,7 @@ Module field.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -1511,7 +1511,7 @@ Module field.
                           []
                         |),
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]
@@ -1703,7 +1703,7 @@ Module field.
         ltac:(M.monadic
           (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           let start := M.alloc (| Self, start |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_field::field::Powers"
             []
             [ Self ]
@@ -2503,7 +2503,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -2558,7 +2558,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -2637,7 +2637,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -2692,7 +2692,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -2771,7 +2771,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -2826,7 +2826,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -2905,7 +2905,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeTo"
                                             []
                                             [ Ty.path "usize" ]
@@ -2960,7 +2960,7 @@ Module field.
                                             Pointer.Kind.Ref,
                                             M.deref (| M.read (| input |) |)
                                           |);
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::RangeFrom"
                                             []
                                             [ Ty.path "usize" ]
@@ -3021,7 +3021,7 @@ Module field.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| input |) |)
                                       |);
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "core::ops::range::RangeTo"
                                         []
                                         [ Ty.path "usize" ]
@@ -3272,7 +3272,7 @@ Module field.
                                                                             M.read (| input |)
                                                                           |)
                                                                         |);
-                                                                        Value.StructRecord
+                                                                        Value.mkStructRecord
                                                                           "core::ops::range::Range"
                                                                           []
                                                                           [ Ty.path "usize" ]
@@ -3392,7 +3392,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3487,7 +3487,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3582,7 +3582,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3677,7 +3677,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3772,7 +3772,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3867,7 +3867,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -3962,7 +3962,7 @@ Module field.
                                                     Pointer.Kind.Ref,
                                                     M.deref (| M.read (| input |) |)
                                                   |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "core::ops::range::RangeFrom"
                                                     []
                                                     [ Ty.path "usize" ]
@@ -5520,7 +5520,7 @@ Module field.
               Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "p3_field::field::Powers") [] [ F ] ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "p3_field::field::Powers"
             []
             [ F ]

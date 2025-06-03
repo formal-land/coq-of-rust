@@ -248,7 +248,7 @@ Module interpreter_action.
                       M.alloc (|
                         Ty.path
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
                           []
                           []
@@ -316,7 +316,7 @@ Module interpreter_action.
                       M.alloc (|
                         Ty.path
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
                           []
                           []
@@ -950,7 +950,7 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
               []
               []
@@ -1164,7 +1164,7 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               []
               []
@@ -1266,7 +1266,7 @@ Module interpreter_action.
                   ],
                 self
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               []
               []
@@ -1700,7 +1700,7 @@ Module interpreter_action.
                 Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                 kind
               |) in
-            Value.StructRecord
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               []
               []
@@ -1769,7 +1769,7 @@ Module interpreter_action.
                 M.read (| caller |);
                 M.read (| value |);
                 M.read (| gas_limit |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
                   []
                   []

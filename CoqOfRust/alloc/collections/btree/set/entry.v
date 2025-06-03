@@ -1223,7 +1223,7 @@ Module collections.
                       [ T; A ],
                     self
                   |) in
-                Value.StructRecord
+                Value.mkStructRecord
                   "alloc::collections::btree::set::entry::OccupiedEntry"
                   []
                   [ T; A ]

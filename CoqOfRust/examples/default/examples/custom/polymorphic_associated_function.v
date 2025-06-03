@@ -27,7 +27,7 @@ Module Impl_polymorphic_associated_function_Foo_A.
       ltac:(M.monadic
         (let self :=
           M.alloc (| Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ A ], self |) in
-        Value.StructRecord
+        Value.mkStructRecord
           "polymorphic_associated_function::Foo"
           []
           [ B ]
@@ -71,7 +71,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ foo : Ty.apply (Ty.path "polymorphic_associated_function::Foo") [] [ Ty.path "i32" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "polymorphic_associated_function::Foo"
             []
             [ Ty.path "i32" ]

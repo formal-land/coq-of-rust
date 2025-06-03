@@ -532,7 +532,7 @@ Module string.
               Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::FromUtf8Error" ],
               self
             |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::string::FromUtf8Error"
             []
             []
@@ -696,7 +696,7 @@ Module string.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloc::string::String"
             []
             []
@@ -736,7 +736,7 @@ Module string.
       | [], [], [ capacity ] =>
         ltac:(M.monadic
           (let capacity := M.alloc (| Ty.path "usize", capacity |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::string::String"
             []
             []
@@ -797,7 +797,7 @@ Module string.
                     [ Ty.path "alloc::string::String"; Ty.path "alloc::collections::TryReserveError"
                     ]
                     [
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::string::String"
                         []
                         []
@@ -1076,7 +1076,7 @@ Module string.
                         []
                         [ Ty.path "alloc::string::String"; Ty.path "alloc::string::FromUtf8Error" ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::string::String"
                             []
                             []
@@ -1098,7 +1098,7 @@ Module string.
                         []
                         [ Ty.path "alloc::string::String"; Ty.path "alloc::string::FromUtf8Error" ]
                         [
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "alloc::string::FromUtf8Error"
                             []
                             []
@@ -5318,7 +5318,7 @@ Module string.
           (let buf := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], buf |) in
           let length := M.alloc (| Ty.path "usize", length |) in
           let capacity := M.alloc (| Ty.path "usize", capacity |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::string::String"
             []
             []
@@ -5366,7 +5366,7 @@ Module string.
                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
               bytes
             |) in
-          Value.StructRecord "alloc::string::String" [] [] [ ("vec", M.read (| bytes |)) ]))
+          Value.mkStructRecord "alloc::string::String" [] [] [ ("vec", M.read (| bytes |)) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -5610,7 +5610,7 @@ Module string.
                   M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| src |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -6824,7 +6824,7 @@ Module string.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| self |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeFrom"
                                           []
                                           [ Ty.path "usize" ]
@@ -7967,7 +7967,7 @@ Module string.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ guard : Ty.path "alloc::string::retain::SetLenOnDrop" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "alloc::string::retain::SetLenOnDrop"
                 []
                 []
@@ -8094,7 +8094,7 @@ Module string.
                                                           |)
                                                         |)
                                                       |);
-                                                      Value.StructRecord
+                                                      Value.mkStructRecord
                                                         "core::ops::range::Range"
                                                         []
                                                         [ Ty.path "usize" ]
@@ -9232,7 +9232,7 @@ Module string.
                   M.get_function (| "core::slice::index::range", [], [ R ] |),
                   [
                     M.read (| range |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -9466,7 +9466,7 @@ Module string.
                                       |)
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::Range"
                                     []
                                     [ Ty.path "usize" ]
@@ -9479,7 +9479,7 @@ Module string.
                       |) in
                     M.alloc (|
                       Ty.path "alloc::string::Drain",
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::string::Drain"
                         []
                         []
@@ -10331,7 +10331,7 @@ Module string.
                                       "bytes"
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -10419,7 +10419,7 @@ Module string.
                               "bytes"
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeFrom"
                             []
                             [ Ty.path "usize" ]
@@ -10907,7 +10907,7 @@ Module string.
         ltac:(M.monadic
           (let self :=
             M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ], self |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "alloc::string::String"
             []
             []
@@ -18962,7 +18962,7 @@ Module string.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self_vec |) |) |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::Range"
                             []
                             [ Ty.path "usize" ]

@@ -126,7 +126,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ form : Ty.path "disambiguating_overlapping_traits::Form" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "disambiguating_overlapping_traits::Form"
             []
             []

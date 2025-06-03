@@ -30092,7 +30092,7 @@ Module serializer.
       | [], [], [ major_version ] =>
         ltac:(M.monadic
           (let major_version := M.alloc (| Ty.path "u32", major_version |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::serializer::CommonSerializer"
             []
             []
@@ -41280,7 +41280,7 @@ Module serializer.
       | [], [], [ major_version ] =>
         ltac:(M.monadic
           (let major_version := M.alloc (| Ty.path "u32", major_version |) in
-          Value.StructRecord
+          Value.mkStructRecord
             "move_binary_format::serializer::ModuleSerializer"
             []
             []

@@ -1548,7 +1548,7 @@ Module any.
             let~ t2 : Ty.path "u64" := M.cast (Ty.path "u64") (M.read (| t |)) in
             M.alloc (|
               Ty.path "core::any::TypeId",
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::any::TypeId"
                 []
                 []
