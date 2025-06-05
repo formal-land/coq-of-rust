@@ -40,8 +40,13 @@ Module checked.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "result::checked::MathError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -61,6 +66,7 @@ Module checked.
                         let _ :=
                           M.is_struct_tuple (| γ, "result::checked::MathError::DivisionByZero" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DivisionByZero" |) |)
@@ -75,6 +81,7 @@ Module checked.
                             "result::checked::MathError::NonPositiveLogarithm"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NonPositiveLogarithm" |) |)
@@ -89,6 +96,7 @@ Module checked.
                             "result::checked::MathError::NegativeSquareRoot"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NegativeSquareRoot" |) |)
@@ -134,21 +142,22 @@ Module checked.
     match ε, τ, α with
     | [], [], [ x; y ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
+        (let x := M.alloc (| Ty.path "f64", x |) in
+        let y := M.alloc (| Ty.path "f64", y |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "core::result::Result")
               []
               [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -157,6 +166,10 @@ Module checked.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -166,6 +179,10 @@ Module checked.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -201,20 +218,21 @@ Module checked.
     match ε, τ, α with
     | [], [], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| Ty.path "f64", x |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "core::result::Result")
               []
               [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.lt,
@@ -223,6 +241,10 @@ Module checked.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -233,6 +255,10 @@ Module checked.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -268,20 +294,21 @@ Module checked.
     match ε, τ, α with
     | [], [], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| Ty.path "f64", x |) in
         M.read (|
           M.match_operator (|
             Ty.apply
               (Ty.path "core::result::Result")
               []
               [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.le,
@@ -290,6 +317,10 @@ Module checked.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -305,6 +336,10 @@ Module checked.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -347,12 +382,16 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ x; y ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
-      let y := M.alloc (| y |) in
+      (let x := M.alloc (| Ty.path "f64", x |) in
+      let y := M.alloc (| Ty.path "f64", y |) in
       M.read (|
         M.match_operator (|
           Ty.path "f64",
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -367,8 +406,9 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let why := M.copy (| γ0_0 |) in
+                let why := M.copy (| Ty.path "result::checked::MathError", γ0_0 |) in
                 M.alloc (|
+                  Ty.path "f64",
                   M.never_to_any (|
                     M.call_closure (|
                       Ty.path "never",
@@ -389,7 +429,13 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                    Value.Array [ mk_str (| "" |) ]
+                                  |)
                                 |)
                               |)
                             |);
@@ -399,6 +445,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -431,10 +481,14 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let ratio := M.copy (| γ0_0 |) in
+                let ratio := M.copy (| Ty.path "f64", γ0_0 |) in
                 M.match_operator (|
                   Ty.path "f64",
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -453,8 +507,9 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::result::Result::Err",
                             0
                           |) in
-                        let why := M.copy (| γ0_0 |) in
+                        let why := M.copy (| Ty.path "result::checked::MathError", γ0_0 |) in
                         M.alloc (|
+                          Ty.path "f64",
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -477,7 +532,13 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                                          M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                            Value.Array [ mk_str (| "" |) ]
+                                          |)
                                         |)
                                       |)
                                     |);
@@ -487,6 +548,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.path "core::fmt::rt::Argument" ],
                                             Value.Array
                                               [
                                                 M.call_closure (|
@@ -525,10 +590,14 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "core::result::Result::Ok",
                             0
                           |) in
-                        let ln := M.copy (| γ0_0 |) in
+                        let ln := M.copy (| Ty.path "f64", γ0_0 |) in
                         M.match_operator (|
                           Ty.path "f64",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.path "f64"; Ty.path "result::checked::MathError" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -547,8 +616,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::result::Result::Err",
                                     0
                                   |) in
-                                let why := M.copy (| γ0_0 |) in
+                                let why :=
+                                  M.copy (| Ty.path "result::checked::MathError", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.path "f64",
                                   M.never_to_any (|
                                     M.call_closure (|
                                       Ty.path "never",
@@ -571,7 +642,14 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                                                  M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
+                                                    Value.Array [ mk_str (| "" |) ]
+                                                  |)
                                                 |)
                                               |)
                                             |);
@@ -581,6 +659,10 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.path "core::fmt::rt::Argument" ],
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
@@ -619,7 +701,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     "core::result::Result::Ok",
                                     0
                                   |) in
-                                let sqrt := M.copy (| γ0_0 |) in
+                                let sqrt := M.copy (| Ty.path "f64", γ0_0 |) in
                                 sqrt))
                           ]
                         |)))
@@ -667,8 +749,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -678,6 +766,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -695,6 +787,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "f64",
                                               M.call_closure (|
                                                 Ty.path "f64",
                                                 M.get_function (| "result::op", [], [] |),
@@ -718,9 +811,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

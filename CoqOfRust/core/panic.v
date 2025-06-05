@@ -20,7 +20,7 @@ Module num.
       match ε, τ, α with
       | [], [], [ radix ] =>
         ltac:(M.monadic
-          (let radix := M.alloc (| radix |) in
+          (let radix := M.alloc (| Ty.path "u32", radix |) in
           M.call_closure (|
             Ty.path "never",
             M.get_function (|
@@ -897,9 +897,9 @@ Module char.
         match ε, τ, α with
         | [], [], [ code; len; dst_len ] =>
           ltac:(M.monadic
-            (let code := M.alloc (| code |) in
-            let len := M.alloc (| len |) in
-            let dst_len := M.alloc (| dst_len |) in
+            (let code := M.alloc (| Ty.path "u32", code |) in
+            let len := M.alloc (| Ty.path "usize", len |) in
+            let dst_len := M.alloc (| Ty.path "usize", dst_len |) in
             M.call_closure (|
               Ty.path "never",
               M.get_function (|
@@ -953,9 +953,9 @@ Module char.
         match ε, τ, α with
         | [], [], [ code; len; dst_len ] =>
           ltac:(M.monadic
-            (let code := M.alloc (| code |) in
-            let len := M.alloc (| len |) in
-            let dst_len := M.alloc (| dst_len |) in
+            (let code := M.alloc (| Ty.path "u32", code |) in
+            let len := M.alloc (| Ty.path "usize", len |) in
+            let dst_len := M.alloc (| Ty.path "usize", dst_len |) in
             M.call_closure (|
               Ty.path "never",
               M.get_function (|
@@ -1003,7 +1003,7 @@ Module panic.
     match ε, τ, α with
     | [], [ F; R ], [ f ] =>
       ltac:(M.monadic
-        (let f := M.alloc (| f |) in
+        (let f := M.alloc (| F, f |) in
         M.call_closure (|
           R,
           M.get_trait_method (|
@@ -1031,7 +1031,7 @@ Module panic.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           Value.StructTuple
             "core::option::Option::None"
             []
@@ -1064,8 +1064,8 @@ Module slice.
         match ε, τ, α with
         | [], [], [ index; len ] =>
           ltac:(M.monadic
-            (let index := M.alloc (| index |) in
-            let len := M.alloc (| len |) in
+            (let index := M.alloc (| Ty.path "usize", index |) in
+            let len := M.alloc (| Ty.path "usize", len |) in
             M.call_closure (|
               Ty.path "never",
               M.get_function (|
@@ -1119,8 +1119,8 @@ Module slice.
         match ε, τ, α with
         | [], [], [ index; len ] =>
           ltac:(M.monadic
-            (let index := M.alloc (| index |) in
-            let len := M.alloc (| len |) in
+            (let index := M.alloc (| Ty.path "usize", index |) in
+            let len := M.alloc (| Ty.path "usize", len |) in
             M.call_closure (|
               Ty.path "never",
               M.get_function (|
@@ -1174,8 +1174,8 @@ Module slice.
         match ε, τ, α with
         | [], [], [ index; end_ ] =>
           ltac:(M.monadic
-            (let index := M.alloc (| index |) in
-            let end_ := M.alloc (| end_ |) in
+            (let index := M.alloc (| Ty.path "usize", index |) in
+            let end_ := M.alloc (| Ty.path "usize", end_ |) in
             M.call_closure (|
               Ty.path "never",
               M.get_function (|

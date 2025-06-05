@@ -16,7 +16,7 @@ Module extension.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Self, self |) in
           M.call_closure (|
             Ty.apply (Ty.path "alloc::vec::Vec") [] [ Self; Ty.path "alloc::alloc::Global" ],
             M.get_trait_method (|
@@ -111,11 +111,12 @@ Module extension.
                                   Ty.function
                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Self ] ] ]
                                     (Ty.apply (Ty.path "core::option::Option") [] [ Self ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
+                                        (let x :=
+                                          M.copy (| Ty.apply (Ty.path "&") [] [ Self ], γ |) in
                                         Value.StructTuple
                                           "core::option::Option::Some"
                                           []

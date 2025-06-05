@@ -38,8 +38,16 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -57,8 +65,12 @@ Module effects.
                         "move_core_types::effects::Op::New",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -91,8 +103,12 @@ Module effects.
                         "move_core_types::effects::Op::Modify",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -121,6 +137,10 @@ Module effects.
                     (let γ := M.read (| γ |) in
                     let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -163,7 +183,14 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ],
@@ -178,8 +205,9 @@ Module effects.
                         "move_core_types::effects::Op::New",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ],
                       Value.StructTuple
                         "move_core_types::effects::Op::New"
                         []
@@ -209,8 +237,9 @@ Module effects.
                         "move_core_types::effects::Op::Modify",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ],
                       Value.StructTuple
                         "move_core_types::effects::Op::Modify"
                         []
@@ -236,6 +265,7 @@ Module effects.
                     (let γ := M.read (| γ |) in
                     let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ],
                       Value.StructTuple "move_core_types::effects::Op::Delete" [] [ T ] []
                     |)))
               ]
@@ -268,12 +298,19 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -312,8 +349,22 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -336,6 +387,7 @@ Module effects.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -346,7 +398,20 @@ Module effects.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -359,7 +424,7 @@ Module effects.
                                 "move_core_types::effects::Op::New",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -367,8 +432,9 @@ Module effects.
                                 "move_core_types::effects::Op::New",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -397,7 +463,7 @@ Module effects.
                                 "move_core_types::effects::Op::Modify",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -405,8 +471,9 @@ Module effects.
                                 "move_core_types::effects::Op::Modify",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -424,7 +491,7 @@ Module effects.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -453,8 +520,22 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -479,6 +560,7 @@ Module effects.
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -500,7 +582,20 @@ Module effects.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -513,7 +608,7 @@ Module effects.
                                 "move_core_types::effects::Op::New",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -521,8 +616,9 @@ Module effects.
                                 "move_core_types::effects::Op::New",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
@@ -549,7 +645,7 @@ Module effects.
                                 "move_core_types::effects::Op::Modify",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -557,8 +653,9 @@ Module effects.
                                 "move_core_types::effects::Op::Modify",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
@@ -576,12 +673,15 @@ Module effects.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
+                            (M.alloc (|
+                              Ty.path "core::cmp::Ordering",
+                              Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
+                            |)))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -608,8 +708,22 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -633,7 +747,20 @@ Module effects.
               |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ];
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ]
+                  ],
+                Value.Tuple [ M.read (| self |); M.read (| other |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -646,7 +773,7 @@ Module effects.
                         "move_core_types::effects::Op::New",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ2_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -654,8 +781,12 @@ Module effects.
                         "move_core_types::effects::Op::New",
                         0
                       |) in
-                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                    let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -687,7 +818,7 @@ Module effects.
                         "move_core_types::effects::Op::Modify",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ2_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -695,8 +826,12 @@ Module effects.
                         "move_core_types::effects::Op::Modify",
                         0
                       |) in
-                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                    let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -720,6 +855,10 @@ Module effects.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -781,7 +920,14 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -799,8 +945,12 @@ Module effects.
                         "move_core_types::effects::Op::New",
                         0
                       |) in
-                    let data := M.alloc (| γ1_0 |) in
+                    let data := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       Value.StructTuple
                         "move_core_types::effects::Op::New"
                         []
@@ -816,8 +966,12 @@ Module effects.
                         "move_core_types::effects::Op::Modify",
                         0
                       |) in
-                    let data := M.alloc (| γ1_0 |) in
+                    let data := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       Value.StructTuple
                         "move_core_types::effects::Op::Modify"
                         []
@@ -829,6 +983,10 @@ Module effects.
                     (let γ := M.read (| γ |) in
                     let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "move_core_types::effects::Op")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       Value.StructTuple
                         "move_core_types::effects::Op::Delete"
                         []
@@ -866,8 +1024,9 @@ Module effects.
       match ε, τ, α with
       | [], [ F; U ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ], self |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "move_core_types::effects::Op") [] [ U ],
@@ -881,8 +1040,9 @@ Module effects.
                         "move_core_types::effects::Op::New",
                         0
                       |) in
-                    let data := M.copy (| γ0_0 |) in
+                    let data := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::effects::Op") [] [ U ],
                       Value.StructTuple
                         "move_core_types::effects::Op::New"
                         []
@@ -911,8 +1071,9 @@ Module effects.
                         "move_core_types::effects::Op::Modify",
                         0
                       |) in
-                    let data := M.copy (| γ0_0 |) in
+                    let data := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::effects::Op") [] [ U ],
                       Value.StructTuple
                         "move_core_types::effects::Op::Modify"
                         []
@@ -937,6 +1098,7 @@ Module effects.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::effects::Op") [] [ U ],
                       Value.StructTuple "move_core_types::effects::Op::Delete" [] [ U ] []
                     |)))
               ]
@@ -966,7 +1128,8 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ], self |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -985,8 +1148,8 @@ Module effects.
                                 "move_core_types::effects::Op::New",
                                 0
                               |) in
-                            let data := M.copy (| γ0_0 |) in
-                            M.alloc (| Value.Tuple [ data ] |)));
+                            let data := M.copy (| T, γ0_0 |) in
+                            M.alloc (| Ty.tuple [ T ], Value.Tuple [ data ] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
@@ -995,8 +1158,8 @@ Module effects.
                                 "move_core_types::effects::Op::Modify",
                                 0
                               |) in
-                            let data := M.copy (| γ0_0 |) in
-                            M.alloc (| Value.Tuple [ data ] |)))
+                            let data := M.copy (| T, γ0_0 |) in
+                            M.alloc (| Ty.tuple [ T ], Value.Tuple [ data ] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -1004,6 +1167,7 @@ Module effects.
                           | [ data ] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                 Value.StructTuple
                                   "core::option::Option::Some"
                                   []
@@ -1016,7 +1180,10 @@ Module effects.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "move_core_types::effects::Op::Delete" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
+                    M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      Value.StructTuple "core::option::Option::None" [] [ T ] []
+                    |)))
               ]
             |)
           |)))
@@ -1082,8 +1249,13 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1123,6 +1295,27 @@ Module effects.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_core_types::language_storage::StructTag";
+                                Ty.apply
+                                  (Ty.path "move_core_types::effects::Op")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1157,8 +1350,12 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_core_types::effects::AccountChangeSet"
             []
             []
@@ -1304,7 +1501,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1315,7 +1516,7 @@ Module effects.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -1353,8 +1554,16 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -1502,12 +1711,21 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
@@ -1569,6 +1787,7 @@ Module effects.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
+                      Ty.path "core::cmp::Ordering",
                       M.call_closure (|
                         Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
@@ -1627,7 +1846,7 @@ Module effects.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -1652,12 +1871,21 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1742,6 +1970,10 @@ Module effects.
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -1820,7 +2052,14 @@ Module effects.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
+                        γ
+                      |) in
                     cmp))
               ]
             |)
@@ -1875,8 +2114,35 @@ Module effects.
     match ε, τ, α with
     | [], [ K; V ], [ map; other ] =>
       ltac:(M.monadic
-        (let map := M.alloc (| map |) in
-        let other := M.alloc (| other |) in
+        (let map :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                  []
+                  [
+                    K;
+                    Ty.apply (Ty.path "move_core_types::effects::Op") [] [ V ];
+                    Ty.path "alloc::alloc::Global"
+                  ]
+              ],
+            map
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "alloc::collections::btree::map::BTreeMap")
+              []
+              [
+                K;
+                Ty.apply (Ty.path "move_core_types::effects::Op") [] [ V ];
+                Ty.path "alloc::alloc::Global"
+              ],
+            other
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -1885,6 +2151,10 @@ Module effects.
               [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "anyhow::Error" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
@@ -1892,6 +2162,14 @@ Module effects.
                         (M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::IntoIter")
+                              []
+                              [
+                                K;
+                                Ty.apply (Ty.path "move_core_types::effects::Op") [] [ V ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::IntoIter")
@@ -1951,7 +2229,18 @@ Module effects.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
+                                (let iter :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::IntoIter")
+                                      []
+                                      [
+                                        K;
+                                        Ty.apply (Ty.path "move_core_types::effects::Op") [] [ V ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    γ
+                                  |) in
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
@@ -1960,6 +2249,19 @@ Module effects.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    K;
+                                                    Ty.apply
+                                                      (Ty.path "move_core_types::effects::Op")
+                                                      []
+                                                      [ V ]
+                                                  ]
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2013,6 +2315,7 @@ Module effects.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -2027,11 +2330,30 @@ Module effects.
                                                   M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                 let γ1_1 :=
                                                   M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                let key := M.copy (| γ1_0 |) in
-                                                let op := M.copy (| γ1_1 |) in
+                                                let key := M.copy (| K, γ1_0 |) in
+                                                let op :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "move_core_types::effects::Op")
+                                                      []
+                                                      [ V ],
+                                                    γ1_1
+                                                  |) in
                                                 M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::btree::map::entry::Entry")
+                                                      []
+                                                      [
+                                                        K;
+                                                        Ty.apply
+                                                          (Ty.path "move_core_types::effects::Op")
+                                                          []
+                                                          [ V ];
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path
@@ -2081,7 +2403,23 @@ Module effects.
                                                             "alloc::collections::btree::map::entry::Entry::Occupied",
                                                             0
                                                           |) in
-                                                        let entry := M.copy (| γ0_0 |) in
+                                                        let entry :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                              []
+                                                              [
+                                                                K;
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_core_types::effects::Op")
+                                                                  []
+                                                                  [ V ];
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            γ0_0
+                                                          |) in
                                                         let~ r :
                                                             Ty.apply
                                                               (Ty.path "&mut")
@@ -2132,6 +2470,20 @@ Module effects.
                                                         M.match_operator (|
                                                           Ty.tuple [],
                                                           M.alloc (|
+                                                            Ty.tuple
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_core_types::effects::Op")
+                                                                  []
+                                                                  [ Ty.apply (Ty.path "&") [] [ V ]
+                                                                  ];
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_core_types::effects::Op")
+                                                                  []
+                                                                  [ V ]
+                                                              ],
                                                             Value.Tuple
                                                               [
                                                                 M.call_closure (|
@@ -2196,6 +2548,7 @@ Module effects.
                                                                                     0
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.tuple [],
                                                                                   Value.Tuple []
                                                                                 |)));
                                                                             fun γ =>
@@ -2207,6 +2560,7 @@ Module effects.
                                                                                     0
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.tuple [],
                                                                                   Value.Tuple []
                                                                                 |)))
                                                                           ],
@@ -2222,6 +2576,7 @@ Module effects.
                                                                                       0
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)))
                                                                               | _ =>
@@ -2258,6 +2613,7 @@ Module effects.
                                                                                     "move_core_types::effects::Op::Delete"
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.tuple [],
                                                                                   Value.Tuple []
                                                                                 |)));
                                                                             fun γ =>
@@ -2269,6 +2625,7 @@ Module effects.
                                                                                     0
                                                                                   |) in
                                                                                 M.alloc (|
+                                                                                  Ty.tuple [],
                                                                                   Value.Tuple []
                                                                                 |)))
                                                                           ],
@@ -2278,6 +2635,7 @@ Module effects.
                                                                               | [] =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)))
                                                                               | _ =>
@@ -2292,6 +2650,7 @@ Module effects.
                                                                       | [] =>
                                                                         ltac:(M.monadic
                                                                           (M.alloc (|
+                                                                            Ty.tuple [],
                                                                             M.never_to_any (|
                                                                               M.read (|
                                                                                 M.return_ (|
@@ -2338,6 +2697,24 @@ Module effects.
                                                                                                       M.borrow (|
                                                                                                         Pointer.Kind.Ref,
                                                                                                         M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "array")
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1
+                                                                                                            ]
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "&")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "str"
+                                                                                                                ]
+                                                                                                            ],
                                                                                                           Value.Array
                                                                                                             [
                                                                                                               mk_str (|
@@ -2388,8 +2765,9 @@ Module effects.
                                                                     "move_core_types::effects::Op::Modify",
                                                                     0
                                                                   |) in
-                                                                let data := M.copy (| γ1_0 |) in
+                                                                let data := M.copy (| V, γ1_0 |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.write (|
                                                                     M.deref (| M.read (| r |) |),
                                                                     Value.StructTuple
@@ -2423,8 +2801,9 @@ Module effects.
                                                                     "move_core_types::effects::Op::Modify",
                                                                     0
                                                                   |) in
-                                                                let data := M.copy (| γ1_0 |) in
+                                                                let data := M.copy (| V, γ1_0 |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.write (|
                                                                     M.deref (| M.read (| r |) |),
                                                                     Value.StructTuple
@@ -2458,6 +2837,7 @@ Module effects.
                                                                     "move_core_types::effects::Op::Delete"
                                                                   |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.write (|
                                                                     M.deref (| M.read (| r |) |),
                                                                     Value.StructTuple
@@ -2490,8 +2870,9 @@ Module effects.
                                                                     "move_core_types::effects::Op::New",
                                                                     0
                                                                   |) in
-                                                                let data := M.copy (| γ1_0 |) in
+                                                                let data := M.copy (| V, γ1_0 |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.write (|
                                                                     M.deref (| M.read (| r |) |),
                                                                     Value.StructTuple
@@ -2557,7 +2938,10 @@ Module effects.
                                                                     |),
                                                                     [ M.read (| entry |) ]
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)));
                                                     fun γ =>
@@ -2568,7 +2952,23 @@ Module effects.
                                                             "alloc::collections::btree::map::entry::Entry::Vacant",
                                                             0
                                                           |) in
-                                                        let entry := M.copy (| γ0_0 |) in
+                                                        let entry :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::btree::map::entry::VacantEntry")
+                                                              []
+                                                              [
+                                                                K;
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "move_core_types::effects::Op")
+                                                                  []
+                                                                  [ V ];
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            γ0_0
+                                                          |) in
                                                         let~ _ :
                                                             Ty.apply
                                                               (Ty.path "&mut")
@@ -2611,18 +3011,22 @@ Module effects.
                                                             |),
                                                             [ M.read (| entry |); M.read (| op |) ]
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   ]
                                                 |)))
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 |)))
                           ]
                         |))
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "anyhow::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -2656,9 +3060,47 @@ Module effects.
       match ε, τ, α with
       | [], [], [ modules; resources ] =>
         ltac:(M.monadic
-          (let modules := M.alloc (| modules |) in
-          let resources := M.alloc (| resources |) in
-          Value.StructRecord
+          (let modules :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                []
+                [
+                  Ty.path "move_core_types::identifier::Identifier";
+                  Ty.apply
+                    (Ty.path "move_core_types::effects::Op")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              modules
+            |) in
+          let resources :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                []
+                [
+                  Ty.path "move_core_types::language_storage::StructTag";
+                  Ty.apply
+                    (Ty.path "move_core_types::effects::Op")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              resources
+            |) in
+          Value.mkStructRecord
             "move_core_types::effects::AccountChangeSet"
             []
             []
@@ -2683,7 +3125,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::effects::AccountChangeSet"
             []
             []
@@ -2796,9 +3238,25 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; name; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let name := M.alloc (| name |) in
-          let op := M.alloc (| op |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let name := M.alloc (| Ty.path "move_core_types::identifier::Identifier", name |) in
+          let op :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "move_core_types::effects::Op")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ],
+              op
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -2807,12 +3265,32 @@ Module effects.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::entry::Entry")
+                              []
+                              [
+                                Ty.path "move_core_types::identifier::Identifier";
+                                Ty.apply
+                                  (Ty.path "move_core_types::effects::Op")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -2873,8 +3351,29 @@ Module effects.
                                     "alloc::collections::btree::map::entry::Entry::Occupied",
                                     0
                                   |) in
-                                let entry := M.copy (| γ0_0 |) in
+                                let entry :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path
+                                        "alloc::collections::btree::map::entry::OccupiedEntry")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::identifier::Identifier";
+                                        Ty.apply
+                                          (Ty.path "move_core_types::effects::Op")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -2928,6 +3427,19 @@ Module effects.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             mk_str (| "Module " |);
@@ -2945,6 +3457,17 @@ Module effects.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
@@ -2972,6 +3495,14 @@ Module effects.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_core_types::identifier::Identifier"
+                                                                                          ],
                                                                                         M.call_closure (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -3053,7 +3584,26 @@ Module effects.
                                     "alloc::collections::btree::map::entry::Entry::Vacant",
                                     0
                                   |) in
-                                let entry := M.copy (| γ0_0 |) in
+                                let entry :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::identifier::Identifier";
+                                        Ty.apply
+                                          (Ty.path "move_core_types::effects::Op")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 let~ _ :
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -3108,11 +3658,15 @@ Module effects.
                                     |),
                                     [ M.read (| entry |); M.read (| op |) ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3149,9 +3703,26 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; struct_tag; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let struct_tag := M.alloc (| struct_tag |) in
-          let op := M.alloc (| op |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let struct_tag :=
+            M.alloc (| Ty.path "move_core_types::language_storage::StructTag", struct_tag |) in
+          let op :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "move_core_types::effects::Op")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ],
+              op
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3160,12 +3731,32 @@ Module effects.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::entry::Entry")
+                              []
+                              [
+                                Ty.path "move_core_types::language_storage::StructTag";
+                                Ty.apply
+                                  (Ty.path "move_core_types::effects::Op")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -3226,8 +3817,29 @@ Module effects.
                                     "alloc::collections::btree::map::entry::Entry::Occupied",
                                     0
                                   |) in
-                                let entry := M.copy (| γ0_0 |) in
+                                let entry :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path
+                                        "alloc::collections::btree::map::entry::OccupiedEntry")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::StructTag";
+                                        Ty.apply
+                                          (Ty.path "move_core_types::effects::Op")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3281,6 +3893,19 @@ Module effects.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             mk_str (|
@@ -3300,6 +3925,17 @@ Module effects.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
@@ -3327,6 +3963,14 @@ Module effects.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.alloc (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "move_core_types::language_storage::StructTag"
+                                                                                          ],
                                                                                         M.call_closure (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -3408,7 +4052,26 @@ Module effects.
                                     "alloc::collections::btree::map::entry::Entry::Vacant",
                                     0
                                   |) in
-                                let entry := M.copy (| γ0_0 |) in
+                                let entry :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::language_storage::StructTag";
+                                        Ty.apply
+                                          (Ty.path "move_core_types::effects::Op")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                          ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 let~ _ :
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -3463,11 +4126,15 @@ Module effects.
                                     |),
                                     [ M.read (| entry |); M.read (| op |) ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3500,7 +4167,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::effects::AccountChangeSet", self |) in
           Value.Tuple
             [
               M.read (|
@@ -3535,7 +4202,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::effects::AccountChangeSet", self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,
@@ -3560,7 +4227,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::effects::AccountChangeSet", self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,
@@ -3585,7 +4252,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3615,7 +4286,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3646,7 +4321,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -3735,8 +4414,12 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+              self
+            |) in
+          let other := M.alloc (| Ty.path "move_core_types::effects::AccountChangeSet", other |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3745,12 +4428,26 @@ Module effects.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error" ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -3827,8 +4524,17 @@ Module effects.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; Ty.path "anyhow::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3871,12 +4577,16 @@ Module effects.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3956,8 +4666,13 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3981,6 +4696,19 @@ Module effects.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              []
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.path "move_core_types::effects::AccountChangeSet";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -4015,8 +4743,12 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_core_types::effects::ChangeSet"
             []
             []
@@ -4088,12 +4820,16 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4129,8 +4865,16 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -4197,8 +4941,16 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
@@ -4266,8 +5018,16 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -4384,7 +5144,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::effects::ChangeSet"
             []
             []
@@ -4445,9 +5205,15 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; addr; account_changeset ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let addr := M.alloc (| addr |) in
-          let account_changeset := M.alloc (| account_changeset |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let addr :=
+            M.alloc (| Ty.path "move_core_types::account_address::AccountAddress", addr |) in
+          let account_changeset :=
+            M.alloc (| Ty.path "move_core_types::effects::AccountChangeSet", account_changeset |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -4456,12 +5222,24 @@ Module effects.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::entry::Entry")
+                              []
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.path "move_core_types::effects::AccountChangeSet";
+                                Ty.path "alloc::alloc::Global"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -4507,6 +5285,7 @@ Module effects.
                                     0
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -4560,6 +5339,19 @@ Module effects.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "str" ]
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             mk_str (|
@@ -4579,6 +5371,17 @@ Module effects.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "array")
+                                                                          [
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::rt::Argument"
+                                                                          ],
                                                                         Value.Array
                                                                           [
                                                                             M.call_closure (|
@@ -4634,7 +5437,18 @@ Module effects.
                                     "alloc::collections::btree::map::entry::Entry::Vacant",
                                     0
                                   |) in
-                                let entry := M.copy (| γ0_0 |) in
+                                let entry :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
+                                      []
+                                      [
+                                        Ty.path "move_core_types::account_address::AccountAddress";
+                                        Ty.path "move_core_types::effects::AccountChangeSet";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 let~ _ :
                                     Ty.apply
                                       (Ty.path "&mut")
@@ -4662,11 +5476,15 @@ Module effects.
                                     |),
                                     [ M.read (| entry |); M.read (| account_changeset |) ]
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -4694,7 +5512,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -4724,7 +5546,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::effects::ChangeSet", self |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               self,
@@ -4756,8 +5578,13 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; addr ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let addr := M.alloc (| addr |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let addr :=
+            M.alloc (| Ty.path "move_core_types::account_address::AccountAddress", addr |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -4771,6 +5598,14 @@ Module effects.
                         []
                         [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::entry::Entry")
+                          []
+                          [
+                            Ty.path "move_core_types::account_address::AccountAddress";
+                            Ty.path "move_core_types::effects::AccountChangeSet";
+                            Ty.path "alloc::alloc::Global"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -4815,8 +5650,23 @@ Module effects.
                                 "alloc::collections::btree::map::entry::Entry::Occupied",
                                 0
                               |) in
-                            let entry := M.copy (| γ0_0 |) in
+                            let entry :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::entry::OccupiedEntry")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::account_address::AccountAddress";
+                                    Ty.path "move_core_types::effects::AccountChangeSet";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                γ0_0
+                              |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.deref (|
@@ -4853,8 +5703,23 @@ Module effects.
                                 "alloc::collections::btree::map::entry::Entry::Vacant",
                                 0
                               |) in
-                            let entry := M.copy (| γ0_0 |) in
+                            let entry :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::entry::VacantEntry")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::account_address::AccountAddress";
+                                    Ty.path "move_core_types::effects::AccountChangeSet";
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
+                                γ0_0
+                              |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.path "move_core_types::effects::AccountChangeSet" ],
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.deref (|
@@ -4923,9 +5788,26 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; module_id; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let module_id := M.alloc (| module_id |) in
-          let op := M.alloc (| op |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let module_id :=
+            M.alloc (| Ty.path "move_core_types::language_storage::ModuleId", module_id |) in
+          let op :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "move_core_types::effects::Op")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ],
+              op
+            |) in
           M.read (|
             let~ account :
                 Ty.apply
@@ -4965,6 +5847,7 @@ Module effects.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -5038,10 +5921,28 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; addr; struct_tag; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let addr := M.alloc (| addr |) in
-          let struct_tag := M.alloc (| struct_tag |) in
-          let op := M.alloc (| op |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let addr :=
+            M.alloc (| Ty.path "move_core_types::account_address::AccountAddress", addr |) in
+          let struct_tag :=
+            M.alloc (| Ty.path "move_core_types::language_storage::StructTag", struct_tag |) in
+          let op :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "move_core_types::effects::Op")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                ],
+              op
+            |) in
           M.read (|
             let~ account :
                 Ty.apply
@@ -5065,6 +5966,7 @@ Module effects.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "anyhow::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -5111,8 +6013,12 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
+          let other := M.alloc (| Ty.path "move_core_types::effects::ChangeSet", other |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -5121,6 +6027,10 @@ Module effects.
                 [ Ty.tuple []; Ty.path "anyhow::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "anyhow::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
@@ -5128,6 +6038,14 @@ Module effects.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::map::IntoIter")
+                                []
+                                [
+                                  Ty.path "move_core_types::account_address::AccountAddress";
+                                  Ty.path "move_core_types::effects::AccountChangeSet";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::collections::btree::map::IntoIter")
@@ -5167,7 +6085,19 @@ Module effects.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::IntoIter")
+                                        []
+                                        [
+                                          Ty.path
+                                            "move_core_types::account_address::AccountAddress";
+                                          Ty.path "move_core_types::effects::AccountChangeSet";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -5176,6 +6106,18 @@ Module effects.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::account_address::AccountAddress";
+                                                      Ty.path
+                                                        "move_core_types::effects::AccountChangeSet"
+                                                    ]
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -5227,6 +6169,7 @@ Module effects.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -5241,12 +6184,32 @@ Module effects.
                                                     M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                   let γ1_1 :=
                                                     M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                  let addr := M.copy (| γ1_0 |) in
+                                                  let addr :=
+                                                    M.copy (|
+                                                      Ty.path
+                                                        "move_core_types::account_address::AccountAddress",
+                                                      γ1_0
+                                                    |) in
                                                   let other_account_changeset :=
-                                                    M.copy (| γ1_1 |) in
+                                                    M.copy (|
+                                                      Ty.path
+                                                        "move_core_types::effects::AccountChangeSet",
+                                                      γ1_1
+                                                    |) in
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "alloc::collections::btree::map::entry::Entry")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::account_address::AccountAddress";
+                                                          Ty.path
+                                                            "move_core_types::effects::AccountChangeSet";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -5297,12 +6260,42 @@ Module effects.
                                                               "alloc::collections::btree::map::entry::Entry::Occupied",
                                                               0
                                                             |) in
-                                                          let entry := M.copy (| γ0_0 |) in
+                                                          let entry :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::account_address::AccountAddress";
+                                                                  Ty.path
+                                                                    "move_core_types::effects::AccountChangeSet";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           let~ _ : Ty.tuple [] :=
                                                             M.read (|
                                                               M.match_operator (|
                                                                 Ty.tuple [],
                                                                 M.alloc (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::control_flow::ControlFlow")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path "anyhow::Error"
+                                                                        ];
+                                                                      Ty.tuple []
+                                                                    ],
                                                                   M.call_closure (|
                                                                     Ty.apply
                                                                       (Ty.path
@@ -5409,8 +6402,21 @@ Module effects.
                                                                           0
                                                                         |) in
                                                                       let residual :=
-                                                                        M.copy (| γ0_0 |) in
+                                                                        M.copy (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "anyhow::Error"
+                                                                            ],
+                                                                          γ0_0
+                                                                        |) in
                                                                       M.alloc (|
+                                                                        Ty.tuple [],
                                                                         M.never_to_any (|
                                                                           M.read (|
                                                                             M.return_ (|
@@ -5471,12 +6477,18 @@ Module effects.
                                                                           0
                                                                         |) in
                                                                       let val :=
-                                                                        M.copy (| γ0_0 |) in
+                                                                        M.copy (|
+                                                                          Ty.tuple [],
+                                                                          γ0_0
+                                                                        |) in
                                                                       val))
                                                                 ]
                                                               |)
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)));
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)));
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           (let γ0_0 :=
@@ -5485,7 +6497,21 @@ Module effects.
                                                               "alloc::collections::btree::map::entry::Entry::Vacant",
                                                               0
                                                             |) in
-                                                          let entry := M.copy (| γ0_0 |) in
+                                                          let entry :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloc::collections::btree::map::entry::VacantEntry")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::account_address::AccountAddress";
+                                                                  Ty.path
+                                                                    "move_core_types::effects::AccountChangeSet";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           let~ _ :
                                                               Ty.apply
                                                                 (Ty.path "&mut")
@@ -5523,18 +6549,25 @@ Module effects.
                                                                 M.read (| other_account_changeset |)
                                                               ]
                                                             |) in
-                                                          M.alloc (| Value.Tuple [] |)))
+                                                          M.alloc (|
+                                                            Ty.tuple [],
+                                                            Value.Tuple []
+                                                          |)))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "anyhow::Error" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5566,7 +6599,7 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::effects::ChangeSet", self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::flatten::FlatMap")
@@ -5939,14 +6972,29 @@ Module effects.
                                         ]
                                     ])
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.path "move_core_types::account_address::AccountAddress";
+                                Ty.path "move_core_types::effects::AccountChangeSet"
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let addr := M.copy (| γ0_0 |) in
-                                let account := M.copy (| γ0_1 |) in
+                                let addr :=
+                                  M.copy (|
+                                    Ty.path "move_core_types::account_address::AccountAddress",
+                                    γ0_0
+                                  |) in
+                                let account :=
+                                  M.copy (|
+                                    Ty.path "move_core_types::effects::AccountChangeSet",
+                                    γ0_1
+                                  |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::iter::adapters::map::Map")
@@ -6177,7 +7225,26 @@ Module effects.
                                                             ]
                                                         ]
                                                     ]),
-                                                M.alloc (| α0 |),
+                                                M.alloc (|
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::identifier::Identifier";
+                                                      Ty.apply
+                                                        (Ty.path "move_core_types::effects::Op")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path "u8";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ]
+                                                        ]
+                                                    ],
+                                                  α0
+                                                |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -6185,8 +7252,28 @@ Module effects.
                                                         M.SubPointer.get_tuple_field (| γ, 0 |) in
                                                       let γ0_1 :=
                                                         M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let module_name := M.copy (| γ0_0 |) in
-                                                      let blob_opt := M.copy (| γ0_1 |) in
+                                                      let module_name :=
+                                                        M.copy (|
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier",
+                                                          γ0_0
+                                                        |) in
+                                                      let blob_opt :=
+                                                        M.copy (|
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::vec::Vec")
+                                                                []
+                                                                [
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ],
+                                                          γ0_1
+                                                        |) in
                                                       Value.Tuple
                                                         [
                                                           M.call_closure (|
@@ -6241,7 +7328,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::flatten::FlatMap")
@@ -6684,19 +7775,120 @@ Module effects.
                                         ]
                                     ])
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::account_address::AccountAddress" ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::effects::AccountChangeSet" ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let addr := M.copy (| γ0_0 |) in
-                                let account := M.copy (| γ0_1 |) in
+                                let addr :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress"
+                                      ],
+                                    γ0_0
+                                  |) in
+                                let account :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+                                    γ0_1
+                                  |) in
                                 M.read (|
                                   let~ addr :
                                       Ty.path "move_core_types::account_address::AccountAddress" :=
                                     M.read (| M.deref (| M.read (| addr |) |) |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::Iter")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "move_core_types::effects::Op")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ]
+                                          ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::identifier::Identifier"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "move_core_types::effects::Op")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.path "u8";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.tuple
+                                            [
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_core_types::identifier::Identifier"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
+                                                ]
+                                            ])
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::map::Map")
@@ -6999,7 +8191,37 @@ Module effects.
                                                                 ]
                                                             ]
                                                         ]),
-                                                    M.alloc (| α0 |),
+                                                    M.alloc (|
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::identifier::Identifier"
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "move_core_types::effects::Op")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "u8";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ],
+                                                      α0
+                                                    |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -7013,8 +8235,40 @@ Module effects.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let module_name := M.copy (| γ0_0 |) in
-                                                          let op := M.copy (| γ0_1 |) in
+                                                          let module_name :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::identifier::Identifier"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
+                                                          let op :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "move_core_types::effects::Op")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path "u8";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ]
+                                                                    ]
+                                                                ],
+                                                              γ0_1
+                                                            |) in
                                                           Value.Tuple
                                                             [
                                                               M.read (| addr |);
@@ -7190,12 +8444,45 @@ Module effects.
                                                                                       [ Ty.path "u8"
                                                                                       ]
                                                                                   ]),
-                                                                              M.alloc (| α0 |),
+                                                                              M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::vec::Vec")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u8";
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ]
+                                                                                  ],
+                                                                                α0
+                                                                              |),
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let v :=
                                                                                       M.copy (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::vec::Vec")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u8";
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ]
+                                                                                          ],
                                                                                         γ
                                                                                       |) in
                                                                                     M.call_closure (|
@@ -7296,7 +8583,11 @@ Module effects.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::effects::ChangeSet" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::flatten::FlatMap")
@@ -7742,19 +9033,122 @@ Module effects.
                                         ]
                                     ])
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::account_address::AccountAddress" ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::effects::AccountChangeSet" ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let addr := M.copy (| γ0_0 |) in
-                                let account := M.copy (| γ0_1 |) in
+                                let addr :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress"
+                                      ],
+                                    γ0_0
+                                  |) in
+                                let account :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::effects::AccountChangeSet" ],
+                                    γ0_1
+                                  |) in
                                 M.read (|
                                   let~ addr :
                                       Ty.path "move_core_types::account_address::AccountAddress" :=
                                     M.read (| M.deref (| M.read (| addr |) |) |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::map::Map")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::Iter")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::StructTag";
+                                            Ty.apply
+                                              (Ty.path "move_core_types::effects::Op")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ]
+                                          ];
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_core_types::language_storage::StructTag"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "move_core_types::effects::Op")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.path "u8";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                  ]
+                                              ]
+                                          ]
+                                          (Ty.tuple
+                                            [
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress";
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::language_storage::StructTag"
+                                                ];
+                                              Ty.apply
+                                                (Ty.path "move_core_types::effects::Op")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                    ]
+                                                ]
+                                            ])
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::map::Map")
@@ -8062,7 +9456,37 @@ Module effects.
                                                                 ]
                                                             ]
                                                         ]),
-                                                    M.alloc (| α0 |),
+                                                    M.alloc (|
+                                                      Ty.tuple
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_core_types::language_storage::StructTag"
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "move_core_types::effects::Op")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "alloc::vec::Vec")
+                                                                    []
+                                                                    [
+                                                                      Ty.path "u8";
+                                                                      Ty.path "alloc::alloc::Global"
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ],
+                                                      α0
+                                                    |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
@@ -8076,8 +9500,40 @@ Module effects.
                                                               γ,
                                                               1
                                                             |) in
-                                                          let struct_tag := M.copy (| γ0_0 |) in
-                                                          let op := M.copy (| γ0_1 |) in
+                                                          let struct_tag :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_core_types::language_storage::StructTag"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
+                                                          let op :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "move_core_types::effects::Op")
+                                                                    []
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        []
+                                                                        [
+                                                                          Ty.path "u8";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ]
+                                                                    ]
+                                                                ],
+                                                              γ0_1
+                                                            |) in
                                                           Value.Tuple
                                                             [
                                                               M.read (| addr |);
@@ -8253,12 +9709,45 @@ Module effects.
                                                                                       [ Ty.path "u8"
                                                                                       ]
                                                                                   ]),
-                                                                              M.alloc (| α0 |),
+                                                                              M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::vec::Vec")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u8";
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ]
+                                                                                  ],
+                                                                                α0
+                                                                              |),
                                                                               [
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (let v :=
                                                                                       M.copy (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "alloc::vec::Vec")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "u8";
+                                                                                                Ty.path
+                                                                                                  "alloc::alloc::Global"
+                                                                                              ]
+                                                                                          ],
                                                                                         γ
                                                                                       |) in
                                                                                     M.call_closure (|

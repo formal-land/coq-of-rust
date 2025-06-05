@@ -18,9 +18,16 @@ Module dummy.
       match ε, τ, α with
       | [], [], [ self; _name; _scope ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _name := M.alloc (| _name |) in
-          let _scope := M.alloc (| _scope |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier_meter::dummy::DummyMeter" ],
+              self
+            |) in
+          let _name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], _name |) in
+          let _scope := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", _scope |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -34,10 +41,17 @@ Module dummy.
       match ε, τ, α with
       | [], [], [ self; _from; _to; _factor ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _from := M.alloc (| _from |) in
-          let _to := M.alloc (| _to |) in
-          let _factor := M.alloc (| _factor |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier_meter::dummy::DummyMeter" ],
+              self
+            |) in
+          let _from := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", _from |) in
+          let _to := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", _to |) in
+          let _factor := M.alloc (| Ty.path "f32", _factor |) in
           Value.StructTuple
             "core::result::Result::Ok"
             []
@@ -55,9 +69,16 @@ Module dummy.
       match ε, τ, α with
       | [], [], [ self; _scope; _units ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _scope := M.alloc (| _scope |) in
-          let _units := M.alloc (| _units |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier_meter::dummy::DummyMeter" ],
+              self
+            |) in
+          let _scope := M.alloc (| Ty.path "move_bytecode_verifier_meter::Scope", _scope |) in
+          let _units := M.alloc (| Ty.path "u128", _units |) in
           Value.StructTuple
             "core::result::Result::Ok"
             []

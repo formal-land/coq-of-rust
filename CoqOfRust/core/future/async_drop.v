@@ -12,8 +12,8 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
-          Value.StructRecord
+          (let value := M.alloc (| T, value |) in
+          Value.mkStructRecord
             "core::future::async_drop::AsyncDropOwning"
             []
             [ T ]
@@ -76,8 +76,16 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::async_drop::AsyncDropOwning") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -93,6 +101,7 @@ Module future.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.call_closure (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
@@ -151,8 +160,24 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::future::async_drop::AsyncDropOwning") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.read (|
               let~ this :
                   Ty.apply
@@ -262,7 +287,7 @@ Module future.
                                         (Ty.path "core::future::async_drop::AsyncDropInPlace")
                                         []
                                         [ T ]),
-                                    M.alloc (| α0 |),
+                                    M.alloc (| Ty.tuple [], α0 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
@@ -310,6 +335,7 @@ Module future.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
                   M.get_trait_method (|
@@ -357,7 +383,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ to_drop ] =>
         ltac:(M.monadic
-          (let to_drop := M.alloc (| to_drop |) in
+          (let to_drop := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], to_drop |) in
           M.call_closure (|
             Ty.associated_in_trait
               "core::future::async_drop::AsyncDestruct"
@@ -386,7 +412,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ to_drop ] =>
         ltac:(M.monadic
-          (let to_drop := M.alloc (| to_drop |) in
+          (let to_drop := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], to_drop |) in
           Value.StructTuple
             "core::future::async_drop::AsyncDropInPlace"
             []
@@ -441,8 +467,16 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::async_drop::AsyncDropInPlace") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -458,6 +492,7 @@ Module future.
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "core::fmt::builders::DebugStruct",
                     M.call_closure (|
                       Ty.path "core::fmt::builders::DebugStruct",
                       M.get_associated_function (|
@@ -509,8 +544,24 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::future::async_drop::AsyncDropInPlace") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
               M.get_trait_method (|
@@ -647,7 +698,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ ptr ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], ptr |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -672,17 +723,24 @@ Module future.
         (*mut T/#0,),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] := M.read (| ptr |) in
                               M.use
                                 (M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "core::future::async_drop::AsyncDrop"
+                                      []
+                                      []
+                                      T
+                                      "Dropper",
                                     M.call_closure (|
                                       Ty.associated_in_trait
                                         "core::future::async_drop::AsyncDrop"
@@ -756,7 +814,16 @@ Module future.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let __awaitee := M.copy (| γ |) in
+                                        (let __awaitee :=
+                                          M.copy (|
+                                            Ty.associated_in_trait
+                                              "core::future::async_drop::AsyncDrop"
+                                              []
+                                              []
+                                              T
+                                              "Dropper",
+                                            γ
+                                          |) in
                                         M.loop (|
                                           Ty.tuple [],
                                           ltac:(M.monadic
@@ -765,6 +832,10 @@ Module future.
                                                 M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "core::task::poll::Poll")
+                                                      []
+                                                      [ Ty.tuple [] ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::task::poll::Poll")
@@ -867,8 +938,10 @@ Module future.
                                                             "core::task::poll::Poll::Ready",
                                                             0
                                                           |) in
-                                                        let result := M.copy (| γ0_0 |) in
+                                                        let result :=
+                                                          M.copy (| Ty.tuple [], γ0_0 |) in
                                                         M.alloc (|
+                                                          Ty.tuple [],
                                                           M.never_to_any (|
                                                             M.read (| M.break (||) |)
                                                           |)
@@ -880,7 +953,7 @@ Module future.
                                                             γ,
                                                             "core::task::poll::Poll::Pending"
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   ]
                                                 |)
                                               |) in
@@ -888,10 +961,12 @@ Module future.
                                               M.write (|
                                                 _task_context,
                                                 M.read (|
-                                                  yield (| M.alloc (| Value.Tuple [] |) |)
+                                                  yield (|
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                                  |)
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         |)))
                                   ]
                                 |))
@@ -921,7 +996,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ ptr ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], ptr |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -946,15 +1021,17 @@ Module future.
         (*mut T/#0,),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] := M.read (| ptr |) in
                               M.use
                                 (M.alloc (|
+                                  Ty.tuple [],
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (|
@@ -1005,8 +1082,8 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ inner ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          Value.StructRecord
+          (let inner := M.alloc (| T, inner |) in
+          Value.mkStructRecord
             "core::future::async_drop::Fuse"
             []
             [ T ]
@@ -1046,8 +1123,24 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::future::async_drop::Fuse") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -1063,6 +1156,17 @@ Module future.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::task::poll::Poll")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::future::future::Future"
+                          []
+                          []
+                          (Ty.apply (Ty.path "core::future::async_drop::Fuse") [] [ T ])
+                          "Output"
+                      ],
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.read (|
@@ -1095,12 +1199,16 @@ Module future.
                             |) in
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
                                         M.SubPointer.get_struct_record_field (|
@@ -1117,12 +1225,17 @@ Module future.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let inner := M.alloc (| γ1_0 |) in
+                                  let inner :=
+                                    M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ1_0 |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::task::poll::Poll")
+                                            []
+                                            [ Ty.tuple [] ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::task::poll::Poll")
@@ -1170,7 +1283,7 @@ Module future.
                                                   "core::task::poll::Poll::Ready",
                                                   0
                                                 |) in
-                                              let t := M.copy (| γ0_0 |) in
+                                              let t := M.copy (| Ty.tuple [], γ0_0 |) in
                                               t));
                                           fun γ =>
                                             ltac:(M.monadic
@@ -1180,6 +1293,7 @@ Module future.
                                                   "core::task::poll::Poll::Pending"
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -1204,12 +1318,13 @@ Module future.
                                       |),
                                       Value.StructTuple "core::option::Option::None" [] [ T ] []
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::task::poll::Poll") [] [ Ty.tuple [] ],
                         Value.StructTuple
                           "core::task::poll::Poll::Ready"
                           []
@@ -1248,7 +1363,8 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
-          (let s := M.alloc (| s |) in
+          (let s :=
+            M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], s |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -1273,11 +1389,12 @@ Module future.
         (*mut [T/#0],),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ s :
                                   Ty.apply
@@ -1318,6 +1435,10 @@ Module future.
                                   (M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::range::Range")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::ops::range::Range")
@@ -1336,7 +1457,7 @@ Module future.
                                           []
                                         |),
                                         [
-                                          Value.StructRecord
+                                          Value.mkStructRecord
                                             "core::ops::range::Range"
                                             []
                                             [ Ty.path "usize" ]
@@ -1350,7 +1471,14 @@ Module future.
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let iter := M.copy (| γ |) in
+                                          (let iter :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::range::Range")
+                                                []
+                                                [ Ty.path "usize" ],
+                                              γ
+                                            |) in
                                           M.loop (|
                                             Ty.tuple [],
                                             ltac:(M.monadic
@@ -1359,6 +1487,10 @@ Module future.
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "core::option::Option")
+                                                        []
+                                                        [ Ty.path "usize" ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -1398,6 +1530,7 @@ Module future.
                                                               "core::option::Option::None"
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (| M.break (||) |)
                                                             |)
@@ -1410,10 +1543,17 @@ Module future.
                                                               "core::option::Option::Some",
                                                               0
                                                             |) in
-                                                          let i := M.copy (| γ0_0 |) in
+                                                          let i :=
+                                                            M.copy (| Ty.path "usize", γ0_0 |) in
                                                           M.match_operator (|
                                                             Ty.tuple [],
                                                             M.alloc (|
+                                                              Ty.associated_in_trait
+                                                                "core::future::async_drop::AsyncDestruct"
+                                                                []
+                                                                []
+                                                                T
+                                                                "AsyncDestructor",
                                                               M.call_closure (|
                                                                 Ty.associated_in_trait
                                                                   "core::future::async_drop::AsyncDestruct"
@@ -1477,7 +1617,15 @@ Module future.
                                                               fun γ =>
                                                                 ltac:(M.monadic
                                                                   (let __awaitee :=
-                                                                    M.copy (| γ |) in
+                                                                    M.copy (|
+                                                                      Ty.associated_in_trait
+                                                                        "core::future::async_drop::AsyncDestruct"
+                                                                        []
+                                                                        []
+                                                                        T
+                                                                        "AsyncDestructor",
+                                                                      γ
+                                                                    |) in
                                                                   M.loop (|
                                                                     Ty.tuple [],
                                                                     ltac:(M.monadic
@@ -1486,6 +1634,11 @@ Module future.
                                                                           M.match_operator (|
                                                                             Ty.tuple [],
                                                                             M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::task::poll::Poll")
+                                                                                []
+                                                                                [ Ty.tuple [] ],
                                                                               M.call_closure (|
                                                                                 Ty.apply
                                                                                   (Ty.path
@@ -1600,9 +1753,11 @@ Module future.
                                                                                     |) in
                                                                                   let result :=
                                                                                     M.copy (|
+                                                                                      Ty.tuple [],
                                                                                       γ0_0
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     M.never_to_any (|
                                                                                       M.read (|
                                                                                         M.break (||)
@@ -1617,6 +1772,7 @@ Module future.
                                                                                       "core::task::poll::Poll::Pending"
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)))
                                                                             ]
@@ -1628,19 +1784,23 @@ Module future.
                                                                           M.read (|
                                                                             yield (|
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |)
                                                                             |)
                                                                           |)
                                                                         |) in
-                                                                      M.alloc (| Value.Tuple [] |)))
+                                                                      M.alloc (|
+                                                                        Ty.tuple [],
+                                                                        Value.Tuple []
+                                                                      |)))
                                                                   |)))
                                                             ]
                                                           |)))
                                                     ]
                                                   |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           |)))
                                     ]
                                   |)))
@@ -1671,8 +1831,8 @@ Module future.
       match ε, τ, α with
       | [], [ F; G ], [ first; last ] =>
         ltac:(M.monadic
-          (let first := M.alloc (| first |) in
-          let last := M.alloc (| last |) in
+          (let first := M.alloc (| F, first |) in
+          let last := M.alloc (| G, last |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -1699,11 +1859,12 @@ Module future.
         (F/#0, G/#1),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ first : F := M.read (| first |) in
                               let~ last : G := M.read (| last |) in
@@ -1713,6 +1874,12 @@ Module future.
                                     M.match_operator (|
                                       Ty.tuple [],
                                       M.alloc (|
+                                        Ty.associated_in_trait
+                                          "core::future::into_future::IntoFuture"
+                                          []
+                                          []
+                                          F
+                                          "IntoFuture",
                                         M.call_closure (|
                                           Ty.associated_in_trait
                                             "core::future::into_future::IntoFuture"
@@ -1735,7 +1902,16 @@ Module future.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let __awaitee := M.copy (| γ |) in
+                                            (let __awaitee :=
+                                              M.copy (|
+                                                Ty.associated_in_trait
+                                                  "core::future::into_future::IntoFuture"
+                                                  []
+                                                  []
+                                                  F
+                                                  "IntoFuture",
+                                                γ
+                                              |) in
                                             M.loop (|
                                               Ty.tuple [],
                                               ltac:(M.monadic
@@ -1744,6 +1920,10 @@ Module future.
                                                     M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::task::poll::Poll")
+                                                          []
+                                                          [ Ty.tuple [] ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::task::poll::Poll")
@@ -1846,8 +2026,10 @@ Module future.
                                                                 "core::task::poll::Poll::Ready",
                                                                 0
                                                               |) in
-                                                            let result := M.copy (| γ0_0 |) in
+                                                            let result :=
+                                                              M.copy (| Ty.tuple [], γ0_0 |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.read (| M.break (||) |)
                                                               |)
@@ -1859,7 +2041,10 @@ Module future.
                                                                 γ,
                                                                 "core::task::poll::Poll::Pending"
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ]
                                                     |)
                                                   |) in
@@ -1867,10 +2052,12 @@ Module future.
                                                   M.write (|
                                                     _task_context,
                                                     M.read (|
-                                                      yield (| M.alloc (| Value.Tuple [] |) |)
+                                                      yield (|
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                                      |)
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             |)))
                                       ]
                                     |)
@@ -1880,6 +2067,12 @@ Module future.
                                     M.match_operator (|
                                       Ty.tuple [],
                                       M.alloc (|
+                                        Ty.associated_in_trait
+                                          "core::future::into_future::IntoFuture"
+                                          []
+                                          []
+                                          G
+                                          "IntoFuture",
                                         M.call_closure (|
                                           Ty.associated_in_trait
                                             "core::future::into_future::IntoFuture"
@@ -1902,7 +2095,16 @@ Module future.
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let __awaitee := M.copy (| γ |) in
+                                            (let __awaitee :=
+                                              M.copy (|
+                                                Ty.associated_in_trait
+                                                  "core::future::into_future::IntoFuture"
+                                                  []
+                                                  []
+                                                  G
+                                                  "IntoFuture",
+                                                γ
+                                              |) in
                                             M.loop (|
                                               Ty.tuple [],
                                               ltac:(M.monadic
@@ -1911,6 +2113,10 @@ Module future.
                                                     M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::task::poll::Poll")
+                                                          []
+                                                          [ Ty.tuple [] ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::task::poll::Poll")
@@ -2013,8 +2219,10 @@ Module future.
                                                                 "core::task::poll::Poll::Ready",
                                                                 0
                                                               |) in
-                                                            let result := M.copy (| γ0_0 |) in
+                                                            let result :=
+                                                              M.copy (| Ty.tuple [], γ0_0 |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.read (| M.break (||) |)
                                                               |)
@@ -2026,7 +2234,10 @@ Module future.
                                                                 γ,
                                                                 "core::task::poll::Poll::Pending"
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ]
                                                     |)
                                                   |) in
@@ -2034,15 +2245,17 @@ Module future.
                                                   M.write (|
                                                     _task_context,
                                                     M.read (|
-                                                      yield (| M.alloc (| Value.Tuple [] |) |)
+                                                      yield (|
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                                      |)
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             |)))
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |))
                             |)))
                       ]
                     |)))
@@ -2066,7 +2279,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ to_drop ] =>
         ltac:(M.monadic
-          (let to_drop := M.alloc (| to_drop |) in
+          (let to_drop := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], to_drop |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -2091,11 +2304,12 @@ Module future.
         (*mut T/#0,),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ to_drop : Ty.apply (Ty.path "*mut") [] [ T ] :=
                                 M.read (| to_drop |) in
@@ -2103,6 +2317,10 @@ Module future.
                                 (M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                                      []
+                                      [ T ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::future::async_drop::AsyncDropInPlace")
@@ -2139,7 +2357,14 @@ Module future.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let __awaitee := M.copy (| γ |) in
+                                        (let __awaitee :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::future::async_drop::AsyncDropInPlace")
+                                              []
+                                              [ T ],
+                                            γ
+                                          |) in
                                         M.loop (|
                                           Ty.tuple [],
                                           ltac:(M.monadic
@@ -2148,6 +2373,10 @@ Module future.
                                                 M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "core::task::poll::Poll")
+                                                      []
+                                                      [ Ty.tuple [] ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::task::poll::Poll")
@@ -2247,8 +2476,10 @@ Module future.
                                                             "core::task::poll::Poll::Ready",
                                                             0
                                                           |) in
-                                                        let result := M.copy (| γ0_0 |) in
+                                                        let result :=
+                                                          M.copy (| Ty.tuple [], γ0_0 |) in
                                                         M.alloc (|
+                                                          Ty.tuple [],
                                                           M.never_to_any (|
                                                             M.read (| M.break (||) |)
                                                           |)
@@ -2260,7 +2491,7 @@ Module future.
                                                             γ,
                                                             "core::task::poll::Poll::Pending"
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   ]
                                                 |)
                                               |) in
@@ -2268,10 +2499,12 @@ Module future.
                                               M.write (|
                                                 _task_context,
                                                 M.read (|
-                                                  yield (| M.alloc (| Value.Tuple [] |) |)
+                                                  yield (|
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
+                                                  |)
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         |)))
                                   ]
                                 |))
@@ -2309,10 +2542,14 @@ Module future.
       match ε, τ, α with
       | [], [ _ as O; M_; T ], [ other; matched; this; discr ] =>
         ltac:(M.monadic
-          (let other := M.alloc (| other |) in
-          let matched := M.alloc (| matched |) in
-          let this := M.alloc (| this |) in
-          let discr := M.alloc (| discr |) in
+          (let other := M.alloc (| O, other |) in
+          let matched := M.alloc (| M_, matched |) in
+          let this := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], this |) in
+          let discr :=
+            M.alloc (|
+              Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",
+              discr
+            |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -2341,11 +2578,12 @@ Module future.
         (O/#0, M/#1, *mut T/#2, Alias(Projection, AliasTy { args: [T/#2], def_id: DefId(0:3484 ~ core[f862]::marker::DiscriminantKind::Discriminant), .. })),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ other : O := M.read (| other |) in
                               let~ matched : M_ := M.read (| matched |) in
@@ -2361,13 +2599,14 @@ Module future.
                               M.use
                                 (M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               M.call_closure (|
                                                 Ty.path "bool",
                                                 M.get_trait_method (|
@@ -2395,6 +2634,12 @@ Module future.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.associated_in_trait
+                                                        "core::marker::DiscriminantKind"
+                                                        []
+                                                        []
+                                                        T
+                                                        "Discriminant",
                                                       M.call_closure (|
                                                         Ty.associated_in_trait
                                                           "core::marker::DiscriminantKind"
@@ -2439,6 +2684,12 @@ Module future.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.associated_in_trait
+                                              "core::future::into_future::IntoFuture"
+                                              []
+                                              []
+                                              M_
+                                              "IntoFuture",
                                             M.call_closure (|
                                               Ty.associated_in_trait
                                                 "core::future::into_future::IntoFuture"
@@ -2461,7 +2712,16 @@ Module future.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let __awaitee := M.copy (| γ |) in
+                                                (let __awaitee :=
+                                                  M.copy (|
+                                                    Ty.associated_in_trait
+                                                      "core::future::into_future::IntoFuture"
+                                                      []
+                                                      []
+                                                      M_
+                                                      "IntoFuture",
+                                                    γ
+                                                  |) in
                                                 M.loop (|
                                                   Ty.tuple [],
                                                   ltac:(M.monadic
@@ -2470,6 +2730,10 @@ Module future.
                                                         M.match_operator (|
                                                           Ty.tuple [],
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "core::task::poll::Poll")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.call_closure (|
                                                               Ty.apply
                                                                 (Ty.path "core::task::poll::Poll")
@@ -2572,8 +2836,10 @@ Module future.
                                                                     "core::task::poll::Poll::Ready",
                                                                     0
                                                                   |) in
-                                                                let result := M.copy (| γ0_0 |) in
+                                                                let result :=
+                                                                  M.copy (| Ty.tuple [], γ0_0 |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.never_to_any (|
                                                                     M.read (| M.break (||) |)
                                                                   |)
@@ -2585,7 +2851,10 @@ Module future.
                                                                     γ,
                                                                     "core::task::poll::Poll::Pending"
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)
                                                       |) in
@@ -2593,10 +2862,15 @@ Module future.
                                                       M.write (|
                                                         _task_context,
                                                         M.read (|
-                                                          yield (| M.alloc (| Value.Tuple [] |) |)
+                                                          yield (|
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)
+                                                          |)
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 |)))
                                           ]
                                         |)));
@@ -2611,6 +2885,12 @@ Module future.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.associated_in_trait
+                                              "core::future::into_future::IntoFuture"
+                                              []
+                                              []
+                                              O
+                                              "IntoFuture",
                                             M.call_closure (|
                                               Ty.associated_in_trait
                                                 "core::future::into_future::IntoFuture"
@@ -2633,7 +2913,16 @@ Module future.
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
-                                                (let __awaitee := M.copy (| γ |) in
+                                                (let __awaitee :=
+                                                  M.copy (|
+                                                    Ty.associated_in_trait
+                                                      "core::future::into_future::IntoFuture"
+                                                      []
+                                                      []
+                                                      O
+                                                      "IntoFuture",
+                                                    γ
+                                                  |) in
                                                 M.loop (|
                                                   Ty.tuple [],
                                                   ltac:(M.monadic
@@ -2642,6 +2931,10 @@ Module future.
                                                         M.match_operator (|
                                                           Ty.tuple [],
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "core::task::poll::Poll")
+                                                              []
+                                                              [ Ty.tuple [] ],
                                                             M.call_closure (|
                                                               Ty.apply
                                                                 (Ty.path "core::task::poll::Poll")
@@ -2744,8 +3037,10 @@ Module future.
                                                                     "core::task::poll::Poll::Ready",
                                                                     0
                                                                   |) in
-                                                                let result := M.copy (| γ0_0 |) in
+                                                                let result :=
+                                                                  M.copy (| Ty.tuple [], γ0_0 |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple [],
                                                                   M.never_to_any (|
                                                                     M.read (| M.break (||) |)
                                                                   |)
@@ -2757,7 +3052,10 @@ Module future.
                                                                     γ,
                                                                     "core::task::poll::Poll::Pending"
                                                                   |) in
-                                                                M.alloc (| Value.Tuple [] |)))
+                                                                M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)
                                                       |) in
@@ -2765,10 +3063,15 @@ Module future.
                                                       M.write (|
                                                         _task_context,
                                                         M.read (|
-                                                          yield (| M.alloc (| Value.Tuple [] |) |)
+                                                          yield (|
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)
+                                                          |)
                                                         |)
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 |)))
                                           ]
                                         |)))
@@ -2798,7 +3101,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ to_drop ] =>
         ltac:(M.monadic
-          (let to_drop := M.alloc (| to_drop |) in
+          (let to_drop := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], to_drop |) in
           M.closure
             (fun γ =>
               ltac:(M.monadic
@@ -2823,16 +3126,18 @@ Module future.
         (*mut T/#0,),
     ],
 ) not yet handled,
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "core::future::ResumeTy", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let _task_context := M.copy (| γ |) in
+                            (let _task_context :=
+                              M.copy (| Ty.path "core::future::ResumeTy", γ |) in
                             M.read (|
                               let~ to_drop : Ty.apply (Ty.path "*mut") [] [ T ] :=
                                 M.read (| to_drop |) in
                               M.use
                                 (M.alloc (|
+                                  Ty.tuple [],
                                   M.call_closure (|
                                     Ty.tuple [],
                                     M.get_function (| "core::ptr::drop_in_place", [], [ T ] |),
@@ -2868,7 +3173,11 @@ Module future.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::future::async_drop::Noop" ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2924,8 +3233,19 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; β1 ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let β1 := M.alloc (| β1 |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::future::async_drop::Noop" ] ],
+                self
+              |) in
+            let β1 :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                β1
+              |) in
             M.match_operator (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")

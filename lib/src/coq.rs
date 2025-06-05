@@ -175,6 +175,7 @@ pub(crate) enum Expression {
     },
     /// a wildcard: '_'
     Wild,
+    InScope(Rc<Expression>, String),
 }
 
 /// a field of a record expression
@@ -911,6 +912,11 @@ impl Expression {
                 ident.to_doc(ψ),
             ]),
             Self::Wild => ψ.text("_"),
+            Self::InScope(expr, name) => paren(
+                ψ,
+                with_paren,
+                ψ.concat([expr.to_doc(ψ, true), ψ.text("%"), ψ.text(name.to_owned())]),
+            ),
         }
     }
 

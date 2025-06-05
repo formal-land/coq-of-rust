@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_updated_incrementer_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "updated_incrementer::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "updated_incrementer::AccountId",
@@ -122,8 +126,9 @@ Module Impl_updated_incrementer_Env.
     match ε, τ, α with
     | [], [ E ], [ self; code_hash ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let code_hash := M.alloc (| code_hash |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "updated_incrementer::Env" ], self |) in
+        let code_hash := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], code_hash |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -183,7 +188,11 @@ Module Impl_updated_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "updated_incrementer::Incrementer" ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "updated_incrementer::Env",
           M.get_associated_function (|
@@ -225,6 +234,7 @@ Module Impl_updated_incrementer_Incrementer.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       mk_str (|
                         "Constructors are not called when upgrading using `set_code_hash`."
                       |)
@@ -255,7 +265,11 @@ Module Impl_updated_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "updated_incrementer::Incrementer" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             let β :=
@@ -294,6 +308,10 @@ Module Impl_updated_incrementer_Incrementer.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [
                                     mk_str (| "The new count is " |);
@@ -312,6 +330,10 @@ Module Impl_updated_incrementer_Incrementer.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -347,9 +369,9 @@ Module Impl_updated_incrementer_Incrementer.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -367,7 +389,11 @@ Module Impl_updated_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "updated_incrementer::Incrementer" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -394,8 +420,16 @@ Module Impl_updated_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self; code_hash ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let code_hash := M.alloc (| code_hash |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "updated_incrementer::Incrementer" ],
+            self
+          |) in
+        let code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            code_hash
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -430,6 +464,7 @@ Module Impl_updated_incrementer_Incrementer.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "updated_incrementer::Env",
                         M.call_closure (|
                           Ty.path "updated_incrementer::Env",
                           M.get_associated_function (|
@@ -458,11 +493,12 @@ Module Impl_updated_incrementer_Incrementer.
                             Ty.function
                               [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
                               (Ty.tuple []),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.path "updated_incrementer::Error", α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let err := M.copy (| γ |) in
+                                  (let err :=
+                                    M.copy (| Ty.path "updated_incrementer::Error", γ |) in
                                   M.never_to_any (|
                                     M.call_closure (|
                                       Ty.path "never",
@@ -506,6 +542,10 @@ Module Impl_updated_incrementer_Incrementer.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [ mk_str (| "Switched code hash to " |); mk_str (| ".
 " |) ]
@@ -519,6 +559,10 @@ Module Impl_updated_incrementer_Incrementer.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -550,9 +594,9 @@ Module Impl_updated_incrementer_Incrementer.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

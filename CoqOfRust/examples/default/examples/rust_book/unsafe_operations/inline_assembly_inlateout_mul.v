@@ -59,17 +59,18 @@ Module main.
     match ε, τ, α with
     | [], [], [ a; b ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
+        (let a := M.alloc (| Ty.path "u64", a |) in
+        let b := M.alloc (| Ty.path "u64", b |) in
         M.read (|
           let lo := M.read (| Value.DeclaredButUndefined |) in
           let hi := M.read (| Value.DeclaredButUndefined |) in
           let~ _ : Ty.tuple [] :=
             M.read (|
               let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           M.alloc (|
+            Ty.path "u128",
             M.call_closure (|
               Ty.path "u128",
               BinOp.Wrap.add,

@@ -5,6 +5,7 @@ Module secp256k1.
   Definition value_ECRECOVER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "revm_precompile::PrecompileWithAddress",
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
           []
@@ -44,9 +45,33 @@ Module secp256k1.
       match ε, τ, α with
       | [], [], [ sig; recid; msg ] =>
         ltac:(M.monadic
-          (let sig := M.alloc (| sig |) in
-          let recid := M.alloc (| recid |) in
-          let msg := M.alloc (| msg |) in
+          (let sig :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 64 ]
+                    []
+                ],
+              sig
+            |) in
+          let recid := M.alloc (| Ty.path "u8", recid |) in
+          let msg :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    []
+                ],
+              msg
+            |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -61,6 +86,16 @@ Module secp256k1.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [];
+                      Ty.path "secp256k1::Error"
+                    ],
                   M.read (|
                     let~ recid : Ty.path "secp256k1::ecdsa::recovery::RecoveryId" :=
                       M.call_closure (|
@@ -105,6 +140,17 @@ Module secp256k1.
                         M.match_operator (|
                           Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "secp256k1::Error"
+                                  ];
+                                Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -191,8 +237,19 @@ Module secp256k1.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "secp256k1::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -249,7 +306,11 @@ Module secp256k1.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val :=
+                                  M.copy (|
+                                    Ty.path "secp256k1::ecdsa::recovery::RecoverableSignature",
+                                    γ0_0
+                                  |) in
                                 val))
                           ]
                         |)
@@ -278,6 +339,17 @@ Module secp256k1.
                         M.match_operator (|
                           Ty.path "secp256k1::key::PublicKey",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "secp256k1::Error"
+                                  ];
+                                Ty.path "secp256k1::key::PublicKey"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -399,8 +471,19 @@ Module secp256k1.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "secp256k1::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "secp256k1::key::PublicKey",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -457,7 +540,7 @@ Module secp256k1.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.path "secp256k1::key::PublicKey", γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -512,6 +595,10 @@ Module secp256k1.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 65 ]
+                                        [ Ty.path "u8" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "array")
@@ -527,7 +614,7 @@ Module secp256k1.
                                       |)
                                     |)
                                   |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeFrom"
                                     []
                                     [ Ty.path "usize" ]
@@ -575,7 +662,7 @@ Module secp256k1.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, hash |);
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "core::ops::range::RangeTo"
                                     []
                                     [ Ty.path "usize" ]
@@ -588,6 +675,16 @@ Module secp256k1.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [];
+                          Ty.path "secp256k1::Error"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -642,8 +739,12 @@ Module secp256k1.
     match ε, τ, α with
     | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
-        (let input := M.alloc (| input |) in
-        let gas_limit := M.alloc (| gas_limit |) in
+        (let input :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+            input
+          |) in
+        let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -655,18 +756,26 @@ Module secp256k1.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.gt,
@@ -684,6 +793,7 @@ Module secp256k1.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -722,7 +832,7 @@ Module secp256k1.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -803,13 +913,14 @@ Module secp256k1.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       LogicalOp.and (|
                                         M.call_closure (|
@@ -837,6 +948,10 @@ Module secp256k1.
                                             M.borrow (|
                                               Pointer.Kind.MutRef,
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [ Ty.path "u8" ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::Iter")
@@ -928,7 +1043,7 @@ Module secp256k1.
                                                                 |)
                                                               |)
                                                             |);
-                                                            Value.StructRecord
+                                                            Value.mkStructRecord
                                                               "core::ops::range::Range"
                                                               []
                                                               [ Ty.path "usize" ]
@@ -968,12 +1083,19 @@ Module secp256k1.
                                                               ]
                                                           ]
                                                           (Ty.path "bool"),
-                                                        M.alloc (| α0 |),
+                                                        M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          α0
+                                                        |),
                                                         [
                                                           fun γ =>
                                                             ltac:(M.monadic
                                                               (let γ := M.read (| γ |) in
-                                                              let b := M.copy (| γ |) in
+                                                              let b :=
+                                                                M.copy (| Ty.path "u8", γ |) in
                                                               M.call_closure (|
                                                                 Ty.path "bool",
                                                                 BinOp.eq,
@@ -1039,7 +1161,10 @@ Module secp256k1.
                                                                 M.read (| γ |),
                                                                 Value.Integer IntegerKind.U8 27
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)));
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (let _ :=
@@ -1047,20 +1172,30 @@ Module secp256k1.
                                                                 M.read (| γ |),
                                                                 Value.Integer IntegerKind.U8 28
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)))
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ],
                                                       fun γ =>
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [] =>
                                                             ltac:(M.monadic
-                                                              (M.alloc (| Value.Bool true |)))
+                                                              (M.alloc (|
+                                                                Ty.path "bool",
+                                                                Value.Bool true
+                                                              |)))
                                                           | _ =>
                                                             M.impossible "wrong number of arguments"
                                                           end)
                                                     |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      Ty.path "bool",
+                                                      Value.Bool false
+                                                    |)))
                                               ]
                                             |)
                                           |)))
@@ -1070,6 +1205,7 @@ Module secp256k1.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1114,7 +1250,7 @@ Module secp256k1.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1258,7 +1394,7 @@ Module secp256k1.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -1458,7 +1594,7 @@ Module secp256k1.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::Range"
                                       []
                                       [ Ty.path "usize" ]
@@ -1563,11 +1699,25 @@ Module secp256k1.
                                               ]
                                           ]
                                           (Ty.path "alloy_primitives::bytes_::Bytes"),
-                                        M.alloc (| α0 |),
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [],
+                                          α0
+                                        |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let o := M.copy (| γ |) in
+                                              (let o :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::bits::fixed::FixedBytes")
+                                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                                    [],
+                                                  γ
+                                                |) in
                                               M.call_closure (|
                                                 Ty.path "alloy_primitives::bytes_::Bytes",
                                                 M.get_trait_method (|
@@ -1653,6 +1803,13 @@ Module secp256k1.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1695,7 +1852,7 @@ Module secp256k1.
   
   Module ec_recover_run.
     Definition value_ECRECOVER_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3000 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3000 |))).
     
     Global Instance Instance_IsConstant_value_ECRECOVER_BASE :
       M.IsFunction.C

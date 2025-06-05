@@ -29,8 +29,12 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_precompile::interface::PrecompileOutput"
             []
             []
@@ -112,8 +116,13 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -153,6 +162,7 @@ Module interface.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -199,8 +209,16 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -278,7 +296,11 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -289,7 +311,7 @@ Module interface.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -315,8 +337,12 @@ Module interface.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileOutput" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -348,6 +374,7 @@ Module interface.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -402,9 +429,9 @@ Module interface.
       match ε, τ, α with
       | [], [], [ gas_used; bytes ] =>
         ltac:(M.monadic
-          (let gas_used := M.alloc (| gas_used |) in
-          let bytes := M.alloc (| bytes |) in
-          Value.StructRecord
+          (let gas_used := M.alloc (| Ty.path "u64", gas_used |) in
+          let bytes := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", bytes |) in
+          Value.mkStructRecord
             "revm_precompile::interface::PrecompileOutput"
             []
             []
@@ -461,7 +488,11 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_precompile::interface::PrecompileErrors",
@@ -476,8 +507,16 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Error",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileErrors",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileErrors::Error"
                         []
@@ -507,9 +546,14 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Fatal",
                         "msg"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "revm_precompile::interface::PrecompileErrors",
+                      Value.mkStructRecord
                         "revm_precompile::interface::PrecompileErrors::Fatal"
                         []
                         []
@@ -554,8 +598,13 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -573,8 +622,19 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Error",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -607,8 +667,16 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Fatal",
                         "msg"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -668,8 +736,16 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -692,6 +768,7 @@ Module interface.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -702,7 +779,20 @@ Module interface.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_precompile::interface::PrecompileErrors" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -715,7 +805,14 @@ Module interface.
                                 "revm_precompile::interface::PrecompileErrors::Error",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -723,8 +820,16 @@ Module interface.
                                 "revm_precompile::interface::PrecompileErrors::Error",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -761,7 +866,11 @@ Module interface.
                                 "revm_precompile::interface::PrecompileErrors::Fatal",
                                 "msg"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -769,8 +878,13 @@ Module interface.
                                 "revm_precompile::interface::PrecompileErrors::Fatal",
                                 "msg"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -791,6 +905,7 @@ Module interface.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -829,7 +944,11 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -840,7 +959,7 @@ Module interface.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -866,8 +985,12 @@ Module interface.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -912,8 +1035,16 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Error",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -940,8 +1071,13 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Fatal",
                         "msg"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -988,7 +1124,8 @@ Module interface.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.path "revm_precompile::interface::PrecompileErrors", value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Precompile"
             []
@@ -1048,8 +1185,13 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1067,8 +1209,19 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Error",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_precompile::interface::PrecompileError" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1098,8 +1251,16 @@ Module interface.
                         "revm_precompile::interface::PrecompileErrors::Fatal",
                         "msg"
                       |) in
-                    let msg := M.alloc (| γ1_0 |) in
+                    let msg :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1247,7 +1408,11 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_precompile::interface::PrecompileError",
@@ -1262,6 +1427,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::OutOfGas"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::OutOfGas"
                         []
@@ -1277,6 +1443,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Blake2WrongLength"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Blake2WrongLength"
                         []
@@ -1292,6 +1459,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
                         []
@@ -1307,6 +1475,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
                         []
@@ -1322,6 +1491,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
                         []
@@ -1337,6 +1507,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::ModexpModOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::ModexpModOverflow"
                         []
@@ -1352,6 +1523,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                         []
@@ -1367,6 +1539,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                         []
@@ -1382,6 +1555,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Bn128PairLength"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Bn128PairLength"
                         []
@@ -1397,6 +1571,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
                         []
@@ -1412,6 +1587,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
                         []
@@ -1427,6 +1603,7 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
                         []
@@ -1442,8 +1619,13 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Other",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_precompile::interface::PrecompileError",
                       Value.StructTuple
                         "revm_precompile::interface::PrecompileError::Other"
                         []
@@ -1487,8 +1669,13 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1506,6 +1693,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::OutOfGas"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1532,6 +1723,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Blake2WrongLength"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1561,6 +1756,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1590,6 +1789,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1619,6 +1822,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1648,6 +1855,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::ModexpModOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1677,6 +1888,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1706,6 +1921,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1735,6 +1954,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Bn128PairLength"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1764,6 +1987,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1793,6 +2020,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1822,6 +2053,10 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1851,8 +2086,16 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Other",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1911,8 +2154,16 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1935,6 +2186,7 @@ Module interface.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -1945,7 +2197,20 @@ Module interface.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_precompile::interface::PrecompileError" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_precompile::interface::PrecompileError" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1958,7 +2223,11 @@ Module interface.
                                 "revm_precompile::interface::PrecompileError::Other",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -1966,8 +2235,13 @@ Module interface.
                                 "revm_precompile::interface::PrecompileError::Other",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -1985,7 +2259,7 @@ Module interface.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -2016,12 +2290,16 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2045,8 +2323,12 @@ Module interface.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2091,8 +2373,13 @@ Module interface.
                         "revm_precompile::interface::PrecompileError::Other",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -2110,7 +2397,7 @@ Module interface.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -2138,7 +2425,7 @@ Module interface.
       match ε, τ, α with
       | [], [ impl_Into_String_ ], [ err ] =>
         ltac:(M.monadic
-          (let err := M.alloc (| err |) in
+          (let err := M.alloc (| impl_Into_String_, err |) in
           Value.StructTuple
             "revm_precompile::interface::PrecompileError::Other"
             []
@@ -2174,7 +2461,11 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -2188,8 +2479,8 @@ Module interface.
                         γ,
                         "revm_precompile::interface::PrecompileError::OutOfGas"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -2213,7 +2504,7 @@ Module interface.
       match ε, τ, α with
       | [], [], [ err ] =>
         ltac:(M.monadic
-          (let err := M.alloc (| err |) in
+          (let err := M.alloc (| Ty.path "revm_precompile::interface::PrecompileError", err |) in
           Value.StructTuple
             "revm_precompile::interface::PrecompileErrors::Error"
             []
@@ -2270,8 +2561,13 @@ Module interface.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::interface::PrecompileError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.read (|
@@ -2287,7 +2583,10 @@ Module interface.
                             γ,
                             "revm_precompile::interface::PrecompileError::OutOfGas"
                           |) in
-                        M.alloc (| mk_str (| "out of gas" |) |)));
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          mk_str (| "out of gas" |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2297,6 +2596,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Blake2WrongLength"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "wrong input length for blake2" |) |)
@@ -2311,6 +2611,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "wrong final indicator flag for blake2" |) |)
@@ -2325,6 +2626,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::ModexpExpOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "modexp exp overflow" |) |)
@@ -2339,6 +2641,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::ModexpBaseOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "modexp base overflow" |) |)
@@ -2353,6 +2656,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::ModexpModOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "modexp mod overflow" |) |)
@@ -2367,6 +2671,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Bn128FieldPointNotAMember"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "field point not a member of bn128 curve" |) |)
@@ -2381,6 +2686,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Bn128AffineGFailedToCreate"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -2397,6 +2703,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Bn128PairLength"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "bn128 invalid pair length" |) |)
@@ -2411,6 +2718,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::BlobInvalidInputLength"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "invalid blob input length" |) |)
@@ -2425,6 +2733,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::BlobMismatchedVersion"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "mismatched blob version" |) |)
@@ -2439,6 +2748,7 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::BlobVerifyKzgProofFailed"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "verifying blob kzg proof failed" |) |)
@@ -2453,8 +2763,13 @@ Module interface.
                             "revm_precompile::interface::PrecompileError::Other",
                             0
                           |) in
-                        let s := M.alloc (| γ1_0 |) in
+                        let s :=
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -2478,6 +2793,10 @@ Module interface.
                 |)
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")

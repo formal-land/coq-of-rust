@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "trait_erc20::Mapping"
           []
           [ K; V ]
@@ -82,8 +82,12 @@ Module Impl_trait_erc20_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "trait_erc20::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -110,9 +114,13 @@ Module Impl_trait_erc20_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key; _value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
-        let _value := M.alloc (| _value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "trait_erc20::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
+        let _value := M.alloc (| V, _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -185,7 +193,8 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "trait_erc20::AccountId",
@@ -259,8 +268,9 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Error" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -277,6 +287,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
                       let _ :=
                         M.is_struct_tuple (| γ, "trait_erc20::Error::InsufficientBalance" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "InsufficientBalance" |) |)
@@ -288,6 +299,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
                       let _ :=
                         M.is_struct_tuple (| γ, "trait_erc20::Error::InsufficientAllowance" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| mk_str (| "InsufficientAllowance" |) |)
@@ -330,8 +342,10 @@ Module Impl_core_cmp_PartialEq_trait_erc20_Error_for_trait_erc20_Error.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Error" ], self |) in
+        let other :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Error" ], other |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -354,6 +368,7 @@ Module Impl_core_cmp_PartialEq_trait_erc20_Error_for_trait_erc20_Error.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -385,7 +400,8 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Error" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -440,7 +456,7 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "trait_erc20::Erc20"
           []
           []
@@ -579,7 +595,7 @@ Module Impl_trait_erc20_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Env" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -603,8 +619,8 @@ Module Impl_trait_erc20_Env.
     match ε, τ, α with
     | [], [], [ self; _event ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _event := M.alloc (| _event |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Env" ], self |) in
+        let _event := M.alloc (| Ty.path "trait_erc20::Event", _event |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -656,7 +672,8 @@ Module Impl_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
         M.call_closure (|
           Ty.path "trait_erc20::Env",
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "init_env", [], [] |),
@@ -690,7 +707,7 @@ Module Impl_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ total_supply ] =>
       ltac:(M.monadic
-        (let total_supply := M.alloc (| total_supply |) in
+        (let total_supply := M.alloc (| Ty.path "u128", total_supply |) in
         M.read (|
           let~ balances :
               Ty.apply
@@ -724,6 +741,7 @@ Module Impl_trait_erc20_Erc20.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "trait_erc20::Env",
                     M.call_closure (|
                       Ty.path "trait_erc20::Env",
                       M.get_associated_function (|
@@ -764,6 +782,7 @@ Module Impl_trait_erc20_Erc20.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "trait_erc20::Env",
                     M.call_closure (|
                       Ty.path "trait_erc20::Env",
                       M.get_associated_function (|
@@ -781,7 +800,7 @@ Module Impl_trait_erc20_Erc20.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "trait_erc20::Transfer"
                       []
                       []
@@ -804,7 +823,8 @@ Module Impl_trait_erc20_Erc20.
               ]
             |) in
           M.alloc (|
-            Value.StructRecord
+            Ty.path "trait_erc20::Erc20",
+            Value.mkStructRecord
               "trait_erc20::Erc20"
               []
               []
@@ -858,8 +878,10 @@ Module Impl_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let owner :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::AccountId" ], owner |) in
         M.call_closure (|
           Ty.path "u128",
           M.get_associated_function (|
@@ -911,9 +933,12 @@ Module Impl_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; owner; spender ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
-        let spender := M.alloc (| spender |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let owner :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::AccountId" ], owner |) in
+        let spender :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::AccountId" ], spender |) in
         M.call_closure (|
           Ty.path "u128",
           M.get_associated_function (|
@@ -952,6 +977,8 @@ Module Impl_trait_erc20_Erc20.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.tuple
+                          [ Ty.path "trait_erc20::AccountId"; Ty.path "trait_erc20::AccountId" ],
                         Value.Tuple
                           [
                             M.read (| M.deref (| M.read (| owner |) |) |);
@@ -995,10 +1022,13 @@ Module Impl_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; from; to; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let from := M.alloc (| from |) in
-        let to := M.alloc (| to |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let from :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::AccountId" ], from |) in
+        let to :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::AccountId" ], to |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -1007,6 +1037,10 @@ Module Impl_trait_erc20_Erc20.
               [ Ty.tuple []; Ty.path "trait_erc20::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
                 M.read (|
                   let~ from_balance : Ty.path "u128" :=
                     M.call_closure (|
@@ -1026,13 +1060,14 @@ Module Impl_trait_erc20_Erc20.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.lt,
@@ -1042,6 +1077,7 @@ Module Impl_trait_erc20_Erc20.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1060,7 +1096,7 @@ Module Impl_trait_erc20_Erc20.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1149,6 +1185,7 @@ Module Impl_trait_erc20_Erc20.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "trait_erc20::Env",
                             M.call_closure (|
                               Ty.path "trait_erc20::Env",
                               M.get_associated_function (|
@@ -1166,7 +1203,7 @@ Module Impl_trait_erc20_Erc20.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "trait_erc20::Transfer"
                               []
                               []
@@ -1189,6 +1226,10 @@ Module Impl_trait_erc20_Erc20.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1220,7 +1261,8 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -1240,8 +1282,9 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let owner := M.alloc (| Ty.path "trait_erc20::AccountId", owner |) in
         M.call_closure (|
           Ty.path "u128",
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "balance_of_impl", [], [] |),
@@ -1262,9 +1305,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; owner; spender ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
-        let spender := M.alloc (| spender |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let owner := M.alloc (| Ty.path "trait_erc20::AccountId", owner |) in
+        let spender := M.alloc (| Ty.path "trait_erc20::AccountId", spender |) in
         M.call_closure (|
           Ty.path "u128",
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "allowance_impl", [], [] |),
@@ -1287,9 +1331,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; to; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let to := M.alloc (| to |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let to := M.alloc (| Ty.path "trait_erc20::AccountId", to |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.read (|
           let~ from : Ty.path "trait_erc20::AccountId" :=
             M.call_closure (|
@@ -1299,6 +1344,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "trait_erc20::Env",
                     M.call_closure (|
                       Ty.path "trait_erc20::Env",
                       M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
@@ -1309,6 +1355,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               ]
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1351,9 +1401,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; spender; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let spender := M.alloc (| spender |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let spender := M.alloc (| Ty.path "trait_erc20::AccountId", spender |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.read (|
           let~ owner : Ty.path "trait_erc20::AccountId" :=
             M.call_closure (|
@@ -1363,6 +1414,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "trait_erc20::Env",
                     M.call_closure (|
                       Ty.path "trait_erc20::Env",
                       M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
@@ -1408,6 +1460,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "trait_erc20::Env",
                     M.call_closure (|
                       Ty.path "trait_erc20::Env",
                       M.get_associated_function (| Ty.path "trait_erc20::Erc20", "env", [], [] |),
@@ -1420,7 +1473,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "trait_erc20::Approval"
                       []
                       []
@@ -1433,6 +1486,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               ]
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
             Value.StructTuple
               "core::result::Result::Ok"
               []
@@ -1459,10 +1516,11 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
     match ε, τ, α with
     | [], [], [ self; from; to; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let from := M.alloc (| from |) in
-        let to := M.alloc (| to |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_erc20::Erc20" ], self |) in
+        let from := M.alloc (| Ty.path "trait_erc20::AccountId", from |) in
+        let to := M.alloc (| Ty.path "trait_erc20::AccountId", to |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -1471,6 +1529,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
               [ Ty.tuple []; Ty.path "trait_erc20::Error" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
                 M.read (|
                   let~ caller : Ty.path "trait_erc20::AccountId" :=
                     M.call_closure (|
@@ -1480,6 +1542,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "trait_erc20::Env",
                             M.call_closure (|
                               Ty.path "trait_erc20::Env",
                               M.get_associated_function (|
@@ -1519,13 +1582,14 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.lt,
@@ -1535,6 +1599,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1553,7 +1618,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1562,6 +1627,17 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "core::convert::Infallible"; Ty.path "trait_erc20::Error"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1628,8 +1704,19 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "trait_erc20::Error"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1672,7 +1759,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1712,6 +1799,10 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                       ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "trait_erc20::Error" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []

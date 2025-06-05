@@ -24,8 +24,12 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; iter ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let iter := M.alloc (| iter |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let iter := M.alloc (| I, iter |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_associated_function (|
@@ -70,8 +74,12 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; iterator ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let iterator := M.alloc (| iterator |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let iterator := M.alloc (| I, iterator |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_associated_function (|
@@ -119,8 +127,19 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; iterator ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let iterator := M.alloc (| iterator |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let iterator :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                  []
+                  [ T; Ty.path "alloc::alloc::Global" ],
+                iterator
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
@@ -138,6 +157,10 @@ Module vec.
                         M.read (|
                           M.use
                             (M.alloc (|
+                              Ty.apply
+                                (Ty.path "*const")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
                               M.borrow (|
                                 Pointer.Kind.ConstPointer,
                                 M.deref (|
@@ -163,7 +186,7 @@ Module vec.
                         |)
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -179,7 +202,7 @@ Module vec.
                   |),
                   [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -219,8 +242,12 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; iterator ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let iterator := M.alloc (| iterator |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let iterator := M.alloc (| I, iterator |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -281,8 +308,13 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; iterator ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let iterator := M.alloc (| iterator |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ] ],
+                self
+              |) in
+            let iterator :=
+              M.alloc (| Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ], iterator |) in
             M.read (|
               let~ slice : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
                 M.call_closure (|
@@ -309,7 +341,7 @@ Module vec.
                     M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| slice |) |) |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

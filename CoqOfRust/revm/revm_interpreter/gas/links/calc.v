@@ -175,7 +175,7 @@ Admitted.
 (* pub const fn selfdestruct_cost(spec_id: SpecId, res: StateLoad<SelfDestructResult>) -> u64 *)
 Instance run_selfdestruct_cost
     (spec_id : SpecId.t)
-    (res : Ref.t Pointer.Kind.Ref SelfDestructResult.t) :
+    (res : StateLoad.t SelfDestructResult.t) :
   Run.Trait
     gas.calc.selfdestruct_cost [] [] [ φ spec_id; φ res ]
     U64.t.

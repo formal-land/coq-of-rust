@@ -26,7 +26,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ M.read (| x |); Value.Integer IntegerKind.I32 1 ]
           |) in
         let~ _ : Ty.path "i32" := Value.Integer IntegerKind.I32 15 in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

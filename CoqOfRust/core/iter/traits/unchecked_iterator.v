@@ -15,7 +15,7 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
               M.read (|
                 let~ opt :
                     Ty.apply
@@ -53,6 +53,7 @@ Module iter.
                     [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |) in
                 M.alloc (|
+                  Ty.associated_in_trait "core::iter::traits::iterator::Iterator" [] [] Self "Item",
                   M.call_closure (|
                     Ty.associated_in_trait
                       "core::iter::traits::iterator::Iterator"

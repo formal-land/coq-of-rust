@@ -33,7 +33,11 @@ Module common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "alloy_primitives::common::TxKind",
@@ -73,8 +77,13 @@ Module common.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -89,6 +98,10 @@ Module common.
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::common::TxKind::Create" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -115,8 +128,19 @@ Module common.
                         "alloy_primitives::common::TxKind::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -195,8 +219,16 @@ Module common.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -219,6 +251,7 @@ Module common.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -229,7 +262,17 @@ Module common.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::common::TxKind" ];
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -242,7 +285,14 @@ Module common.
                                 "alloy_primitives::common::TxKind::Call",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -250,8 +300,16 @@ Module common.
                                 "alloy_primitives::common::TxKind::Call",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -277,7 +335,7 @@ Module common.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -308,12 +366,16 @@ Module common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -337,8 +399,12 @@ Module common.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -383,8 +449,16 @@ Module common.
                         "alloy_primitives::common::TxKind::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -402,7 +476,7 @@ Module common.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -433,7 +507,14 @@ Module common.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "alloy_primitives::bits::address::Address" ],
+              value
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "alloy_primitives::common::TxKind",
@@ -443,6 +524,7 @@ Module common.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       Value.StructTuple "alloy_primitives::common::TxKind::Create" [] [] []
                     |)));
                 fun γ =>
@@ -453,8 +535,10 @@ Module common.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let addr := M.copy (| γ0_0 |) in
+                    let addr :=
+                      M.copy (| Ty.path "alloy_primitives::bits::address::Address", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "alloy_primitives::common::TxKind",
                       Value.StructTuple
                         "alloy_primitives::common::TxKind::Call"
                         []
@@ -494,7 +578,7 @@ Module common.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "alloy_primitives::bits::address::Address", value |) in
           Value.StructTuple "alloy_primitives::common::TxKind::Call" [] [] [ M.read (| value |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -524,7 +608,7 @@ Module common.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "alloy_primitives::common::TxKind", value |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -584,7 +668,11 @@ Module common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -600,6 +688,15 @@ Module common.
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::common::TxKind::Create" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -620,8 +717,24 @@ Module common.
                         "alloy_primitives::common::TxKind::Call",
                         0
                       |) in
-                    let to := M.alloc (| γ1_0 |) in
+                    let to :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -652,7 +765,11 @@ Module common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -663,8 +780,8 @@ Module common.
                     (let γ := M.read (| γ |) in
                     let _ :=
                       M.is_struct_tuple (| γ, "alloy_primitives::common::TxKind::Create" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -685,7 +802,11 @@ Module common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -700,8 +821,8 @@ Module common.
                         "alloy_primitives::common::TxKind::Call",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -721,7 +842,11 @@ Module common.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::common::TxKind" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_function (|

@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module utils.
   Module units.
     Definition value_MAX_U64_EXPONENT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 19 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 19 |))).
     
     Global Instance Instance_IsConstant_value_MAX_U64_EXPONENT :
       M.IsFunction.C "alloy_primitives::utils::units::MAX_U64_EXPONENT" value_MAX_U64_EXPONENT.
@@ -20,7 +20,7 @@ Module utils.
       match ε, τ, α with
       | [], [], [ eth ] =>
         ltac:(M.monadic
-          (let eth := M.alloc (| eth |) in
+          (let eth := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], eth |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -118,8 +118,8 @@ Module utils.
       match ε, τ, α with
       | [], [ K; E ], [ amount; units ] =>
         ltac:(M.monadic
-          (let amount := M.alloc (| amount |) in
-          let units := M.alloc (| units |) in
+          (let amount := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], amount |) in
+          let units := M.alloc (| K, units |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -131,6 +131,13 @@ Module utils.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "alloy_primitives::utils::units::ParseUnits";
+                      Ty.path "alloy_primitives::utils::units::UnitsError"
+                    ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -151,6 +158,16 @@ Module utils.
                         M.match_operator (|
                           Ty.path "alloy_primitives::utils::units::Unit",
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; E ];
+                                Ty.path "alloy_primitives::utils::units::Unit"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -203,8 +220,16 @@ Module utils.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "core::convert::Infallible"; E ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.path "alloy_primitives::utils::units::Unit",
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -251,7 +276,11 @@ Module utils.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val :=
+                                  M.copy (|
+                                    Ty.path "alloy_primitives::utils::units::Unit",
+                                    γ0_0
+                                  |) in
                                 val))
                           ]
                         |)
@@ -278,7 +307,7 @@ Module utils.
       match ε, τ, α with
       | [], [ T ], [ amount ] =>
         ltac:(M.monadic
-          (let amount := M.alloc (| amount |) in
+          (let amount := M.alloc (| T, amount |) in
           M.call_closure (|
             Ty.path "alloc::string::String",
             M.get_associated_function (|
@@ -291,6 +320,7 @@ Module utils.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "alloy_primitives::utils::units::ParseUnits",
                   M.call_closure (|
                     Ty.path "alloy_primitives::utils::units::ParseUnits",
                     M.get_trait_method (|
@@ -337,8 +367,8 @@ Module utils.
       match ε, τ, α with
       | [], [ T; K; E ], [ amount; units ] =>
         ltac:(M.monadic
-          (let amount := M.alloc (| amount |) in
-          let units := M.alloc (| units |) in
+          (let amount := M.alloc (| T, amount |) in
+          let units := M.alloc (| K, units |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -400,11 +430,15 @@ Module utils.
                               Ty.function
                                 [ Ty.tuple [ Ty.path "alloy_primitives::utils::units::Unit" ] ]
                                 (Ty.path "alloc::string::String"),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let units := M.copy (| γ |) in
+                                    (let units :=
+                                      M.copy (|
+                                        Ty.path "alloy_primitives::utils::units::Unit",
+                                        γ
+                                      |) in
                                     M.call_closure (|
                                       Ty.path "alloc::string::String",
                                       M.get_associated_function (|
@@ -417,6 +451,7 @@ Module utils.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.path "alloy_primitives::utils::units::ParseUnits",
                                             M.call_closure (|
                                               Ty.path "alloy_primitives::utils::units::ParseUnits",
                                               M.get_trait_method (|
@@ -495,8 +530,13 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::UnitsError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -514,8 +554,16 @@ Module utils.
                           "alloy_primitives::utils::units::UnitsError::InvalidUnit",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -551,8 +599,19 @@ Module utils.
                           "alloy_primitives::utils::units::UnitsError::ParseSigned",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -609,7 +668,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::UnitsError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -628,6 +691,15 @@ Module utils.
                           0
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -648,8 +720,24 @@ Module utils.
                           "alloy_primitives::utils::units::UnitsError::ParseSigned",
                           0
                         |) in
-                      let e := M.alloc (| γ1_0 |) in
+                      let e :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -695,8 +783,13 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::UnitsError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -714,8 +807,16 @@ Module utils.
                           "alloy_primitives::utils::units::UnitsError::InvalidUnit",
                           0
                         |) in
-                      let s := M.alloc (| γ1_0 |) in
+                      let s :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -747,6 +848,10 @@ Module utils.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "" |); mk_str (| " is not a valid unit" |) ]
                                       |)
@@ -759,6 +864,10 @@ Module utils.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -800,8 +909,19 @@ Module utils.
                           "alloy_primitives::utils::units::UnitsError::ParseSigned",
                           0
                         |) in
-                      let e := M.alloc (| γ1_0 |) in
+                      let e :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -849,7 +969,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "ruint::string::ParseError", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::UnitsError::ParseSigned"
               []
@@ -893,7 +1013,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::signed::errors::ParseSignedError", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::UnitsError::ParseSigned"
               []
@@ -958,7 +1079,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::utils::units::ParseUnits",
@@ -1006,8 +1131,13 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1025,8 +1155,27 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1059,8 +1208,27 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1119,8 +1287,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -1143,6 +1319,7 @@ Module utils.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -1153,7 +1330,20 @@ Module utils.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::utils::units::ParseUnits" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::utils::units::ParseUnits" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -1166,7 +1356,22 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::U256",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -1174,8 +1379,24 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::U256",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -1228,7 +1449,22 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::I256",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -1236,8 +1472,24 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::I256",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -1282,6 +1534,7 @@ Module utils.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -1320,7 +1573,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -1331,7 +1588,7 @@ Module utils.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -1357,8 +1614,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -1382,7 +1647,20 @@ Module utils.
                 |) in
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "alloy_primitives::utils::units::ParseUnits" ];
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "alloy_primitives::utils::units::ParseUnits" ]
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1395,7 +1673,22 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ2_0
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -1403,8 +1696,27 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ2_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1450,7 +1762,22 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ2_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ2_0
+                        |) in
                       let γ0_1 := M.read (| γ0_1 |) in
                       let γ2_0 :=
                         M.SubPointer.get_struct_tuple_field (|
@@ -1458,8 +1785,27 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let __arg1_0 := M.alloc (| γ2_0 |) in
+                      let __arg1_0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ2_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1497,6 +1843,10 @@ Module utils.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1546,8 +1896,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -1572,6 +1930,7 @@ Module utils.
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -1601,7 +1960,20 @@ Module utils.
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                       M.match_operator (|
                         Ty.path "core::cmp::Ordering",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::utils::units::ParseUnits" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::utils::units::ParseUnits" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -1614,7 +1986,22 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::U256",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -1622,8 +2009,24 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::U256",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -1664,7 +2067,22 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::I256",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -1672,8 +2090,24 @@ Module utils.
                                   "alloy_primitives::utils::units::ParseUnits::I256",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        []
+                                    ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -1706,6 +2140,7 @@ Module utils.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -1718,7 +2153,7 @@ Module utils.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -1751,7 +2186,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::utils::units::ParseUnits", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -1793,7 +2229,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::utils::units::ParseUnits", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloy_primitives::signed::int::Signed")
@@ -1834,8 +2271,13 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1853,8 +2295,27 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let val := M.alloc (| γ1_0 |) in
+                      let val :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1890,8 +2351,27 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let val := M.alloc (| γ1_0 |) in
+                      let val :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1945,7 +2425,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u8", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2047,7 +2527,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u16", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2149,7 +2629,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u32", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2251,7 +2731,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u64", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2353,7 +2833,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u128", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2455,7 +2935,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "usize", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2557,7 +3037,14 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::U256"
               []
@@ -2649,7 +3136,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i8", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -2729,7 +3216,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i16", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -2809,7 +3296,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i32", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -2889,7 +3376,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i64", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -2969,7 +3456,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "i128", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -3049,7 +3536,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "isize", value |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -3129,7 +3616,14 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::signed::int::Signed")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             Value.StructTuple
               "alloy_primitives::utils::units::ParseUnits::I256"
               []
@@ -3235,7 +3729,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::utils::units::ParseUnits", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3313,7 +3808,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::utils::units::ParseUnits", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3422,8 +3918,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ amount; unit_ ] =>
           ltac:(M.monadic
-            (let amount := M.alloc (| amount |) in
-            let unit_ := M.alloc (| unit_ |) in
+            (let amount := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], amount |) in
+            let unit_ := M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", unit_ |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -3435,6 +3931,13 @@ Module utils.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "alloy_primitives::utils::units::ParseUnits";
+                        Ty.path "alloy_primitives::utils::units::UnitsError"
+                      ],
                     M.read (|
                       let~ exponent : Ty.path "usize" :=
                         M.cast
@@ -3498,12 +4001,16 @@ Module utils.
                         M.read (|
                           M.match_operator (|
                             Ty.path "usize",
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3544,7 +4051,7 @@ Module utils.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let di := M.copy (| γ0_0 |) in
+                                  let di := M.copy (| Ty.path "usize", γ0_0 |) in
                                   let~ _ : Ty.path "char" :=
                                     M.call_closure (|
                                       Ty.path "char",
@@ -3558,6 +4065,7 @@ Module utils.
                                       ]
                                     |) in
                                   M.alloc (|
+                                    Ty.path "usize",
                                     M.call_closure (|
                                       Ty.path "usize",
                                       M.get_associated_function (| Ty.path "str", "len", [], [] |),
@@ -3583,7 +4091,7 @@ Module utils.
                                               |),
                                               [
                                                 M.borrow (| Pointer.Kind.Ref, amount |);
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::ops::range::RangeFrom"
                                                   []
                                                   [ Ty.path "usize" ]
@@ -3596,7 +4104,11 @@ Module utils.
                                     |)
                                   |)));
                               fun γ =>
-                                ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                                ltac:(M.monadic
+                                  (M.alloc (|
+                                    Ty.path "usize",
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)))
                             ]
                           |)
                         |) in
@@ -3619,13 +4131,14 @@ Module utils.
                             Ty.path "alloy_primitives::utils::units::ParseUnits";
                             Ty.path "alloy_primitives::utils::units::UnitsError"
                           ],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.gt,
@@ -3659,7 +4172,7 @@ Module utils.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| amount |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeTo"
                                           []
                                           [ Ty.path "usize" ]
@@ -3704,7 +4217,7 @@ Module utils.
                                     Ty.path "alloy_primitives::utils::units::ParseUnits";
                                     Ty.path "alloy_primitives::utils::units::UnitsError"
                                   ],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -3722,13 +4235,14 @@ Module utils.
                                             Ty.path "alloy_primitives::utils::units::ParseUnits";
                                             Ty.path "alloy_primitives::utils::units::UnitsError"
                                           ],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     M.call_closure (|
                                                       Ty.path "bool",
                                                       M.get_trait_method (|
@@ -3749,7 +4263,13 @@ Module utils.
                                                         M.borrow (| Pointer.Kind.Ref, amount |);
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.alloc (| mk_str (| "-" |) |)
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ],
+                                                            mk_str (| "-" |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -3760,6 +4280,15 @@ Module utils.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::ParseUnits";
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::UnitsError"
+                                                  ],
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
                                                   []
@@ -3802,6 +4331,15 @@ Module utils.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::ParseUnits";
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::UnitsError"
+                                                  ],
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
                                                   []
@@ -3828,6 +4366,33 @@ Module utils.
                                                               ]
                                                               [],
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "core::ops::control_flow::ControlFlow")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "alloy_primitives::signed::errors::ParseSignedError"
+                                                                    ];
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloy_primitives::signed::int::Signed")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        256;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4
+                                                                    ]
+                                                                    []
+                                                                ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -3945,8 +4510,32 @@ Module utils.
                                                                       0
                                                                     |) in
                                                                   let residual :=
-                                                                    M.copy (| γ0_0 |) in
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::convert::Infallible";
+                                                                          Ty.path
+                                                                            "alloy_primitives::signed::errors::ParseSignedError"
+                                                                        ],
+                                                                      γ0_0
+                                                                    |) in
                                                                   M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "alloy_primitives::signed::int::Signed")
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          256;
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          4
+                                                                      ]
+                                                                      [],
                                                                     M.never_to_any (|
                                                                       M.read (|
                                                                         M.return_ (|
@@ -4005,7 +4594,22 @@ Module utils.
                                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                                       0
                                                                     |) in
-                                                                  let val := M.copy (| γ0_0 |) in
+                                                                  let val :=
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloy_primitives::signed::int::Signed")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            256;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            4
+                                                                        ]
+                                                                        [],
+                                                                      γ0_0
+                                                                    |) in
                                                                   val))
                                                             ]
                                                           |)
@@ -4018,6 +4622,13 @@ Module utils.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "alloy_primitives::utils::units::ParseUnits";
+                                            Ty.path "alloy_primitives::utils::units::UnitsError"
+                                          ],
                                         Value.StructTuple
                                           "core::result::Result::Ok"
                                           []
@@ -4041,6 +4652,26 @@ Module utils.
                                                       ]
                                                       [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path "ruint::string::ParseError"
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
+                                                            []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -4138,8 +4769,27 @@ Module utils.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "ruint::string::ParseError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "ruint::Uint")
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
+                                                              ]
+                                                              [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -4197,7 +4847,19 @@ Module utils.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "ruint::Uint")
+                                                                [
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    256;
+                                                                  Value.Integer IntegerKind.Usize 4
+                                                                ]
+                                                                [],
+                                                              γ0_0
+                                                            |) in
                                                           val))
                                                     ]
                                                   |)
@@ -4217,7 +4879,7 @@ Module utils.
                                     Ty.path "alloy_primitives::utils::units::ParseUnits";
                                     Ty.path "alloy_primitives::utils::units::UnitsError"
                                   ],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -4235,13 +4897,14 @@ Module utils.
                                             Ty.path "alloy_primitives::utils::units::ParseUnits";
                                             Ty.path "alloy_primitives::utils::units::UnitsError"
                                           ],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     M.call_closure (|
                                                       Ty.path "bool",
                                                       M.get_trait_method (|
@@ -4262,7 +4925,13 @@ Module utils.
                                                         M.borrow (| Pointer.Kind.Ref, amount |);
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.alloc (| mk_str (| "-" |) |)
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "str" ],
+                                                            mk_str (| "-" |)
+                                                          |)
                                                         |)
                                                       ]
                                                     |)
@@ -4273,6 +4942,15 @@ Module utils.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::ParseUnits";
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::UnitsError"
+                                                  ],
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
                                                   []
@@ -4334,6 +5012,28 @@ Module utils.
                                                       ]
                                                       [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "alloy_primitives::signed::errors::ParseSignedError"
+                                                            ];
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloy_primitives::signed::int::Signed")
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
+                                                            []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -4437,8 +5137,28 @@ Module utils.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "alloy_primitives::signed::errors::ParseSignedError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloy_primitives::signed::int::Signed")
+                                                              [
+                                                                Value.Integer IntegerKind.Usize 256;
+                                                                Value.Integer IntegerKind.Usize 4
+                                                              ]
+                                                              [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -4496,7 +5216,20 @@ Module utils.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloy_primitives::signed::int::Signed")
+                                                                [
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    256;
+                                                                  Value.Integer IntegerKind.Usize 4
+                                                                ]
+                                                                [],
+                                                              γ0_0
+                                                            |) in
                                                           val))
                                                     ]
                                                   |)
@@ -4542,6 +5275,31 @@ Module utils.
                                                           ]
                                                           [],
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::ops::control_flow::ControlFlow")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "alloy_primitives::utils::units::UnitsError"
+                                                                ];
+                                                              Ty.apply
+                                                                (Ty.path
+                                                                  "alloy_primitives::signed::int::Signed")
+                                                                [
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    256;
+                                                                  Value.Integer IntegerKind.Usize 4
+                                                                ]
+                                                                []
+                                                            ],
                                                           M.call_closure (|
                                                             Ty.apply
                                                               (Ty.path
@@ -4835,8 +5593,32 @@ Module utils.
                                                                   "core::ops::control_flow::ControlFlow::Break",
                                                                   0
                                                                 |) in
-                                                              let residual := M.copy (| γ0_0 |) in
+                                                              let residual :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "core::convert::Infallible";
+                                                                      Ty.path
+                                                                        "alloy_primitives::utils::units::UnitsError"
+                                                                    ],
+                                                                  γ0_0
+                                                                |) in
                                                               M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloy_primitives::signed::int::Signed")
+                                                                  [
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      256;
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      4
+                                                                  ]
+                                                                  [],
                                                                 M.never_to_any (|
                                                                   M.read (|
                                                                     M.return_ (|
@@ -4894,7 +5676,22 @@ Module utils.
                                                                   "core::ops::control_flow::ControlFlow::Continue",
                                                                   0
                                                                 |) in
-                                                              let val := M.copy (| γ0_0 |) in
+                                                              let val :=
+                                                                M.copy (|
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "alloy_primitives::signed::int::Signed")
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        256;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4
+                                                                    ]
+                                                                    [],
+                                                                  γ0_0
+                                                                |) in
                                                               val))
                                                         ]
                                                       |)
@@ -4902,6 +5699,15 @@ Module utils.
                                                   ]
                                                 |) in
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::ParseUnits";
+                                                    Ty.path
+                                                      "alloy_primitives::utils::units::UnitsError"
+                                                  ],
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
                                                   []
@@ -4941,6 +5747,25 @@ Module utils.
                                               ]
                                               [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.path "core::convert::Infallible";
+                                                      Ty.path "ruint::string::ParseError"
+                                                    ];
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    []
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -5029,8 +5854,25 @@ Module utils.
                                                       "core::ops::control_flow::ControlFlow::Break",
                                                       0
                                                     |) in
-                                                  let residual := M.copy (| γ0_0 |) in
+                                                  let residual :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path "ruint::string::ParseError"
+                                                        ],
+                                                      γ0_0
+                                                    |) in
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "ruint::Uint")
+                                                      [
+                                                        Value.Integer IntegerKind.Usize 256;
+                                                        Value.Integer IntegerKind.Usize 4
+                                                      ]
+                                                      [],
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
@@ -5085,7 +5927,17 @@ Module utils.
                                                       "core::ops::control_flow::ControlFlow::Continue",
                                                       0
                                                     |) in
-                                                  let val := M.copy (| γ0_0 |) in
+                                                  let val :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
+                                                        [],
+                                                      γ0_0
+                                                    |) in
                                                   val))
                                             ]
                                           |)
@@ -5128,6 +5980,26 @@ Module utils.
                                                   ]
                                                   [],
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ops::control_flow::ControlFlow")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "core::convert::Infallible";
+                                                          Ty.path
+                                                            "alloy_primitives::utils::units::UnitsError"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "ruint::Uint")
+                                                        [
+                                                          Value.Integer IntegerKind.Usize 256;
+                                                          Value.Integer IntegerKind.Usize 4
+                                                        ]
+                                                        []
+                                                    ],
                                                   M.call_closure (|
                                                     Ty.apply
                                                       (Ty.path
@@ -5339,8 +6211,26 @@ Module utils.
                                                           "core::ops::control_flow::ControlFlow::Break",
                                                           0
                                                         |) in
-                                                      let residual := M.copy (| γ0_0 |) in
+                                                      let residual :=
+                                                        M.copy (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "alloy_primitives::utils::units::UnitsError"
+                                                            ],
+                                                          γ0_0
+                                                        |) in
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
+                                                          [],
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -5396,7 +6286,17 @@ Module utils.
                                                           "core::ops::control_flow::ControlFlow::Continue",
                                                           0
                                                         |) in
-                                                      let val := M.copy (| γ0_0 |) in
+                                                      let val :=
+                                                        M.copy (|
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [
+                                                              Value.Integer IntegerKind.Usize 256;
+                                                              Value.Integer IntegerKind.Usize 4
+                                                            ]
+                                                            [],
+                                                          γ0_0
+                                                        |) in
                                                       val))
                                                 ]
                                               |)
@@ -5404,6 +6304,13 @@ Module utils.
                                           ]
                                         |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "alloy_primitives::utils::units::ParseUnits";
+                                            Ty.path "alloy_primitives::utils::units::UnitsError"
+                                          ],
                                         Value.StructTuple
                                           "core::result::Result::Ok"
                                           []
@@ -5467,20 +6374,25 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; unit_ ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let unit_ := M.alloc (| unit_ |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
+            let unit_ := M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", unit_ |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 LogicalOp.and (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -5582,8 +6494,8 @@ Module utils.
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -5630,7 +6542,15 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let amount := M.copy (| γ0_0 |) in
+                      let amount :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       let~ integer :
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -5690,6 +6610,13 @@ Module utils.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
@@ -5728,6 +6655,7 @@ Module utils.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.path "alloc::string::String",
                         M.call_closure (|
                           Ty.path "alloc::string::String",
                           M.get_function (|
@@ -5759,6 +6687,10 @@ Module utils.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   Value.Array [ mk_str (| "" |); mk_str (| "." |) ]
                                                 |)
                                               |)
@@ -5772,6 +6704,10 @@ Module utils.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                                    [ Ty.path "core::fmt::rt::Argument" ],
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
@@ -5852,6 +6788,10 @@ Module utils.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                                    [ Ty.path "core::fmt::rt::Placeholder" ],
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
@@ -5944,7 +6884,15 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let amount := M.copy (| γ0_0 |) in
+                      let amount :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "alloy_primitives::signed::int::Signed")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       let~ exp10 :
                           Ty.apply
                             (Ty.path "alloy_primitives::signed::int::Signed")
@@ -5975,13 +6923,14 @@ Module utils.
                         M.read (|
                           M.match_operator (|
                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           M.get_associated_function (|
@@ -6004,10 +6953,14 @@ Module utils.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (| mk_str (| "-" |) |)));
+                                  M.alloc (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                    mk_str (| "-" |)
+                                  |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                     M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                                   |)))
                             ]
@@ -6095,6 +7048,13 @@ Module utils.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
@@ -6156,6 +7116,7 @@ Module utils.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.path "alloc::string::String",
                         M.call_closure (|
                           Ty.path "alloc::string::String",
                           M.get_function (|
@@ -6187,6 +7148,10 @@ Module utils.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                                   Value.Array
                                                     [
                                                       mk_str (| "" |);
@@ -6205,6 +7170,10 @@ Module utils.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 4 ]
+                                                    [ Ty.path "core::fmt::rt::Argument" ],
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
@@ -6307,6 +7276,10 @@ Module utils.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "array")
+                                                    [ Value.Integer IntegerKind.Usize 3 ]
+                                                    [ Ty.path "core::fmt::rt::Placeholder" ],
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
@@ -6440,7 +7413,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -6455,8 +7432,8 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -6477,7 +7454,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -6492,8 +7473,8 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -6517,7 +7498,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -6532,7 +7517,7 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      M.alloc (| Value.Bool false |)));
+                      M.alloc (| Ty.path "bool", Value.Bool false |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -6542,8 +7527,24 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let n := M.alloc (| γ1_0 |) in
+                      let n :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -6584,7 +7585,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -6599,7 +7604,7 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      M.alloc (| Value.Bool true |)));
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -6609,8 +7614,24 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let n := M.alloc (| γ1_0 |) in
+                      let n :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -6651,7 +7672,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::ParseUnits" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -6666,8 +7691,24 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let n := M.alloc (| γ1_0 |) in
+                      let n :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -6694,8 +7735,24 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let n := M.alloc (| γ1_0 |) in
+                      let n :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -6735,7 +7792,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::utils::units::ParseUnits", self |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -6752,7 +7809,15 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let n := M.copy (| γ0_0 |) in
+                      let n :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       n));
                   fun γ =>
                     ltac:(M.monadic
@@ -6762,8 +7827,20 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let n := M.copy (| γ0_0 |) in
+                      let n :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "alloy_primitives::signed::int::Signed")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -6808,7 +7885,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::utils::units::ParseUnits", self |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -6825,8 +7902,20 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::U256",
                           0
                         |) in
-                      let n := M.copy (| γ0_0 |) in
+                      let n :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "alloy_primitives::signed::int::Signed")
@@ -6856,7 +7945,15 @@ Module utils.
                           "alloy_primitives::utils::units::ParseUnits::I256",
                           0
                         |) in
-                      let n := M.copy (| γ0_0 |) in
+                      let n :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "alloy_primitives::signed::int::Signed")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            [],
+                          γ0_0
+                        |) in
                       n))
                 ]
               |)
@@ -6886,7 +7983,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::utils::units::Unit",
@@ -6926,8 +8027,13 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -6950,6 +8056,7 @@ Module utils.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|
@@ -6996,8 +8103,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -7042,12 +8157,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -7071,8 +8190,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                other
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -7133,8 +8260,16 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
@@ -7191,8 +8326,13 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -7203,6 +8343,7 @@ Module utils.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "u8",
                     M.call_closure (|
                       Ty.path "u8",
                       M.get_associated_function (|
@@ -7245,7 +8386,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u8", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -7290,7 +8431,7 @@ Module utils.
                             Ty.function
                               [ Ty.tuple [] ]
                               (Ty.path "alloy_primitives::utils::units::UnitsError"),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -7347,7 +8488,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "alloc::string::String", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -7411,7 +8552,8 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ], value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -7476,7 +8618,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -7534,7 +8676,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], s |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -7551,17 +8693,42 @@ Module utils.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "alloy_primitives::utils::units::Unit";
+                        Ty.associated_in_trait
+                          "core::str::traits::FromStr"
+                          []
+                          []
+                          (Ty.path "alloy_primitives::utils::units::Unit")
+                          "Err"
+                      ],
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 8;
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                            [];
+                                          Ty.path "ruint::string::ParseError"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::result::Result")
@@ -7605,8 +8772,19 @@ Module utils.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let unit_ := M.copy (| γ0_0 |) in
+                                  let unit_ :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "ruint::Uint")
+                                        [
+                                          Value.Integer IntegerKind.Usize 8;
+                                          Value.Integer IntegerKind.Usize 1
+                                        ]
+                                        [],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -7677,7 +8855,7 @@ Module utils.
                                                             [ Ty.tuple [] ]
                                                             (Ty.path
                                                               "alloy_primitives::utils::units::UnitsError"),
-                                                          M.alloc (| α0 |),
+                                                          M.alloc (| Ty.tuple [], α0 |),
                                                           [
                                                             fun γ =>
                                                               ltac:(M.monadic
@@ -7718,11 +8896,18 @@ Module utils.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "alloy_primitives::utils::units::Unit";
+                            Ty.path "alloy_primitives::utils::units::UnitsError"
+                          ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -7735,6 +8920,7 @@ Module utils.
                               M.match_operator (|
                                 Ty.path "alloy_primitives::utils::units::Unit",
                                 M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   M.call_closure (|
                                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                     M.get_associated_function (|
@@ -7747,6 +8933,7 @@ Module utils.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.path "alloc::string::String",
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
                                             M.get_associated_function (|
@@ -7780,7 +8967,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "eth" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7788,7 +8975,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "ether" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -7815,7 +9002,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "pwei" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7823,7 +9010,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "milli" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7831,7 +9018,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "milliether" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7839,7 +9026,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "finney" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -7866,7 +9053,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "twei" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7874,7 +9061,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "micro" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7882,7 +9069,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "microether" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7890,7 +9077,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "szabo" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -7917,7 +9104,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "gwei" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7925,7 +9112,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "nano" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7933,7 +9120,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "nanoether" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7941,7 +9128,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "shannon" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -7968,7 +9155,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "mwei" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7976,7 +9163,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "pico" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7984,7 +9171,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "picoether" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -7992,7 +9179,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "lovelace" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -8019,7 +9206,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "kwei" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -8027,7 +9214,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "femto" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -8035,7 +9222,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "femtoether" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -8043,7 +9230,7 @@ Module utils.
                                                   M.read (| γ |),
                                                   mk_str (| "babbage" |)
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -8073,6 +9260,7 @@ Module utils.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.path "alloy_primitives::utils::units::Unit",
                                         M.never_to_any (|
                                           M.read (|
                                             M.return_ (|
@@ -8144,6 +9332,7 @@ Module utils.
       Definition value_WEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8179,6 +9368,7 @@ Module utils.
       Definition value_KWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8216,6 +9406,7 @@ Module utils.
       Definition value_MWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8253,6 +9444,7 @@ Module utils.
       Definition value_GWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8290,6 +9482,7 @@ Module utils.
       Definition value_TWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8327,6 +9520,7 @@ Module utils.
       Definition value_PWEI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8364,6 +9558,7 @@ Module utils.
       Definition value_ETHER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8415,6 +9610,7 @@ Module utils.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "alloy_primitives::utils::units::Unit",
             M.call_closure (|
               Ty.path "alloy_primitives::utils::units::Unit",
               M.get_associated_function (|
@@ -8445,20 +9641,21 @@ Module utils.
         match ε, τ, α with
         | [], [], [ units ] =>
           ltac:(M.monadic
-            (let units := M.alloc (| units |) in
+            (let units := M.alloc (| Ty.path "u8", units |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.path "alloy_primitives::utils::units::Unit" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -8487,6 +9684,10 @@ Module utils.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::utils::units::Unit" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -8507,6 +9708,10 @@ Module utils.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::utils::units::Unit" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -8532,7 +9737,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.path "u8", x |) in
             Value.StructTuple "alloy_primitives::utils::units::Unit" [] [] [ M.read (| x |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8555,20 +9760,21 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", self |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
                   (Ty.path "ruint::Uint")
                   [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                   [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.le,
@@ -8594,6 +9800,10 @@ Module utils.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -8612,6 +9822,10 @@ Module utils.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
@@ -8711,19 +9925,20 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", self |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.gt,
@@ -8750,6 +9965,7 @@ Module utils.
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -8769,7 +9985,13 @@ Module utils.
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| Value.Array [ mk_str (| "overflow" |) ] |)
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 1 ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                              Value.Array [ mk_str (| "overflow" |) ]
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -8779,11 +10001,15 @@ Module utils.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "ruint::Uint")
@@ -8845,7 +10071,7 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::utils::units::Unit", self |) in
             M.read (|
               M.SubPointer.get_struct_tuple_field (|
                 self,
@@ -8869,7 +10095,11 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::units::Unit" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_associated_function (|

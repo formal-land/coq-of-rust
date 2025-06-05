@@ -21,7 +21,7 @@ Module Impl_associated_functions_and_methods_Point.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "associated_functions_and_methods::Point"
           []
           []
@@ -42,9 +42,9 @@ Module Impl_associated_functions_and_methods_Point.
     match ε, τ, α with
     | [], [], [ x; y ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
-        Value.StructRecord
+        (let x := M.alloc (| Ty.path "f64", x |) in
+        let y := M.alloc (| Ty.path "f64", y |) in
+        Value.mkStructRecord
           "associated_functions_and_methods::Point"
           []
           []
@@ -81,7 +81,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "associated_functions_and_methods::Rectangle" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -111,7 +115,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "associated_functions_and_methods::Rectangle" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "f64",
@@ -135,8 +143,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
                       "associated_functions_and_methods::Point",
                       "y"
                     |) in
-                  let x1 := M.copy (| γ0_0 |) in
-                  let y1 := M.copy (| γ0_1 |) in
+                  let x1 := M.copy (| Ty.path "f64", γ0_0 |) in
+                  let y1 := M.copy (| Ty.path "f64", γ0_1 |) in
                   M.match_operator (|
                     Ty.path "f64",
                     M.SubPointer.get_struct_record_field (|
@@ -159,9 +167,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
                               "associated_functions_and_methods::Point",
                               "y"
                             |) in
-                          let x2 := M.copy (| γ0_0 |) in
-                          let y2 := M.copy (| γ0_1 |) in
+                          let x2 := M.copy (| Ty.path "f64", γ0_0 |) in
+                          let y2 := M.copy (| Ty.path "f64", γ0_1 |) in
                           M.alloc (|
+                            Ty.path "f64",
                             M.call_closure (|
                               Ty.path "f64",
                               M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
@@ -209,7 +218,11 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "associated_functions_and_methods::Rectangle" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "f64",
@@ -233,8 +246,8 @@ Module Impl_associated_functions_and_methods_Rectangle.
                       "associated_functions_and_methods::Point",
                       "y"
                     |) in
-                  let x1 := M.copy (| γ0_0 |) in
-                  let y1 := M.copy (| γ0_1 |) in
+                  let x1 := M.copy (| Ty.path "f64", γ0_0 |) in
+                  let y1 := M.copy (| Ty.path "f64", γ0_1 |) in
                   M.match_operator (|
                     Ty.path "f64",
                     M.SubPointer.get_struct_record_field (|
@@ -257,9 +270,10 @@ Module Impl_associated_functions_and_methods_Rectangle.
                               "associated_functions_and_methods::Point",
                               "y"
                             |) in
-                          let x2 := M.copy (| γ0_0 |) in
-                          let y2 := M.copy (| γ0_1 |) in
+                          let x2 := M.copy (| Ty.path "f64", γ0_0 |) in
+                          let y2 := M.copy (| Ty.path "f64", γ0_1 |) in
                           M.alloc (|
+                            Ty.path "f64",
                             M.call_closure (|
                               Ty.path "f64",
                               BinOp.Wrap.mul,
@@ -322,9 +336,13 @@ Module Impl_associated_functions_and_methods_Rectangle.
     match ε, τ, α with
     | [], [], [ self; x; y ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "associated_functions_and_methods::Rectangle" ],
+            self
+          |) in
+        let x := M.alloc (| Ty.path "f64", x |) in
+        let y := M.alloc (| Ty.path "f64", y |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             let β :=
@@ -386,7 +404,7 @@ Module Impl_associated_functions_and_methods_Rectangle.
               β,
               M.call_closure (| Ty.path "f64", BinOp.Wrap.add, [ M.read (| β |); M.read (| y |) ] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -426,7 +444,7 @@ Module Impl_associated_functions_and_methods_Pair.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.path "associated_functions_and_methods::Pair", self |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
@@ -446,8 +464,22 @@ Module Impl_associated_functions_and_methods_Pair.
                       "associated_functions_and_methods::Pair",
                       1
                     |) in
-                  let first := M.copy (| γ0_0 |) in
-                  let second := M.copy (| γ0_1 |) in
+                  let first :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                      γ0_0
+                    |) in
+                  let second :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                      γ0_1
+                    |) in
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       let~ _ : Ty.tuple [] :=
@@ -473,6 +505,10 @@ Module Impl_associated_functions_and_methods_Pair.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 3 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (| "Destroying Pair(" |);
@@ -490,6 +526,10 @@ Module Impl_associated_functions_and_methods_Pair.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -547,9 +587,9 @@ Module Impl_associated_functions_and_methods_Pair.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -603,7 +643,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ rectangle : Ty.path "associated_functions_and_methods::Rectangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "associated_functions_and_methods::Rectangle"
             []
             []
@@ -653,6 +693,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Rectangle perimeter: " |); mk_str (| "
 " |) ]
                             |)
@@ -665,6 +709,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -682,6 +730,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "f64",
                                               M.call_closure (|
                                                 Ty.path "f64",
                                                 M.get_associated_function (|
@@ -708,7 +757,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -732,6 +781,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Rectangle area: " |); mk_str (| "
 " |) ]
                             |)
@@ -744,6 +797,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -761,6 +818,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "f64",
                                               M.call_closure (|
                                                 Ty.path "f64",
                                                 M.get_associated_function (|
@@ -787,10 +845,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ square : Ty.path "associated_functions_and_methods::Rectangle" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "associated_functions_and_methods::Rectangle"
             []
             []
@@ -883,7 +941,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.read (| pair_ |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -13,7 +13,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [ A ], [ o ] =>
     ltac:(M.monadic
-      (let o := M.alloc (| o |) in
+      (let o := M.alloc (| Ty.apply (Ty.path "core::option::Option") [] [ A ], o |) in
       M.read (|
         M.match_operator (|
           Ty.tuple [],
@@ -23,7 +23,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let _a := M.copy (| γ0_0 |) in
+                let _a := M.copy (| A, γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -43,8 +43,14 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "some
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "some
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -52,7 +58,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
@@ -75,8 +81,14 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "nothing
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "nothing
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -84,7 +96,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))
@@ -169,6 +181,7 @@ Module tests.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
+                                        Ty.path "std::fs::OpenOptions",
                                         M.call_closure (|
                                           Ty.path "std::fs::OpenOptions",
                                           M.get_associated_function (|
@@ -204,6 +217,7 @@ Module tests.
             (M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                   M.get_trait_method (|
@@ -216,7 +230,7 @@ Module tests.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "i32" ]
@@ -230,7 +244,11 @@ Module tests.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let iter := M.copy (| γ |) in
+                    (let iter :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
+                        γ
+                      |) in
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
@@ -239,6 +257,7 @@ Module tests.
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                   M.get_trait_method (|
@@ -266,7 +285,10 @@ Module tests.
                                   ltac:(M.monadic
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                    M.alloc (|
+                                      Ty.tuple [],
+                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                    |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
@@ -343,11 +365,11 @@ Module tests.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     |)))
               ]
             |))
@@ -433,6 +455,7 @@ Module tests.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
+                                        Ty.path "std::fs::OpenOptions",
                                         M.call_closure (|
                                           Ty.path "std::fs::OpenOptions",
                                           M.get_associated_function (|
@@ -468,6 +491,7 @@ Module tests.
             (M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
                   M.get_trait_method (|
@@ -480,7 +504,7 @@ Module tests.
                     []
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "i32" ]
@@ -494,7 +518,11 @@ Module tests.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let iter := M.copy (| γ |) in
+                    (let iter :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "i32" ],
+                        γ
+                      |) in
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
@@ -503,6 +531,7 @@ Module tests.
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                 M.call_closure (|
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
                                   M.get_trait_method (|
@@ -530,7 +559,10 @@ Module tests.
                                   ltac:(M.monadic
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                    M.alloc (|
+                                      Ty.tuple [],
+                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                    |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
@@ -607,11 +639,11 @@ Module tests.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     |)))
               ]
             |))

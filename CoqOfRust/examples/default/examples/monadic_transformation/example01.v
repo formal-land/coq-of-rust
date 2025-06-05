@@ -10,7 +10,7 @@ Definition id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.path "u64", x |) in
       M.read (| x |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -24,9 +24,9 @@ Definition tri (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ a; b; c ] =>
     ltac:(M.monadic
-      (let a := M.alloc (| a |) in
-      let b := M.alloc (| b |) in
-      let c := M.alloc (| c |) in
+      (let a := M.alloc (| Ty.path "u64", a |) in
+      let b := M.alloc (| Ty.path "u64", b |) in
+      let c := M.alloc (| Ty.path "u64", c |) in
       Value.Tuple []))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -127,7 +127,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               Value.Integer IntegerKind.U64 3
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

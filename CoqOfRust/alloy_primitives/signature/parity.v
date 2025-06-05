@@ -41,7 +41,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signature::parity::Parity",
@@ -89,8 +93,13 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -108,8 +117,13 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -142,8 +156,13 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::NonEip155",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -176,8 +195,13 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Parity",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -224,8 +248,12 @@ Module signature.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -270,8 +298,10 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -298,8 +328,10 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::NonEip155",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -326,8 +358,10 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Parity",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_trait_method (|
@@ -380,8 +414,16 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -404,6 +446,7 @@ Module signature.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -414,7 +457,20 @@ Module signature.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::signature::parity::Parity" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::signature::parity::Parity" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -427,7 +483,8 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::Eip155",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -435,8 +492,10 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::Eip155",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -465,7 +524,8 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::NonEip155",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -473,8 +533,10 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::NonEip155",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -503,7 +565,8 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::Parity",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -511,8 +574,10 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::Parity",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ2_0 |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -533,6 +598,7 @@ Module signature.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -571,7 +637,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -582,7 +652,7 @@ Module signature.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -650,7 +720,14 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 64; Value.Integer IntegerKind.Usize 1 ]
+                  [],
+                value
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -731,7 +808,14 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 1; Value.Integer IntegerKind.Usize 1 ]
+                  [],
+                value
+              |) in
             Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
               []
@@ -783,7 +867,7 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "bool", value |) in
             Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
               []
@@ -821,7 +905,7 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value := M.alloc (| Ty.path "u64", value |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -845,7 +929,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 0
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -853,7 +937,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 1
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -861,6 +945,13 @@ Module signature.
                             | [] =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "alloy_primitives::signature::parity::Parity";
+                                      Ty.path "alloy_primitives::signature::error::SignatureError"
+                                    ],
                                   Value.StructTuple
                                     "core::result::Result::Ok"
                                     []
@@ -897,7 +988,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 27
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
@@ -905,7 +996,7 @@ Module signature.
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 28
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -913,6 +1004,13 @@ Module signature.
                             | [] =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "alloy_primitives::signature::parity::Parity";
+                                      Ty.path "alloy_primitives::signature::error::SignatureError"
+                                    ],
                                   Value.StructTuple
                                     "core::result::Result::Ok"
                                     []
@@ -949,8 +1047,15 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let value := M.copy (| γ |) in
+                      (let value := M.copy (| Ty.path "u64", γ |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "alloy_primitives::signature::parity::Parity";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -969,6 +1074,13 @@ Module signature.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "alloy_primitives::signature::parity::Parity";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -1021,7 +1133,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
@@ -1035,18 +1151,19 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.eq,
@@ -1075,8 +1192,8 @@ Module signature.
                                         [ M.read (| β |); Value.Integer IntegerKind.U64 1 ]
                                       |)
                                     |) in
-                                  M.alloc (| Value.Tuple [] |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -1091,6 +1208,7 @@ Module signature.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1106,6 +1224,7 @@ Module signature.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                         Value.StructTuple "core::option::Option::None" [] [ Ty.path "u64" ] []
                       |)))
                 ]
@@ -1128,7 +1247,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
@@ -1141,6 +1264,7 @@ Module signature.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                       M.get_associated_function (|
@@ -1176,7 +1300,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -1191,8 +1319,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.alloc (| γ1_0 |) in
+                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -1218,8 +1347,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.alloc (| γ1_0 |) in
+                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -1258,8 +1388,12 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::NonEip155",
                                   0
                                 |) in
-                              let b := M.alloc (| γ1_0 |) in
-                              M.alloc (| Value.Tuple [ b ] |)));
+                              let b :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                              M.alloc (|
+                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                Value.Tuple [ b ]
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ := M.read (| γ |) in
@@ -1269,8 +1403,12 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::Parity",
                                   0
                                 |) in
-                              let b := M.alloc (| γ1_0 |) in
-                              M.alloc (| Value.Tuple [ b ] |)))
+                              let b :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                              M.alloc (|
+                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                Value.Tuple [ b ]
+                              |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -1299,7 +1437,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.cast
               (Ty.path "u8")
               (M.call_closure (|
@@ -1336,7 +1478,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
@@ -1357,8 +1503,12 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::NonEip155",
                                   0
                                 |) in
-                              let v := M.alloc (| γ1_0 |) in
-                              M.alloc (| Value.Tuple [ v ] |)));
+                              let v :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                              M.alloc (|
+                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                Value.Tuple [ v ]
+                              |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let γ := M.read (| γ |) in
@@ -1368,8 +1518,12 @@ Module signature.
                                   "alloy_primitives::signature::parity::Parity::Parity",
                                   0
                                 |) in
-                              let v := M.alloc (| γ1_0 |) in
-                              M.alloc (| Value.Tuple [ v ] |)))
+                              let v :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
+                              M.alloc (|
+                                Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                Value.Tuple [ v ]
+                              |)))
                         ],
                         fun γ =>
                           ltac:(M.monadic
@@ -1377,6 +1531,7 @@ Module signature.
                             | [ v ] =>
                               ltac:(M.monadic
                                 (M.alloc (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                                   Value.StructTuple
                                     "core::option::Option::Some"
                                     []
@@ -1400,6 +1555,7 @@ Module signature.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
                         Value.StructTuple "core::option::Option::None" [] [ Ty.path "u8" ] []
                       |)))
                 ]
@@ -1426,7 +1582,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "u64",
@@ -1441,7 +1601,7 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.alloc (| γ1_0 |) in
+                      let v := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
                       M.deref (| M.read (| v |) |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1452,8 +1612,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::NonEip155",
                           0
                         |) in
-                      let b := M.alloc (| γ1_0 |) in
+                      let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.path "u64",
                         M.call_closure (|
                           Ty.path "u64",
                           BinOp.Wrap.add,
@@ -1472,8 +1633,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Parity",
                           0
                         |) in
-                      let b := M.alloc (| γ1_0 |) in
+                      let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], γ1_0 |) in
                       M.alloc (|
+                        Ty.path "u64",
                         M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |))
                       |)))
                 ]
@@ -1501,7 +1663,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signature::parity::Parity",
@@ -1515,8 +1681,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Parity",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b := M.copy (| Ty.path "bool", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Parity"
                           []
@@ -1531,8 +1698,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::NonEip155",
                           0
                         |) in
-                      let b := M.copy (| γ0_0 |) in
+                      let b := M.copy (| Ty.path "bool", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::NonEip155"
                           []
@@ -1553,6 +1721,7 @@ Module signature.
                           Value.Integer IntegerKind.U64 0
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
                           []
@@ -1567,8 +1736,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
                           []
@@ -1577,13 +1747,14 @@ Module signature.
                             M.read (|
                               M.match_operator (|
                                 Ty.path "u64",
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.eq,
@@ -1604,6 +1775,7 @@ Module signature.
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
+                                        Ty.path "u64",
                                         M.call_closure (|
                                           Ty.path "u64",
                                           BinOp.Wrap.sub,
@@ -1613,6 +1785,7 @@ Module signature.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.path "u64",
                                         M.call_closure (|
                                           Ty.path "u64",
                                           BinOp.Wrap.add,
@@ -1632,8 +1805,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
                           []
@@ -1669,7 +1843,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::parity::Parity" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signature::parity::Parity",
@@ -1683,8 +1861,9 @@ Module signature.
                           "alloy_primitives::signature::parity::Parity::Eip155",
                           0
                         |) in
-                      let v := M.copy (| γ0_0 |) in
+                      let v := M.copy (| Ty.path "u64", γ0_0 |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signature::parity::Parity",
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::NonEip155"
                           []
@@ -1706,7 +1885,8 @@ Module signature.
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let this := M.copy (| γ |) in
+                      (let this :=
+                        M.copy (| Ty.path "alloy_primitives::signature::parity::Parity", γ |) in
                       this))
                 ]
               |)
@@ -1733,8 +1913,9 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; chain_id ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let chain_id := M.alloc (| chain_id |) in
+            (let self :=
+              M.alloc (| Ty.path "alloy_primitives::signature::parity::Parity", self |) in
+            let chain_id := M.alloc (| Ty.path "u64", chain_id |) in
             M.read (|
               let~ parity : Ty.path "bool" :=
                 M.read (|
@@ -1750,8 +1931,9 @@ Module signature.
                               "alloy_primitives::signature::parity::Parity::Eip155",
                               0
                             |) in
-                          let v := M.copy (| γ0_0 |) in
+                          let v := M.copy (| Ty.path "u64", γ0_0 |) in
                           M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.eq,
@@ -1782,8 +1964,8 @@ Module signature.
                                       "alloy_primitives::signature::parity::Parity::NonEip155",
                                       0
                                     |) in
-                                  let b := M.copy (| γ0_0 |) in
-                                  M.alloc (| Value.Tuple [ b ] |)));
+                                  let b := M.copy (| Ty.path "bool", γ0_0 |) in
+                                  M.alloc (| Ty.tuple [ Ty.path "bool" ], Value.Tuple [ b ] |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ0_0 :=
@@ -1792,8 +1974,8 @@ Module signature.
                                       "alloy_primitives::signature::parity::Parity::Parity",
                                       0
                                     |) in
-                                  let b := M.copy (| γ0_0 |) in
-                                  M.alloc (| Value.Tuple [ b ] |)))
+                                  let b := M.copy (| Ty.path "bool", γ0_0 |) in
+                                  M.alloc (| Ty.tuple [ Ty.path "bool" ], Value.Tuple [ b ] |)))
                             ],
                             fun γ =>
                               ltac:(M.monadic
@@ -1806,6 +1988,7 @@ Module signature.
                   |)
                 |) in
               M.alloc (|
+                Ty.path "alloy_primitives::signature::parity::Parity",
                 Value.StructTuple
                   "alloy_primitives::signature::parity::Parity::Eip155"
                   []
@@ -1840,7 +2023,8 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.path "alloy_primitives::signature::parity::Parity", self |) in
             Value.StructTuple
               "alloy_primitives::signature::parity::Parity::Parity"
               []

@@ -3,8 +3,14 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition value_PANGRAM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   ltac:(M.monadic
-    (M.alloc (| M.alloc (| mk_str (| "the quick brown fox jumped over the lazy dog
-" |) |) |))).
+    (M.alloc (|
+      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+      M.alloc (|
+        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+        mk_str (| "the quick brown fox jumped over the lazy dog
+" |)
+      |)
+    |))).
 
 Global Instance Instance_IsConstant_value_PANGRAM :
   M.IsFunction.C "child_processes_pipes::PANGRAM" value_PANGRAM.
@@ -56,6 +62,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               Ty.path "std::process::Child",
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.path "std::process::Child"; Ty.path "std::io::error::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -90,6 +100,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
+                                        Ty.path "std::process::Command",
                                         M.call_closure (|
                                           Ty.path "std::process::Command",
                                           M.get_associated_function (|
@@ -138,8 +149,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let why := M.copy (| γ0_0 |) in
+                    let why := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "std::process::Child",
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -163,6 +175,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "couldn't spawn wc: " |) ]
                                       |)
                                     |)
@@ -174,6 +190,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -206,7 +226,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let process := M.copy (| γ0_0 |) in
+                    let process := M.copy (| Ty.path "std::process::Child", γ0_0 |) in
                     process))
               ]
             |)
@@ -216,6 +236,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -234,6 +258,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.borrow (|
                       Pointer.Kind.MutRef,
                       M.alloc (|
+                        Ty.path "std::process::ChildStdin",
                         M.call_closure (|
                           Ty.path "std::process::ChildStdin",
                           M.get_associated_function (|
@@ -297,8 +322,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let why := M.copy (| γ0_0 |) in
+                    let why := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -322,6 +348,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "couldn't write to wc stdin: " |) ]
                                       |)
                                     |)
@@ -333,6 +363,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -384,8 +418,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "sent pangram to wc
-" |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "sent pangram to wc
+" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -393,7 +433,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
@@ -406,6 +446,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         M.match_operator (|
           Ty.tuple [],
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -424,6 +468,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.borrow (|
                   Pointer.Kind.MutRef,
                   M.alloc (|
+                    Ty.path "std::process::ChildStdout",
                     M.call_closure (|
                       Ty.path "std::process::ChildStdout",
                       M.get_associated_function (|
@@ -459,8 +504,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let why := M.copy (| γ0_0 |) in
+                let why := M.copy (| Ty.path "std::io::error::Error", γ0_0 |) in
                 M.alloc (|
+                  Ty.tuple [],
                   M.never_to_any (|
                     M.call_closure (|
                       Ty.path "never",
@@ -482,6 +528,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     Value.Array [ mk_str (| "couldn't read wc stdout: " |) ]
                                   |)
                                 |)
@@ -493,6 +543,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -544,8 +598,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "wc responded with:
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "wc responded with:
+" |) ]
+                                |)
                               |)
                             |)
                           |);
@@ -555,6 +615,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -581,7 +645,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))

@@ -66,7 +66,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [ t ] =>
             ltac:(M.monadic
-              (let t := M.alloc (| t |) in
+              (let t := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], t |) in
               M.read (|
                 let~ ptr : Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] :=
                   M.call_closure (|
@@ -104,10 +104,15 @@ Module collections.
                     |)
                   |) in
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ T ];
+                      Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| new_ref |) |) |);
-                      Value.StructRecord
+                      Value.mkStructRecord
                         "alloc::collections::btree::borrow::DormantMutRef"
                         []
                         [ T ]
@@ -143,7 +148,11 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ],
+                  self
+                |) in
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
@@ -202,7 +211,15 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ]
+                    ],
+                  self
+                |) in
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
@@ -266,7 +283,15 @@ Module collections.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "alloc::collections::btree::borrow::DormantMutRef") [] [ T ]
+                    ],
+                  self
+                |) in
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

@@ -60,6 +60,8 @@ Instance run_origin
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (H_types : Host.Types.t) `{Host.Types.AreLinks H_types}
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -70,8 +72,11 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
+  destruct run_Host_for_H.
+  destruct run_TransactionGetter_for_Self.
   destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   run_symbolic.
+  (* dyn type *)
 Admitted.
 
 (*
@@ -106,4 +111,19 @@ Proof.
   destruct run_Into_for_TransactionType.
   destruct run_Eip4844Tx_for_Eip4844.
   run_symbolic.
+  (* repeat (
+        erewrite IsTraitAssociatedType_eq ||
+        match goal with
+        | H : _ |- _ => exact H
+        end
+      ).
+      2: { admit. }
+  run_symbolic.
+  2: {
+    generalize tx; clear; intros []; cbn in *.
+  }
+      2: {
+
+        generalize Transaction_IsAssociated; clear; intros.
+      } *)
 Admitted.

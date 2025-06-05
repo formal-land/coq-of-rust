@@ -11,12 +11,14 @@ Module batch_inverse.
     match ε, τ, α with
     | [], [ F ], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ], x |) in
         M.read (|
           M.catch_return
             (Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ F; Ty.path "alloc::alloc::Global" ],
                 M.read (|
                   let~ _ : Ty.tuple [] := Value.Tuple [] in
                   let __tracing_attr_span := M.read (| Value.DeclaredButUndefined |) in
@@ -25,13 +27,14 @@ Module batch_inverse.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     LogicalOp.or (|
                                       LogicalOp.and (|
                                         M.call_closure (|
@@ -87,6 +90,7 @@ Module batch_inverse.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  Ty.path "tracing_core::metadata::LevelFilter",
                                                   M.call_closure (|
                                                     Ty.path "tracing_core::metadata::LevelFilter",
                                                     M.get_associated_function (|
@@ -124,13 +128,14 @@ Module batch_inverse.
                                       |) in
                                     M.match_operator (|
                                       Ty.path "tracing::span::Span",
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   LogicalOp.and (|
                                                     LogicalOp.and (|
                                                       LogicalOp.and (|
@@ -199,6 +204,8 @@ Module batch_inverse.
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
+                                                                  Ty.path
+                                                                    "tracing_core::metadata::LevelFilter",
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "tracing_core::metadata::LevelFilter",
@@ -253,6 +260,7 @@ Module batch_inverse.
                                                               |)
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.path "bool",
                                                             UnOp.not (|
                                                               M.call_closure (|
                                                                 Ty.path "bool",
@@ -376,6 +384,7 @@ Module batch_inverse.
                                                 ]
                                               |) in
                                             M.alloc (|
+                                              Ty.path "tracing::span::Span",
                                               M.call_closure (|
                                                 Ty.path "tracing::span::Span",
                                                 M.get_associated_function (|
@@ -395,6 +404,7 @@ Module batch_inverse.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.path "tracing_core::field::ValueSet",
                                                           M.call_closure (|
                                                             Ty.path "tracing_core::field::ValueSet",
                                                             M.get_associated_function (|
@@ -475,7 +485,44 @@ Module batch_inverse.
                                                                 M.deref (|
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.alloc (| Value.Array [] |)
+                                                                    M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            0
+                                                                        ]
+                                                                        [
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "tracing_core::field::Field"
+                                                                                ];
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::option::Option")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.dyn
+                                                                                        [
+                                                                                          ("tracing_core::field::Value::Trait",
+                                                                                            [])
+                                                                                        ]
+                                                                                    ]
+                                                                                ]
+                                                                            ]
+                                                                        ],
+                                                                      Value.Array []
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -564,8 +611,8 @@ Module batch_inverse.
                                     [ M.borrow (| Pointer.Kind.Ref, __tracing_attr_span |) ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -573,14 +620,15 @@ Module batch_inverse.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                              (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ __tracing_attr_fake_return :
@@ -592,7 +640,8 @@ Module batch_inverse.
                                         M.read (|
                                           M.loop (|
                                             Ty.path "never",
-                                            ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           |)
                                         |)
                                       |) in
@@ -600,7 +649,7 @@ Module batch_inverse.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -781,14 +830,41 @@ Module batch_inverse.
                                           ]
                                       ]
                                       (Ty.tuple []),
-                                    M.alloc (| α0 |),
+                                    M.alloc (|
+                                      Ty.tuple
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ F ] ];
+                                          Ty.apply
+                                            (Ty.path "&mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ F ] ]
+                                        ],
+                                      α0
+                                    |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                          let x := M.copy (| γ0_0 |) in
-                                          let result := M.copy (| γ0_1 |) in
+                                          let x :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                                              γ0_0
+                                            |) in
+                                          let result :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ F ] ],
+                                              γ0_1
+                                            |) in
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.call_closure (|
@@ -809,7 +885,7 @@ Module batch_inverse.
                                                   |)
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)))
                                     ]
                                   |)))
@@ -834,7 +910,7 @@ Module batch_inverse.
   
   Module batch_multiplicative_inverse.
     Definition value_CHUNK_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1024 |))).
     
     Global Instance Instance_IsConstant_value_CHUNK_SIZE :
       M.IsFunction.C
@@ -873,12 +949,18 @@ Module batch_inverse.
     match ε, τ, α with
     | [], [ F ], [ x; result ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let result := M.alloc (| result |) in
+        (let x :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ], x |) in
+        let result :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+            result
+          |) in
         M.read (|
           M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.tuple [],
                 M.read (|
                   let~ n : Ty.path "usize" :=
                     M.call_closure (|
@@ -896,11 +978,17 @@ Module batch_inverse.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                            ],
                           Value.Tuple
                             [
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -926,17 +1014,20 @@ Module batch_inverse.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let left_val := M.copy (| γ0_0 |) in
-                              let right_val := M.copy (| γ0_1 |) in
+                              let left_val :=
+                                M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                              let right_val :=
+                                M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                               M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             UnOp.not (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -954,6 +1045,7 @@ Module batch_inverse.
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -963,6 +1055,7 @@ Module batch_inverse.
                                                 []
                                                 [] in
                                             M.alloc (|
+                                              Ty.path "never",
                                               M.call_closure (|
                                                 Ty.path "never",
                                                 M.get_function (|
@@ -1001,7 +1094,8 @@ Module batch_inverse.
                                           |)
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ]
                               |)))
                         ]
@@ -1011,13 +1105,14 @@ Module batch_inverse.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.ne,
@@ -1042,6 +1137,7 @@ Module batch_inverse.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1069,11 +1165,11 @@ Module batch_inverse.
                                                   ltac:(M.monadic
                                                     (M.match_operator (|
                                                       Ty.function [ Ty.tuple [ F ] ] F,
-                                                      M.alloc (| α0 |),
+                                                      M.alloc (| F, α0 |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let x := M.copy (| γ |) in
+                                                            (let x := M.copy (| F, γ |) in
                                                             M.call_closure (|
                                                               F,
                                                               M.get_trait_method (|
@@ -1097,7 +1193,7 @@ Module batch_inverse.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1243,11 +1339,24 @@ Module batch_inverse.
                                         (Ty.path "p3_field::array::FieldArray")
                                         [ Value.Integer IntegerKind.Usize 4 ]
                                         [ F ]),
-                                    M.alloc (| α0 |),
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "p3_field::array::FieldArray")
+                                        [ Value.Integer IntegerKind.Usize 4 ]
+                                        [ F ],
+                                      α0
+                                    |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let x_packed := M.copy (| γ |) in
+                                          (let x_packed :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "p3_field::array::FieldArray")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ F ],
+                                              γ
+                                            |) in
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "p3_field::array::FieldArray")
@@ -1270,7 +1379,7 @@ Module batch_inverse.
                               end))
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                 |)
               |)))
           |)
@@ -1287,7 +1396,7 @@ Module batch_inverse.
   
   Module batch_multiplicative_inverse_helper.
     Definition value_WIDTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 4 |))).
     
     Global Instance Instance_IsConstant_value_WIDTH :
       M.IsFunction.C
@@ -1331,13 +1440,19 @@ Module batch_inverse.
     match ε, τ, α with
     | [], [ F; Inv ], [ x; result; inv ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let result := M.alloc (| result |) in
-        let inv := M.alloc (| inv |) in
+        (let x :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ F ] ], x |) in
+        let result :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ F ] ],
+            result
+          |) in
+        let inv := M.alloc (| Inv, inv |) in
         M.read (|
           M.catch_return (Ty.tuple []) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.tuple [],
                 M.read (|
                   let~ n : Ty.path "usize" :=
                     M.call_closure (|
@@ -1355,11 +1470,17 @@ Module batch_inverse.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ];
+                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ]
+                            ],
                           Value.Tuple
                             [
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -1385,17 +1506,20 @@ Module batch_inverse.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let left_val := M.copy (| γ0_0 |) in
-                              let right_val := M.copy (| γ0_1 |) in
+                              let left_val :=
+                                M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_0 |) in
+                              let right_val :=
+                                M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ0_1 |) in
                               M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             UnOp.not (|
                                               M.call_closure (|
                                                 Ty.path "bool",
@@ -1413,6 +1537,7 @@ Module batch_inverse.
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -1422,6 +1547,7 @@ Module batch_inverse.
                                                 []
                                                 [] in
                                             M.alloc (|
+                                              Ty.path "never",
                                               M.call_closure (|
                                                 Ty.path "never",
                                                 M.get_function (|
@@ -1460,7 +1586,8 @@ Module batch_inverse.
                                           |)
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ]
                               |)))
                         ]
@@ -1470,13 +1597,14 @@ Module batch_inverse.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -1486,9 +1614,10 @@ Module batch_inverse.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -1508,6 +1637,7 @@ Module batch_inverse.
                         (M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                             M.call_closure (|
                               Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                               M.get_trait_method (|
@@ -1520,7 +1650,7 @@ Module batch_inverse.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -1534,7 +1664,14 @@ Module batch_inverse.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
+                                (let iter :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    γ
+                                  |) in
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
@@ -1543,6 +1680,10 @@ Module batch_inverse.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1579,6 +1720,7 @@ Module batch_inverse.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -1589,7 +1731,7 @@ Module batch_inverse.
                                                     "core::option::Option::Some",
                                                     0
                                                   |) in
-                                                let i := M.copy (| γ0_0 |) in
+                                                let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.write (|
                                                     M.SubPointer.get_array_field (|
@@ -1637,11 +1779,11 @@ Module batch_inverse.
                                                       ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 |)))
                           ]
                         |))
@@ -1691,6 +1833,10 @@ Module batch_inverse.
                     (M.match_operator (|
                       Ty.tuple [],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::iter::adapters::rev::Rev")
+                          []
+                          [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::iter::adapters::rev::Rev")
@@ -1730,7 +1876,7 @@ Module batch_inverse.
                                 []
                               |),
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -1746,7 +1892,19 @@ Module batch_inverse.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
+                            (let iter :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::iter::adapters::rev::Rev")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::ops::range::Range")
+                                      []
+                                      [ Ty.path "usize" ]
+                                  ],
+                                γ
+                              |) in
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
@@ -1755,6 +1913,10 @@ Module batch_inverse.
                                     M.match_operator (|
                                       Ty.tuple [],
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1794,6 +1956,7 @@ Module batch_inverse.
                                                 "core::option::Option::None"
                                               |) in
                                             M.alloc (|
+                                              Ty.tuple [],
                                               M.never_to_any (| M.read (| M.break (||) |) |)
                                             |)));
                                         fun γ =>
@@ -1804,7 +1967,7 @@ Module batch_inverse.
                                                 "core::option::Option::Some",
                                                 0
                                               |) in
-                                            let i := M.copy (| γ0_0 |) in
+                                            let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                             let~ _ : Ty.tuple [] :=
                                               M.call_closure (|
                                                 Ty.tuple [],
@@ -1850,11 +2013,11 @@ Module batch_inverse.
                                                   |)
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             |)))
                       ]
                     |))

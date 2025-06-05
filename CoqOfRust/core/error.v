@@ -8,7 +8,7 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           Value.StructTuple
             "core::option::Option::None"
             []
@@ -22,8 +22,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let β1 := M.alloc (| Ty.path "core::error::private::Internal", β1 |) in
           M.match_operator (|
             Ty.path "core::any::TypeId",
             β1,
@@ -50,7 +50,7 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (| mk_str (| "description() is deprecated; use Display" |) |)
@@ -64,7 +64,7 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -81,8 +81,12 @@ Module error.
       match ε, τ, α with
       | [], [], [ self; request ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let request := M.alloc (| request |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let request :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
+              request
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -107,8 +111,13 @@ Module error.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::error::private::Internal" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -164,7 +173,11 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+              self
+            |) in
           M.read (|
             let~ t : Ty.path "core::any::TypeId" :=
               M.call_closure (|
@@ -190,6 +203,7 @@ Module error.
                 ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 M.get_trait_method (|
@@ -226,17 +240,22 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (|
@@ -250,6 +269,10 @@ Module error.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -266,6 +289,10 @@ Module error.
                                     (M.read (|
                                       M.use
                                         (M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "*const")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
                                           (* Unsize *)
                                           M.pointer_coercion
                                             (M.borrow (|
@@ -283,6 +310,10 @@ Module error.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ] ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -314,17 +345,22 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (|
@@ -338,6 +374,10 @@ Module error.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -354,6 +394,10 @@ Module error.
                                     (M.read (|
                                       M.use
                                         (M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
                                           (* Unsize *)
                                           M.pointer_coercion
                                             (M.borrow (|
@@ -371,6 +415,10 @@ Module error.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ] ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -408,8 +456,12 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "core::error::Source"
             []
             []
@@ -446,7 +498,17 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.dyn
+                    [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -476,7 +538,17 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.dyn
+                    [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
@@ -507,7 +579,17 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.dyn
+                    [ ("core::error::Error::Trait", []); ("core::marker::Send::AutoTrait", []) ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
@@ -549,7 +631,21 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.dyn
+                    [
+                      ("core::error::Error::Trait", []);
+                      ("core::marker::Sync::AutoTrait", []);
+                      ("core::marker::Send::AutoTrait", [])
+                    ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -579,7 +675,21 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.dyn
+                    [
+                      ("core::error::Error::Trait", []);
+                      ("core::marker::Sync::AutoTrait", []);
+                      ("core::marker::Send::AutoTrait", [])
+                    ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
@@ -610,7 +720,21 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.dyn
+                    [
+                      ("core::error::Error::Trait", []);
+                      ("core::marker::Sync::AutoTrait", []);
+                      ("core::marker::Send::AutoTrait", [])
+                    ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
@@ -647,7 +771,7 @@ Module error.
     match ε, τ, α with
     | [], [ T; impl_Error__plus___Sized ], [ err ] =>
       ltac:(M.monadic
-        (let err := M.alloc (| err |) in
+        (let err := M.alloc (| Ty.apply (Ty.path "&") [] [ impl_Error__plus___Sized ], err |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::option::Option") [] [ T ],
           M.get_function (|
@@ -677,7 +801,7 @@ Module error.
     match ε, τ, α with
     | [], [ T; impl_Error__plus___Sized ], [ err ] =>
       ltac:(M.monadic
-        (let err := M.alloc (| err |) in
+        (let err := M.alloc (| Ty.apply (Ty.path "&") [] [ impl_Error__plus___Sized ], err |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
           M.get_function (|
@@ -715,14 +839,14 @@ Module error.
     match ε, τ, α with
     | [], [ _ as I; impl_Error__plus___Sized ], [ err ] =>
       ltac:(M.monadic
-        (let err := M.alloc (| err |) in
+        (let err := M.alloc (| Ty.apply (Ty.path "&") [] [ impl_Error__plus___Sized ], err |) in
         M.read (|
           let~ tagged :
               Ty.apply
                 (Ty.path "core::error::Tagged")
                 []
                 [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ] :=
-            Value.StructRecord
+            Value.mkStructRecord
               "core::error::Tagged"
               []
               [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
@@ -823,8 +947,9 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self; value ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let value := M.alloc (| value |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ], self |) in
+          let value := M.alloc (| T, value |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -868,8 +993,9 @@ Module error.
       match ε, τ, α with
       | [], [ T; impl_FnOnce___arrow_T ], [ self; fulfil ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fulfil := M.alloc (| fulfil |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ], self |) in
+          let fulfil := M.alloc (| impl_FnOnce___arrow_T, fulfil |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -913,8 +1039,9 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self; value ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let value := M.alloc (| value |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ], self |) in
+          let value := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], value |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -963,8 +1090,9 @@ Module error.
       match ε, τ, α with
       | [], [ T; impl_FnOnce___arrow__'a_T ], [ self; fulfil ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fulfil := M.alloc (| fulfil |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ], self |) in
+          let fulfil := M.alloc (| impl_FnOnce___arrow__'a_T, fulfil |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1017,8 +1145,13 @@ Module error.
       match ε, τ, α with
       | [], [ _ as I ], [ self; value ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let value := M.alloc (| value |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ], self |) in
+          let value :=
+            M.alloc (|
+              Ty.associated_in_trait "core::error::tags::Type" [] [] I "Reified",
+              value
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1027,12 +1160,21 @@ Module error.
                   M.read (|
                     M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                                  ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -1070,7 +1212,14 @@ Module error.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let res := M.copy (| γ0_0 |) in
+                            let res :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
+                                γ0_0
+                              |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let γ3_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -1099,12 +1248,15 @@ Module error.
                                   ]
                                   [ M.read (| value |) ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ]
                     |)
                   |) in
-                M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                M.alloc (|
+                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                |)
               |)
             |)
           |)))
@@ -1130,8 +1282,9 @@ Module error.
       match ε, τ, α with
       | [], [ _ as I; impl_FnOnce___arrow_I_Reified ], [ self; fulfil ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fulfil := M.alloc (| fulfil |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ], self |) in
+          let fulfil := M.alloc (| impl_FnOnce___arrow_I_Reified, fulfil |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1140,12 +1293,21 @@ Module error.
                   M.read (|
                     M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                                  ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -1183,7 +1345,14 @@ Module error.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let res := M.copy (| γ0_0 |) in
+                            let res :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
+                                γ0_0
+                              |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let γ3_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -1231,12 +1400,15 @@ Module error.
                                     |)
                                   ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ]
                     |)
                   |) in
-                M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                M.alloc (|
+                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                |)
               |)
             |)
           |)))
@@ -1264,7 +1436,8 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Request" ], self |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -1299,7 +1472,8 @@ Module error.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Request" ], self |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -1335,11 +1509,21 @@ Module error.
       match ε, τ, α with
       | [], [ _ as I ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Request" ], self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                  ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
@@ -1388,8 +1572,8 @@ Module error.
                         0
                       |) in
                     let _ := M.is_struct_tuple (| γ2_0, "core::option::Option::None" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1414,8 +1598,10 @@ Module error.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Request" ], self |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1431,6 +1617,7 @@ Module error.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.alloc (|
+                  Ty.path "core::fmt::builders::DebugStruct",
                   M.call_closure (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     M.get_associated_function (|
@@ -1501,8 +1688,16 @@ Module error.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::error::tags::Value") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1525,6 +1720,10 @@ Module error.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|
@@ -1586,8 +1785,16 @@ Module error.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::error::tags::MaybeSizedValue") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1610,6 +1817,10 @@ Module error.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|
@@ -1671,8 +1882,13 @@ Module error.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::error::tags::Ref") [] [ I ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1695,6 +1911,10 @@ Module error.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ I ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|
@@ -1777,7 +1997,19 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::error::Tagged")
+                    []
+                    [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1795,12 +2027,22 @@ Module error.
                   M.read (|
                     M.use
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::error::Tagged")
+                              []
+                              [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                          ],
                         (* Unsize *)
                         M.pointer_coercion
                           (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |))
                       |))
                   |) in
                 M.alloc (|
+                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.deref (|
@@ -1815,6 +2057,15 @@ Module error.
                                 (M.read (|
                                   M.use
                                     (M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::error::Tagged")
+                                            []
+                                            [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                        ],
                                       (* Unsize *)
                                       M.pointer_coercion
                                         (M.borrow (|
@@ -1888,7 +2139,19 @@ Module error.
       match ε, τ, α with
       | [], [ _ as I ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::error::Tagged")
+                    []
+                    [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1900,13 +2163,14 @@ Module error.
                     []
                     [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
                 ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_trait_method (|
@@ -1930,6 +2194,7 @@ Module error.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "core::any::TypeId",
                                   M.call_closure (|
                                     Ty.path "core::any::TypeId",
                                     M.get_associated_function (|
@@ -1947,6 +2212,15 @@ Module error.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2010,6 +2284,18 @@ Module error.
                                             M.read (|
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "*const")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::error::Tagged")
+                                                        []
+                                                        [
+                                                          Ty.dyn
+                                                            [ ("core::error::Erased::Trait", []) ]
+                                                        ]
+                                                    ],
                                                   (* Unsize *)
                                                   M.pointer_coercion
                                                     (M.borrow (|
@@ -2034,6 +2320,15 @@ Module error.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -2075,7 +2370,19 @@ Module error.
       match ε, τ, α with
       | [], [ _ as I ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "core::error::Tagged")
+                    []
+                    [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2087,13 +2394,14 @@ Module error.
                     []
                     [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
                 ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_trait_method (|
@@ -2117,6 +2425,7 @@ Module error.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "core::any::TypeId",
                                   M.call_closure (|
                                     Ty.path "core::any::TypeId",
                                     M.get_associated_function (|
@@ -2134,6 +2443,15 @@ Module error.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2197,6 +2515,18 @@ Module error.
                                             M.read (|
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "*mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "core::error::Tagged")
+                                                        []
+                                                        [
+                                                          Ty.dyn
+                                                            [ ("core::error::Erased::Trait", []) ]
+                                                        ]
+                                                    ],
                                                   (* Unsize *)
                                                   M.pointer_coercion
                                                     (M.borrow (|
@@ -2221,6 +2551,15 @@ Module error.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -2267,8 +2606,9 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Source" ], self |) in
+          Value.mkStructRecord
             "core::error::Source"
             []
             []
@@ -2329,8 +2669,10 @@ Module error.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Source" ], self |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2354,6 +2696,20 @@ Module error.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -2398,7 +2754,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Source" ], self |) in
           M.read (|
             let~ current :
                 Ty.apply
@@ -2482,19 +2839,21 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::error::Source" ], self |) in
           M.read (|
             M.match_operator (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
                 ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (|
@@ -2525,6 +2884,11 @@ Module error.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ],
                       Value.Tuple
                         [
                           Value.Integer IntegerKind.Usize 1;
@@ -2534,6 +2898,11 @@ Module error.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ],
                       Value.Tuple
                         [
                           Value.Integer IntegerKind.Usize 0;
@@ -2589,7 +2958,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2623,7 +2993,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -2655,7 +3026,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -2687,8 +3059,13 @@ Module error.
       match ε, τ, α with
       | [], [], [ self; request ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let request := M.alloc (| request |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
+          let request :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
+              request
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2707,7 +3084,7 @@ Module error.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| request |) |) |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2740,7 +3117,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::Error" ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (| mk_str (| "an error occurred when formatting an argument" |) |)
@@ -2769,7 +3147,8 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cell::BorrowError" ], self |) in
           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already mutably borrowed" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2795,7 +3174,11 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::cell::BorrowMutError" ],
+              self
+            |) in
           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already borrowed" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2821,7 +3204,11 @@ Module error.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::char::convert::CharTryFromError" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (| mk_str (| "converted integer out of range for `char`" |) |)

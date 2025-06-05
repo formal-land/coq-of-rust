@@ -22,8 +22,15 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ] ],
+                self
+              |) in
+            Value.mkStructRecord
               "core::char::decode::DecodeUtf16"
               []
               [ I ]
@@ -100,8 +107,16 @@ Module char.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -141,6 +156,10 @@ Module char.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -184,8 +203,13 @@ Module char.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -209,6 +233,7 @@ Module char.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -243,8 +268,12 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
+            Value.mkStructRecord
               "core::char::decode::DecodeUtf16Error"
               []
               []
@@ -302,12 +331,16 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -343,8 +376,16 @@ Module char.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -386,8 +427,8 @@ Module char.
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
-          Value.StructRecord
+          (let iter := M.alloc (| I, iter |) in
+          Value.mkStructRecord
             "core::char::decode::DecodeUtf16"
             []
             [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"
@@ -471,7 +512,14 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ] ],
+                self
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -485,12 +533,22 @@ Module char.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
+                      ],
                     M.read (|
                       let~ u : Ty.path "u16" :=
                         M.read (|
                           M.match_operator (|
                             Ty.path "u16",
                             M.alloc (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
                                 M.get_associated_function (|
@@ -520,7 +578,7 @@ Module char.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let buf := M.copy (| γ0_0 |) in
+                                  let buf := M.copy (| Ty.path "u16", γ0_0 |) in
                                   buf));
                               fun γ =>
                                 ltac:(M.monadic
@@ -529,6 +587,16 @@ Module char.
                                   M.match_operator (|
                                     Ty.path "u16",
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "core::convert::Infallible" ];
+                                          Ty.path "u16"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::ops::control_flow::ControlFlow")
@@ -590,8 +658,16 @@ Module char.
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
                                             |) in
-                                          let residual := M.copy (| γ0_0 |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "core::convert::Infallible" ],
+                                              γ0_0
+                                            |) in
                                           M.alloc (|
+                                            Ty.path "u16",
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
@@ -649,7 +725,7 @@ Module char.
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
                                             |) in
-                                          let val := M.copy (| γ0_0 |) in
+                                          let val := M.copy (| Ty.path "u16", γ0_0 |) in
                                           val))
                                     ]
                                   |)))
@@ -666,13 +742,14 @@ Module char.
                               []
                               [ Ty.path "char"; Ty.path "core::char::decode::DecodeUtf16Error" ]
                           ],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -689,6 +766,18 @@ Module char.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "char";
+                                        Ty.path "core::char::decode::DecodeUtf16Error"
+                                      ]
+                                  ],
                                 Value.StructTuple
                                   "core::option::Option::Some"
                                   []
@@ -738,13 +827,14 @@ Module char.
                                         Ty.path "core::char::decode::DecodeUtf16Error"
                                       ]
                                   ],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
+                                            Ty.path "bool",
                                             M.call_closure (|
                                               Ty.path "bool",
                                               BinOp.ge,
@@ -758,6 +848,18 @@ Module char.
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "char";
+                                                Ty.path "core::char::decode::DecodeUtf16Error"
+                                              ]
+                                          ],
                                         Value.StructTuple
                                           "core::option::Option::Some"
                                           []
@@ -779,7 +881,7 @@ Module char.
                                                 Ty.path "core::char::decode::DecodeUtf16Error"
                                               ]
                                               [
-                                                Value.StructRecord
+                                                Value.mkStructRecord
                                                   "core::char::decode::DecodeUtf16Error"
                                                   []
                                                   []
@@ -794,6 +896,10 @@ Module char.
                                           M.match_operator (|
                                             Ty.path "u16",
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -829,7 +935,7 @@ Module char.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let u2 := M.copy (| γ0_0 |) in
+                                                  let u2 := M.copy (| Ty.path "u16", γ0_0 |) in
                                                   u2));
                                               fun γ =>
                                                 ltac:(M.monadic
@@ -839,6 +945,7 @@ Module char.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.path "u16",
                                                     M.never_to_any (|
                                                       M.read (|
                                                         M.return_ (|
@@ -865,7 +972,7 @@ Module char.
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                 ]
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                     []
                                                                     []
@@ -883,13 +990,14 @@ Module char.
                                         M.read (|
                                           M.match_operator (|
                                             Ty.tuple [],
-                                            M.alloc (| Value.Tuple [] |),
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
+                                                        Ty.path "bool",
                                                         LogicalOp.or (|
                                                           M.call_closure (|
                                                             Ty.path "bool",
@@ -916,6 +1024,7 @@ Module char.
                                                       Value.Bool true
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (|
                                                       M.read (|
                                                         let~ _ : Ty.tuple [] :=
@@ -955,7 +1064,7 @@ Module char.
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                 ]
                                                                 [
-                                                                  Value.StructRecord
+                                                                  Value.mkStructRecord
                                                                     "core::char::decode::DecodeUtf16Error"
                                                                     []
                                                                     []
@@ -967,7 +1076,8 @@ Module char.
                                                     |)
                                                   |)));
                                               fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ltac:(M.monadic
+                                                  (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
@@ -1013,6 +1123,18 @@ Module char.
                                           ]
                                         |) in
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "char";
+                                                Ty.path "core::char::decode::DecodeUtf16Error"
+                                              ]
+                                          ],
                                         Value.StructTuple
                                           "core::option::Option::Some"
                                           []
@@ -1096,7 +1218,14 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::char::decode::DecodeUtf16") [] [ I ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple
@@ -1105,6 +1234,11 @@ Module char.
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
                   ],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ],
                   M.call_closure (|
                     Ty.tuple
                       [
@@ -1137,8 +1271,12 @@ Module char.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let low := M.copy (| γ0_0 |) in
-                      let high := M.copy (| γ0_1 |) in
+                      let low := M.copy (| Ty.path "usize", γ0_0 |) in
+                      let high :=
+                        M.copy (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                          γ0_1
+                        |) in
                       M.match_operator (|
                         Ty.tuple
                           [
@@ -1157,6 +1295,7 @@ Module char.
                               ltac:(M.monadic
                                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                 M.alloc (|
+                                  Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                                   Value.Tuple
                                     [
                                       Value.Integer IntegerKind.Usize 0;
@@ -1171,9 +1310,10 @@ Module char.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let u := M.copy (| γ0_0 |) in
+                                let u := M.copy (| Ty.path "u16", γ0_0 |) in
                                 let γ :=
                                   M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -1193,6 +1333,7 @@ Module char.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                                   Value.Tuple
                                     [
                                       Value.Integer IntegerKind.Usize 1;
@@ -1207,9 +1348,10 @@ Module char.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let _u := M.copy (| γ0_0 |) in
+                                let _u := M.copy (| Ty.path "u16", γ0_0 |) in
                                 let γ :=
                                   M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -1234,6 +1376,10 @@ Module char.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ],
                                             Value.StructTuple
                                               "core::option::Option::Some"
                                               []
@@ -1250,6 +1396,7 @@ Module char.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                                   Value.Tuple
                                     [
                                       Value.Integer IntegerKind.Usize 1;
@@ -1264,8 +1411,9 @@ Module char.
                                     "core::option::Option::Some",
                                     0
                                   |) in
-                                let _u := M.copy (| γ0_0 |) in
+                                let _u := M.copy (| Ty.path "u16", γ0_0 |) in
                                 M.alloc (|
+                                  Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                                   Value.Tuple
                                     [
                                       Value.Integer IntegerKind.Usize 0;
@@ -1279,8 +1427,8 @@ Module char.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let low_buf := M.copy (| γ0_0 |) in
-                              let high_buf := M.copy (| γ0_1 |) in
+                              let low_buf := M.copy (| Ty.path "usize", γ0_0 |) in
+                              let high_buf := M.copy (| Ty.path "usize", γ0_1 |) in
                               let~ low : Ty.path "usize" :=
                                 M.call_closure (|
                                   Ty.path "usize",
@@ -1338,11 +1486,11 @@ Module char.
                                                     (Ty.path "core::option::Option")
                                                     []
                                                     [ Ty.path "usize" ]),
-                                                M.alloc (| α0 |),
+                                                M.alloc (| Ty.path "usize", α0 |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (let h := M.copy (| γ |) in
+                                                      (let h := M.copy (| Ty.path "usize", γ |) in
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path "core::option::Option")
@@ -1362,7 +1510,14 @@ Module char.
                                           end))
                                   ]
                                 |) in
-                              M.alloc (| Value.Tuple [ M.read (| low |); M.read (| high |) ] |)))
+                              M.alloc (|
+                                Ty.tuple
+                                  [
+                                    Ty.path "usize";
+                                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                                  ],
+                                Value.Tuple [ M.read (| low |); M.read (| high |) ]
+                              |)))
                         ]
                       |)))
                 ]
@@ -1412,7 +1567,11 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -1441,8 +1600,13 @@ Module char.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1465,7 +1629,13 @@ Module char.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Array [ mk_str (| "unpaired surrogate found: " |) ] |)
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                            Value.Array [ mk_str (| "unpaired surrogate found: " |) ]
+                          |)
                         |)
                       |)
                     |);
@@ -1475,6 +1645,10 @@ Module char.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             Value.Array
                               [
                                 M.call_closure (|
@@ -1534,7 +1708,11 @@ Module char.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::char::decode::DecodeUtf16Error" ],
+                self
+              |) in
             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "unpaired surrogate found" |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

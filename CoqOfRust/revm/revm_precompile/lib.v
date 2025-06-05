@@ -10,9 +10,9 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
   match ε, τ, α with
   | [], [], [ len; base; word ] =>
     ltac:(M.monadic
-      (let len := M.alloc (| len |) in
-      let base := M.alloc (| base |) in
-      let word := M.alloc (| word |) in
+      (let len := M.alloc (| Ty.path "usize", len |) in
+      let base := M.alloc (| Ty.path "u64", base |) in
+      let word := M.alloc (| Ty.path "u64", word |) in
       M.call_closure (|
         Ty.path "u64",
         BinOp.Wrap.add,
@@ -86,8 +86,12 @@ Module Impl_core_clone_Clone_for_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        Value.StructRecord
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
+        Value.mkStructRecord
           "revm_precompile::Precompiles"
           []
           []
@@ -217,7 +221,7 @@ Module Impl_core_default_Default_for_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "revm_precompile::Precompiles"
           []
           []
@@ -319,8 +323,12 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
@@ -357,6 +365,18 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "std::collections::hash::set::HashSet")
+                            []
+                            [
+                              Ty.path "alloy_primitives::bits::address::Address";
+                              Ty.path "std::hash::random::RandomState"
+                            ]
+                        ],
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_record_field (|
@@ -403,7 +423,7 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ spec ] =>
       ltac:(M.monadic
-        (let spec := M.alloc (| spec |) in
+        (let spec := M.alloc (| Ty.path "revm_precompile::PrecompileSpecId", spec |) in
         M.read (|
           M.match_operator (|
             Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
@@ -414,6 +434,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -430,6 +451,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -446,6 +468,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -462,6 +485,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -478,6 +502,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -494,6 +519,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -510,6 +536,7 @@ Module Impl_revm_precompile_Precompiles.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
                       M.get_associated_function (|
@@ -607,7 +634,7 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "revm_precompile::Precompiles";
                                   Ty.path "alloc::alloc::Global"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -672,6 +699,13 @@ Module Impl_revm_precompile_Precompiles.
                                         ]
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -721,7 +755,11 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -821,7 +859,7 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "revm_precompile::Precompiles";
                                   Ty.path "alloc::alloc::Global"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -905,6 +943,13 @@ Module Impl_revm_precompile_Precompiles.
                                         ]
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -1023,7 +1068,7 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "revm_precompile::Precompiles";
                                   Ty.path "alloc::alloc::Global"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1107,6 +1152,13 @@ Module Impl_revm_precompile_Precompiles.
                                         ]
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -1220,7 +1272,7 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "revm_precompile::Precompiles";
                                   Ty.path "alloc::alloc::Global"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1286,6 +1338,13 @@ Module Impl_revm_precompile_Precompiles.
                                         ]
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -1410,7 +1469,7 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "revm_precompile::Precompiles";
                                   Ty.path "alloc::alloc::Global"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1491,6 +1550,13 @@ Module Impl_revm_precompile_Precompiles.
                                         ]
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -1609,7 +1675,7 @@ Module Impl_revm_precompile_Precompiles.
                                   Ty.path "revm_precompile::Precompiles";
                                   Ty.path "alloc::alloc::Global"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1676,6 +1742,13 @@ Module Impl_revm_precompile_Precompiles.
                                         precompiles
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "revm_precompile::Precompiles";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "alloc::boxed::Box")
@@ -1745,7 +1818,11 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "std::collections::hash::map::Keys")
@@ -1817,7 +1894,7 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.path "revm_precompile::Precompiles", self |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "std::collections::hash::map::IntoKeys")
@@ -1888,8 +1965,16 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self; address ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let address := M.alloc (| address |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
+        let address :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ],
+            address
+          |) in
         M.call_closure (|
           Ty.path "bool",
           M.get_associated_function (|
@@ -1944,8 +2029,16 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self; address ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let address := M.alloc (| address |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
+        let address :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ],
+            address
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::option::Option")
@@ -2021,8 +2114,16 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self; address ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let address := M.alloc (| address |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
+        let address :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bits::address::Address" ],
+            address
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::option::Option")
@@ -2098,7 +2199,11 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "bool",
           BinOp.eq,
@@ -2159,7 +2264,11 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "usize",
           M.get_associated_function (|
@@ -2213,7 +2322,11 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -2246,8 +2359,12 @@ Module Impl_revm_precompile_Precompiles.
     match ε, τ, α with
     | [], [ impl_IntoIterator_Item___PrecompileWithAddress_ ], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_precompile::Precompiles" ],
+            self
+          |) in
+        let other := M.alloc (| impl_IntoIterator_Item___PrecompileWithAddress_, other |) in
         M.read (|
           let~ items :
               Ty.apply
@@ -2466,11 +2583,24 @@ Module Impl_revm_precompile_Precompiles.
                                       ]
                                   ]
                                   (Ty.path "alloy_primitives::bits::address::Address"),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let p := M.copy (| γ |) in
+                                      (let p :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+                                          γ
+                                        |) in
                                       M.read (|
                                         M.deref (|
                                           M.call_closure (|
@@ -2736,11 +2866,15 @@ Module Impl_revm_precompile_Precompiles.
                                             Ty.path "revm_precompile::interface::PrecompileErrors"
                                           ])
                                     ]),
-                                M.alloc (| α0 |),
+                                M.alloc (| Ty.path "revm_precompile::PrecompileWithAddress", α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let p := M.copy (| γ |) in
+                                      (let p :=
+                                        M.copy (|
+                                          Ty.path "revm_precompile::PrecompileWithAddress",
+                                          γ
+                                        |) in
                                       Value.Tuple
                                         [
                                           M.read (|
@@ -2766,7 +2900,7 @@ Module Impl_revm_precompile_Precompiles.
                 |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2804,7 +2938,11 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileWithAddress.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+            self
+          |) in
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
           []
@@ -2907,8 +3045,12 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
@@ -2943,6 +3085,26 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.function
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                              Ty.path "u64"
+                            ]
+                            (Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "revm_precompile::interface::PrecompileOutput";
+                                Ty.path "revm_precompile::interface::PrecompileErrors"
+                              ])
+                        ],
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_tuple_field (|
@@ -2981,7 +3143,26 @@ Module Impl_core_convert_From_Tuple_alloy_primitives_bits_address_Address_ref__a
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value :=
+          M.alloc (|
+            Ty.tuple
+              [
+                Ty.path "alloy_primitives::bits::address::Address";
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                    Ty.path "u64"
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_precompile::interface::PrecompileOutput";
+                      Ty.path "revm_precompile::interface::PrecompileErrors"
+                    ])
+              ],
+            value
+          |) in
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
           []
@@ -3045,7 +3226,7 @@ Module Impl_core_convert_From_revm_precompile_PrecompileWithAddress_for_Tuple_al
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| Ty.path "revm_precompile::PrecompileWithAddress", value |) in
         Value.Tuple
           [
             M.read (|
@@ -3087,7 +3268,11 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+            self
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -3117,7 +3302,11 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileWithAddress" ],
+            self
+          |) in
         M.borrow (|
           Pointer.Kind.Ref,
           M.deref (|
@@ -3214,7 +3403,11 @@ Module Impl_core_clone_Clone_for_revm_precompile_PrecompileSpecId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
         M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3236,8 +3429,12 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -3254,6 +3451,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)
                       |)));
                   fun γ =>
@@ -3262,6 +3460,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)
                       |)));
                   fun γ =>
@@ -3270,6 +3469,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)
                       |)));
                   fun γ =>
@@ -3278,6 +3478,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)
                       |)));
                   fun γ =>
@@ -3286,6 +3487,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)
                       |)));
                   fun γ =>
@@ -3294,6 +3496,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)
                       |)));
                   fun γ =>
@@ -3302,6 +3505,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)
                       |)))
                 ]
@@ -3341,8 +3545,16 @@ Module Impl_core_cmp_PartialEq_revm_precompile_PrecompileSpecId_for_revm_precomp
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -3365,6 +3577,7 @@ Module Impl_core_cmp_PartialEq_revm_precompile_PrecompileSpecId_for_revm_precomp
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3396,7 +3609,11 @@ Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3419,8 +3636,12 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
     match ε, τ, α with
     | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let state := M.alloc (| state |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
+        let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -3433,6 +3654,7 @@ Module Impl_core_hash_Hash_for_revm_precompile_PrecompileSpecId.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -3474,8 +3696,16 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -3498,6 +3728,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "core::cmp::Ordering",
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -3534,8 +3765,16 @@ Module Impl_core_cmp_PartialOrd_revm_precompile_PrecompileSpecId_for_revm_precom
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "revm_precompile::PrecompileSpecId" ],
+            other
+          |) in
         M.read (|
           let~ __self_discr : Ty.path "isize" :=
             M.call_closure (|
@@ -3558,6 +3797,7 @@ Module Impl_core_cmp_PartialOrd_revm_precompile_PrecompileSpecId_for_revm_precom
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -3606,7 +3846,7 @@ Module Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precom
     match ε, τ, α with
     | [], [], [ spec_id ] =>
       ltac:(M.monadic
-        (let spec_id := M.alloc (| spec_id |) in
+        (let spec_id := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", spec_id |) in
         M.call_closure (|
           Ty.path "revm_precompile::PrecompileSpecId",
           M.get_associated_function (|
@@ -3652,7 +3892,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
     match ε, τ, α with
     | [], [], [ spec_id ] =>
       ltac:(M.monadic
-        (let spec_id := M.alloc (| spec_id |) in
+        (let spec_id := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", spec_id |) in
         M.read (|
           M.match_operator (|
             Ty.path "revm_precompile::PrecompileSpecId",
@@ -3670,7 +3910,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::FRONTIER"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3678,7 +3918,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3686,7 +3926,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::HOMESTEAD"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3694,7 +3934,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::DAO_FORK"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3702,7 +3942,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::TANGERINE"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3710,7 +3950,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -3718,6 +3958,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "revm_precompile::PrecompileSpecId",
                               Value.StructTuple
                                 "revm_precompile::PrecompileSpecId::HOMESTEAD"
                                 []
@@ -3739,7 +3980,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::BYZANTIUM"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3747,7 +3988,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3755,7 +3996,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::PETERSBURG"
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -3763,6 +4004,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "revm_precompile::PrecompileSpecId",
                               Value.StructTuple
                                 "revm_precompile::PrecompileSpecId::BYZANTIUM"
                                 []
@@ -3784,7 +4026,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::ISTANBUL"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3792,7 +4034,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -3800,6 +4042,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "revm_precompile::PrecompileSpecId",
                               Value.StructTuple
                                 "revm_precompile::PrecompileSpecId::ISTANBUL"
                                 []
@@ -3821,7 +4064,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::BERLIN"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3829,7 +4072,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::LONDON"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3837,7 +4080,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3845,7 +4088,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3853,7 +4096,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::MERGE"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3861,7 +4104,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::SHANGHAI"
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -3869,6 +4112,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "revm_precompile::PrecompileSpecId",
                               Value.StructTuple "revm_precompile::PrecompileSpecId::BERLIN" [] [] []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
@@ -3879,6 +4123,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::CANCUN" |) in
                   M.alloc (|
+                    Ty.path "revm_precompile::PrecompileSpecId",
                     Value.StructTuple "revm_precompile::PrecompileSpecId::CANCUN" [] [] []
                   |)));
               fun γ =>
@@ -3893,7 +4138,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::PRAGUE"
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ :=
@@ -3901,7 +4146,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                               γ,
                               "revm_specification::hardfork::SpecId::OSAKA"
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -3909,6 +4154,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                         | [] =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "revm_precompile::PrecompileSpecId",
                               Value.StructTuple "revm_precompile::PrecompileSpecId::PRAGUE" [] [] []
                             |)))
                         | _ => M.impossible "wrong number of arguments"
@@ -3919,6 +4165,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
                   (let _ :=
                     M.is_struct_tuple (| γ, "revm_specification::hardfork::SpecId::LATEST" |) in
                   M.alloc (|
+                    Ty.path "revm_precompile::PrecompileSpecId",
                     Value.StructTuple "revm_precompile::PrecompileSpecId::LATEST" [] [] []
                   |)))
             ]
@@ -3945,7 +4192,7 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.path "u64", x |) in
       M.read (|
         let~ x :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ Ty.path "u8" ] :=
@@ -3955,6 +4202,7 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
             [ M.read (| x |) ]
           |) in
         M.alloc (|
+          Ty.path "alloy_primitives::bits::address::Address",
           M.call_closure (|
             Ty.path "alloy_primitives::bits::address::Address",
             M.get_associated_function (|

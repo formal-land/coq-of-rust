@@ -15,18 +15,19 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   match ε, τ, α with
   | [], [], [ dividend; divisor ] =>
     ltac:(M.monadic
-      (let dividend := M.alloc (| dividend |) in
-      let divisor := M.alloc (| divisor |) in
+      (let dividend := M.alloc (| Ty.path "i32", dividend |) in
+      let divisor := M.alloc (| Ty.path "i32", divisor |) in
       M.read (|
         M.match_operator (|
           Ty.path "i32",
-          M.alloc (| Value.Tuple [] |),
+          M.alloc (| Ty.tuple [], Value.Tuple [] |),
           [
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
                   M.use
                     (M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         BinOp.eq,
@@ -35,6 +36,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     |)) in
                 let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
+                  Ty.path "i32",
                   M.never_to_any (|
                     M.call_closure (|
                       Ty.path "never",
@@ -50,6 +52,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             fun γ =>
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "i32",
                   M.call_closure (|
                     Ty.path "i32",
                     BinOp.Wrap.div,
@@ -133,6 +136,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "This point won't be reached!
 " |) ]
                             |)
@@ -143,9 +150,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

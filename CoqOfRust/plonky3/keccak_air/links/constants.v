@@ -94,12 +94,9 @@ Instance run_value_RC :
     (Ref.t Pointer.Kind.Raw (array.t U64.t {| Integer.value := 24 |})).
 Proof.
   constructor.
-  unshelve eapply Run.CallPrimitiveStateAlloc. {
-    eapply OfValue.Make with (value := RC).
-    reflexivity.
-  }
-  cbn; intros.
   run_symbolic.
+  { exact RC. }
+  { reflexivity. }
 Defined.
 
 (* const RC_BITS: [[u8; 64]; 24] *)
@@ -121,12 +118,9 @@ Instance run_value_RC_BITS :
     (Ref.t Pointer.Kind.Raw (array.t (array.t U8.t {| Integer.value := 64 |}) {| Integer.value := 24 |})).
 Proof.
   constructor.
-  unshelve eapply Run.CallPrimitiveStateAlloc. {
-    eapply OfValue.Make with (value := RC_BITS).
-    reflexivity.
-  }
-  cbn; intros.
   run_symbolic.
+  { exact RC_BITS. }
+  { reflexivity. }
 Defined.
 
 (* pub(crate) const fn rc_value_bit(round: usize, bit_index: usize) -> u8 *)

@@ -1,5 +1,5 @@
 (** * The definition of a Rust monad. *)
-Require Export Coq.Strings.String.
+Require Export Coq.Strings.PrimString.
 Require Export Coq.ZArith.ZArith.
 
 (* Proof libraries that we can use everywhere. *)
@@ -9,9 +9,10 @@ Require Export smpl.Smpl.
 Require Export coqutil.Datatypes.List.
 
 Import List.ListNotations.
+Import PStringNotations.
 
 Local Open Scope list.
-Local Open Scope string.
+Local Open Scope pstring_scope.
 
 (** Activate the handling of modulo in `lia`. *)
 Ltac Zify.zify_post_hook ::= Z.to_euclidean_division_equations.
@@ -34,10 +35,10 @@ Module List.
     match l with
     | [] => None
     | (k, v) :: l =>
-      if String.eqb k key then
-        Some v
-      else
-        assoc l key
+      match PrimString.compare k key with
+      | Eq => Some v
+      | _ => assoc l key
+      end
     end.
 
   Fixpoint assoc_replace {A : Set}
@@ -46,11 +47,61 @@ Module List.
     match l with
     | [] => []
     | (k, v) :: l =>
-      if String.eqb k key then
-        (key, update) :: l
-      else
-        (k, v) :: assoc_replace l key update
+      match PrimString.compare k key with
+      | Eq => (key, update) :: l
+      | _ => (k, v) :: assoc_replace l key update
+      end
     end.
+
+  (** Code taken from the standard library without the use of a functor and properties. *)
+  Module Sort.
+    Fixpoint merge {A : Set} (leb : A -> A -> bool) (l1 l2 : list A) : list A :=
+      let fix merge_aux l2 :=
+      match l1, l2 with
+      | [], _ => l2
+      | _, [] => l1
+      | a1::l1', a2::l2' =>
+          if leb a1 a2 then
+            a1 :: merge leb l1' l2
+          else
+            a2 :: merge_aux l2'
+      end
+      in merge_aux l2.
+
+    Fixpoint merge_list_to_stack {A : Set} (leb : A -> A -> bool) stack l :=
+      match stack with
+      | [] => [Some l]
+      | None :: stack' => Some l :: stack'
+      | Some l' :: stack' => None :: merge_list_to_stack leb stack' (merge leb l' l)
+      end.
+
+    Fixpoint merge_stack {A : Set} (leb : A -> A -> bool) stack :=
+      match stack with
+      | [] => []
+      | None :: stack' => merge_stack leb stack'
+      | Some l :: stack' => merge leb l (merge_stack leb stack')
+      end.
+
+    Fixpoint iter_merge {A : Set} (leb : A -> A -> bool) stack l :=
+      match l with
+      | [] => merge_stack leb stack
+      | a::l' => iter_merge leb (merge_list_to_stack leb stack [a]) l'
+      end.
+
+    Definition sort {A : Set} (leb : A -> A -> bool) (l : list A) : list A :=
+      iter_merge leb [] l.
+  End Sort.
+
+  Definition sort_assoc {A : Set} (l : list (string * A)) : list (string * A) :=
+    let leb x y :=
+      match PrimString.compare (fst x) (fst y) with
+      | Lt | Eq => true
+      | Gt => false
+      end in
+    Sort.sort leb l.
+
+  Goal sort_assoc [("2", 2); ("1", 1); ("3", 3)] = [("1", 1); ("2", 2); ("3", 3)].
+  Proof. reflexivity. Qed.
 
   (** Update the list at the position given by [index]. Note that we silently
       fail in case the index is out of bounds. *)
@@ -108,6 +159,12 @@ End IntegerKind.
 
 Module Ty.
   Parameter t : Set.
+
+  Parameter path : string -> Ty.t.
+
+  Parameter function : list Ty.t -> Ty.t -> Ty.t.
+
+  Parameter tuple : list Ty.t -> Ty.t.
 End Ty.
 
 Module Pointer.
@@ -200,6 +257,18 @@ Module Value.
       yet. *)
   | DeclaredButUndefined.
 
+  (** We use this smart constructor to ensure that the fields are sorted, and hence in a
+      canonical form. We do not sort the fields in the source code as we must keep the order in
+      which they are created, in case of side-effects. *)
+  Definition mkStructRecord
+      (constructor : string)
+      (consts : list t)
+      (tys : list Ty.t)
+      (fields : list (string * t)) :
+      t :=
+    StructRecord constructor consts tys (List.sort_assoc fields).
+  Arguments mkStructRecord /.
+
   (** Read the part of the value that is at a given pointer index. It might return [None] if the
       index does not have a shape compatible with the value. *)
   Definition read_index (value : Value.t) (index : Pointer.Index.t) : option Value.t :=
@@ -217,19 +286,19 @@ Module Value.
     | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c _ _ fields =>
-        if String.eqb c constructor then
-          List.assoc fields field
-        else
-          None
+        match PrimString.compare c constructor with
+        | Eq => List.assoc fields field
+        | _ => None
+        end
       | _ => None
       end
     | Pointer.Index.StructTuple constructor index =>
       match value with
       | StructTuple c _ _ fields =>
-        if String.eqb c constructor then
-          List.nth_error fields (Z.to_nat index)
-        else
-          None
+        match PrimString.compare c constructor with
+        | Eq => List.nth_error fields (Z.to_nat index)
+        | _ => None
+        end
       | _ => None
       end
     end.
@@ -257,19 +326,19 @@ Module Value.
     | Pointer.Index.StructRecord constructor field =>
       match value with
       | StructRecord c consts tys fields =>
-        if String.eqb c constructor then
-          Some (StructRecord c consts tys (List.assoc_replace fields field update))
-        else
-          None
+        match PrimString.compare c constructor with
+        | Eq => Some (StructRecord c consts tys (List.assoc_replace fields field update))
+        | _ => None
+        end
       | _ => None
       end
     | Pointer.Index.StructTuple constructor index =>
       match value with
       | StructTuple c consts tys fields =>
-        if String.eqb c constructor then
-          Some (StructTuple c consts tys (List.replace_at fields (Z.to_nat index) update))
-        else
-          None
+        match PrimString.compare c constructor with
+        | Eq => Some (StructTuple c consts tys (List.replace_at fields (Z.to_nat index) update))
+        | _ => None
+        end
       | _ => None
       end
     end.
@@ -278,6 +347,7 @@ End Value.
 Module Primitive.
   Inductive t : Set :=
   | StateAlloc
+    (ty : Ty.t)
     (value : Value.t)
   | StateRead
     (pointer : Value.t)
@@ -655,8 +725,8 @@ Definition call_primitive (primitive : Primitive.t) : M :=
 (* Make it transparent *)
 Arguments call_primitive /.
 
-Definition alloc (v : Value.t) : M :=
-  call_primitive (Primitive.StateAlloc v).
+Definition alloc (ty : Ty.t) (v : Value.t) : M :=
+  call_primitive (Primitive.StateAlloc ty v).
 Arguments alloc /.
 
 Definition read (pointer : Value.t) : M :=
@@ -666,9 +736,9 @@ Arguments read /.
 Definition write (pointer : Value.t) (update : Value.t) : M :=
   call_primitive (Primitive.StateWrite pointer update).
 
-Definition copy (r : Value.t) : M :=
+Definition copy (ty : Ty.t) (r : Value.t) : M :=
   let* v := read r in
-  alloc v.
+  alloc ty v.
 Arguments copy /.
 
 (** If we cannot get the sub-pointer, due to a field that does not exist or to an out-of bound
@@ -714,7 +784,7 @@ Definition catch_return (ty : Ty.t) (body : M) : M :=
     body
     (fun exception =>
       match exception with
-      | Exception.Return r => alloc r
+      | Exception.Return r => alloc ty r
       | _ => raise exception
       end
     ).
@@ -725,7 +795,7 @@ Definition catch_continue (ty : Ty.t) (body : M) : M :=
     body
     (fun exception =>
       match exception with
-      | Exception.Continue => alloc (Value.Tuple [])
+      | Exception.Continue => alloc (Ty.tuple []) (Value.Tuple [])
       | _ => raise exception
       end
     ).
@@ -736,7 +806,7 @@ Definition catch_break (ty : Ty.t) (body : M) : M :=
     body
     (fun exception =>
       match exception with
-      | Exception.Break => alloc (Value.Tuple [])
+      | Exception.Break => alloc (Ty.tuple []) (Value.Tuple [])
       | _ => raise exception
       end
     ).
@@ -868,10 +938,10 @@ Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   let* value := read value in
   match value with
   | Value.StructTuple current_constructor _ _ _ =>
-    if String.eqb current_constructor constructor then
-      pure (Value.Tuple [])
-    else
-      break_match
+    match PrimString.compare current_constructor constructor with
+    | Eq => pure (Value.Tuple [])
+    | _ => break_match
+    end
   | _ => break_match
   end.
 Arguments is_struct_tuple /.

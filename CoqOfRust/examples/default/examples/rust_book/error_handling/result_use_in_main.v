@@ -24,6 +24,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ]) (|
           ltac:(M.monadic
             (M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ],
               M.read (|
                 let~ number_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
                   mk_str (| "10" |) in
@@ -32,6 +36,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.match_operator (|
                       Ty.path "i32",
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -55,7 +63,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            let number := M.copy (| γ0_0 |) in
+                            let number := M.copy (| Ty.path "i32", γ0_0 |) in
                             number));
                         fun γ =>
                           ltac:(M.monadic
@@ -65,8 +73,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "core::result::Result::Err",
                                 0
                               |) in
-                            let e := M.copy (| γ0_0 |) in
+                            let e := M.copy (| Ty.path "core::num::error::ParseIntError", γ0_0 |) in
                             M.alloc (|
+                              Ty.path "i32",
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
@@ -104,8 +113,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                                    |)
                                   |)
                                 |)
                               |);
@@ -115,6 +130,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -143,9 +162,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::num::error::ParseIntError" ],
                   Value.StructTuple
                     "core::result::Result::Ok"
                     []

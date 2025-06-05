@@ -24,9 +24,13 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     match ε, τ, α with
     | [], [], [ self; number_1; number_2 ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let number_1 := M.alloc (| number_1 |) in
-        let number_2 := M.alloc (| number_2 |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "generics_associated_types_problem::Container" ],
+            self
+          |) in
+        let number_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], number_1 |) in
+        let number_2 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], number_2 |) in
         LogicalOp.and (|
           M.call_closure (|
             Ty.path "bool",
@@ -43,6 +47,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.SubPointer.get_struct_tuple_field (|
@@ -72,6 +77,7 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.SubPointer.get_struct_tuple_field (|
@@ -98,7 +104,11 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "generics_associated_types_problem::Container" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (|
             M.deref (| M.read (| self |) |),
@@ -118,7 +128,11 @@ Module Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_asso
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "generics_associated_types_problem::Container" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (|
             M.deref (| M.read (| self |) |),
@@ -155,7 +169,7 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   match ε, τ, α with
   | [], [ A; B; C ], [ container ] =>
     ltac:(M.monadic
-      (let container := M.alloc (| container |) in
+      (let container := M.alloc (| Ty.apply (Ty.path "&") [] [ C ], container |) in
       M.call_closure (|
         Ty.path "i32",
         BinOp.Wrap.sub,
@@ -250,6 +264,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "Does container contain " |);
@@ -268,6 +286,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -284,7 +306,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| M.borrow (| Pointer.Kind.Ref, number_1 |) |)
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                                              M.borrow (| Pointer.Kind.Ref, number_1 |)
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -304,7 +329,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (| M.borrow (| Pointer.Kind.Ref, number_2 |) |)
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
+                                              M.borrow (| Pointer.Kind.Ref, number_2 |)
+                                            |)
                                           |)
                                         |)
                                       |)
@@ -325,6 +353,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "bool",
                                               M.call_closure (|
                                                 Ty.path "bool",
                                                 M.get_trait_method (|
@@ -368,7 +397,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -392,6 +421,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "First number: " |); mk_str (| "
 " |) ]
                             |)
@@ -404,6 +437,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -421,6 +458,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "i32",
                                               M.call_closure (|
                                                 Ty.path "i32",
                                                 M.get_trait_method (|
@@ -450,7 +488,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -474,6 +512,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Last number: " |); mk_str (| "
 " |) ]
                             |)
@@ -486,6 +528,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -503,6 +549,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "i32",
                                               M.call_closure (|
                                                 Ty.path "i32",
                                                 M.get_trait_method (|
@@ -532,7 +579,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -556,6 +603,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "The difference is: " |); mk_str (| "
 " |) ]
                             |)
@@ -568,6 +619,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -585,6 +640,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "i32",
                                               M.call_closure (|
                                                 Ty.path "i32",
                                                 M.get_function (|
@@ -621,9 +677,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

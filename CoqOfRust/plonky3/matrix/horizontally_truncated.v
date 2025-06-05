@@ -34,20 +34,21 @@ Module horizontally_truncated.
       match ε, τ, α with
       | [], [], [ inner; truncated_width ] =>
         ltac:(M.monadic
-          (let inner := M.alloc (| inner |) in
-          let truncated_width := M.alloc (| truncated_width |) in
+          (let inner := M.alloc (| Inner, inner |) in
+          let truncated_width := M.alloc (| Ty.path "usize", truncated_width |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -73,6 +74,7 @@ Module horizontally_truncated.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -81,12 +83,16 @@ Module horizontally_truncated.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.apply
+                (Ty.path "p3_matrix::horizontally_truncated::HorizontallyTruncated")
+                []
+                [ T; Inner ],
+              Value.mkStructRecord
                 "p3_matrix::horizontally_truncated::HorizontallyTruncated"
                 []
                 [ T; Inner ]
@@ -121,7 +127,19 @@ Module horizontally_truncated.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::horizontally_truncated::HorizontallyTruncated")
+                    []
+                    [ T; Inner ]
+                ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -142,7 +160,19 @@ Module horizontally_truncated.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::horizontally_truncated::HorizontallyTruncated")
+                    []
+                    [ T; Inner ]
+                ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "height", [], [] |),
@@ -171,31 +201,44 @@ Module horizontally_truncated.
       match ε, τ, α with
       | [], [], [ self; r; c ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let c := M.alloc (| c |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::horizontally_truncated::HorizontallyTruncated")
+                    []
+                    [ T; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let c := M.alloc (| Ty.path "usize", c |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -219,6 +262,7 @@ Module horizontally_truncated.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -231,16 +275,18 @@ Module horizontally_truncated.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              T,
               M.call_closure (|
                 T,
                 M.get_trait_method (| "p3_matrix::Matrix", Inner, [], [ T ], "get", [], [] |),
@@ -284,8 +330,20 @@ Module horizontally_truncated.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "p3_matrix::horizontally_truncated::HorizontallyTruncated")
+                    []
+                    [ T; Inner ]
+                ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::take::Take")

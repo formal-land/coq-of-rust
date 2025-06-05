@@ -15,7 +15,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -58,8 +62,15 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; target ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let target := M.alloc (| target |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let target :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] Self "Owned" ],
+              target
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -78,7 +89,7 @@ Module borrow.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -103,7 +114,7 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], self |) in
           M.call_closure (|
             T,
             M.get_trait_method (| "core::clone::Clone", T, [], [], "clone", [], [] |),
@@ -122,8 +133,8 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; target ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let target := M.alloc (| target |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], self |) in
+          let target := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], target |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -134,7 +145,7 @@ Module borrow.
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -195,7 +206,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
@@ -209,8 +224,9 @@ Module borrow.
                         "alloc::borrow::Cow::Borrowed",
                         0
                       |) in
-                    let b := M.copy (| γ0_0 |) in
+                    let b := M.copy (| Ty.apply (Ty.path "&") [] [ B ], γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                       Value.StructTuple
                         "alloc::borrow::Cow::Borrowed"
                         []
@@ -221,7 +237,14 @@ Module borrow.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    let o := M.alloc (| γ0_0 |) in
+                    let o :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+                        γ0_0
+                      |) in
                     let~ b : Ty.apply (Ty.path "&") [] [ B ] :=
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -242,6 +265,7 @@ Module borrow.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ],
                       Value.StructTuple
                         "alloc::borrow::Cow::Owned"
                         []
@@ -281,12 +305,30 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; source ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let source := M.alloc (| source |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              source
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| source |) ] |),
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ];
+                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ]
+                  ],
+                Value.Tuple [ M.read (| self |); M.read (| source |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -299,7 +341,14 @@ Module borrow.
                         "alloc::borrow::Cow::Owned",
                         0
                       |) in
-                    let dest := M.alloc (| γ2_0 |) in
+                    let dest :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+                        γ2_0
+                      |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -307,8 +356,16 @@ Module borrow.
                         "alloc::borrow::Cow::Owned",
                         0
                       |) in
-                    let o := M.alloc (| γ2_0 |) in
+                    let o :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+                        γ2_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -347,9 +404,24 @@ Module borrow.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let t := M.copy (| γ0_0 |) in
-                    let s := M.copy (| γ0_1 |) in
+                    let t :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+                        γ0_0
+                      |) in
+                    let s :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.write (|
                         M.deref (| M.read (| t |) |),
                         M.call_closure (|
@@ -403,7 +475,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -417,12 +493,12 @@ Module borrow.
                         "alloc::borrow::Cow::Borrowed",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -445,7 +521,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
           UnOp.not (|
             M.call_closure (|
               Ty.path "bool",
@@ -486,7 +566,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -509,8 +593,12 @@ Module borrow.
                                 "alloc::borrow::Cow::Borrowed",
                                 0
                               |) in
-                            let borrowed := M.copy (| γ0_0 |) in
+                            let borrowed := M.copy (| Ty.apply (Ty.path "&") [] [ B ], γ0_0 |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
                               M.borrow (|
                                 Pointer.Kind.MutRef,
                                 M.deref (|
@@ -549,6 +637,17 @@ Module borrow.
                                           ]
                                       |) in
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "alloc::borrow::ToOwned"
+                                            []
+                                            []
+                                            B
+                                            "Owned"
+                                        ],
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
                                         M.deref (|
@@ -575,6 +674,17 @@ Module borrow.
                                                         "alloc::borrow::Cow::Borrowed"
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "alloc::borrow::ToOwned"
+                                                            []
+                                                            []
+                                                            B
+                                                            "Owned"
+                                                        ],
                                                       M.never_to_any (|
                                                         M.call_closure (|
                                                           Ty.path "never",
@@ -599,8 +709,33 @@ Module borrow.
                                                         "alloc::borrow::Cow::Owned",
                                                         0
                                                       |) in
-                                                    let owned := M.alloc (| γ0_0 |) in
+                                                    let owned :=
+                                                      M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "&mut")
+                                                          []
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "alloc::borrow::ToOwned"
+                                                              []
+                                                              []
+                                                              B
+                                                              "Owned"
+                                                          ],
+                                                        γ0_0
+                                                      |) in
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "&mut")
+                                                        []
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "alloc::borrow::ToOwned"
+                                                            []
+                                                            []
+                                                            B
+                                                            "Owned"
+                                                        ],
                                                       M.borrow (|
                                                         Pointer.Kind.MutRef,
                                                         M.deref (| M.read (| owned |) |)
@@ -624,8 +759,20 @@ Module borrow.
                                 "alloc::borrow::Cow::Owned",
                                 0
                               |) in
-                            let owned := M.alloc (| γ0_0 |) in
+                            let owned :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned"
+                                  ],
+                                γ0_0
+                              |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| owned |) |) |)
                             |)))
                       ]
@@ -657,7 +804,7 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ], self |) in
           M.read (|
             M.match_operator (|
               Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
@@ -671,8 +818,9 @@ Module borrow.
                         "alloc::borrow::Cow::Borrowed",
                         0
                       |) in
-                    let borrowed := M.copy (| γ0_0 |) in
+                    let borrowed := M.copy (| Ty.apply (Ty.path "&") [] [ B ], γ0_0 |) in
                     M.alloc (|
+                      Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                       M.call_closure (|
                         Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
                         M.get_trait_method (|
@@ -691,7 +839,11 @@ Module borrow.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    let owned := M.copy (| γ0_0 |) in
+                    let owned :=
+                      M.copy (|
+                        Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned",
+                        γ0_0
+                      |) in
                     owned))
               ]
             |)
@@ -725,7 +877,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -742,8 +898,9 @@ Module borrow.
                             "alloc::borrow::Cow::Borrowed",
                             0
                           |) in
-                        let borrowed := M.copy (| γ0_0 |) in
+                        let borrowed := M.copy (| Ty.apply (Ty.path "&") [] [ B ], γ0_0 |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ B ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrowed |) |) |)
                         |)));
                     fun γ =>
@@ -754,8 +911,16 @@ Module borrow.
                             "alloc::borrow::Cow::Owned",
                             0
                           |) in
-                        let owned := M.alloc (| γ0_0 |) in
+                        let owned :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+                            γ0_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ B ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -834,8 +999,16 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", B, [], [], "cmp", [], [] |),
@@ -914,8 +1087,16 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ C ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", B, [], [ C ], "eq", [], [] |),
@@ -994,8 +1175,16 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (| "core::cmp::PartialOrd", B, [], [ B ], "partial_cmp", [], [] |),
@@ -1077,8 +1266,13 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1095,8 +1289,16 @@ Module borrow.
                         "alloc::borrow::Cow::Borrowed",
                         0
                       |) in
-                    let b := M.alloc (| γ0_0 |) in
+                    let b :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ],
+                        γ0_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1121,8 +1323,19 @@ Module borrow.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    let o := M.alloc (| γ0_0 |) in
+                    let o :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+                        γ0_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1175,8 +1388,13 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1193,8 +1411,16 @@ Module borrow.
                         "alloc::borrow::Cow::Borrowed",
                         0
                       |) in
-                    let b := M.alloc (| γ0_0 |) in
+                    let b :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ],
+                        γ0_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1219,8 +1445,19 @@ Module borrow.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
-                    let o := M.alloc (| γ0_0 |) in
+                    let o :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "alloc::borrow::ToOwned" [] [] B "Owned" ],
+                        γ0_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -1315,8 +1552,12 @@ Module borrow.
       match ε, τ, α with
       | [], [ H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (| "core::hash::Hash", B, [], [], "hash", [], [ H ] |),
@@ -1373,7 +1614,11 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1421,8 +1666,9 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ], self |) in
+          let rhs := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1468,8 +1714,10 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ], self |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ], rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1521,18 +1769,26 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], rhs |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
@@ -1565,6 +1821,7 @@ Module borrow.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.write (|
                         M.deref (| M.read (| self |) |),
                         Value.StructTuple
@@ -1578,13 +1835,14 @@ Module borrow.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   UnOp.not (|
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -1609,7 +1867,7 @@ Module borrow.
                               M.read (|
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -1620,7 +1878,11 @@ Module borrow.
                                             "alloc::borrow::Cow::Borrowed",
                                             0
                                           |) in
-                                        let lhs := M.copy (| γ0_0 |) in
+                                        let lhs :=
+                                          M.copy (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            γ0_0
+                                          |) in
                                         let~ s : Ty.path "alloc::string::String" :=
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -1695,8 +1957,9 @@ Module borrow.
                                               [ Ty.path "str" ]
                                               [ M.read (| s |) ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
@@ -1739,8 +2002,8 @@ Module borrow.
                                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |)
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ]
                     |)))
               ]
@@ -1779,18 +2042,27 @@ Module borrow.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ] ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (| Ty.apply (Ty.path "alloc::borrow::Cow") [] [ Ty.path "str" ], rhs |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_associated_function (| Ty.path "str", "is_empty", [], [] |),
@@ -1822,18 +2094,22 @@ Module borrow.
                           |)
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (| M.write (| M.deref (| M.read (| self |) |), M.read (| rhs |) |) |)));
+                    M.alloc (|
+                      Ty.tuple [],
+                      M.write (| M.deref (| M.read (| self |) |), M.read (| rhs |) |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   UnOp.not (|
                                     M.call_closure (|
                                       Ty.path "bool",
@@ -1875,7 +2151,7 @@ Module borrow.
                               M.read (|
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -1886,7 +2162,11 @@ Module borrow.
                                             "alloc::borrow::Cow::Borrowed",
                                             0
                                           |) in
-                                        let lhs := M.copy (| γ0_0 |) in
+                                        let lhs :=
+                                          M.copy (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                                            γ0_0
+                                          |) in
                                         let~ s : Ty.path "alloc::string::String" :=
                                           M.call_closure (|
                                             Ty.path "alloc::string::String",
@@ -1981,8 +2261,9 @@ Module borrow.
                                               [ Ty.path "str" ]
                                               [ M.read (| s |) ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
@@ -2050,8 +2331,8 @@ Module borrow.
                                   |)
                                 ]
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ]
                     |)))
               ]

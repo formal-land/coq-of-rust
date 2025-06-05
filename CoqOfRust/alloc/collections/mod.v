@@ -18,8 +18,12 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              self
+            |) in
+          Value.mkStructRecord
             "alloc::collections::TryReserveError"
             []
             []
@@ -85,8 +89,16 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -141,12 +153,16 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -170,8 +186,13 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -195,6 +216,10 @@ Module collections.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "alloc::collections::TryReserveErrorKind" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -233,7 +258,11 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "alloc::collections::TryReserveErrorKind",
             M.get_trait_method (|
@@ -299,7 +328,11 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveErrorKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "alloc::collections::TryReserveErrorKind",
@@ -314,6 +347,7 @@ Module collections.
                         "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "alloc::collections::TryReserveErrorKind",
                       Value.StructTuple
                         "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                         []
@@ -335,10 +369,15 @@ Module collections.
                         "alloc::collections::TryReserveErrorKind::AllocError",
                         "non_exhaustive"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::alloc::layout::Layout" ],
+                        γ1_0
+                      |) in
+                    let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ1_1 |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "alloc::collections::TryReserveErrorKind",
+                      Value.mkStructRecord
                         "alloc::collections::TryReserveErrorKind::AllocError"
                         []
                         []
@@ -410,8 +449,16 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveErrorKind" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveErrorKind" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -434,6 +481,7 @@ Module collections.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -444,7 +492,20 @@ Module collections.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::TryReserveErrorKind" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloc::collections::TryReserveErrorKind" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -463,8 +524,13 @@ Module collections.
                                 "alloc::collections::TryReserveErrorKind::AllocError",
                                 "non_exhaustive"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "core::alloc::layout::Layout" ],
+                                γ2_0
+                              |) in
+                            let __self_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ2_1 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -478,9 +544,15 @@ Module collections.
                                 "alloc::collections::TryReserveErrorKind::AllocError",
                                 "non_exhaustive"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "core::alloc::layout::Layout" ],
+                                γ2_0
+                              |) in
+                            let __arg1_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ2_1 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -525,7 +597,7 @@ Module collections.
                                   |)))
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -556,7 +628,11 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveErrorKind" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -567,7 +643,7 @@ Module collections.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -593,8 +669,13 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveErrorKind" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -612,6 +693,10 @@ Module collections.
                         "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -647,9 +732,17 @@ Module collections.
                         "alloc::collections::TryReserveErrorKind::AllocError",
                         "non_exhaustive"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "core::alloc::layout::Layout" ],
+                        γ1_0
+                      |) in
+                    let __self_1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -708,8 +801,8 @@ Module collections.
       match ε, τ, α with
       | [], [], [ kind ] =>
         ltac:(M.monadic
-          (let kind := M.alloc (| kind |) in
-          Value.StructRecord
+          (let kind := M.alloc (| Ty.path "alloc::collections::TryReserveErrorKind", kind |) in
+          Value.mkStructRecord
             "alloc::collections::TryReserveError"
             []
             []
@@ -738,7 +831,7 @@ Module collections.
       match ε, τ, α with
       | [], [], [ β0 ] =>
         ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
+          (let β0 := M.alloc (| Ty.path "core::alloc::layout::LayoutError", β0 |) in
           M.match_operator (|
             Ty.path "alloc::collections::TryReserveErrorKind",
             β0,
@@ -788,8 +881,13 @@ Module collections.
       match ε, τ, α with
       | [], [], [ self; fmt ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let fmt := M.alloc (| fmt |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloc::collections::TryReserveError" ],
+              self
+            |) in
+          let fmt :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], fmt |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -798,12 +896,27 @@ Module collections.
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; Ty.path "core::fmt::Error"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -865,8 +978,19 @@ Module collections.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "core::fmt::Error"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -909,7 +1033,7 @@ Module collections.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -932,6 +1056,7 @@ Module collections.
                                     "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   mk_str (|
                                     " because the computed capacity exceeded the collection's maximum"
                                   |)
@@ -944,6 +1069,7 @@ Module collections.
                                     "alloc::collections::TryReserveErrorKind::AllocError"
                                   |) in
                                 M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.deref (|
@@ -955,6 +1081,10 @@ Module collections.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")

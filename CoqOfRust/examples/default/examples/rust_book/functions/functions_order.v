@@ -29,7 +29,7 @@ Module Impl_functions_order_SomeType.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.path "functions_order::SomeType", self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -37,7 +37,7 @@ Module Impl_functions_order_SomeType.
               M.get_associated_function (| Ty.path "functions_order::SomeType", "meth2", [], [] |),
               [ M.read (| self |) ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -51,7 +51,7 @@ Module Impl_functions_order_SomeType.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.path "functions_order::SomeType", self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -71,8 +71,8 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
   match ε, τ, α with
   | [], [], [ u; b ] =>
     ltac:(M.monadic
-      (let u := M.alloc (| u |) in
-      let b := M.alloc (| b |) in
+      (let u := M.alloc (| Ty.path "u32", u |) in
+      let b := M.alloc (| Ty.path "bool", b |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -90,6 +90,7 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "functions_order::OtherType",
                   Value.StructTuple "functions_order::OtherType" [] [] [ M.read (| b |) ]
                 |)
               |)
@@ -110,11 +111,14 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.alloc (| Value.StructTuple "functions_order::SomeType" [] [] [ M.read (| u |) ] |)
+                M.alloc (|
+                  Ty.path "functions_order::SomeType",
+                  Value.StructTuple "functions_order::SomeType" [] [] [ M.read (| u |) ]
+                |)
               |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -139,7 +143,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "functions_order::SomeType" ], self |) in
         M.call_closure (|
           Ty.tuple [],
           M.get_trait_method (|
@@ -161,7 +166,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_SomeType.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "functions_order::SomeType" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -187,7 +193,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "functions_order::OtherType" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -197,7 +204,8 @@ Module Impl_functions_order_SomeTrait_for_functions_order_OtherType.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "functions_order::OtherType" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -233,7 +241,7 @@ Module inner_mod.
               M.get_function (| "functions_order::inner_mod::tar", [], [] |),
               []
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -270,7 +278,7 @@ Module inner_mod.
                 M.get_function (| "functions_order::inner_mod::nested_mod::tack", [], [] |),
                 []
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -331,7 +339,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Value.Integer IntegerKind.U32 0 ]
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

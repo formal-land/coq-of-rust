@@ -34,7 +34,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::abi::ScriptABI",
@@ -49,8 +53,16 @@ Module abi.
                         "move_core_types::abi::ScriptABI::TransactionScript",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "move_core_types::abi::ScriptABI",
                       Value.StructTuple
                         "move_core_types::abi::ScriptABI::TransactionScript"
                         []
@@ -80,8 +92,16 @@ Module abi.
                         "move_core_types::abi::ScriptABI::ScriptFunction",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "move_core_types::abi::ScriptABI",
                       Value.StructTuple
                         "move_core_types::abi::ScriptABI::ScriptFunction"
                         []
@@ -125,8 +145,13 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -144,8 +169,19 @@ Module abi.
                         "move_core_types::abi::ScriptABI::TransactionScript",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -181,8 +217,19 @@ Module abi.
                         "move_core_types::abi::ScriptABI::ScriptFunction",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -232,8 +279,12 @@ Module abi.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -278,8 +329,16 @@ Module abi.
                         "move_core_types::abi::ScriptABI::TransactionScript",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -306,8 +365,16 @@ Module abi.
                         "move_core_types::abi::ScriptABI::ScriptFunction",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -352,7 +419,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -363,7 +434,7 @@ Module abi.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -401,8 +472,16 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -425,6 +504,7 @@ Module abi.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -435,7 +515,14 @@ Module abi.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ];
+                            Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -448,7 +535,14 @@ Module abi.
                                 "move_core_types::abi::ScriptABI::TransactionScript",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -456,8 +550,16 @@ Module abi.
                                 "move_core_types::abi::ScriptABI::TransactionScript",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -494,7 +596,14 @@ Module abi.
                                 "move_core_types::abi::ScriptABI::ScriptFunction",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -502,8 +611,16 @@ Module abi.
                                 "move_core_types::abi::ScriptABI::ScriptFunction",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -532,6 +649,7 @@ Module abi.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -567,8 +685,12 @@ Module abi.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -588,8 +710,22 @@ Module abi.
                           "move_core_types::abi::ScriptABI::TransactionScript",
                           0
                         |) in
-                      let __field0 := M.alloc (| γ0_0 |) in
+                      let __field0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -624,8 +760,22 @@ Module abi.
                           "move_core_types::abi::ScriptABI::ScriptFunction",
                           0
                         |) in
-                      let __field0 := M.alloc (| γ0_0 |) in
+                      let __field0 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                          γ0_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -674,7 +824,7 @@ Module abi.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -709,7 +859,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'1::deserialize::__Visitor"
                   []
                   []
@@ -748,8 +898,12 @@ Module abi.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -761,6 +915,13 @@ Module abi.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -778,6 +939,18 @@ Module abi.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -856,7 +1029,16 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -866,8 +1048,23 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -901,6 +1098,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -959,7 +1163,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -969,8 +1173,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1004,6 +1218,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1062,7 +1283,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1072,8 +1293,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1107,6 +1338,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1165,7 +1403,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1175,8 +1413,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1210,6 +1458,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1276,7 +1531,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1286,8 +1541,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1321,6 +1586,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1387,7 +1659,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1397,8 +1669,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1428,6 +1710,13 @@ Module abi.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1476,7 +1765,7 @@ Module abi.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1511,7 +1800,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'3::deserialize::__Visitor"
                   []
                   []
@@ -1550,8 +1839,12 @@ Module abi.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -1563,6 +1856,13 @@ Module abi.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -1580,6 +1880,18 @@ Module abi.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1658,7 +1970,16 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1668,8 +1989,23 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1703,6 +2039,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1761,7 +2104,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1771,8 +2114,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1806,6 +2159,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1864,7 +2224,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -1874,8 +2234,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1909,6 +2279,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -1949,7 +2326,9 @@ Module abi.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.StructRecord
+                                          Ty.path
+                                            "move_core_types::abi::_'4::serialize::__SerializeWith",
+                                          Value.mkStructRecord
                                             "move_core_types::abi::_'4::serialize::__SerializeWith"
                                             []
                                             []
@@ -1997,7 +2376,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2007,8 +2386,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2042,6 +2431,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2108,7 +2504,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2118,8 +2514,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2153,6 +2559,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2219,7 +2632,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2229,8 +2642,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2260,6 +2683,13 @@ Module abi.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -2308,7 +2738,7 @@ Module abi.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -2343,7 +2773,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'5::deserialize::__Visitor"
                   []
                   []
@@ -2382,8 +2812,12 @@ Module abi.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -2395,6 +2829,13 @@ Module abi.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -2412,6 +2853,18 @@ Module abi.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2469,7 +2922,16 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2479,8 +2941,23 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2514,6 +2991,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2572,7 +3056,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2582,8 +3066,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2617,6 +3111,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2675,7 +3176,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2685,8 +3186,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2716,6 +3227,13 @@ Module abi.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -2764,7 +3282,7 @@ Module abi.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -2799,7 +3317,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'7::deserialize::__Visitor"
                   []
                   []
@@ -2838,8 +3356,12 @@ Module abi.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -2851,6 +3373,13 @@ Module abi.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -2868,6 +3397,18 @@ Module abi.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -2918,7 +3459,16 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -2928,8 +3478,23 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -2963,6 +3528,13 @@ Module abi.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -3021,7 +3593,7 @@ Module abi.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -3031,8 +3603,18 @@ Module abi.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -3062,6 +3644,13 @@ Module abi.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -3110,7 +3699,7 @@ Module abi.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3145,7 +3734,7 @@ Module abi.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::abi::_'9::deserialize::__Visitor"
                   []
                   []
@@ -3210,8 +3799,12 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_core_types::abi::ScriptFunctionABI"
             []
             []
@@ -3396,8 +3989,13 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3485,6 +4083,18 @@ Module abi.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_core_types::abi::ArgumentABI";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -3519,8 +4129,12 @@ Module abi.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -3645,6 +4259,7 @@ Module abi.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -3702,7 +4317,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -3725,7 +4344,11 @@ Module abi.
                                     (M.match_operator (|
                                       Ty.tuple [],
                                       Value.DeclaredButUndefined,
-                                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -3767,8 +4390,16 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
@@ -4003,8 +4634,12 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_core_types::abi::TransactionScriptABI"
             []
             []
@@ -4195,8 +4830,13 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -4284,6 +4924,18 @@ Module abi.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.path "move_core_types::abi::ArgumentABI";
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -4318,8 +4970,12 @@ Module abi.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -4447,6 +5103,7 @@ Module abi.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -4504,7 +5161,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -4527,7 +5188,11 @@ Module abi.
                                     (M.match_operator (|
                                       Ty.tuple [],
                                       Value.DeclaredButUndefined,
-                                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -4569,8 +5234,16 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
@@ -4798,8 +5471,12 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_core_types::abi::ArgumentABI"
             []
             []
@@ -4881,8 +5558,13 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -4922,6 +5604,10 @@ Module abi.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::TypeTag" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -4956,8 +5642,12 @@ Module abi.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -4989,6 +5679,7 @@ Module abi.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -5043,7 +5734,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -5054,7 +5749,7 @@ Module abi.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -5092,8 +5787,16 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -5187,8 +5890,12 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_core_types::abi::TypeArgumentABI"
             []
             []
@@ -5242,8 +5949,13 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -5267,6 +5979,7 @@ Module abi.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -5301,8 +6014,12 @@ Module abi.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -5355,12 +6072,16 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5396,8 +6117,16 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -5466,12 +6195,33 @@ Module abi.
       match ε, τ, α with
       | [], [], [ name; doc; code; ty_args; args ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
-          let doc := M.alloc (| doc |) in
-          let code := M.alloc (| code |) in
-          let ty_args := M.alloc (| ty_args |) in
-          let args := M.alloc (| args |) in
-          Value.StructRecord
+          (let name := M.alloc (| Ty.path "alloc::string::String", name |) in
+          let doc := M.alloc (| Ty.path "alloc::string::String", doc |) in
+          let code :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+              code
+            |) in
+          let ty_args :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.path "alloc::alloc::Global" ],
+              ty_args
+            |) in
+          let args :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
+              args
+            |) in
+          Value.mkStructRecord
             "move_core_types::abi::TransactionScriptABI"
             []
             []
@@ -5498,7 +6248,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5547,7 +6301,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5596,7 +6354,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5648,7 +6410,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5711,7 +6477,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5782,12 +6552,27 @@ Module abi.
       match ε, τ, α with
       | [], [], [ name; module_name; doc; ty_args; args ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
-          let module_name := M.alloc (| module_name |) in
-          let doc := M.alloc (| doc |) in
-          let ty_args := M.alloc (| ty_args |) in
-          let args := M.alloc (| args |) in
-          Value.StructRecord
+          (let name := M.alloc (| Ty.path "alloc::string::String", name |) in
+          let module_name :=
+            M.alloc (| Ty.path "move_core_types::language_storage::ModuleId", module_name |) in
+          let doc := M.alloc (| Ty.path "alloc::string::String", doc |) in
+          let ty_args :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "move_core_types::abi::TypeArgumentABI"; Ty.path "alloc::alloc::Global" ],
+              ty_args
+            |) in
+          let args :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "move_core_types::abi::ArgumentABI"; Ty.path "alloc::alloc::Global" ],
+              args
+            |) in
+          Value.mkStructRecord
             "move_core_types::abi::ScriptFunctionABI"
             []
             []
@@ -5814,7 +6599,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5863,7 +6652,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5894,7 +6687,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -5943,7 +6740,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6006,7 +6807,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6065,7 +6870,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -6080,8 +6889,8 @@ Module abi.
                         "move_core_types::abi::ScriptABI::ScriptFunction",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -6106,7 +6915,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -6121,8 +6934,8 @@ Module abi.
                         "move_core_types::abi::ScriptABI::TransactionScript",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -6146,7 +6959,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6164,8 +6981,16 @@ Module abi.
                             "move_core_types::abi::ScriptABI::TransactionScript",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6191,8 +7016,16 @@ Module abi.
                             "move_core_types::abi::ScriptABI::ScriptFunction",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6233,7 +7066,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6251,8 +7088,16 @@ Module abi.
                             "move_core_types::abi::ScriptABI::TransactionScript",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6278,8 +7123,16 @@ Module abi.
                             "move_core_types::abi::ScriptABI::ScriptFunction",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6320,7 +7173,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6346,8 +7203,24 @@ Module abi.
                             "move_core_types::abi::ScriptABI::TransactionScript",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6381,8 +7254,24 @@ Module abi.
                             "move_core_types::abi::ScriptABI::ScriptFunction",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6431,7 +7320,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ScriptABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6453,8 +7346,24 @@ Module abi.
                             "move_core_types::abi::ScriptABI::TransactionScript",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::TransactionScriptABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6488,8 +7397,24 @@ Module abi.
                             "move_core_types::abi::ScriptABI::ScriptFunction",
                             0
                           |) in
-                        let abi := M.alloc (| γ1_0 |) in
+                        let abi :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_core_types::abi::ScriptFunctionABI" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [ Ty.path "move_core_types::abi::ArgumentABI" ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -6539,9 +7464,10 @@ Module abi.
       match ε, τ, α with
       | [], [], [ name; type_tag ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
-          let type_tag := M.alloc (| type_tag |) in
-          Value.StructRecord
+          (let name := M.alloc (| Ty.path "alloc::string::String", name |) in
+          let type_tag :=
+            M.alloc (| Ty.path "move_core_types::language_storage::TypeTag", type_tag |) in
+          Value.mkStructRecord
             "move_core_types::abi::ArgumentABI"
             []
             []
@@ -6562,7 +7488,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6611,7 +7541,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::ArgumentABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -6645,8 +7579,8 @@ Module abi.
       match ε, τ, α with
       | [], [], [ name ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
-          Value.StructRecord
+          (let name := M.alloc (| Ty.path "alloc::string::String", name |) in
+          Value.mkStructRecord
             "move_core_types::abi::TypeArgumentABI"
             []
             []
@@ -6667,7 +7601,11 @@ Module abi.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::abi::TypeArgumentABI" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|

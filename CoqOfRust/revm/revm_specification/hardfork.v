@@ -148,7 +148,11 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -182,8 +186,13 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -206,6 +215,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::FRONTIER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FRONTIER" |) |) |)
                         |)));
                     fun γ =>
@@ -217,6 +227,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FRONTIER_THAWING" |) |)
@@ -231,6 +242,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::HOMESTEAD"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)
                         |)));
                     fun γ =>
@@ -242,6 +254,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::DAO_FORK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DAO_FORK" |) |) |)
                         |)));
                     fun γ =>
@@ -253,6 +266,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::TANGERINE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TANGERINE" |) |) |)
                         |)));
                     fun γ =>
@@ -264,6 +278,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SPURIOUS_DRAGON" |) |)
@@ -278,6 +293,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::BYZANTIUM"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)
                         |)));
                     fun γ =>
@@ -289,6 +305,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CONSTANTINOPLE" |) |)
@@ -303,6 +320,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::PETERSBURG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PETERSBURG" |) |) |)
                         |)));
                     fun γ =>
@@ -314,6 +332,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::ISTANBUL"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)
                         |)));
                     fun γ =>
@@ -325,6 +344,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MUIR_GLACIER" |) |) |)
                         |)));
                     fun γ =>
@@ -336,6 +356,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::BERLIN"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)
                         |)));
                     fun γ =>
@@ -347,6 +368,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::LONDON"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LONDON" |) |) |)
                         |)));
                     fun γ =>
@@ -358,6 +380,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ARROW_GLACIER" |) |)
@@ -372,6 +395,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GRAY_GLACIER" |) |) |)
                         |)));
                     fun γ =>
@@ -383,6 +407,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::MERGE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MERGE" |) |) |)
                         |)));
                     fun γ =>
@@ -394,6 +419,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::SHANGHAI"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHANGHAI" |) |) |)
                         |)));
                     fun γ =>
@@ -405,6 +431,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::CANCUN"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)
                         |)));
                     fun γ =>
@@ -416,6 +443,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::PRAGUE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)
                         |)));
                     fun γ =>
@@ -427,6 +455,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::OSAKA"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OSAKA" |) |) |)
                         |)));
                     fun γ =>
@@ -438,6 +467,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::LATEST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)
                         |)))
                   ]
@@ -497,8 +527,16 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -521,6 +559,7 @@ Module hardfork.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -552,7 +591,11 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -575,8 +618,16 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -599,6 +650,7 @@ Module hardfork.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
@@ -643,8 +695,16 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -667,6 +727,7 @@ Module hardfork.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
@@ -703,8 +764,12 @@ Module hardfork.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -717,6 +782,7 @@ Module hardfork.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -758,7 +824,7 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "u8", value |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -775,6 +841,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 0
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -795,6 +865,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 1
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -815,6 +889,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 2
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -835,6 +913,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 3
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -855,6 +937,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 4
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -875,6 +961,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 5
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -895,6 +985,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 6
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -915,6 +1009,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 7
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -935,6 +1033,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 8
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -955,6 +1057,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 9
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -975,6 +1081,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 10
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -995,6 +1105,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 11
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1010,6 +1124,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 12
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1025,6 +1143,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 13
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1045,6 +1167,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 14
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1065,6 +1191,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 15
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1079,6 +1209,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 16
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1099,6 +1233,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 17
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1114,6 +1252,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 18
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1129,6 +1271,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 19
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1143,6 +1289,10 @@ Module hardfork.
                         Value.Integer IntegerKind.U8 255
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1153,6 +1303,10 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_specification::hardfork::SpecId" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -1177,7 +1331,7 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ spec_id ] =>
         ltac:(M.monadic
-          (let spec_id := M.alloc (| spec_id |) in
+          (let spec_id := M.alloc (| Ty.path "u8", spec_id |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -1208,8 +1362,8 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", self |) in
+          let other := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", other |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.ge,
@@ -1228,7 +1382,8 @@ Module hardfork.
   
   Module name.
     Definition value_FRONTIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Frontier" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Frontier" |) |))).
     
     Global Instance Instance_IsConstant_value_FRONTIER :
       M.IsFunction.C "revm_specification::hardfork::name::FRONTIER" value_FRONTIER.
@@ -1236,7 +1391,11 @@ Module hardfork.
     Global Typeclasses Opaque value_FRONTIER.
     
     Definition value_FRONTIER_THAWING (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Frontier Thawing" |) |))).
+      ltac:(M.monadic
+        (M.alloc (|
+          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+          mk_str (| "Frontier Thawing" |)
+        |))).
     
     Global Instance Instance_IsConstant_value_FRONTIER_THAWING :
       M.IsFunction.C "revm_specification::hardfork::name::FRONTIER_THAWING" value_FRONTIER_THAWING.
@@ -1244,7 +1403,8 @@ Module hardfork.
     Global Typeclasses Opaque value_FRONTIER_THAWING.
     
     Definition value_HOMESTEAD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Homestead" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Homestead" |) |))).
     
     Global Instance Instance_IsConstant_value_HOMESTEAD :
       M.IsFunction.C "revm_specification::hardfork::name::HOMESTEAD" value_HOMESTEAD.
@@ -1252,7 +1412,8 @@ Module hardfork.
     Global Typeclasses Opaque value_HOMESTEAD.
     
     Definition value_DAO_FORK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "DAO Fork" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "DAO Fork" |) |))).
     
     Global Instance Instance_IsConstant_value_DAO_FORK :
       M.IsFunction.C "revm_specification::hardfork::name::DAO_FORK" value_DAO_FORK.
@@ -1260,7 +1421,8 @@ Module hardfork.
     Global Typeclasses Opaque value_DAO_FORK.
     
     Definition value_TANGERINE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Tangerine" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Tangerine" |) |))).
     
     Global Instance Instance_IsConstant_value_TANGERINE :
       M.IsFunction.C "revm_specification::hardfork::name::TANGERINE" value_TANGERINE.
@@ -1268,7 +1430,8 @@ Module hardfork.
     Global Typeclasses Opaque value_TANGERINE.
     
     Definition value_SPURIOUS_DRAGON (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Spurious" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Spurious" |) |))).
     
     Global Instance Instance_IsConstant_value_SPURIOUS_DRAGON :
       M.IsFunction.C "revm_specification::hardfork::name::SPURIOUS_DRAGON" value_SPURIOUS_DRAGON.
@@ -1276,7 +1439,8 @@ Module hardfork.
     Global Typeclasses Opaque value_SPURIOUS_DRAGON.
     
     Definition value_BYZANTIUM (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Byzantium" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Byzantium" |) |))).
     
     Global Instance Instance_IsConstant_value_BYZANTIUM :
       M.IsFunction.C "revm_specification::hardfork::name::BYZANTIUM" value_BYZANTIUM.
@@ -1284,7 +1448,8 @@ Module hardfork.
     Global Typeclasses Opaque value_BYZANTIUM.
     
     Definition value_CONSTANTINOPLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Constantinople" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Constantinople" |) |))).
     
     Global Instance Instance_IsConstant_value_CONSTANTINOPLE :
       M.IsFunction.C "revm_specification::hardfork::name::CONSTANTINOPLE" value_CONSTANTINOPLE.
@@ -1292,7 +1457,8 @@ Module hardfork.
     Global Typeclasses Opaque value_CONSTANTINOPLE.
     
     Definition value_PETERSBURG (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Petersburg" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Petersburg" |) |))).
     
     Global Instance Instance_IsConstant_value_PETERSBURG :
       M.IsFunction.C "revm_specification::hardfork::name::PETERSBURG" value_PETERSBURG.
@@ -1300,7 +1466,8 @@ Module hardfork.
     Global Typeclasses Opaque value_PETERSBURG.
     
     Definition value_ISTANBUL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Istanbul" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Istanbul" |) |))).
     
     Global Instance Instance_IsConstant_value_ISTANBUL :
       M.IsFunction.C "revm_specification::hardfork::name::ISTANBUL" value_ISTANBUL.
@@ -1308,7 +1475,8 @@ Module hardfork.
     Global Typeclasses Opaque value_ISTANBUL.
     
     Definition value_MUIR_GLACIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "MuirGlacier" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "MuirGlacier" |) |))).
     
     Global Instance Instance_IsConstant_value_MUIR_GLACIER :
       M.IsFunction.C "revm_specification::hardfork::name::MUIR_GLACIER" value_MUIR_GLACIER.
@@ -1316,7 +1484,8 @@ Module hardfork.
     Global Typeclasses Opaque value_MUIR_GLACIER.
     
     Definition value_BERLIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Berlin" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Berlin" |) |))).
     
     Global Instance Instance_IsConstant_value_BERLIN :
       M.IsFunction.C "revm_specification::hardfork::name::BERLIN" value_BERLIN.
@@ -1324,7 +1493,8 @@ Module hardfork.
     Global Typeclasses Opaque value_BERLIN.
     
     Definition value_LONDON (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "London" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "London" |) |))).
     
     Global Instance Instance_IsConstant_value_LONDON :
       M.IsFunction.C "revm_specification::hardfork::name::LONDON" value_LONDON.
@@ -1332,7 +1502,8 @@ Module hardfork.
     Global Typeclasses Opaque value_LONDON.
     
     Definition value_ARROW_GLACIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Arrow Glacier" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Arrow Glacier" |) |))).
     
     Global Instance Instance_IsConstant_value_ARROW_GLACIER :
       M.IsFunction.C "revm_specification::hardfork::name::ARROW_GLACIER" value_ARROW_GLACIER.
@@ -1340,7 +1511,8 @@ Module hardfork.
     Global Typeclasses Opaque value_ARROW_GLACIER.
     
     Definition value_GRAY_GLACIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Gray Glacier" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Gray Glacier" |) |))).
     
     Global Instance Instance_IsConstant_value_GRAY_GLACIER :
       M.IsFunction.C "revm_specification::hardfork::name::GRAY_GLACIER" value_GRAY_GLACIER.
@@ -1348,7 +1520,8 @@ Module hardfork.
     Global Typeclasses Opaque value_GRAY_GLACIER.
     
     Definition value_MERGE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Merge" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Merge" |) |))).
     
     Global Instance Instance_IsConstant_value_MERGE :
       M.IsFunction.C "revm_specification::hardfork::name::MERGE" value_MERGE.
@@ -1356,7 +1529,8 @@ Module hardfork.
     Global Typeclasses Opaque value_MERGE.
     
     Definition value_SHANGHAI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Shanghai" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Shanghai" |) |))).
     
     Global Instance Instance_IsConstant_value_SHANGHAI :
       M.IsFunction.C "revm_specification::hardfork::name::SHANGHAI" value_SHANGHAI.
@@ -1364,7 +1538,8 @@ Module hardfork.
     Global Typeclasses Opaque value_SHANGHAI.
     
     Definition value_CANCUN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Cancun" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Cancun" |) |))).
     
     Global Instance Instance_IsConstant_value_CANCUN :
       M.IsFunction.C "revm_specification::hardfork::name::CANCUN" value_CANCUN.
@@ -1372,7 +1547,8 @@ Module hardfork.
     Global Typeclasses Opaque value_CANCUN.
     
     Definition value_PRAGUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Prague" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Prague" |) |))).
     
     Global Instance Instance_IsConstant_value_PRAGUE :
       M.IsFunction.C "revm_specification::hardfork::name::PRAGUE" value_PRAGUE.
@@ -1380,7 +1556,8 @@ Module hardfork.
     Global Typeclasses Opaque value_PRAGUE.
     
     Definition value_OSAKA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "PragueEOF" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "PragueEOF" |) |))).
     
     Global Instance Instance_IsConstant_value_OSAKA :
       M.IsFunction.C "revm_specification::hardfork::name::OSAKA" value_OSAKA.
@@ -1388,7 +1565,8 @@ Module hardfork.
     Global Typeclasses Opaque value_OSAKA.
     
     Definition value_LATEST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| mk_str (| "Latest" |) |))).
+      ltac:(M.monadic
+        (M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], mk_str (| "Latest" |) |))).
     
     Global Instance Instance_IsConstant_value_LATEST :
       M.IsFunction.C "revm_specification::hardfork::name::LATEST" value_LATEST.
@@ -1431,7 +1609,7 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ name ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
+          (let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_specification::hardfork::SpecId",
@@ -1442,6 +1620,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Frontier" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER" [] [] []
                     |)));
                 fun γ =>
@@ -1452,6 +1631,7 @@ Module hardfork.
                         mk_str (| "Frontier Thawing" |)
                       |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple
                         "revm_specification::hardfork::SpecId::FRONTIER_THAWING"
                         []
@@ -1463,6 +1643,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Homestead" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::HOMESTEAD" [] [] []
                     |)));
                 fun γ =>
@@ -1470,6 +1651,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "DAO Fork" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::DAO_FORK" [] [] []
                     |)));
                 fun γ =>
@@ -1477,6 +1659,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Tangerine" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::TANGERINE" [] [] []
                     |)));
                 fun γ =>
@@ -1484,6 +1667,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Spurious" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple
                         "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON"
                         []
@@ -1495,6 +1679,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Byzantium" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::BYZANTIUM" [] [] []
                     |)));
                 fun γ =>
@@ -1505,6 +1690,7 @@ Module hardfork.
                         mk_str (| "Constantinople" |)
                       |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple
                         "revm_specification::hardfork::SpecId::CONSTANTINOPLE"
                         []
@@ -1516,6 +1702,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Petersburg" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::PETERSBURG" [] [] []
                     |)));
                 fun γ =>
@@ -1523,6 +1710,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Istanbul" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::ISTANBUL" [] [] []
                     |)));
                 fun γ =>
@@ -1530,6 +1718,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "MuirGlacier" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple
                         "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                         []
@@ -1541,6 +1730,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Berlin" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" [] [] []
                     |)));
                 fun γ =>
@@ -1548,6 +1738,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "London" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::LONDON" [] [] []
                     |)));
                 fun γ =>
@@ -1558,6 +1749,7 @@ Module hardfork.
                         mk_str (| "Arrow Glacier" |)
                       |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple
                         "revm_specification::hardfork::SpecId::ARROW_GLACIER"
                         []
@@ -1572,6 +1764,7 @@ Module hardfork.
                         mk_str (| "Gray Glacier" |)
                       |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple
                         "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                         []
@@ -1583,6 +1776,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Merge" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::MERGE" [] [] []
                     |)));
                 fun γ =>
@@ -1590,6 +1784,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Shanghai" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::SHANGHAI" [] [] []
                     |)));
                 fun γ =>
@@ -1597,6 +1792,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Cancun" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::CANCUN" [] [] []
                     |)));
                 fun γ =>
@@ -1604,6 +1800,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Prague" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::PRAGUE" [] [] []
                     |)));
                 fun γ =>
@@ -1611,6 +1808,7 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "PragueEOF" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::OSAKA" [] [] []
                     |)));
                 fun γ =>
@@ -1618,11 +1816,13 @@ Module hardfork.
                     (let _ :=
                       is_constant_or_break_match (| M.read (| γ |), mk_str (| "Latest" |) |) in
                     M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::LATEST" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.path "revm_specification::hardfork::SpecId",
                       Value.StructTuple "revm_specification::hardfork::SpecId::LATEST" [] [] []
                     |)))
               ]
@@ -1674,7 +1874,7 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ spec_id ] =>
         ltac:(M.monadic
-          (let spec_id := M.alloc (| spec_id |) in
+          (let spec_id := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", spec_id |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
@@ -1905,8 +2105,13 @@ Module hardfork.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_specification::hardfork::SpecId" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1927,7 +2132,16 @@ Module hardfork.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "" |) ]
+                        |)
+                      |)
                     |)
                   |);
                   M.borrow (|
@@ -1936,6 +2150,10 @@ Module hardfork.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "core::fmt::rt::Argument" ],
                           Value.Array
                             [
                               M.call_closure (|
@@ -1953,6 +2171,7 @@ Module hardfork.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                           M.call_closure (|
                                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             M.get_trait_method (|

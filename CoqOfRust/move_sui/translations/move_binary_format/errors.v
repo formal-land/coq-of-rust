@@ -58,7 +58,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_binary_format::errors::Location",
@@ -73,6 +77,7 @@ Module errors.
                         "move_binary_format::errors::Location::Undefined"
                       |) in
                     M.alloc (|
+                      Ty.path "move_binary_format::errors::Location",
                       Value.StructTuple "move_binary_format::errors::Location::Undefined" [] [] []
                     |)));
                 fun γ =>
@@ -84,8 +89,16 @@ Module errors.
                         "move_binary_format::errors::Location::Module",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "move_binary_format::errors::Location",
                       Value.StructTuple
                         "move_binary_format::errors::Location::Module"
                         []
@@ -129,8 +142,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -148,6 +166,10 @@ Module errors.
                         "move_binary_format::errors::Location::Undefined"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -174,8 +196,19 @@ Module errors.
                         "move_binary_format::errors::Location::Module",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -226,12 +259,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -255,8 +292,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -281,6 +326,7 @@ Module errors.
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -302,7 +348,20 @@ Module errors.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::errors::Location" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::errors::Location" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -315,7 +374,14 @@ Module errors.
                                 "move_binary_format::errors::Location::Module",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -323,8 +389,16 @@ Module errors.
                                 "move_binary_format::errors::Location::Module",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
@@ -350,12 +424,15 @@ Module errors.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)))
+                            (M.alloc (|
+                              Ty.path "core::cmp::Ordering",
+                              Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
+                            |)))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -392,8 +469,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -416,6 +501,7 @@ Module errors.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -426,7 +512,20 @@ Module errors.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::errors::Location" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "move_binary_format::errors::Location" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -439,7 +538,14 @@ Module errors.
                                 "move_binary_format::errors::Location::Module",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -447,8 +553,16 @@ Module errors.
                                 "move_binary_format::errors::Location::Module",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -474,7 +588,7 @@ Module errors.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -501,8 +615,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -526,7 +648,14 @@ Module errors.
               |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ];
+                    Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ]
+                  ],
+                Value.Tuple [ M.read (| self |); M.read (| other |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -539,7 +668,14 @@ Module errors.
                         "move_binary_format::errors::Location::Module",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ2_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                        γ2_0
+                      |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -547,8 +683,19 @@ Module errors.
                         "move_binary_format::errors::Location::Module",
                         0
                       |) in
-                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                    let __arg1_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                        γ2_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -572,6 +719,10 @@ Module errors.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -644,8 +795,12 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_binary_format::errors::ExecutionState"
             []
             []
@@ -721,8 +876,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -746,6 +906,24 @@ Module errors.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "move_core_types::language_storage::ModuleId";
+                                    Ty.path
+                                      "move_binary_format::file_format::FunctionDefinitionIndex";
+                                    Ty.path "u16"
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -784,12 +962,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -813,8 +995,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
@@ -898,8 +1088,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -974,8 +1172,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -1064,8 +1270,23 @@ Module errors.
       match ε, τ, α with
       | [], [], [ stack_trace ] =>
         ltac:(M.monadic
-          (let stack_trace := M.alloc (| stack_trace |) in
-          Value.StructRecord
+          (let stack_trace :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.path "move_core_types::language_storage::ModuleId";
+                      Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                      Ty.path "u16"
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              stack_trace
+            |) in
+          Value.mkStructRecord
             "move_binary_format::errors::ExecutionState"
             []
             []
@@ -1086,7 +1307,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::ExecutionState" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1131,7 +1356,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           Value.StructTuple
             "move_binary_format::errors::VMError"
             []
@@ -1197,12 +1426,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1226,8 +1459,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
@@ -1303,8 +1544,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1363,8 +1612,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -1473,8 +1730,12 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_binary_format::errors::VMError_"
             []
             []
@@ -1741,7 +2002,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1785,7 +2050,10 @@ Module errors.
                                                               [
                                                                 fun γ =>
                                                                   ltac:(M.monadic
-                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                                    (M.alloc (|
+                                                                      Ty.tuple [],
+                                                                      Value.Tuple []
+                                                                    |)))
                                                               ]
                                                             |)))
                                                       ]
@@ -1822,12 +2090,21 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
@@ -1876,6 +2153,7 @@ Module errors.
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
                       M.alloc (|
+                        Ty.path "core::cmp::Ordering",
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
@@ -1924,6 +2202,7 @@ Module errors.
                             M.match_operator (|
                               Ty.path "core::cmp::Ordering",
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -1976,6 +2255,7 @@ Module errors.
                                     M.match_operator (|
                                       Ty.path "core::cmp::Ordering",
                                       M.alloc (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
@@ -2032,6 +2312,7 @@ Module errors.
                                             M.match_operator (|
                                               Ty.path "core::cmp::Ordering",
                                               M.alloc (|
+                                                Ty.path "core::cmp::Ordering",
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
@@ -2084,6 +2365,7 @@ Module errors.
                                                     M.match_operator (|
                                                       Ty.path "core::cmp::Ordering",
                                                       M.alloc (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
@@ -2147,6 +2429,7 @@ Module errors.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.path "core::cmp::Ordering",
                                                               M.call_closure (|
                                                                 Ty.path "core::cmp::Ordering",
                                                                 M.get_trait_method (|
@@ -2205,37 +2488,46 @@ Module errors.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let cmp := M.copy (| γ |) in
+                                                            (let cmp :=
+                                                              M.copy (|
+                                                                Ty.path "core::cmp::Ordering",
+                                                                γ
+                                                              |) in
                                                             cmp))
                                                       ]
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let cmp := M.copy (| γ |) in
+                                                    (let cmp :=
+                                                      M.copy (|
+                                                        Ty.path "core::cmp::Ordering",
+                                                        γ
+                                                      |) in
                                                     cmp))
                                               ]
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let cmp := M.copy (| γ |) in
+                                            (let cmp :=
+                                              M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                                             cmp))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let cmp := M.copy (| γ |) in
+                                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                                     cmp))
                               ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -2272,8 +2564,16 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
@@ -2574,12 +2874,21 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -2637,6 +2946,10 @@ Module errors.
                         []
                         [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -2697,6 +3010,10 @@ Module errors.
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -2766,6 +3083,10 @@ Module errors.
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -2842,6 +3163,10 @@ Module errors.
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -2907,6 +3232,10 @@ Module errors.
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -2992,6 +3321,10 @@ Module errors.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -3067,37 +3400,79 @@ Module errors.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let cmp := M.copy (| γ |) in
+                                                            (let cmp :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering" ],
+                                                                γ
+                                                              |) in
                                                             cmp))
                                                       ]
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let cmp := M.copy (| γ |) in
+                                                    (let cmp :=
+                                                      M.copy (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ],
+                                                        γ
+                                                      |) in
                                                     cmp))
                                               ]
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let cmp := M.copy (| γ |) in
+                                            (let cmp :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
+                                                γ
+                                              |) in
                                             cmp))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let cmp := M.copy (| γ |) in
+                                    (let cmp :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
+                                        γ
+                                      |) in
                                     cmp))
                               ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
+                                γ
+                              |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
+                        γ
+                      |) in
                     cmp))
               ]
             |)
@@ -3126,7 +3501,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (|
@@ -3159,7 +3538,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (|
@@ -3192,7 +3575,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -3239,7 +3626,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -3291,7 +3682,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -3314,7 +3709,7 @@ Module errors.
                   [ Ty.path "move_binary_format::errors::ExecutionState" ]
                   []
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3333,7 +3728,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3371,7 +3770,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3409,7 +3812,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3447,7 +3854,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "move_core_types::vm_status::StatusType",
             M.get_associated_function (|
@@ -3518,7 +3929,7 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::VMError", self |) in
           M.read (|
             M.match_operator (|
               Ty.tuple
@@ -3604,14 +4015,91 @@ Module errors.
                         "move_binary_format::errors::VMError_",
                         "offsets"
                       |) in
-                    let major_status := M.copy (| γ0_0 |) in
-                    let sub_status := M.copy (| γ0_1 |) in
-                    let message := M.copy (| γ0_2 |) in
-                    let exec_state := M.copy (| γ0_3 |) in
-                    let location := M.copy (| γ0_4 |) in
-                    let indices := M.copy (| γ0_5 |) in
-                    let offsets := M.copy (| γ0_6 |) in
+                    let major_status :=
+                      M.copy (| Ty.path "move_core_types::vm_status::StatusCode", γ0_0 |) in
+                    let sub_status :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                        γ0_1
+                      |) in
+                    let message :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloc::string::String" ],
+                        γ0_2
+                      |) in
+                    let exec_state :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::errors::ExecutionState" ],
+                        γ0_3
+                      |) in
+                    let location :=
+                      M.copy (| Ty.path "move_binary_format::errors::Location", γ0_4 |) in
+                    let indices :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_5
+                      |) in
+                    let offsets :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                                Ty.path "u16"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_6
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ];
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloc::string::String" ];
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "move_binary_format::errors::ExecutionState" ];
+                          Ty.path "move_binary_format::errors::Location";
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                              Ty.path "alloc::alloc::Global"
+                            ];
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path
+                                    "move_binary_format::file_format::FunctionDefinitionIndex";
+                                  Ty.path "u16"
+                                ];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
                       Value.Tuple
                         [
                           M.read (| major_status |);
@@ -3658,7 +4146,7 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::VMError", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_binary_format::errors::PartialVMError",
@@ -3710,13 +4198,57 @@ Module errors.
                         "move_binary_format::errors::VMError_",
                         "offsets"
                       |) in
-                    let major_status := M.copy (| γ0_0 |) in
-                    let sub_status := M.copy (| γ0_1 |) in
-                    let message := M.copy (| γ0_2 |) in
-                    let exec_state := M.copy (| γ0_3 |) in
-                    let indices := M.copy (| γ0_4 |) in
-                    let offsets := M.copy (| γ0_5 |) in
+                    let major_status :=
+                      M.copy (| Ty.path "move_core_types::vm_status::StatusCode", γ0_0 |) in
+                    let sub_status :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                        γ0_1
+                      |) in
+                    let message :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloc::string::String" ],
+                        γ0_2
+                      |) in
+                    let exec_state :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::errors::ExecutionState" ],
+                        γ0_3
+                      |) in
+                    let indices :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_4
+                      |) in
+                    let offsets :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                                Ty.path "u16"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_5
+                      |) in
                     M.alloc (|
+                      Ty.path "move_binary_format::errors::PartialVMError",
                       Value.StructTuple
                         "move_binary_format::errors::PartialVMError"
                         []
@@ -3743,7 +4275,7 @@ Module errors.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "move_binary_format::errors::PartialVMError_"
                                 []
                                 []
@@ -3783,8 +4315,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3860,8 +4397,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError_" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3915,14 +4457,98 @@ Module errors.
                         "move_binary_format::errors::VMError_",
                         "offsets"
                       |) in
-                    let major_status := M.alloc (| γ1_0 |) in
-                    let sub_status := M.alloc (| γ1_1 |) in
-                    let message := M.alloc (| γ1_2 |) in
-                    let exec_state := M.alloc (| γ1_3 |) in
-                    let location := M.alloc (| γ1_4 |) in
-                    let indices := M.alloc (| γ1_5 |) in
-                    let offsets := M.alloc (| γ1_6 |) in
+                    let major_status :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::vm_status::StatusCode" ],
+                        γ1_0
+                      |) in
+                    let sub_status :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
+                        γ1_1
+                      |) in
+                    let message :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloc::string::String" ]
+                          ],
+                        γ1_2
+                      |) in
+                    let exec_state :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::errors::ExecutionState" ]
+                          ],
+                        γ1_3
+                      |) in
+                    let location :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::errors::Location" ],
+                        γ1_4
+                      |) in
+                    let indices :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_5
+                      |) in
+                    let offsets :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::FunctionDefinitionIndex";
+                                    Ty.path "u16"
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_6
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -4059,6 +4685,8 @@ Module errors.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.MutRef,
                                                                                     M.alloc (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::builders::DebugStruct",
                                                                                       M.call_closure (|
                                                                                         Ty.path
                                                                                           "core::fmt::builders::DebugStruct",
@@ -4261,7 +4889,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError" ],
+              self
+            |) in
           Value.StructTuple
             "move_binary_format::errors::PartialVMError"
             []
@@ -4366,8 +4998,12 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError_" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_binary_format::errors::PartialVMError_"
             []
             []
@@ -4630,7 +5266,7 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
           M.read (|
             M.match_operator (|
               Ty.tuple
@@ -4709,13 +5345,88 @@ Module errors.
                         "move_binary_format::errors::PartialVMError_",
                         "offsets"
                       |) in
-                    let major_status := M.copy (| γ0_0 |) in
-                    let sub_status := M.copy (| γ0_1 |) in
-                    let message := M.copy (| γ0_2 |) in
-                    let exec_state := M.copy (| γ0_3 |) in
-                    let indices := M.copy (| γ0_4 |) in
-                    let offsets := M.copy (| γ0_5 |) in
+                    let major_status :=
+                      M.copy (| Ty.path "move_core_types::vm_status::StatusCode", γ0_0 |) in
+                    let sub_status :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                        γ0_1
+                      |) in
+                    let message :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloc::string::String" ],
+                        γ0_2
+                      |) in
+                    let exec_state :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::errors::ExecutionState" ],
+                        γ0_3
+                      |) in
+                    let indices :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_4
+                      |) in
+                    let offsets :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                                Ty.path "u16"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_5
+                      |) in
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ];
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "alloc::string::String" ];
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "move_binary_format::errors::ExecutionState" ];
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                              Ty.path "alloc::alloc::Global"
+                            ];
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.path
+                                    "move_binary_format::file_format::FunctionDefinitionIndex";
+                                  Ty.path "u16"
+                                ];
+                              Ty.path "alloc::alloc::Global"
+                            ]
+                        ],
                       Value.Tuple
                         [
                           M.read (| major_status |);
@@ -4761,8 +5472,8 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; location ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let location := M.alloc (| location |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let location := M.alloc (| Ty.path "move_binary_format::errors::Location", location |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_binary_format::errors::VMError",
@@ -4814,13 +5525,57 @@ Module errors.
                         "move_binary_format::errors::PartialVMError_",
                         "offsets"
                       |) in
-                    let major_status := M.copy (| γ0_0 |) in
-                    let sub_status := M.copy (| γ0_1 |) in
-                    let message := M.copy (| γ0_2 |) in
-                    let exec_state := M.copy (| γ0_3 |) in
-                    let indices := M.copy (| γ0_4 |) in
-                    let offsets := M.copy (| γ0_5 |) in
+                    let major_status :=
+                      M.copy (| Ty.path "move_core_types::vm_status::StatusCode", γ0_0 |) in
+                    let sub_status :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                        γ0_1
+                      |) in
+                    let message :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloc::string::String" ],
+                        γ0_2
+                      |) in
+                    let exec_state :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "move_binary_format::errors::ExecutionState" ],
+                        γ0_3
+                      |) in
+                    let indices :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_4
+                      |) in
+                    let offsets :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.tuple
+                              [
+                                Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                                Ty.path "u16"
+                              ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_5
+                      |) in
                     M.alloc (|
+                      Ty.path "move_binary_format::errors::VMError",
                       Value.StructTuple
                         "move_binary_format::errors::VMError"
                         []
@@ -4847,7 +5602,7 @@ Module errors.
                               []
                             |),
                             [
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "move_binary_format::errors::VMError_"
                                 []
                                 []
@@ -4890,7 +5645,8 @@ Module errors.
       match ε, τ, α with
       | [], [], [ major_status ] =>
         ltac:(M.monadic
-          (let major_status := M.alloc (| major_status |) in
+          (let major_status :=
+            M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", major_status |) in
           Value.StructTuple
             "move_binary_format::errors::PartialVMError"
             []
@@ -4917,7 +5673,7 @@ Module errors.
                   []
                 |),
                 [
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "move_binary_format::errors::PartialVMError_"
                     []
                     []
@@ -5013,7 +5769,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (|
@@ -5048,30 +5808,31 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; sub_status ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let sub_status := M.alloc (| sub_status |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let sub_status := M.alloc (| Ty.path "u64", sub_status |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -5111,6 +5872,7 @@ Module errors.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -5123,12 +5885,13 @@ Module errors.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -5174,30 +5937,31 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; message ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let message := M.alloc (| message |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let message := M.alloc (| Ty.path "alloc::string::String", message |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -5237,6 +6001,7 @@ Module errors.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -5249,12 +6014,13 @@ Module errors.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -5300,30 +6066,32 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; exec_state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let exec_state := M.alloc (| exec_state |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let exec_state :=
+            M.alloc (| Ty.path "move_binary_format::errors::ExecutionState", exec_state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -5366,6 +6134,7 @@ Module errors.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -5378,12 +6147,13 @@ Module errors.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -5428,9 +6198,9 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; kind; index ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let kind := M.alloc (| kind |) in
-          let index := M.alloc (| index |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let kind := M.alloc (| Ty.path "move_binary_format::IndexKind", kind |) in
+          let index := M.alloc (| Ty.path "u16", index |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -5486,8 +6256,18 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; additional_indices ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let additional_indices := M.alloc (| additional_indices |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let additional_indices :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              additional_indices
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -5555,9 +6335,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; function; offset ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let function := M.alloc (| function |) in
-          let offset := M.alloc (| offset |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let function :=
+            M.alloc (|
+              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+              function
+            |) in
+          let offset := M.alloc (| Ty.path "u16", offset |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -5621,8 +6405,22 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; additional_offsets ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let additional_offsets := M.alloc (| additional_offsets |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let additional_offsets :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                      Ty.path "u16"
+                    ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              additional_offsets
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -5720,15 +6518,20 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; separator; additional_message ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let separator := M.alloc (| separator |) in
-          let additional_message := M.alloc (| additional_message |) in
+          (let self := M.alloc (| Ty.path "move_binary_format::errors::PartialVMError", self |) in
+          let separator := M.alloc (| Ty.path "char", separator |) in
+          let additional_message :=
+            M.alloc (| Ty.path "alloc::string::String", additional_message |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::option::Option")
+                      []
+                      [ Ty.apply (Ty.path "&mut") [] [ Ty.path "alloc::string::String" ] ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::option::Option")
@@ -5772,18 +6575,23 @@ Module errors.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let msg := M.copy (| γ0_0 |) in
+                        let msg :=
+                          M.copy (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "alloc::string::String" ],
+                            γ0_0
+                          |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -5824,8 +6632,9 @@ Module errors.
                                           M.read (| separator |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
@@ -5867,11 +6676,12 @@ Module errors.
                               |)
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.write (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (|
@@ -5922,8 +6732,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::Location" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -5941,6 +6756,10 @@ Module errors.
                         "move_binary_format::errors::Location::Undefined"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5968,7 +6787,13 @@ Module errors.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "UNDEFINED" |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "UNDEFINED" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -5986,8 +6811,19 @@ Module errors.
                         "move_binary_format::errors::Location::Module",
                         0
                       |) in
-                    let id := M.alloc (| γ1_0 |) in
+                    let id :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::language_storage::ModuleId" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6016,7 +6852,13 @@ Module errors.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "Module " |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "Module " |) ]
+                                    |)
                                   |)
                                 |)
                               |);
@@ -6026,6 +6868,10 @@ Module errors.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -6108,8 +6954,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ status : Ty.path "alloc::string::String" :=
               M.call_closure (|
@@ -6143,6 +6994,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "PartialVMError with status " |) ]
                                       |)
                                     |)
@@ -6156,6 +7011,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -6203,6 +7062,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Placeholder" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -6261,7 +7124,7 @@ Module errors.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -6285,7 +7148,7 @@ Module errors.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let sub_status := M.copy (| γ0_0 |) in
+                        let sub_status := M.copy (| Ty.path "u64", γ0_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.write (|
                             status,
@@ -6321,6 +7184,11 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [
                                                         mk_str (| "" |);
@@ -6336,6 +7204,10 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "core::fmt::rt::Argument" ],
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
@@ -6392,8 +7264,8 @@ Module errors.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -6401,12 +7273,21 @@ Module errors.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "alloc::string::String" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_struct_record_field (|
@@ -6431,7 +7312,11 @@ Module errors.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let msg := M.alloc (| γ1_0 |) in
+                        let msg :=
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                            γ1_0
+                          |) in
                         let~ _ : Ty.tuple [] :=
                           M.write (|
                             status,
@@ -6467,6 +7352,11 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [
                                                         mk_str (| "" |);
@@ -6482,6 +7372,10 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "core::fmt::rt::Argument" ],
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
@@ -6540,8 +7434,8 @@ Module errors.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -6551,6 +7445,10 @@ Module errors.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ] ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::slice::iter::Iter")
@@ -6600,7 +7498,17 @@ Module errors.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [
+                                  Ty.tuple
+                                    [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ]
+                                ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -6609,6 +7517,21 @@ Module errors.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "move_binary_format::IndexKind";
+                                                  Ty.path "u16"
+                                                ]
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -6660,6 +7583,7 @@ Module errors.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -6673,8 +7597,19 @@ Module errors.
                                           let γ0_0 := M.read (| γ0_0 |) in
                                           let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let kind := M.alloc (| γ2_0 |) in
-                                          let index := M.alloc (| γ2_1 |) in
+                                          let kind :=
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_binary_format::IndexKind" ],
+                                              γ2_0
+                                            |) in
+                                          let index :=
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                              γ2_1
+                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.write (|
                                               status,
@@ -6714,6 +7649,19 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "str" ]
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           mk_str (| "" |);
@@ -6730,6 +7678,17 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument"
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
@@ -6828,11 +7787,11 @@ Module errors.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -6843,6 +7802,16 @@ Module errors.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                              Ty.path "u16"
+                            ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::slice::iter::Iter")
@@ -6902,7 +7871,21 @@ Module errors.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::FunctionDefinitionIndex";
+                                      Ty.path "u16"
+                                    ]
+                                ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -6911,6 +7894,22 @@ Module errors.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex";
+                                                  Ty.path "u16"
+                                                ]
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -6964,6 +7963,7 @@ Module errors.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -6977,8 +7977,22 @@ Module errors.
                                           let γ0_0 := M.read (| γ0_0 |) in
                                           let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let fdef := M.alloc (| γ2_0 |) in
-                                          let code_offset := M.alloc (| γ2_1 |) in
+                                          let fdef :=
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                ],
+                                              γ2_0
+                                            |) in
+                                          let code_offset :=
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                              γ2_1
+                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.write (|
                                               status,
@@ -7018,6 +8032,19 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "str" ]
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           mk_str (| "" |);
@@ -7038,6 +8065,17 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument"
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
@@ -7136,16 +8174,20 @@ Module errors.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -7168,7 +8210,13 @@ Module errors.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -7178,6 +8226,10 @@ Module errors.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -7252,8 +8304,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::VMError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ status : Ty.path "alloc::string::String" :=
               M.call_closure (|
@@ -7287,6 +8344,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "VMError with status " |) ]
                                       |)
                                     |)
@@ -7300,6 +8361,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -7347,6 +8412,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Placeholder" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -7405,7 +8474,7 @@ Module errors.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -7429,7 +8498,7 @@ Module errors.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let sub_status := M.copy (| γ0_0 |) in
+                        let sub_status := M.copy (| Ty.path "u64", γ0_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.write (|
                             status,
@@ -7465,6 +8534,11 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [
                                                         mk_str (| "" |);
@@ -7480,6 +8554,10 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "core::fmt::rt::Argument" ],
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
@@ -7536,8 +8614,8 @@ Module errors.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -7576,6 +8654,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "" |); mk_str (| " at location " |) ]
                                       |)
@@ -7588,6 +8670,10 @@ Module errors.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -7657,12 +8743,21 @@ Module errors.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "alloc::string::String" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_struct_record_field (|
@@ -7687,7 +8782,11 @@ Module errors.
                             "core::option::Option::Some",
                             0
                           |) in
-                        let msg := M.alloc (| γ1_0 |) in
+                        let msg :=
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                            γ1_0
+                          |) in
                         let~ _ : Ty.tuple [] :=
                           M.write (|
                             status,
@@ -7723,6 +8822,11 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [
                                                         mk_str (| "" |);
@@ -7738,6 +8842,10 @@ Module errors.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 2 ]
+                                                      [ Ty.path "core::fmt::rt::Argument" ],
                                                     Value.Array
                                                       [
                                                         M.call_closure (|
@@ -7796,8 +8904,8 @@ Module errors.
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -7807,6 +8915,10 @@ Module errors.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ] ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::slice::iter::Iter")
@@ -7856,7 +8968,17 @@ Module errors.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [
+                                  Ty.tuple
+                                    [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ]
+                                ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -7865,6 +8987,21 @@ Module errors.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "move_binary_format::IndexKind";
+                                                  Ty.path "u16"
+                                                ]
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -7916,6 +9053,7 @@ Module errors.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -7929,8 +9067,19 @@ Module errors.
                                           let γ0_0 := M.read (| γ0_0 |) in
                                           let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let kind := M.alloc (| γ2_0 |) in
-                                          let index := M.alloc (| γ2_1 |) in
+                                          let kind :=
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.path "move_binary_format::IndexKind" ],
+                                              γ2_0
+                                            |) in
+                                          let index :=
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                              γ2_1
+                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.write (|
                                               status,
@@ -7970,6 +9119,19 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "str" ]
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           mk_str (| "" |);
@@ -7986,6 +9148,17 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument"
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
@@ -8084,11 +9257,11 @@ Module errors.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -8099,6 +9272,16 @@ Module errors.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [
+                          Ty.tuple
+                            [
+                              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex";
+                              Ty.path "u16"
+                            ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::slice::iter::Iter")
@@ -8158,7 +9341,21 @@ Module errors.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path
+                                        "move_binary_format::file_format::FunctionDefinitionIndex";
+                                      Ty.path "u16"
+                                    ]
+                                ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -8167,6 +9364,22 @@ Module errors.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.tuple
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex";
+                                                  Ty.path "u16"
+                                                ]
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -8220,6 +9433,7 @@ Module errors.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -8233,8 +9447,22 @@ Module errors.
                                           let γ0_0 := M.read (| γ0_0 |) in
                                           let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let fdef := M.alloc (| γ2_0 |) in
-                                          let code_offset := M.alloc (| γ2_1 |) in
+                                          let fdef :=
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinitionIndex"
+                                                ],
+                                              γ2_0
+                                            |) in
+                                          let code_offset :=
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                              γ2_1
+                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.write (|
                                               status,
@@ -8274,6 +9502,19 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "str" ]
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           mk_str (| "" |);
@@ -8294,6 +9535,17 @@ Module errors.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path "array")
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            3
+                                                                        ]
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::rt::Argument"
+                                                                        ],
                                                                       Value.Array
                                                                         [
                                                                           M.call_closure (|
@@ -8392,16 +9644,20 @@ Module errors.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -8424,7 +9680,13 @@ Module errors.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -8434,6 +9696,10 @@ Module errors.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -8496,12 +9762,16 @@ Module errors.
     match ε, τ, α with
     | [], [], [ status; kind; target_offset; target_pool_len; cur_function; cur_bytecode_offset ] =>
       ltac:(M.monadic
-        (let status := M.alloc (| status |) in
-        let kind := M.alloc (| kind |) in
-        let target_offset := M.alloc (| target_offset |) in
-        let target_pool_len := M.alloc (| target_pool_len |) in
-        let cur_function := M.alloc (| cur_function |) in
-        let cur_bytecode_offset := M.alloc (| cur_bytecode_offset |) in
+        (let status := M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", status |) in
+        let kind := M.alloc (| Ty.path "move_binary_format::IndexKind", kind |) in
+        let target_offset := M.alloc (| Ty.path "usize", target_offset |) in
+        let target_pool_len := M.alloc (| Ty.path "usize", target_pool_len |) in
+        let cur_function :=
+          M.alloc (|
+            Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+            cur_function
+          |) in
+        let cur_bytecode_offset := M.alloc (| Ty.path "u16", cur_bytecode_offset |) in
         M.read (|
           let~ msg : Ty.path "alloc::string::String" :=
             M.call_closure (|
@@ -8530,6 +9800,10 @@ Module errors.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 5 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     Value.Array
                                       [
                                         mk_str (| "Index " |);
@@ -8548,6 +9822,10 @@ Module errors.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 5 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -8650,6 +9928,7 @@ Module errors.
               ]
             |) in
           M.alloc (|
+            Ty.path "move_binary_format::errors::PartialVMError",
             M.call_closure (|
               Ty.path "move_binary_format::errors::PartialVMError",
               M.get_associated_function (|
@@ -8715,10 +9994,10 @@ Module errors.
     match ε, τ, α with
     | [], [], [ status; kind; idx; len ] =>
       ltac:(M.monadic
-        (let status := M.alloc (| status |) in
-        let kind := M.alloc (| kind |) in
-        let idx := M.alloc (| idx |) in
-        let len := M.alloc (| len |) in
+        (let status := M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", status |) in
+        let kind := M.alloc (| Ty.path "move_binary_format::IndexKind", kind |) in
+        let idx := M.alloc (| Ty.path "u16", idx |) in
+        let len := M.alloc (| Ty.path "usize", len |) in
         M.read (|
           let~ msg : Ty.path "alloc::string::String" :=
             M.call_closure (|
@@ -8747,6 +10026,10 @@ Module errors.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 3 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     Value.Array
                                       [
                                         mk_str (| "Index " |);
@@ -8763,6 +10046,10 @@ Module errors.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 3 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -8824,6 +10111,7 @@ Module errors.
               ]
             |) in
           M.alloc (|
+            Ty.path "move_binary_format::errors::PartialVMError",
             M.call_closure (|
               Ty.path "move_binary_format::errors::PartialVMError",
               M.get_associated_function (|
@@ -8878,9 +10166,9 @@ Module errors.
     match ε, τ, α with
     | [], [], [ status; kind; idx ] =>
       ltac:(M.monadic
-        (let status := M.alloc (| status |) in
-        let kind := M.alloc (| kind |) in
-        let idx := M.alloc (| idx |) in
+        (let status := M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", status |) in
+        let kind := M.alloc (| Ty.path "move_binary_format::IndexKind", kind |) in
+        let idx := M.alloc (| Ty.path "u16", idx |) in
         M.call_closure (|
           Ty.path "move_binary_format::errors::PartialVMError",
           M.get_associated_function (|
@@ -8924,8 +10212,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -9002,8 +10295,13 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError_" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -9051,13 +10349,90 @@ Module errors.
                         "move_binary_format::errors::PartialVMError_",
                         "offsets"
                       |) in
-                    let major_status := M.alloc (| γ1_0 |) in
-                    let sub_status := M.alloc (| γ1_1 |) in
-                    let message := M.alloc (| γ1_2 |) in
-                    let exec_state := M.alloc (| γ1_3 |) in
-                    let indices := M.alloc (| γ1_4 |) in
-                    let offsets := M.alloc (| γ1_5 |) in
+                    let major_status :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_core_types::vm_status::StatusCode" ],
+                        γ1_0
+                      |) in
+                    let sub_status :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ] ],
+                        γ1_1
+                      |) in
+                    let message :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloc::string::String" ]
+                          ],
+                        γ1_2
+                      |) in
+                    let exec_state :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "move_binary_format::errors::ExecutionState" ]
+                          ],
+                        γ1_3
+                      |) in
+                    let indices :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.tuple [ Ty.path "move_binary_format::IndexKind"; Ty.path "u16" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_4
+                      |) in
+                    let offsets :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path
+                                      "move_binary_format::file_format::FunctionDefinitionIndex";
+                                    Ty.path "u16"
+                                  ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_5
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9175,6 +10550,8 @@ Module errors.
                                                                           M.borrow (|
                                                                             Pointer.Kind.MutRef,
                                                                             M.alloc (|
+                                                                              Ty.path
+                                                                                "core::fmt::builders::DebugStruct",
                                                                               M.call_closure (|
                                                                                 Ty.path
                                                                                   "core::fmt::builders::DebugStruct",
@@ -9330,7 +10707,11 @@ Module errors.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::errors::PartialVMError" ],
+              self
+            |) in
           Value.StructTuple
             "core::option::Option::None"
             []

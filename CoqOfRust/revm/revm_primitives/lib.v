@@ -4,6 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Definition value_KECCAK_EMPTY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   ltac:(M.monadic
     (M.alloc (|
+      Ty.apply
+        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+        [ Value.Integer IntegerKind.Usize 32 ]
+        [],
       M.call_closure (|
         Ty.apply
           (Ty.path "alloy_primitives::bits::fixed::FixedBytes")

@@ -16,9 +16,18 @@ Module locals_safety.
     match ε, τ, α with
     | [], [ impl_Meter__plus___Sized ], [ module; function_context; meter ] =>
       ltac:(M.monadic
-        (let module := M.alloc (| module |) in
-        let function_context := M.alloc (| function_context |) in
-        let meter := M.alloc (| meter |) in
+        (let module :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+            module
+          |) in
+        let function_context :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+            function_context
+          |) in
+        let meter :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -27,6 +36,10 @@ Module locals_safety.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ initial_state :
                       Ty.path
@@ -36,6 +49,20 @@ Module locals_safety.
                         Ty.path
                           "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.path
+                                "move_bytecode_verifier::locals_safety::abstract_state::AbstractState"
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -107,8 +134,20 @@ Module locals_safety.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.path
+                                  "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -157,12 +196,21 @@ Module locals_safety.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val :=
+                                M.copy (|
+                                  Ty.path
+                                    "move_bytecode_verifier::locals_safety::abstract_state::AbstractState",
+                                  γ0_0
+                                |) in
                               val))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -181,6 +229,7 @@ Module locals_safety.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.path "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis",
                             Value.StructTuple
                               "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis"
                               []
@@ -348,10 +397,22 @@ Module locals_safety.
     match ε, τ, α with
     | [], [ impl_Meter__plus___Sized ], [ state; bytecode; offset; meter ] =>
       ltac:(M.monadic
-        (let state := M.alloc (| state |) in
-        let bytecode := M.alloc (| bytecode |) in
-        let offset := M.alloc (| offset |) in
-        let meter := M.alloc (| meter |) in
+        (let state :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState" ],
+            state
+          |) in
+        let bytecode :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ],
+            bytecode
+          |) in
+        let offset := M.alloc (| Ty.path "u16", offset |) in
+        let meter :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -360,12 +421,29 @@ Module locals_safety.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -441,8 +519,19 @@ Module locals_safety.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -491,7 +580,7 @@ Module locals_safety.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -511,10 +600,13 @@ Module locals_safety.
                                   "move_binary_format::file_format::Bytecode::StLoc",
                                   0
                                 |) in
-                              let idx := M.alloc (| γ1_0 |) in
+                              let idx :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.path
+                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
                                   M.call_closure (|
                                     Ty.path
                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
@@ -547,7 +639,7 @@ Module locals_safety.
                                                   γ,
                                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -555,7 +647,7 @@ Module locals_safety.
                                                   γ,
                                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -564,6 +656,7 @@ Module locals_safety.
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.alloc (|
+                                                    Ty.path "bool",
                                                     UnOp.not (|
                                                       M.call_closure (|
                                                         Ty.path "bool",
@@ -605,6 +698,7 @@ Module locals_safety.
                                                     Value.Bool true
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -651,6 +745,7 @@ Module locals_safety.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.call_closure (|
                                           Ty.tuple [],
                                           M.get_associated_function (|
@@ -680,10 +775,13 @@ Module locals_safety.
                                   "move_binary_format::file_format::Bytecode::MoveLoc",
                                   0
                                 |) in
-                              let idx := M.alloc (| γ1_0 |) in
+                              let idx :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.path
+                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
                                   M.call_closure (|
                                     Ty.path
                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
@@ -716,7 +814,7 @@ Module locals_safety.
                                                   γ,
                                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -724,7 +822,7 @@ Module locals_safety.
                                                   γ,
                                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -732,6 +830,7 @@ Module locals_safety.
                                             | [] =>
                                               ltac:(M.monadic
                                                 (M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -783,6 +882,7 @@ Module locals_safety.
                                           "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                         |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.call_closure (|
                                           Ty.tuple [],
                                           M.get_associated_function (|
@@ -812,10 +912,13 @@ Module locals_safety.
                                   "move_binary_format::file_format::Bytecode::CopyLoc",
                                   0
                                 |) in
-                              let idx := M.alloc (| γ1_0 |) in
+                              let idx :=
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ1_0 |) in
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.path
+                                    "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
                                   M.call_closure (|
                                     Ty.path
                                       "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
@@ -848,7 +951,7 @@ Module locals_safety.
                                                   γ,
                                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)));
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
@@ -856,7 +959,7 @@ Module locals_safety.
                                                   γ,
                                                   "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)))
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ],
                                         fun γ =>
                                           ltac:(M.monadic
@@ -864,6 +967,7 @@ Module locals_safety.
                                             | [] =>
                                               ltac:(M.monadic
                                                 (M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -914,7 +1018,7 @@ Module locals_safety.
                                           γ,
                                           "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ]
                               |)));
                           fun γ =>
@@ -932,8 +1036,15 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MutBorrowLoc",
                                           0
                                         |) in
-                                      let idx := M.alloc (| γ1_0 |) in
-                                      M.alloc (| Value.Tuple [ idx ] |)));
+                                      let idx :=
+                                        M.alloc (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                          γ1_0
+                                        |) in
+                                      M.alloc (|
+                                        Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                        Value.Tuple [ idx ]
+                                      |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -943,8 +1054,15 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ImmBorrowLoc",
                                           0
                                         |) in
-                                      let idx := M.alloc (| γ1_0 |) in
-                                      M.alloc (| Value.Tuple [ idx ] |)))
+                                      let idx :=
+                                        M.alloc (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                          γ1_0
+                                        |) in
+                                      M.alloc (|
+                                        Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                        Value.Tuple [ idx ]
+                                      |)))
                                 ],
                                 fun γ =>
                                   ltac:(M.monadic
@@ -954,6 +1072,8 @@ Module locals_safety.
                                         (M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.path
+                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
                                             M.call_closure (|
                                               Ty.path
                                                 "move_bytecode_verifier::locals_safety::abstract_state::LocalState",
@@ -986,7 +1106,7 @@ Module locals_safety.
                                                             γ,
                                                             "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Unavailable"
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)));
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let _ :=
@@ -994,7 +1114,7 @@ Module locals_safety.
                                                             γ,
                                                             "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                           |) in
-                                                        M.alloc (| Value.Tuple [] |)))
+                                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   ],
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -1002,6 +1122,7 @@ Module locals_safety.
                                                       | [] =>
                                                         ltac:(M.monadic
                                                           (M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -1055,7 +1176,7 @@ Module locals_safety.
                                                     γ,
                                                     "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)))
                                     | _ => M.impossible "wrong number of arguments"
@@ -1116,6 +1237,19 @@ Module locals_safety.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "move_binary_format::errors::PartialVMError"
+                                            ];
+                                          Ty.tuple []
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1215,8 +1349,20 @@ Module locals_safety.
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
                                             |) in
-                                          let residual := M.copy (| γ0_0 |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError"
+                                                ],
+                                              γ0_0
+                                            |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
@@ -1268,7 +1414,7 @@ Module locals_safety.
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
                                             |) in
-                                          let val := M.copy (| γ0_0 |) in
+                                          let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                           val))
                                     ]
                                   |)
@@ -1317,13 +1463,14 @@ Module locals_safety.
                                 M.read (|
                                   M.match_operator (|
                                     Ty.tuple [],
-                                    M.alloc (| Value.Tuple [] |),
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
+                                                Ty.path "bool",
                                                 UnOp.not (|
                                                   M.call_closure (|
                                                     Ty.path "bool",
@@ -1385,6 +1532,7 @@ Module locals_safety.
                                               Value.Bool true
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (|
                                               M.call_closure (|
                                                 Ty.path "never",
@@ -1401,7 +1549,8 @@ Module locals_safety.
                                               |)
                                             |)
                                           |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                      fun γ =>
+                                        ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
@@ -1409,6 +1558,22 @@ Module locals_safety.
                                 (M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::zip::Zip")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::AbilitySet" ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::iter::adapters::zip::Zip")
@@ -1578,7 +1743,29 @@ Module locals_safety.
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let iter := M.copy (| γ |) in
+                                        (let iter :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::iter::adapters::zip::Zip")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "core::slice::iter::Iter")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::file_format::AbilitySet"
+                                                  ]
+                                              ],
+                                            γ
+                                          |) in
                                         M.loop (|
                                           Ty.tuple [],
                                           ltac:(M.monadic
@@ -1587,6 +1774,28 @@ Module locals_safety.
                                                 M.match_operator (|
                                                   Ty.tuple [],
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "core::option::Option")
+                                                      []
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                                              ];
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet"
+                                                              ]
+                                                          ]
+                                                      ],
                                                     M.call_closure (|
                                                       Ty.apply
                                                         (Ty.path "core::option::Option")
@@ -1656,6 +1865,7 @@ Module locals_safety.
                                                             "core::option::Option::None"
                                                           |) in
                                                         M.alloc (|
+                                                          Ty.tuple [],
                                                           M.never_to_any (|
                                                             M.read (| M.break (||) |)
                                                           |)
@@ -1678,8 +1888,28 @@ Module locals_safety.
                                                             γ0_0,
                                                             1
                                                           |) in
-                                                        let local_state := M.copy (| γ1_0 |) in
-                                                        let local_abilities := M.copy (| γ1_1 |) in
+                                                        let local_state :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_bytecode_verifier::locals_safety::abstract_state::LocalState"
+                                                              ],
+                                                            γ1_0
+                                                          |) in
+                                                        let local_abilities :=
+                                                          M.copy (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet"
+                                                              ],
+                                                            γ1_1
+                                                          |) in
                                                         M.match_operator (|
                                                           Ty.tuple [],
                                                           local_state,
@@ -1698,6 +1928,7 @@ Module locals_safety.
                                                                             "move_bytecode_verifier::locals_safety::abstract_state::LocalState::MaybeAvailable"
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |)));
                                                                     fun γ =>
@@ -1709,6 +1940,7 @@ Module locals_safety.
                                                                             "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |)))
                                                                   ],
@@ -1719,6 +1951,7 @@ Module locals_safety.
                                                                         ltac:(M.monadic
                                                                           (let γ :=
                                                                             M.alloc (|
+                                                                              Ty.path "bool",
                                                                               UnOp.not (|
                                                                                 M.call_closure (|
                                                                                   Ty.path "bool",
@@ -1747,6 +1980,7 @@ Module locals_safety.
                                                                               Value.Bool true
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             M.never_to_any (|
                                                                               M.read (|
                                                                                 M.return_ (|
@@ -1800,13 +2034,16 @@ Module locals_safety.
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
+                                                                (M.alloc (|
+                                                                  Ty.tuple [],
+                                                                  Value.Tuple []
+                                                                |)))
                                                           ]
                                                         |)))
                                                   ]
                                                 |)
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         |)))
                                   ]
                                 |))));
@@ -1823,7 +2060,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Pop"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1833,7 +2070,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::BrTrue",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1843,7 +2080,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::BrFalse",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1852,7 +2089,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Abort"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1862,7 +2099,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::Branch",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1871,7 +2108,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Nop"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1880,7 +2117,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::FreezeRef"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1890,7 +2127,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MutBorrowField",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1900,7 +2137,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MutBorrowFieldGeneric",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1910,7 +2147,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ImmBorrowField",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1920,7 +2157,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ImmBorrowFieldGeneric",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1930,7 +2167,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdU8",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1940,7 +2177,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdU16",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1950,7 +2187,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdU32",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1960,7 +2197,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdU64",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1970,7 +2207,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdU128",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1980,7 +2217,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdU256",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1990,7 +2227,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::LdConst",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -1999,7 +2236,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::LdTrue"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2008,7 +2245,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::LdFalse"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2018,7 +2255,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::Call",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2028,7 +2265,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::CallGeneric",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2038,7 +2275,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::Pack",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2048,7 +2285,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::PackGeneric",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2058,7 +2295,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::Unpack",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2068,7 +2305,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::UnpackGeneric",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2077,7 +2314,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::ReadRef"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2086,7 +2323,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::WriteRef"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2095,7 +2332,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::CastU8"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2104,7 +2341,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::CastU16"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2113,7 +2350,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::CastU32"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2122,7 +2359,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::CastU64"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2131,7 +2368,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::CastU128"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2140,7 +2377,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::CastU256"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2149,7 +2386,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Add"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2158,7 +2395,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Sub"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2167,7 +2404,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Mul"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2176,7 +2413,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Mod"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2185,7 +2422,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Div"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2194,7 +2431,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::BitOr"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2203,7 +2440,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::BitAnd"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2212,7 +2449,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Xor"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2221,7 +2458,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Shl"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2230,7 +2467,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Shr"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2239,7 +2476,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Or"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2248,7 +2485,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::And"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2257,7 +2494,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Not"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2266,7 +2503,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Eq"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2275,7 +2512,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Neq"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2284,7 +2521,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Lt"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2293,7 +2530,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Gt"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2302,7 +2539,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Le"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2311,7 +2548,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::Ge"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2321,7 +2558,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MutBorrowGlobalDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2331,7 +2568,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MutBorrowGlobalGenericDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2341,7 +2578,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ImmBorrowGlobalDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2351,7 +2588,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ImmBorrowGlobalGenericDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2361,7 +2598,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ExistsDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2371,7 +2608,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::ExistsGenericDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2381,7 +2618,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MoveFromDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2391,7 +2628,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MoveFromGenericDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2401,7 +2638,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MoveToDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2411,7 +2648,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::MoveToGenericDeprecated",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2420,7 +2657,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::VecPack"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2430,7 +2667,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::VecLen",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2440,7 +2677,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::VecImmBorrow",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2450,7 +2687,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::VecMutBorrow",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2460,7 +2697,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::VecPushBack",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2470,7 +2707,7 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::VecPopBack",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2479,7 +2716,7 @@ Module locals_safety.
                                           γ,
                                           "move_binary_format::file_format::Bytecode::VecUnpack"
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)));
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ := M.read (| γ |) in
@@ -2489,12 +2726,13 @@ Module locals_safety.
                                           "move_binary_format::file_format::Bytecode::VecSwap",
                                           0
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ],
                                 fun γ =>
                                   ltac:(M.monadic
                                     match γ with
-                                    | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    | [] =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     | _ => M.impossible "wrong number of arguments"
                                     end)
                               |)))
@@ -2502,6 +2740,10 @@ Module locals_safety.
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -2554,12 +2796,38 @@ Module locals_safety.
       match ε, τ, α with
       | [], [ impl_Meter__plus___Sized ], [ self; state; bytecode; index; _last_index; meter ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
-          let bytecode := M.alloc (| bytecode |) in
-          let index := M.alloc (| index |) in
-          let _last_index := M.alloc (| _last_index |) in
-          let meter := M.alloc (| meter |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis" ],
+              self
+            |) in
+          let state :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.associated_in_trait
+                    "move_bytecode_verifier::absint::TransferFunctions"
+                    []
+                    []
+                    (Ty.path "move_bytecode_verifier::locals_safety::LocalsSafetyAnalysis")
+                    "State"
+                ],
+              state
+            |) in
+          let bytecode :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ],
+              bytecode
+            |) in
+          let index := M.alloc (| Ty.path "u16", index |) in
+          let _last_index := M.alloc (| Ty.path "u16", _last_index |) in
+          let meter :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")

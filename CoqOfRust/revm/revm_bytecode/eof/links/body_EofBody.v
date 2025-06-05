@@ -13,24 +13,24 @@ Require Import revm_bytecode.eof.body.
 
 Module EofBody.
   Record t : Set := {
-    types_section: Vec.t TypesSection.t Global.t;
-    code_section: Vec.t Usize.t Global.t;
-    code: Bytes.t;
-    container_section: Vec.t Bytes.t Global.t;
-    data_section: Bytes.t;
-    is_data_filled: bool;
+    code : Bytes.t;
+    code_section : Vec.t Usize.t Global.t;
+    container_section : Vec.t Bytes.t Global.t;
+    data_section : Bytes.t;
+    is_data_filled : bool;
+    types_section : Vec.t TypesSection.t Global.t;
   }.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_bytecode::eof::body::EofBody";
-    φ '(Build_t types_section code_section code container_section data_section is_data_filled) :=
+    φ x :=
       Value.StructRecord "revm_bytecode::eof::body::EofBody" [] [] [
-        ("types_section", φ types_section);
-        ("code_section", φ code_section);
-        ("code", φ code);
-        ("container_section", φ container_section);
-        ("data_section", φ data_section);
-        ("is_data_filled", φ is_data_filled)
+        ("code", φ x.(code));
+        ("code_section", φ x.(code_section));
+        ("container_section", φ x.(container_section));
+        ("data_section", φ x.(data_section));
+        ("is_data_filled", φ x.(is_data_filled));
+        ("types_section", φ x.(types_section))
       ]
   }.
 
@@ -39,44 +39,51 @@ Module EofBody.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with
-      (types_section : Vec.t TypesSection.t Global.t) types_section'
-      (code_section : Vec.t Usize.t Global.t) code_section'
       (code : Bytes.t) code'
+      (code_section : Vec.t Usize.t Global.t) code_section'
       (container_section : Vec.t Bytes.t Global.t) container_section'
       (data_section : Bytes.t) data_section'
-      (is_data_filled : bool) is_data_filled' :
-    types_section' = φ types_section ->
-    code_section' = φ code_section ->
+      (is_data_filled : bool) is_data_filled'
+      (types_section : Vec.t TypesSection.t Global.t) types_section' :
     code' = φ code ->
+    code_section' = φ code_section ->
     container_section' = φ container_section ->
     data_section' = φ data_section ->
     is_data_filled' = φ is_data_filled ->
+    types_section' = φ types_section ->
     Value.StructRecord "revm_bytecode::eof::body::EofBody" [] [] [
-      ("types_section", types_section');
-      ("code_section", code_section');
       ("code", code');
+      ("code_section", code_section');
       ("container_section", container_section');
       ("data_section", data_section');
-      ("is_data_filled", is_data_filled')
-    ] = φ (Build_t types_section code_section code container_section data_section is_data_filled).
+      ("is_data_filled", is_data_filled');
+      ("types_section", types_section')
+    ] = φ (Build_t
+      code
+      code_section
+      container_section
+      data_section
+      is_data_filled
+      types_section
+    ).
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
 
   Definition of_value
-      (types_section : Vec.t TypesSection.t Global.t)
-      (code_section : Vec.t Usize.t Global.t)
       (code : Bytes.t)
+      (code_section : Vec.t Usize.t Global.t)
       (container_section : Vec.t Bytes.t Global.t)
       (data_section : Bytes.t)
-      (is_data_filled : bool) :
+      (is_data_filled : bool)
+      (types_section : Vec.t TypesSection.t Global.t) :
     OfValue.t (
       Value.StructRecord "revm_bytecode::eof::body::EofBody" [] [] [
-        ("types_section", φ types_section);
-        ("code_section", φ code_section);
         ("code", φ code);
+        ("code_section", φ code_section);
         ("container_section", φ container_section);
         ("data_section", φ data_section);
-        ("is_data_filled", φ is_data_filled)
+        ("is_data_filled", φ is_data_filled);
+        ("types_section", φ types_section)
       ]
     ).
   Proof. econstructor; apply of_value_with; reflexivity. Defined.

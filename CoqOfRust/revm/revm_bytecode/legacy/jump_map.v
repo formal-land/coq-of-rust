@@ -31,7 +31,11 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
             Value.StructTuple
               "revm_bytecode::legacy::jump_map::JumpTable"
               []
@@ -172,8 +176,16 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (|
@@ -248,12 +260,16 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -277,8 +293,12 @@ Module legacy.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -336,8 +356,16 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (|
@@ -407,8 +435,16 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                other
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (|
@@ -495,8 +531,13 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -524,6 +565,7 @@ Module legacy.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.path "core::fmt::builders::DebugStruct",
                             M.call_closure (|
                               Ty.path "core::fmt::builders::DebugStruct",
                               M.get_associated_function (|
@@ -551,6 +593,7 @@ Module legacy.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "alloc::string::String",
                                   M.call_closure (|
                                     Ty.path "alloc::string::String",
                                     M.get_function (|
@@ -665,7 +708,11 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -746,7 +793,11 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ slice ] =>
           ltac:(M.monadic
-            (let slice := M.alloc (| slice |) in
+            (let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                slice
+              |) in
             Value.StructTuple
               "revm_bytecode::legacy::jump_map::JumpTable"
               []
@@ -815,8 +866,12 @@ Module legacy.
         match ε, τ, α with
         | [], [], [ self; pc ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let pc := M.alloc (| pc |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ],
+                self
+              |) in
+            let pc := M.alloc (| Ty.path "usize", pc |) in
             LogicalOp.and (|
               M.call_closure (|
                 Ty.path "bool",
@@ -905,6 +960,14 @@ Module legacy.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "bitvec::ptr::proxy::BitRef")
+                              []
+                              [
+                                Ty.path "wyz::comu::Const";
+                                Ty.path "u8";
+                                Ty.path "bitvec::order::Lsb0"
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "bitvec::ptr::proxy::BitRef")

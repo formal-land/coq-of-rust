@@ -3,19 +3,30 @@ Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.links.aliases.
+Require Import alloy_primitives.log.links.mod.
 Require Import bytes.links.bytes.
+Require Import core.array.links.iter.
 Require Import core.convert.links.mod.
+Require Import core.convert.links.num.
+Require Import core.iter.adapters.links.map.
+Require Import core.links.cmp.
+Require Import core.links.option.
+Require Import core.links.result.
+Require Import core.num.links.mod.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.journaled_state.
 Require Import revm.revm_interpreter.gas.links.calc.
 Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.host.
 Require Import revm.revm_interpreter.instructions.links.utility.
+Require Import revm.revm_interpreter.interpreter.links.shared_memory.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
+Require Import ruint.links.bytes.
 Require Import ruint.links.from.
+Require Import ruint.links.lib.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -157,9 +168,11 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
   destruct Impl_IntoAddress_for_U256.run.
+  destruct Impl_TryFrom_u64_for_usize.run.
+  destruct bytes.Impl_Deref_for_Bytes.run.
+  destruct links.mod.Impl_Deref_for_Bytes.run.
   run_symbolic.
-  (* A lot of functions to link *)
-Admitted.
+Defined.
 
 (*
 pub fn blockhash<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -186,7 +199,7 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn sload<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -242,7 +255,7 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_Host_for_H.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn tstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -302,7 +315,7 @@ Defined.
 
 (*
 pub fn log<const N: usize, H: Host + ?Sized>(
-    interpreter: &mut Interpreter<WIRE>,
+    interpreter: &mut Interpreter<impl InterpreterTypes>,
     host: &mut H,
 )
 *)
@@ -316,7 +329,7 @@ Instance run_log
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
     (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
-    instructions.host.log [ φ N ] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
+    instructions.host.log [ φ N ] [ Φ H; Φ WIRE ] [ φ interpreter; φ host ]
     unit.
 Proof.
   constructor.
@@ -324,10 +337,31 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_MemoryTrait_for_Memory.
   destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_InputsTrait_for_Input.
   destruct run_LoopControl_for_Control.
   destruct run_Host_for_H.
+  destruct (Impl_AsRef_for_Slice.run U8.t).
+  destruct run_Deref_for_Synthetic1.
+  destruct (
+    let B := FixedBytes.t {| Integer.value := 32 |} in
+    let I := IntoIter.t aliases.U256.t N in
+    let F := Function1.t aliases.U256.t B in
+    Impl_Iterator_for_Map.run B I F
+  ).
+  destruct (array.links.iter.Impl_Iterator_for_IntoIter.run aliases.U256.t N).
+  destruct (Impl_IntoIterator_for_Array.run aliases.U256.t N).
+  destruct Impl_From_U256_for_FixedBytes_32.run.
   run_symbolic.
-Admitted.
+  destruct map0 as [? ? run_map]; cbn in *.
+  pose proof (run_map
+    (FixedBytes.t {| Integer.value := 32 |})
+    (Function1.t (Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}) (FixedBytes.t {| Integer.value := 32 |}))
+    _ _
+  ).
+  destruct from as [? ? run_from]; cbn in *.
+  change (Value.Closure _) with (φ (Function1.of_run run_from)).
+  typeclasses eauto.
+Defined.
 
 (*
 pub fn selfdestruct<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -352,11 +386,9 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   destruct run_LoopControl_for_Control.
-  destruct run_Host_for_H.
-  run_symbolic.
-  { destruct Impl_IntoAddress_for_U256.run.
-    run_symbolic.
-  }
   destruct run_InputsTrait_for_Input.
+  destruct run_Host_for_H.
+  destruct Impl_IntoAddress_for_U256.run.
+  destruct (Impl_Deref_for_StateLoad.run SelfDestructResult.t).
   run_symbolic.
-Admitted.
+Defined.

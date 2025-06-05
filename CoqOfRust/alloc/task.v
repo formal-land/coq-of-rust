@@ -13,7 +13,15 @@ Module task.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ Self; Ty.path "alloc::alloc::Global" ]
+                ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -41,7 +49,7 @@ Module task.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -65,7 +73,11 @@ Module task.
       match ε, τ, α with
       | [], [], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
+              waker
+            |) in
           M.call_closure (|
             Ty.path "core::task::wake::Waker",
             M.get_associated_function (| Ty.path "core::task::wake::Waker", "from_raw", [], [] |),
@@ -104,7 +116,11 @@ Module task.
       match ε, τ, α with
       | [], [], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
+              waker
+            |) in
           M.call_closure (|
             Ty.path "core::task::wake::RawWaker",
             M.get_function (| "alloc::task::raw_waker", [], [ W ] |),
@@ -171,7 +187,11 @@ Module task.
     match ε, τ, α with
     | [], [ W ], [ waker ] =>
       ltac:(M.monadic
-        (let waker := M.alloc (| waker |) in
+        (let waker :=
+          M.alloc (|
+            Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ],
+            waker
+          |) in
         M.call_closure (|
           Ty.path "core::task::wake::RawWaker",
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
@@ -194,6 +214,7 @@ Module task.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "core::task::wake::RawWakerVTable",
                     M.call_closure (|
                       Ty.path "core::task::wake::RawWakerVTable",
                       M.get_associated_function (|
@@ -244,7 +265,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -258,6 +279,7 @@ Module task.
                 [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
               |) in
             M.alloc (|
+              Ty.path "core::task::wake::RawWaker",
               M.call_closure (|
                 Ty.path "core::task::wake::RawWaker",
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
@@ -269,6 +291,7 @@ Module task.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "core::task::wake::RawWakerVTable",
                           M.call_closure (|
                             Ty.path "core::task::wake::RawWakerVTable",
                             M.get_associated_function (|
@@ -318,7 +341,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ waker :
                 Ty.apply (Ty.path "alloc::sync::Arc") [] [ W; Ty.path "alloc::alloc::Global" ] :=
@@ -338,7 +361,7 @@ Module task.
                 M.get_trait_method (| "alloc::task::Wake", W, [], [], "wake", [], [] |),
                 [ M.read (| waker |) ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -357,7 +380,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ waker :
                 Ty.apply
@@ -443,7 +466,7 @@ Module task.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -462,7 +485,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -475,7 +498,7 @@ Module task.
                 |),
                 [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -497,7 +520,14 @@ Module task.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ Self; Ty.path "alloc::alloc::Global" ] ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -522,7 +552,7 @@ Module task.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -546,7 +576,11 @@ Module task.
       match ε, τ, α with
       | [], [], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
+              waker
+            |) in
           M.call_closure (|
             Ty.path "core::task::wake::LocalWaker",
             M.get_associated_function (|
@@ -590,7 +624,11 @@ Module task.
       match ε, τ, α with
       | [], [], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker :=
+            M.alloc (|
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
+              waker
+            |) in
           M.call_closure (|
             Ty.path "core::task::wake::RawWaker",
             M.get_function (| "alloc::task::local_raw_waker", [], [ W ] |),
@@ -652,7 +690,11 @@ Module task.
     match ε, τ, α with
     | [], [ W ], [ waker ] =>
       ltac:(M.monadic
-        (let waker := M.alloc (| waker |) in
+        (let waker :=
+          M.alloc (|
+            Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ],
+            waker
+          |) in
         M.call_closure (|
           Ty.path "core::task::wake::RawWaker",
           M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
@@ -675,6 +717,7 @@ Module task.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "core::task::wake::RawWakerVTable",
                     M.call_closure (|
                       Ty.path "core::task::wake::RawWakerVTable",
                       M.get_associated_function (|
@@ -726,7 +769,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -740,6 +783,7 @@ Module task.
                 [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
               |) in
             M.alloc (|
+              Ty.path "core::task::wake::RawWaker",
               M.call_closure (|
                 Ty.path "core::task::wake::RawWaker",
                 M.get_associated_function (| Ty.path "core::task::wake::RawWaker", "new", [], [] |),
@@ -751,6 +795,7 @@ Module task.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "core::task::wake::RawWakerVTable",
                           M.call_closure (|
                             Ty.path "core::task::wake::RawWakerVTable",
                             M.get_associated_function (|
@@ -812,7 +857,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ waker :
                 Ty.apply (Ty.path "alloc::rc::Rc") [] [ W; Ty.path "alloc::alloc::Global" ] :=
@@ -832,7 +877,7 @@ Module task.
                 M.get_trait_method (| "alloc::task::LocalWake", W, [], [], "wake", [], [] |),
                 [ M.read (| waker |) ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -852,7 +897,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ waker :
                 Ty.apply
@@ -932,7 +977,7 @@ Module task.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -951,7 +996,7 @@ Module task.
       match ε, τ, α with
       | [], [ W ], [ waker ] =>
         ltac:(M.monadic
-          (let waker := M.alloc (| waker |) in
+          (let waker := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ], waker |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -964,7 +1009,7 @@ Module task.
                 |),
                 [ M.cast (Ty.apply (Ty.path "*const") [] [ W ]) (M.read (| waker |)) ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

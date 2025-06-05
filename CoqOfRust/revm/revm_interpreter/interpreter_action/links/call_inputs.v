@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bytes.links.mod.
 Require Import alloy_primitives.links.aliases.
+Require Import core.ops.links.range.
 
 (*
   /// Call value.
@@ -28,7 +29,7 @@ Module CallValue.
     φ x :=
       match x with
       | Transfer x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer" [] [] [φ x]
-      | Apparent x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [] [] [φ x]
+      | Apparent x => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent" [] [] [φ x]
       end;
   }.
 
@@ -50,7 +51,7 @@ Module CallValue.
 
   Lemma of_value_with_Apparent x x' :
     x' = φ x ->
-    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [] [] [x'] =
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent" [] [] [x'] =
     φ (Apparent x).
   Proof.
     now intros; subst.
@@ -67,7 +68,7 @@ Module CallValue.
 
   Definition of_value_Apparent (x : aliases.U256.t) x' :
     x' = φ x ->
-    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Approval" [] [] [x']).
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallValue::Apparent" [] [] [x']).
   Proof.
     econstructor; apply of_value_with_Apparent; eassumption.
   Defined.
@@ -75,9 +76,6 @@ Module CallValue.
 End CallValue.
 
 (*
-  /// Call scheme.
-  #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
-  #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
   pub enum CallScheme {
       /// `CALL`.
       Call,
@@ -87,6 +85,12 @@ End CallValue.
       DelegateCall,
       /// `STATICCALL`
       StaticCall,
+      /// `EXTCALL`
+      ExtCall,
+      /// `EXTSTATICCALL`
+      ExtStaticCall,
+      /// `EXTDELEGATECALL`
+      ExtDelegateCall,
   }
 *)
 
@@ -95,7 +99,10 @@ Module CallScheme.
   | Call
   | CallCode
   | DelegateCall
-  | StaticCall.
+  | StaticCall
+  | ExtCall
+  | ExtStaticCall
+  | ExtDelegateCall.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme";
@@ -105,6 +112,9 @@ Module CallScheme.
       | CallCode => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode" [] [] []
       | DelegateCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::DelegateCall" [] [] []
       | StaticCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall" [] [] []
+      | ExtCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall" [] [] []
+      | ExtStaticCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall" [] [] []
+      | ExtDelegateCall => Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall" [] [] []
       end;
   }.
 
@@ -147,6 +157,30 @@ Module CallScheme.
   Qed.
   Smpl Add apply of_value_with_StaticCall : of_value.
 
+  Lemma of_value_with_ExtCall :
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall" [] [] [] =
+    φ ExtCall.
+  Proof.
+    reflexivity.
+  Qed.
+  Smpl Add apply of_value_with_ExtCall : of_value.
+
+  Lemma of_value_with_ExtStaticCall :
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall" [] [] [] =
+    φ ExtStaticCall.
+  Proof.
+    reflexivity.
+  Qed.
+  Smpl Add apply of_value_with_ExtStaticCall : of_value.
+
+  Lemma of_value_with_ExtDelegateCall :
+    Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall" [] [] [] =
+    φ ExtDelegateCall.
+  Proof.
+    reflexivity.
+  Qed.
+  Smpl Add apply of_value_with_ExtDelegateCall : of_value.
+
   Definition of_value_Call :
     OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call" [] [] []).
   Proof.
@@ -174,6 +208,27 @@ Module CallScheme.
     econstructor; apply of_value_with_StaticCall.
   Defined.
   Smpl Add apply of_value_StaticCall : of_value.
+
+  Definition of_value_ExtCall :
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall" [] [] []).
+  Proof.
+    econstructor; apply of_value_with_ExtCall.
+  Defined.
+  Smpl Add apply of_value_ExtCall : of_value.
+
+  Definition of_value_ExtStaticCall :
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtStaticCall" [] [] []).
+  Proof.
+    econstructor; apply of_value_with_ExtStaticCall.
+  Defined.
+  Smpl Add apply of_value_ExtStaticCall : of_value.
+
+  Definition of_value_ExtDelegateCall :
+    OfValue.t (Value.StructTuple "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtDelegateCall" [] [] []).
+  Proof.
+    econstructor; apply of_value_with_ExtDelegateCall.
+  Defined.
+  Smpl Add apply of_value_ExtDelegateCall : of_value.
 End CallScheme.
 
 (*
@@ -192,32 +247,32 @@ End CallScheme.
 *)
 Module CallInputs.
   Record t : Set := {
-    input : Bytes.t;
-    return_memory_offset : Usize.t * Usize.t;
-    gas_limit : U64.t;
     bytecode_address : Address.t;
-    target_address : Address.t;
     caller : Address.t;
-    value : CallValue.t;
-    scheme : CallScheme.t;
-    is_static : bool;
+    gas_limit : U64.t;
+    input : Bytes.t;
     is_eof : bool;
+    is_static : bool;
+    return_memory_offset : Range.t Usize.t;
+    scheme : CallScheme.t;
+    target_address : Address.t;
+    value : CallValue.t;
   }.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
     φ x :=
       Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [] [] [
-        ("input", φ x.(input));
-        ("return_memory_offset", φ x.(return_memory_offset));
-        ("gas_limit", φ x.(gas_limit));
         ("bytecode_address", φ x.(bytecode_address));
-        ("target_address", φ x.(target_address));
         ("caller", φ x.(caller));
-        ("value", φ x.(value));
-        ("scheme", φ x.(scheme));
+        ("gas_limit", φ x.(gas_limit));
+        ("input", φ x.(input));
+        ("is_eof", φ x.(is_eof));
         ("is_static", φ x.(is_static));
-        ("is_eof", φ x.(is_eof))
+        ("return_memory_offset", φ x.(return_memory_offset));
+        ("scheme", φ x.(scheme));
+        ("target_address", φ x.(target_address));
+        ("value", φ x.(value))
       ];
   }.
 
@@ -229,76 +284,87 @@ Module CallInputs.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with
-    input input'
-    return_memory_offset return_memory_offset'
-    gas_limit gas_limit'
-    bytecode_address bytecode_address'
-    target_address target_address'
-    caller caller'
-    value value'
-    scheme scheme'
-    is_static is_static'
-    is_eof is_eof' :
-    input' = φ input ->
-    return_memory_offset' = φ return_memory_offset ->
-    gas_limit' = φ gas_limit ->
+      bytecode_address bytecode_address'
+      caller caller'
+      gas_limit gas_limit'
+      input input'
+      is_eof is_eof'
+      is_static is_static'
+      return_memory_offset return_memory_offset'
+      scheme scheme'
+      target_address target_address'
+      value value' :
     bytecode_address' = φ bytecode_address ->
-    target_address' = φ target_address ->
     caller' = φ caller ->
-    value' = φ value ->
-    scheme' = φ scheme ->
-    is_static' = φ is_static ->
+    gas_limit' = φ gas_limit ->
+    input' = φ input ->
     is_eof' = φ is_eof ->
+    is_static' = φ is_static ->
+    return_memory_offset' = φ return_memory_offset ->
+    scheme' = φ scheme ->
+    target_address' = φ target_address ->
+    value' = φ value ->
     Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [] [] [
-      ("input", input');
-      ("return_memory_offset", return_memory_offset');
-      ("gas_limit", gas_limit');
       ("bytecode_address", bytecode_address');
-      ("target_address", target_address');
       ("caller", caller');
-      ("value", value');
-      ("scheme", scheme');
+      ("gas_limit", gas_limit');
+      ("input", input');
+      ("is_eof", is_eof');
       ("is_static", is_static');
-      ("is_eof", is_eof')
-    ] = φ (Build_t input return_memory_offset gas_limit bytecode_address target_address caller value scheme is_static is_eof).
+      ("return_memory_offset", return_memory_offset');
+      ("scheme", scheme');
+      ("target_address", target_address');
+      ("value", value')
+    ] = φ (Build_t
+      bytecode_address
+      caller
+      gas_limit
+      input
+      is_eof
+      is_static
+      return_memory_offset
+      scheme
+      target_address
+      value
+    ).
   Proof.
     now intros; subst.
   Qed.
   Smpl Add apply of_value_with : of_value.
 
   Definition of_value
-    (input : Bytes.t) input'
-    (return_memory_offset : Usize.t * Usize.t) return_memory_offset'
-    (gas_limit : U64.t) gas_limit'
-    (bytecode_address : Address.t) bytecode_address'
-    (target_address : Address.t) target_address'
-    (caller : Address.t) caller'
-    (value : CallValue.t) value'
-    (scheme : CallScheme.t) scheme'
-    (is_static : bool) is_static'
-    (is_eof : bool) is_eof' :
-    input' = φ input ->
-    return_memory_offset' = φ return_memory_offset ->
-    gas_limit' = φ gas_limit ->
+      (bytecode_address : Address.t) bytecode_address'
+      (caller : Address.t) caller'
+      (gas_limit : U64.t) gas_limit'
+      (input : Bytes.t) input'
+      (is_eof : bool) is_eof'
+      (is_static : bool) is_static'
+      (return_memory_offset : Range.t Usize.t) return_memory_offset'
+      (scheme : CallScheme.t) scheme'
+      (target_address : Address.t) target_address'
+      (value : CallValue.t) value' :
     bytecode_address' = φ bytecode_address ->
-    target_address' = φ target_address ->
     caller' = φ caller ->
-    value' = φ value ->
-    scheme' = φ scheme ->
-    is_static' = φ is_static ->
+    gas_limit' = φ gas_limit ->
+    input' = φ input ->
     is_eof' = φ is_eof ->
+    is_static' = φ is_static ->
+    return_memory_offset' = φ return_memory_offset ->
+    scheme' = φ scheme ->
+    target_address' = φ target_address ->
+    value' = φ value ->
     OfValue.t (
       Value.StructRecord "revm_interpreter::interpreter_action::call_inputs::CallInputs" [] [] [
-        ("input", input');
-        ("return_memory_offset", return_memory_offset');
-        ("gas_limit", gas_limit');
         ("bytecode_address", bytecode_address');
-        ("target_address", target_address');
         ("caller", caller');
-        ("value", value');
-        ("scheme", scheme');
+        ("gas_limit", gas_limit');
+        ("input", input');
+        ("is_eof", is_eof');
         ("is_static", is_static');
-        ("is_eof", is_eof')
+        ("return_memory_offset", return_memory_offset');
+        ("scheme", scheme');
+        ("target_address", target_address');
+        ("value", value')
       ]
     ).
   Proof.

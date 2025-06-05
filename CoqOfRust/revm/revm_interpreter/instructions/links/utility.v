@@ -3,6 +3,7 @@ Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.bits.links.address.
 Require Import alloy_primitives.bits.links.fixed.
 Require Import alloy_primitives.links.aliases.
+Require Import core.array.links.mod.
 Require Import core.convert.links.mod.
 Require Import core.fmt.links.mod.
 Require Import core.iter.traits.links.collect.
@@ -13,6 +14,7 @@ Require Import core.slice.links.iter.
 Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.instructions.utility.
 Require Import ruint.links.bytes.
+Require Import ruint.links.lib.
 
 (* pub fn cast_slice_to_u256(slice: &[u8], dest: &mut U256) *)
 Instance run_cast_slice_to_u256
@@ -25,7 +27,19 @@ Proof.
   destruct (Impl_Iterator_for_ChunksExact.run U8.t).
   destruct (Impl_IntoIterator_for_Iterator_I.run (RChunksExact.t U8.t) U8.t).
   destruct (Impl_Iterator_for_RChunksExact.run U8.t).
+  destruct (
+    let run_TryFrom :=
+      Impl_TryFrom_Ref_for_Array.run U8.t {| Integer.value := 8 |} in
+    Impl_TryInto_for_TryFrom_T.run _ _ _ (run_TryFrom_for_U := run_TryFrom)
+  ).
+  (* Pointer cast and closures *)
   run_symbolic.
+  4: {
+    eapply Run.Rewrite. {
+      exact (array.repeat_φ_eq 8 (Integer.Build_t IntegerKind.U8 0)).
+    }
+    run_symbolic.
+  }
 Admitted.
 
 (*
@@ -64,9 +78,8 @@ Module Impl_IntoU256_for_B256.
     { intros.
       constructor.
       run_symbolic.
-      admit.
     }
-  Admitted.
+  Defined.
 
   Instance run : IntoU256.Run Self := {
     IntoU256.into_u256 := run_into_u256;

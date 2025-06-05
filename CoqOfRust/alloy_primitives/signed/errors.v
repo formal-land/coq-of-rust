@@ -35,7 +35,14 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signed::errors::ParseSignedError",
@@ -75,8 +82,16 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -94,8 +109,16 @@ Module signed.
                           "alloy_primitives::signed::errors::ParseSignedError::Ruint",
                           0
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "ruint::string::ParseError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -128,6 +151,10 @@ Module signed.
                           "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -183,8 +210,22 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -207,6 +248,7 @@ Module signed.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -217,7 +259,20 @@ Module signed.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -230,7 +285,11 @@ Module signed.
                                   "alloy_primitives::signed::errors::ParseSignedError::Ruint",
                                   0
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "ruint::string::ParseError" ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_tuple_field (|
@@ -238,8 +297,13 @@ Module signed.
                                   "alloy_primitives::signed::errors::ParseSignedError::Ruint",
                                   0
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "ruint::string::ParseError" ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -265,7 +329,7 @@ Module signed.
                                   ]
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                         ]
                       |)
                     |)))
@@ -297,12 +361,19 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -337,7 +408,7 @@ Module signed.
         match ε, τ, α with
         | [], [], [ err ] =>
           ltac:(M.monadic
-            (let err := M.alloc (| err |) in
+            (let err := M.alloc (| Ty.path "ruint::string::ParseError", err |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signed::errors::ParseSignedError",
@@ -357,6 +428,7 @@ Module signed.
                           "ruint::base_convert::BaseConvertError::Overflow"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::errors::ParseSignedError",
                         Value.StructTuple
                           "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                           []
@@ -366,6 +438,7 @@ Module signed.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "alloy_primitives::signed::errors::ParseSignedError",
                         Value.StructTuple
                           "alloy_primitives::signed::errors::ParseSignedError::Ruint"
                           []
@@ -402,7 +475,14 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -420,8 +500,21 @@ Module signed.
                           "alloy_primitives::signed::errors::ParseSignedError::Ruint",
                           0
                         |) in
-                      let err := M.alloc (| γ1_0 |) in
+                      let err :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "ruint::string::ParseError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -446,6 +539,15 @@ Module signed.
                           "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -487,8 +589,16 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::ParseSignedError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -506,8 +616,16 @@ Module signed.
                           "alloy_primitives::signed::errors::ParseSignedError::Ruint",
                           0
                         |) in
-                      let e := M.alloc (| γ1_0 |) in
+                      let e :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "ruint::string::ParseError" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -537,6 +655,10 @@ Module signed.
                           "alloy_primitives::signed::errors::ParseSignedError::IntegerOverflow"
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -588,7 +710,14 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -622,8 +751,16 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -667,8 +804,22 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ],
+                other
+              |) in
             Value.Bool true))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -695,7 +846,14 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -734,8 +892,16 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::signed::errors::BigIntConversionError" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")

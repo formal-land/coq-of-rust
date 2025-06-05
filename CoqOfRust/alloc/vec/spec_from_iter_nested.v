@@ -43,12 +43,13 @@ Module vec.
         match ε, τ, α with
         | [], [], [ iterator ] =>
           ltac:(M.monadic
-            (let iterator := M.alloc (| iterator |) in
+            (let iterator := M.alloc (| I, iterator |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                     M.read (|
                       let~ vector :
                           Ty.apply
@@ -62,6 +63,7 @@ Module vec.
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
                             M.alloc (|
+                              Ty.apply (Ty.path "core::option::Option") [] [ T ],
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                                 M.get_trait_method (|
@@ -82,6 +84,10 @@ Module vec.
                                   (let _ :=
                                     M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ T; Ty.path "alloc::alloc::Global" ],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -113,13 +119,21 @@ Module vec.
                                       "core::option::Option::Some",
                                       0
                                     |) in
-                                  let element := M.copy (| γ0_0 |) in
+                                  let element := M.copy (| T, γ0_0 |) in
                                   M.match_operator (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
                                       []
                                       [ T; Ty.path "alloc::alloc::Global" ],
                                     M.alloc (|
+                                      Ty.tuple
+                                        [
+                                          Ty.path "usize";
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ]
+                                        ],
                                       M.call_closure (|
                                         Ty.tuple
                                           [
@@ -146,7 +160,7 @@ Module vec.
                                         ltac:(M.monadic
                                           (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                           let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                          let lower := M.copy (| γ0_0 |) in
+                                          let lower := M.copy (| Ty.path "usize", γ0_0 |) in
                                           let~ initial_capacity : Ty.path "usize" :=
                                             M.call_closure (|
                                               Ty.path "usize",
@@ -246,7 +260,7 @@ Module vec.
                                                     Value.Integer IntegerKind.Usize 1
                                                   ]
                                                 |) in
-                                              M.alloc (| Value.Tuple [] |)
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                             |) in
                                           vector))
                                     ]
@@ -319,7 +333,7 @@ Module vec.
         match ε, τ, α with
         | [], [], [ iterator ] =>
           ltac:(M.monadic
-            (let iterator := M.alloc (| iterator |) in
+            (let iterator := M.alloc (| I, iterator |) in
             M.read (|
               let~ vector :
                   Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
@@ -327,6 +341,11 @@ Module vec.
                   M.match_operator (|
                     Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
                     M.alloc (|
+                      Ty.tuple
+                        [
+                          Ty.path "usize";
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                        ],
                       M.call_closure (|
                         Ty.tuple
                           [
@@ -356,8 +375,12 @@ Module vec.
                               "core::option::Option::Some",
                               0
                             |) in
-                          let upper := M.copy (| γ1_0 |) in
+                          let upper := M.copy (| Ty.path "usize", γ1_0 |) in
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ T; Ty.path "alloc::alloc::Global" ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "alloc::vec::Vec")
@@ -378,6 +401,10 @@ Module vec.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ T; Ty.path "alloc::alloc::Global" ],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -398,6 +425,10 @@ Module vec.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 1 ]
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                               Value.Array [ mk_str (| "capacity overflow" |) ]
                                             |)
                                           |)

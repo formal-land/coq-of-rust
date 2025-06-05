@@ -53,8 +53,21 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ResultAndState")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -94,6 +107,20 @@ Module result.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "hashbrown::map::HashMap")
+                              []
+                              [
+                                Ty.path "alloy_primitives::bits::address::Address";
+                                Ty.path "revm_state::Account";
+                                Ty.path "foldhash::seed::fast::RandomState";
+                                Ty.path "hashbrown::raw::alloc::inner::Global"
+                              ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -136,8 +163,20 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ResultAndState")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::result::ResultAndState"
             []
             [ HaltReasonT ]
@@ -258,8 +297,32 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ResultAndState")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ResultAndState")
+                    []
+                    [ HaltReasonT ]
+                ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -378,7 +441,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ResultAndState")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -389,7 +464,7 @@ Module result.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -477,7 +552,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -519,13 +606,51 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "output"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    let __self_2 := M.alloc (| γ1_2 |) in
-                    let __self_3 := M.alloc (| γ1_3 |) in
-                    let __self_4 := M.alloc (| γ1_4 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                    let __self_2 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
+                    let __self_3 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::log::Log")
+                                  []
+                                  [ Ty.path "alloy_primitives::log::LogData" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_3
+                      |) in
+                    let __self_4 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::Output" ],
+                        γ1_4
+                      |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::ExecutionResult")
+                        []
+                        [ HaltReasonT ],
+                      Value.mkStructRecord
                         "revm_context_interface::result::ExecutionResult::Success"
                         []
                         [ HaltReasonT ]
@@ -640,10 +765,19 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Revert",
                         "output"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_1
+                      |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::ExecutionResult")
+                        []
+                        [ HaltReasonT ],
+                      Value.mkStructRecord
                         "revm_context_interface::result::ExecutionResult::Revert"
                         []
                         [ HaltReasonT ]
@@ -695,10 +829,15 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Halt",
                         "gas_used"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::ExecutionResult")
+                        []
+                        [ HaltReasonT ],
+                      Value.mkStructRecord
                         "revm_context_interface::result::ExecutionResult::Halt"
                         []
                         [ HaltReasonT ]
@@ -761,8 +900,21 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -804,12 +956,50 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "output"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    let __self_2 := M.alloc (| γ1_2 |) in
-                    let __self_3 := M.alloc (| γ1_3 |) in
-                    let __self_4 := M.alloc (| γ1_4 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                    let __self_2 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
+                    let __self_3 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::log::Log")
+                                  []
+                                  [ Ty.path "alloy_primitives::log::LogData" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_3
+                      |) in
+                    let __self_4 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::Output" ],
+                        γ1_4
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -868,9 +1058,18 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Revert",
                         "output"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_1
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -914,9 +1113,14 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Halt",
                         "gas_used"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -985,8 +1189,32 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1019,6 +1247,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -1029,7 +1258,30 @@ Module result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_context_interface::result::ExecutionResult")
+                                  []
+                                  [ HaltReasonT ]
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_context_interface::result::ExecutionResult")
+                                  []
+                                  [ HaltReasonT ]
+                              ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -1066,11 +1318,45 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Success",
                                 "output"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
-                            let __self_2 := M.alloc (| γ2_2 |) in
-                            let __self_3 := M.alloc (| γ2_3 |) in
-                            let __self_4 := M.alloc (| γ2_4 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                γ2_0
+                              |) in
+                            let __self_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                            let __self_2 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_2 |) in
+                            let __self_3 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::log::Log")
+                                          []
+                                          [ Ty.path "alloy_primitives::log::LogData" ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_3
+                              |) in
+                            let __self_4 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::Output" ],
+                                γ2_4
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -1102,12 +1388,47 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Success",
                                 "output"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
-                            let __arg1_2 := M.alloc (| γ2_2 |) in
-                            let __arg1_3 := M.alloc (| γ2_3 |) in
-                            let __arg1_4 := M.alloc (| γ2_4 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                γ2_0
+                              |) in
+                            let __arg1_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
+                            let __arg1_2 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_2 |) in
+                            let __arg1_3 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::log::Log")
+                                          []
+                                          [ Ty.path "alloy_primitives::log::LogData" ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_3
+                              |) in
+                            let __arg1_4 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::Output" ],
+                                γ2_4
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 LogicalOp.and (|
                                   LogicalOp.and (|
@@ -1270,8 +1591,16 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Revert",
                                 "output"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let __self_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_1
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -1285,9 +1614,18 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Revert",
                                 "output"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let __arg1_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_1
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -1349,8 +1687,10 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Halt",
                                 "gas_used"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
+                            let __self_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -1364,9 +1704,12 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Halt",
                                 "gas_used"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
+                            let __arg1_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -1406,6 +1749,7 @@ Module result.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -1449,7 +1793,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1487,7 +1843,10 @@ Module result.
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ]
                                                     |)))
                                               ]
@@ -1533,8 +1892,20 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -1608,11 +1979,45 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "output"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
-                    let __self_2 := M.alloc (| γ1_2 |) in
-                    let __self_3 := M.alloc (| γ1_3 |) in
-                    let __self_4 := M.alloc (| γ1_4 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
+                    let __self_2 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_2 |) in
+                    let __self_3 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::log::Log")
+                                  []
+                                  [ Ty.path "alloy_primitives::log::LogData" ];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_3
+                      |) in
+                    let __self_4 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::Output" ],
+                        γ1_4
+                      |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -1691,6 +2096,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -1723,8 +2129,13 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Revert",
                         "output"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_1
+                      |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -1743,6 +2154,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -1775,8 +2187,9 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Halt",
                         "gas_used"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -1795,6 +2208,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -1847,7 +2261,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1861,8 +2287,8 @@ Module result.
                         γ,
                         "revm_context_interface::result::ExecutionResult::Success"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1893,7 +2319,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1911,8 +2349,19 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "output"
                       |) in
-                    let output := M.alloc (| γ1_0 |) in
+                    let output :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::Output" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bits::address::Address" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -1957,6 +2406,10 @@ Module result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bits::address::Address" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -1990,7 +2443,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -2004,8 +2469,8 @@ Module result.
                         γ,
                         "revm_context_interface::result::ExecutionResult::Halt"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -2037,7 +2502,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2055,8 +2532,19 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "output"
                       |) in
-                    let output := M.alloc (| γ1_0 |) in
+                    let output :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::Output" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2092,8 +2580,16 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Revert",
                         "output"
                       |) in
-                    let output := M.alloc (| γ1_0 |) in
+                    let output :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2103,6 +2599,10 @@ Module result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ] ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -2140,7 +2640,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_context_interface::result::ExecutionResult")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2157,8 +2664,13 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "output"
                       |) in
-                    let output := M.copy (| γ0_0 |) in
+                    let output :=
+                      M.copy (| Ty.path "revm_context_interface::result::Output", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2184,8 +2696,12 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Revert",
                         "output"
                       |) in
-                    let output := M.copy (| γ0_0 |) in
+                    let output := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -2195,6 +2711,10 @@ Module result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -2231,7 +2751,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2262,8 +2794,40 @@ Module result.
                             "revm_context_interface::result::ExecutionResult::Success",
                             "logs"
                           |) in
-                        let logs := M.alloc (| γ1_0 |) in
+                        let logs :=
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::log::Log")
+                                      []
+                                      [ Ty.path "alloy_primitives::log::LogData" ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::log::Log")
+                                    []
+                                    [ Ty.path "alloy_primitives::log::LogData" ]
+                                ]
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -2305,12 +2869,40 @@ Module result.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloy_primitives::log::Log")
+                                    []
+                                    [ Ty.path "alloy_primitives::log::LogData" ]
+                                ]
+                            ],
                           (* Unsize *)
                           M.pointer_coercion
                             (M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 0 ]
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::log::Log")
+                                          []
+                                          [ Ty.path "alloy_primitives::log::LogData" ]
+                                      ],
+                                    Value.Array []
+                                  |)
+                                |)
                               |)
                             |))
                         |)))
@@ -2346,7 +2938,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_context_interface::result::ExecutionResult")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2369,11 +2968,34 @@ Module result.
                         "revm_context_interface::result::ExecutionResult::Success",
                         "logs"
                       |) in
-                    let logs := M.copy (| γ0_0 |) in
+                    let logs :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloy_primitives::log::Log")
+                              []
+                              [ Ty.path "alloy_primitives::log::LogData" ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        γ0_0
+                      |) in
                     logs));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "alloy_primitives::log::Log")
+                            []
+                            [ Ty.path "alloy_primitives::log::LogData" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::vec::Vec")
@@ -2434,7 +3056,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::ExecutionResult")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "u64",
@@ -2453,8 +3087,8 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Success",
                                 "gas_used"
                               |) in
-                            let gas_used := M.copy (| γ0_0 |) in
-                            M.alloc (| Value.Tuple [ gas_used ] |)));
+                            let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
+                            M.alloc (| Ty.tuple [ Ty.path "u64" ], Value.Tuple [ gas_used ] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
@@ -2463,8 +3097,8 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Revert",
                                 "gas_used"
                               |) in
-                            let gas_used := M.copy (| γ0_0 |) in
-                            M.alloc (| Value.Tuple [ gas_used ] |)));
+                            let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
+                            M.alloc (| Ty.tuple [ Ty.path "u64" ], Value.Tuple [ gas_used ] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ0_0 :=
@@ -2473,8 +3107,8 @@ Module result.
                                 "revm_context_interface::result::ExecutionResult::Halt",
                                 "gas_used"
                               |) in
-                            let gas_used := M.copy (| γ0_0 |) in
-                            M.alloc (| Value.Tuple [ gas_used ] |)))
+                            let gas_used := M.copy (| Ty.path "u64", γ0_0 |) in
+                            M.alloc (| Ty.tuple [ Ty.path "u64" ], Value.Tuple [ gas_used ] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -2536,8 +3170,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2555,8 +3194,16 @@ Module result.
                         "revm_context_interface::result::Output::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -2595,9 +3242,29 @@ Module result.
                         "revm_context_interface::result::Output::Create",
                         1
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
+                        γ1_1
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -2647,7 +3314,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_context_interface::result::Output",
@@ -2662,8 +3333,13 @@ Module result.
                         "revm_context_interface::result::Output::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::Output",
                       Value.StructTuple
                         "revm_context_interface::result::Output::Call"
                         []
@@ -2699,9 +3375,26 @@ Module result.
                         "revm_context_interface::result::Output::Create",
                         1
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
+                        γ1_1
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::Output",
                       Value.StructTuple
                         "revm_context_interface::result::Output::Create"
                         []
@@ -2776,8 +3469,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2800,6 +3501,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -2810,7 +3512,20 @@ Module result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::result::Output" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::result::Output" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -2823,7 +3538,14 @@ Module result.
                                 "revm_context_interface::result::Output::Call",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -2831,8 +3553,16 @@ Module result.
                                 "revm_context_interface::result::Output::Call",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -2875,8 +3605,27 @@ Module result.
                                 "revm_context_interface::result::Output::Create",
                                 1
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_0
+                              |) in
+                            let __self_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
+                                γ2_1
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -2890,9 +3639,29 @@ Module result.
                                 "revm_context_interface::result::Output::Create",
                                 1
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                γ2_0
+                              |) in
+                            let __arg1_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                  ],
+                                γ2_1
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -2958,6 +3727,7 @@ Module result.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -2996,7 +3766,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -3007,7 +3781,7 @@ Module result.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -3033,8 +3807,12 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3079,8 +3857,13 @@ Module result.
                         "revm_context_interface::result::Output::Call",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3113,8 +3896,24 @@ Module result.
                         "revm_context_interface::result::Output::Create",
                         1
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
+                        γ1_1
+                      |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -3133,6 +3932,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3183,7 +3983,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "revm_context_interface::result::Output", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "alloy_primitives::bytes_::Bytes",
@@ -3197,7 +3997,7 @@ Module result.
                         "revm_context_interface::result::Output::Call",
                         0
                       |) in
-                    let data := M.copy (| γ0_0 |) in
+                    let data := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
                     data));
                 fun γ =>
                   ltac:(M.monadic
@@ -3213,7 +4013,7 @@ Module result.
                         "revm_context_interface::result::Output::Create",
                         1
                       |) in
-                    let data := M.copy (| γ0_0 |) in
+                    let data := M.copy (| Ty.path "alloy_primitives::bytes_::Bytes", γ0_0 |) in
                     data))
               ]
             |)
@@ -3238,7 +4038,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3256,8 +4060,13 @@ Module result.
                             "revm_context_interface::result::Output::Call",
                             0
                           |) in
-                        let data := M.alloc (| γ1_0 |) in
+                        let data :=
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
                         |)));
                     fun γ =>
@@ -3275,8 +4084,13 @@ Module result.
                             "revm_context_interface::result::Output::Create",
                             1
                           |) in
-                        let data := M.alloc (| γ1_0 |) in
+                        let data :=
+                          M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                            γ1_0
+                          |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |)
                         |)))
                   ]
@@ -3303,7 +4117,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::Output" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3323,6 +4141,15 @@ Module result.
                         0
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -3349,8 +4176,29 @@ Module result.
                         "revm_context_interface::result::Output::Create",
                         1
                       |) in
-                    let address := M.alloc (| γ1_1 |) in
+                    let address :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
+                        γ1_1
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                        ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -3444,8 +4292,21 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionError ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3463,8 +4324,13 @@ Module result.
                         "revm_context_interface::result::EVMError::Transaction",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3497,8 +4363,19 @@ Module result.
                         "revm_context_interface::result::EVMError::Header",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3531,8 +4408,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Database",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3565,8 +4446,16 @@ Module result.
                         "revm_context_interface::result::EVMError::Custom",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3599,8 +4488,16 @@ Module result.
                         "revm_context_interface::result::EVMError::Precompile",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3658,7 +4555,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionError ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3676,8 +4585,13 @@ Module result.
                         "revm_context_interface::result::EVMError::Transaction",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ DBError; TransactionError ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Transaction"
                         []
@@ -3707,8 +4621,19 @@ Module result.
                         "revm_context_interface::result::EVMError::Header",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ DBError; TransactionError ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Header"
                         []
@@ -3738,8 +4663,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Database",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ DBError; TransactionError ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Database"
                         []
@@ -3769,8 +4698,16 @@ Module result.
                         "revm_context_interface::result::EVMError::Custom",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ DBError; TransactionError ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Custom"
                         []
@@ -3800,8 +4737,16 @@ Module result.
                         "revm_context_interface::result::EVMError::Precompile",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ DBError; TransactionError ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Precompile"
                         []
@@ -3873,8 +4818,32 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionError ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionError ]
+                ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3907,6 +4876,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3917,7 +4887,30 @@ Module result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_context_interface::result::EVMError")
+                                  []
+                                  [ DBError; TransactionError ]
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_context_interface::result::EVMError")
+                                  []
+                                  [ DBError; TransactionError ]
+                              ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -3930,7 +4923,8 @@ Module result.
                                 "revm_context_interface::result::EVMError::Transaction",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -3938,8 +4932,10 @@ Module result.
                                 "revm_context_interface::result::EVMError::Transaction",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ TransactionError ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -3968,7 +4964,14 @@ Module result.
                                 "revm_context_interface::result::EVMError::Header",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -3976,8 +4979,16 @@ Module result.
                                 "revm_context_interface::result::EVMError::Header",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -4014,7 +5025,8 @@ Module result.
                                 "revm_context_interface::result::EVMError::Database",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -4022,8 +5034,10 @@ Module result.
                                 "revm_context_interface::result::EVMError::Database",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -4052,7 +5066,11 @@ Module result.
                                 "revm_context_interface::result::EVMError::Custom",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -4060,8 +5078,13 @@ Module result.
                                 "revm_context_interface::result::EVMError::Custom",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -4090,7 +5113,11 @@ Module result.
                                 "revm_context_interface::result::EVMError::Precompile",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -4098,8 +5125,13 @@ Module result.
                                 "revm_context_interface::result::EVMError::Precompile",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -4120,6 +5152,7 @@ Module result.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -4171,7 +5204,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionError ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -4194,7 +5239,11 @@ Module result.
                                     (M.match_operator (|
                                       Ty.tuple [],
                                       Value.DeclaredButUndefined,
-                                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                      ]
                                     |)))
                               ]
                             |)))
@@ -4234,7 +5283,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| DBError, value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Database"
             []
@@ -4275,7 +5324,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "alloc::string::String", value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Custom"
             []
@@ -4311,7 +5360,8 @@ Module result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.path "revm_context_interface::result::InvalidTransaction", value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Transaction"
             []
@@ -4362,8 +5412,15 @@ Module result.
       match ε, τ, α with
       | [], [ F; E ], [ self; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let op := M.alloc (| op |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_context_interface::result::EVMError")
+                []
+                [ DBError; TransactionValidationErrorT ],
+              self
+            |) in
+          let op := M.alloc (| F, op |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -4380,8 +5437,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Transaction",
                         0
                       |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| TransactionValidationErrorT, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ E; TransactionValidationErrorT ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Transaction"
                         []
@@ -4396,8 +5457,13 @@ Module result.
                         "revm_context_interface::result::EVMError::Header",
                         0
                       |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e :=
+                      M.copy (| Ty.path "revm_context_interface::result::InvalidHeader", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ E; TransactionValidationErrorT ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Header"
                         []
@@ -4412,8 +5478,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Database",
                         0
                       |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| DBError, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ E; TransactionValidationErrorT ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Database"
                         []
@@ -4442,8 +5512,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Precompile",
                         0
                       |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ E; TransactionValidationErrorT ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Precompile"
                         []
@@ -4458,8 +5532,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Custom",
                         0
                       |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| Ty.path "alloc::string::String", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_context_interface::result::EVMError")
+                        []
+                        [ E; TransactionValidationErrorT ],
                       Value.StructTuple
                         "revm_context_interface::result::EVMError::Custom"
                         []
@@ -4509,7 +5587,19 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionValidationErrorT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -4527,8 +5617,17 @@ Module result.
                         "revm_context_interface::result::EVMError::Transaction",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ TransactionValidationErrorT ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -4549,8 +5648,20 @@ Module result.
                         "revm_context_interface::result::EVMError::Header",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -4571,8 +5682,13 @@ Module result.
                         "revm_context_interface::result::EVMError::Database",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                        ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -4598,7 +5714,7 @@ Module result.
                                 "revm_context_interface::result::EVMError::Precompile",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -4608,7 +5724,7 @@ Module result.
                                 "revm_context_interface::result::EVMError::Custom",
                                 0
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -4616,6 +5732,15 @@ Module result.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                                  ],
                                 Value.StructTuple
                                   "core::option::Option::None"
                                   []
@@ -4674,8 +5799,21 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::result::EVMError")
+                    []
+                    [ DBError; TransactionValidationErrorT ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -4693,8 +5831,16 @@ Module result.
                         "revm_context_interface::result::EVMError::Transaction",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e :=
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ TransactionValidationErrorT ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -4724,6 +5870,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "transaction validation error: " |) ]
                                     |)
                                   |)
@@ -4735,6 +5885,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -4776,8 +5930,19 @@ Module result.
                         "revm_context_interface::result::EVMError::Header",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -4807,6 +5972,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "header validation error: " |) ]
                                     |)
                                   |)
@@ -4818,6 +5987,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -4862,8 +6035,12 @@ Module result.
                         "revm_context_interface::result::EVMError::Database",
                         0
                       |) in
-                    let e := M.alloc (| γ1_0 |) in
+                    let e := M.alloc (| Ty.apply (Ty.path "&") [] [ DBError ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -4892,7 +6069,13 @@ Module result.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "database error: " |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "database error: " |) ]
+                                    |)
                                   |)
                                 |)
                               |);
@@ -4902,6 +6085,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -4945,8 +6132,16 @@ Module result.
                                 "revm_context_interface::result::EVMError::Precompile",
                                 0
                               |) in
-                            let e := M.alloc (| γ1_0 |) in
-                            M.alloc (| Value.Tuple [ e ] |)));
+                            let e :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ1_0
+                              |) in
+                            M.alloc (|
+                              Ty.tuple
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
+                              Value.Tuple [ e ]
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let γ := M.read (| γ |) in
@@ -4956,8 +6151,16 @@ Module result.
                                 "revm_context_interface::result::EVMError::Custom",
                                 0
                               |) in
-                            let e := M.alloc (| γ1_0 |) in
-                            M.alloc (| Value.Tuple [ e ] |)))
+                            let e :=
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ],
+                                γ1_0
+                              |) in
+                            M.alloc (|
+                              Ty.tuple
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ] ],
+                              Value.Tuple [ e ]
+                            |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -4965,6 +6168,10 @@ Module result.
                           | [ e ] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -5048,7 +6255,8 @@ Module result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.path "revm_context_interface::result::InvalidHeader", value |) in
           Value.StructTuple
             "revm_context_interface::result::EVMError::Header"
             []
@@ -5323,8 +6531,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -5342,6 +6558,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5371,6 +6591,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5400,6 +6624,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5429,6 +6657,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5458,6 +6690,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5493,9 +6729,55 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
                         "balance"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_1
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5536,6 +6818,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5565,6 +6851,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5600,9 +6890,15 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
                         "state"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5649,9 +6945,15 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow",
                         "state"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5689,6 +6991,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5718,6 +7024,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidChainId"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5747,6 +7057,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5776,6 +7090,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5805,6 +7123,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5834,6 +7156,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5863,6 +7189,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5889,6 +7219,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5924,9 +7258,15 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
                         "have"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5967,6 +7307,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -5996,6 +7340,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6025,6 +7373,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6054,6 +7406,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6083,6 +7439,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6112,8 +7472,22 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.path
+                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6149,6 +7523,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6178,6 +7556,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6207,6 +7589,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6236,6 +7622,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -6279,7 +7669,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_context_interface::result::InvalidTransaction",
@@ -6294,6 +7691,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
                         []
@@ -6309,6 +7707,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
                         []
@@ -6324,6 +7723,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
                         []
@@ -6339,6 +7739,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
                         []
@@ -6354,6 +7755,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
                         []
@@ -6375,10 +7777,53 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
                         "balance"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_1
+                      |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee"
                         []
                         []
@@ -6472,6 +7917,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
                         []
@@ -6487,6 +7933,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
                         []
@@ -6508,10 +7955,13 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
                         "state"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh"
                         []
                         []
@@ -6563,10 +8013,13 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow",
                         "state"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow"
                         []
                         []
@@ -6612,6 +8065,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
                         []
@@ -6627,6 +8081,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidChainId"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::InvalidChainId"
                         []
@@ -6642,6 +8097,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
                         []
@@ -6657,6 +8113,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
                         []
@@ -6672,6 +8129,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
                         []
@@ -6687,6 +8145,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
                         []
@@ -6702,6 +8161,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
                         []
@@ -6717,6 +8177,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
                         []
@@ -6738,10 +8199,13 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
                         "have"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
+                      Value.mkStructRecord
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs"
                         []
                         []
@@ -6787,6 +8251,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
                         []
@@ -6802,6 +8267,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
                         []
@@ -6817,6 +8283,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
                         []
@@ -6832,6 +8299,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
                         []
@@ -6847,6 +8315,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
                         []
@@ -6862,8 +8331,19 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.path
+                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
                         []
@@ -6895,6 +8375,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
                         []
@@ -6910,6 +8391,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
                         []
@@ -6925,6 +8407,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
                         []
@@ -6940,6 +8423,7 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_context_interface::result::InvalidTransaction",
                       Value.StructTuple
                         "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
                         []
@@ -6981,8 +8465,22 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -7005,6 +8503,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -7015,7 +8514,20 @@ Module result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::result::InvalidTransaction" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::result::InvalidTransaction" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -7034,8 +8546,50 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
                                 "balance"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
+                            let __self_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_1
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -7049,9 +8603,52 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
                                 "balance"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_0
+                              |) in
+                            let __arg1_1 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloc::boxed::Box")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [];
+                                        Ty.path "alloc::alloc::Global"
+                                      ]
+                                  ],
+                                γ2_1
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -7177,8 +8774,10 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
                                 "state"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let __self_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -7192,9 +8791,12 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
                                 "state"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let __arg1_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -7248,8 +8850,10 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::NonceTooLow",
                                 "state"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let __self_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -7263,9 +8867,12 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::NonceTooLow",
                                 "state"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_0 |) in
+                            let __arg1_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ2_1 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -7319,8 +8926,10 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
                                 "have"
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let __self_1 := M.alloc (| γ2_1 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
+                            let __self_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_record_field (|
@@ -7334,9 +8943,12 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
                                 "have"
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            let __arg1_1 := M.alloc (| γ2_1 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_0 |) in
+                            let __arg1_1 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ2_1 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               LogicalOp.and (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -7384,7 +8996,17 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                                  ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -7392,8 +9014,19 @@ Module result.
                                 "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.path
+                                      "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                                  ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -7425,7 +9058,7 @@ Module result.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -7457,7 +9090,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -7488,7 +9128,8 @@ Module result.
                                               Value.DeclaredButUndefined,
                                               [
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)))
                                       ]
@@ -7521,8 +9162,15 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -7573,8 +9221,50 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
                         "balance"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
+                    let __self_1 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_1
+                      |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -7605,6 +9295,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -7649,8 +9340,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
                         "state"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -7669,6 +9362,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -7701,8 +9395,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow",
                         "state"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -7721,6 +9417,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -7753,8 +9450,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
                         "have"
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    let __self_1 := M.alloc (| γ1_1 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                    let __self_1 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
@@ -7773,6 +9472,7 @@ Module result.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -7799,8 +9499,19 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.path
+                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -7819,7 +9530,7 @@ Module result.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -7859,7 +9570,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (|
+              Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization",
+              value
+            |) in
           Value.StructTuple
             "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList"
             []
@@ -7964,8 +9679,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::result::InvalidTransaction" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -7983,6 +9706,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::PriorityFeeGreaterThanMaxFee"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8011,6 +9738,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "priority fee is greater than max fee" |) ]
                                     |)
@@ -8031,6 +9762,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::GasPriceLessThanBasefee"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8059,6 +9794,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "gas price is less than basefee" |) ]
                                     |)
                                   |)
@@ -8078,6 +9817,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CallerGasLimitMoreThanBlock"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8106,6 +9849,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (|
@@ -8130,6 +9877,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CallGasCostMoreThanGasLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8158,6 +9909,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "call gas cost exceeds the gas limit" |) ]
                                     |)
@@ -8178,6 +9933,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::RejectCallerWithCode"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8206,6 +9965,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (|
@@ -8236,9 +9999,55 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::LackOfFundForMaxFee",
                         "balance"
                       |) in
-                    let fee := M.alloc (| γ1_0 |) in
-                    let balance := M.alloc (| γ1_1 |) in
+                    let fee :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_0
+                      |) in
+                    let balance :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::boxed::Box")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  [];
+                                Ty.path "alloc::alloc::Global"
+                              ]
+                          ],
+                        γ1_1
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8268,6 +10077,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (| "lack of funds (" |);
@@ -8284,6 +10097,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -8375,6 +10192,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::OverflowPaymentInTransaction"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8403,6 +10224,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "overflow payment in transaction" |) ]
                                     |)
                                   |)
@@ -8422,6 +10247,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceOverflowInTransaction"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8450,6 +10279,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "nonce overflow in transaction" |) ]
                                     |)
                                   |)
@@ -8475,9 +10308,13 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooHigh",
                         "state"
                       |) in
-                    let tx := M.alloc (| γ1_0 |) in
-                    let state := M.alloc (| γ1_1 |) in
+                    let tx := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let state := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8507,6 +10344,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "nonce " |); mk_str (| " too high, expected " |)
                                         ]
@@ -8520,6 +10361,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -8577,9 +10422,13 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::NonceTooLow",
                         "state"
                       |) in
-                    let tx := M.alloc (| γ1_0 |) in
-                    let state := M.alloc (| γ1_1 |) in
+                    let tx := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_0 |) in
+                    let state := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8609,6 +10458,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "nonce " |); mk_str (| " too low, expected " |)
                                         ]
@@ -8622,6 +10475,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -8673,6 +10530,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::CreateInitCodeSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8701,6 +10562,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "create initcode size limit" |) ]
                                     |)
                                   |)
@@ -8720,51 +10585,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidChainId"
                       |) in
                     M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "invalid chain ID" |) ] |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
-                      |) in
-                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8793,6 +10617,65 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "invalid chain ID" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::InvalidTransaction::AccessListNotSupported"
+                      |) in
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "write_fmt",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "access list not supported" |) ]
                                     |)
                                   |)
@@ -8812,6 +10695,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::MaxFeePerBlobGasNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8840,6 +10727,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "max fee per blob gas not supported" |) ]
                                     |)
@@ -8860,6 +10751,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobVersionedHashesNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8888,6 +10783,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "blob versioned hashes not supported" |) ]
                                     |)
@@ -8908,6 +10807,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobGasPriceGreaterThanMax"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -8936,6 +10839,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (|
@@ -8960,51 +10867,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EmptyBlobs"
                       |) in
                     M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "core::result::Result")
-                          []
-                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "write_fmt",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.call_closure (|
-                            Ty.path "core::fmt::Arguments",
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_const",
-                              [ Value.Integer IntegerKind.Usize 1 ],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "empty blobs" |) ] |)
-                                  |)
-                                |)
-                              |)
-                            ]
-                          |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let _ :=
-                      M.is_struct_tuple (|
-                        γ,
-                        "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
-                      |) in
-                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9033,6 +10899,65 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "empty blobs" |) ]
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let _ :=
+                      M.is_struct_tuple (|
+                        γ,
+                        "revm_context_interface::result::InvalidTransaction::BlobCreateTransaction"
+                      |) in
+                    M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "write_fmt",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                          M.call_closure (|
+                            Ty.path "core::fmt::Arguments",
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_const",
+                              [ Value.Integer IntegerKind.Usize 1 ],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "blob create transaction" |) ]
                                     |)
                                   |)
@@ -9058,9 +10983,13 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::TooManyBlobs",
                         "have"
                       |) in
-                    let max := M.alloc (| γ1_0 |) in
-                    let have := M.alloc (| γ1_1 |) in
+                    let max := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
+                    let have := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_1 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9090,6 +11019,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (| "too many blobs, have " |);
@@ -9105,6 +11038,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -9156,6 +11093,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::BlobVersionNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9184,6 +11125,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "blob version not supported" |) ]
                                     |)
                                   |)
@@ -9203,6 +11148,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EofCrateShouldHaveToAddress"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9231,6 +11180,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "EOF crate should have `to` address" |) ]
                                     |)
@@ -9251,6 +11204,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListNotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9279,6 +11236,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "authorization list not supported" |) ]
                                     |)
@@ -9299,6 +11260,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::AuthorizationListInvalidFields"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9327,6 +11292,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "authorization list tx has invalid fields" |) ]
                                     |)
@@ -9347,6 +11316,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::EmptyAuthorizationList"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9375,6 +11348,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "empty authorization list" |) ]
                                     |)
                                   |)
@@ -9394,6 +11371,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip2930NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9422,6 +11403,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Eip2930 is not supported" |) ]
                                     |)
                                   |)
@@ -9441,6 +11426,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip1559NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9469,6 +11458,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Eip1559 is not supported" |) ]
                                     |)
                                   |)
@@ -9488,6 +11481,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip4844NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9516,6 +11513,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Eip4844 is not supported" |) ]
                                     |)
                                   |)
@@ -9535,6 +11536,10 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::Eip7702NotSupported"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9563,6 +11568,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Eip7702 is not supported" |) ]
                                     |)
                                   |)
@@ -9582,8 +11591,22 @@ Module result.
                         "revm_context_interface::result::InvalidTransaction::InvalidAuthorizationList",
                         0
                       |) in
-                    let i := M.alloc (| γ1_0 |) in
+                    let i :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.path
+                              "revm_specification::eip7702::authorization_list::InvalidAuthorization"
+                          ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9652,8 +11675,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -9676,6 +11704,7 @@ Module result.
                             "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "PrevrandaoNotSet" |) |)
@@ -9690,6 +11719,7 @@ Module result.
                             "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ExcessBlobGasNotSet" |) |)
@@ -9732,7 +11762,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9766,8 +11800,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -9790,6 +11832,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -9821,7 +11864,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -9844,8 +11891,12 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -9858,6 +11909,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -9918,8 +11970,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::InvalidHeader" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -9937,6 +11994,10 @@ Module result.
                         "revm_context_interface::result::InvalidHeader::PrevrandaoNotSet"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -9965,6 +12026,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "`prevrandao` not set" |) ]
                                     |)
                                   |)
@@ -9984,6 +12049,10 @@ Module result.
                         "revm_context_interface::result::InvalidHeader::ExcessBlobGasNotSet"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10012,6 +12081,10 @@ Module result.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "`excess_blob_gas` not set" |) ]
                                     |)
                                   |)
@@ -10081,8 +12154,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::SuccessReason" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -10105,6 +12183,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::Stop"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stop" |) |) |)
                         |)));
                     fun γ =>
@@ -10116,6 +12195,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::Return"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |)
                         |)));
                     fun γ =>
@@ -10127,6 +12207,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::SelfDestruct"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestruct" |) |) |)
                         |)));
                     fun γ =>
@@ -10138,6 +12219,7 @@ Module result.
                             "revm_context_interface::result::SuccessReason::EofReturnContract"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EofReturnContract" |) |)
@@ -10168,7 +12250,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::SuccessReason" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10214,8 +12300,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::SuccessReason" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::SuccessReason" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -10238,6 +12332,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -10269,7 +12364,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::SuccessReason" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10292,8 +12391,12 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::SuccessReason" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -10306,6 +12409,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -10497,8 +12601,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -10516,8 +12625,19 @@ Module result.
                         "revm_context_interface::result::HaltReason::OutOfGas",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10550,6 +12670,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::OpcodeNotFound"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10579,6 +12703,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::InvalidFEOpcode"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10608,6 +12736,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::InvalidJump"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10634,6 +12766,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::NotActivated"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10660,6 +12796,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::StackUnderflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10689,6 +12829,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::StackOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10718,6 +12862,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::OutOfOffset"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10744,6 +12892,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::CreateCollision"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10773,6 +12925,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::PrecompileError"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10802,6 +12958,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::NonceOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10831,6 +12991,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10860,6 +13024,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::CreateContractStartingWithEF"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10889,6 +13057,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10918,6 +13090,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::OverflowPayment"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10947,6 +13123,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -10976,6 +13156,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11005,6 +13189,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::OutOfFunds"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11031,6 +13219,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::CallTooDeep"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11057,6 +13249,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11086,6 +13282,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11115,6 +13315,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11144,6 +13348,10 @@ Module result.
                         "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -11187,7 +13395,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_context_interface::result::HaltReason",
@@ -11239,8 +13451,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -11263,6 +13483,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -11273,7 +13494,20 @@ Module result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::result::HaltReason" ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "revm_context_interface::result::HaltReason" ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -11286,7 +13520,14 @@ Module result.
                                 "revm_context_interface::result::HaltReason::OutOfGas",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -11294,8 +13535,16 @@ Module result.
                                 "revm_context_interface::result::HaltReason::OutOfGas",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -11321,7 +13570,7 @@ Module result.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -11352,12 +13601,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -11381,8 +13634,12 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::HaltReason" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -11427,8 +13684,16 @@ Module result.
                         "revm_context_interface::result::HaltReason::OutOfGas",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -11446,7 +13711,7 @@ Module result.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -11518,8 +13783,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -11542,6 +13812,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::Basic"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Basic" |) |) |)
                         |)));
                     fun γ =>
@@ -11553,6 +13824,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::MemoryLimit"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryLimit" |) |) |)
                         |)));
                     fun γ =>
@@ -11564,6 +13836,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::Memory"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Memory" |) |) |)
                         |)));
                     fun γ =>
@@ -11575,6 +13848,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::Precompile"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompile" |) |) |)
                         |)));
                     fun γ =>
@@ -11586,6 +13860,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::InvalidOperand"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidOperand" |) |)
@@ -11600,6 +13875,7 @@ Module result.
                             "revm_context_interface::result::OutOfGasError::ReentrancySentry"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ReentrancySentry" |) |)
@@ -11642,7 +13918,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11676,8 +13956,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -11700,6 +13988,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -11731,7 +14020,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -11754,8 +14047,12 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::result::OutOfGasError" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -11768,6 +14065,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|

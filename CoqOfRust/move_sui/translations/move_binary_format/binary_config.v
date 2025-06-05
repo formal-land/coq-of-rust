@@ -34,8 +34,15 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::binary_config::TableConfig" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_binary_format::binary_config::TableConfig"
             []
             []
@@ -453,8 +460,16 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::binary_config::TableConfig" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ names :
                 Ty.apply
@@ -472,6 +487,10 @@ Module binary_config.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 14 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       Value.Array
                         [
                           mk_str (| "module_handles" |);
@@ -538,6 +557,11 @@ Module binary_config.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 14 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ],
                         Value.Array
                           [
                             (* Unsize *)
@@ -743,6 +767,7 @@ Module binary_config.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.SubPointer.get_struct_record_field (|
@@ -761,6 +786,10 @@ Module binary_config.
                   |)
                 |)) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -822,7 +851,7 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::binary_config::TableConfig"
             []
             []
@@ -885,8 +914,15 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::binary_config::BinaryConfig" ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -996,8 +1032,16 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::binary_config::BinaryConfig" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1059,6 +1103,10 @@ Module binary_config.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "move_binary_format::binary_config::TableConfig" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1105,10 +1153,13 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ max_binary_format_version; check_no_extraneous_bytes; table_config ] =>
         ltac:(M.monadic
-          (let max_binary_format_version := M.alloc (| max_binary_format_version |) in
-          let check_no_extraneous_bytes := M.alloc (| check_no_extraneous_bytes |) in
-          let table_config := M.alloc (| table_config |) in
-          Value.StructRecord
+          (let max_binary_format_version :=
+            M.alloc (| Ty.path "u32", max_binary_format_version |) in
+          let check_no_extraneous_bytes :=
+            M.alloc (| Ty.path "bool", check_no_extraneous_bytes |) in
+          let table_config :=
+            M.alloc (| Ty.path "move_binary_format::binary_config::TableConfig", table_config |) in
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1137,9 +1188,11 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ max_binary_format_version; check_no_extraneous_bytes ] =>
         ltac:(M.monadic
-          (let max_binary_format_version := M.alloc (| max_binary_format_version |) in
-          let check_no_extraneous_bytes := M.alloc (| check_no_extraneous_bytes |) in
-          Value.StructRecord
+          (let max_binary_format_version :=
+            M.alloc (| Ty.path "u32", max_binary_format_version |) in
+          let check_no_extraneous_bytes :=
+            M.alloc (| Ty.path "bool", check_no_extraneous_bytes |) in
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1182,8 +1235,9 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [ check_no_extraneous_bytes ] =>
         ltac:(M.monadic
-          (let check_no_extraneous_bytes := M.alloc (| check_no_extraneous_bytes |) in
-          Value.StructRecord
+          (let check_no_extraneous_bytes :=
+            M.alloc (| Ty.path "bool", check_no_extraneous_bytes |) in
+          Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []
@@ -1229,7 +1283,7 @@ Module binary_config.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_binary_format::binary_config::BinaryConfig"
             []
             []

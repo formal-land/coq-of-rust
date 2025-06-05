@@ -16,7 +16,7 @@ Module iter.
         match ε, τ, α with
         | [], [ T; F ], [ f ] =>
           ltac:(M.monadic
-            (let f := M.alloc (| f |) in
+            (let f := M.alloc (| F, f |) in
             Value.StructTuple "core::iter::sources::from_fn::FromFn" [] [ F ] [ M.read (| f |) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -44,7 +44,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [] [ F ] ],
+                  self
+                |) in
               Value.StructTuple
                 "core::iter::sources::from_fn::FromFn"
                 []
@@ -100,7 +107,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [] [ F ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 M.get_trait_method (|
@@ -152,8 +166,16 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::from_fn::FromFn") [] [ F ] ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -169,6 +191,7 @@ Module iter.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
+                      Ty.path "core::fmt::builders::DebugStruct",
                       M.call_closure (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|

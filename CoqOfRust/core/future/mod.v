@@ -24,8 +24,10 @@ Module future.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::future::ResumeTy" ], self |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -48,6 +50,15 @@ Module future.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [ Ty.path "core::task::wake::Context" ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -94,7 +105,8 @@ Module future.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::future::ResumeTy" ], self |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::future::ResumeTy",
@@ -149,7 +161,7 @@ Module future.
     match ε, τ, α with
     | [], [], [ cx ] =>
       ltac:(M.monadic
-        (let cx := M.alloc (| cx |) in
+        (let cx := M.alloc (| Ty.path "core::future::ResumeTy", cx |) in
         M.borrow (|
           Pointer.Kind.MutRef,
           M.deref (|

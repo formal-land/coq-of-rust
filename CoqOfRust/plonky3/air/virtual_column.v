@@ -31,8 +31,15 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -121,8 +128,16 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -162,6 +177,7 @@ Module virtual_column.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ F ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -220,7 +236,11 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_air::virtual_column::PairCol" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "p3_air::virtual_column::PairCol",
@@ -260,8 +280,13 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_air::virtual_column::PairCol" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -279,8 +304,13 @@ Module virtual_column.
                         "p3_air::virtual_column::PairCol::Preprocessed",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -316,8 +346,13 @@ Module virtual_column.
                         "p3_air::virtual_column::PairCol::Main",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -371,9 +406,18 @@ Module virtual_column.
       match ε, τ, α with
       | [], [ T ], [ self; preprocessed; main ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let preprocessed := M.alloc (| preprocessed |) in
-          let main := M.alloc (| main |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "p3_air::virtual_column::PairCol" ],
+              self
+            |) in
+          let preprocessed :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              preprocessed
+            |) in
+          let main :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], main |) in
           M.read (|
             M.match_operator (|
               T,
@@ -388,7 +432,7 @@ Module virtual_column.
                         "p3_air::virtual_column::PairCol::Preprocessed",
                         0
                       |) in
-                    let i := M.alloc (| γ1_0 |) in
+                    let i := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
                     M.SubPointer.get_array_field (|
                       M.deref (| M.read (| preprocessed |) |),
                       M.read (| M.deref (| M.read (| i |) |) |)
@@ -402,7 +446,7 @@ Module virtual_column.
                         "p3_air::virtual_column::PairCol::Main",
                         0
                       |) in
-                    let i := M.alloc (| γ1_0 |) in
+                    let i := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], γ1_0 |) in
                     M.SubPointer.get_array_field (|
                       M.deref (| M.read (| main |) |),
                       M.read (| M.deref (| M.read (| i |) |) |)
@@ -435,9 +479,19 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ column_weights; constant ] =>
         ltac:(M.monadic
-          (let column_weights := M.alloc (| column_weights |) in
-          let constant := M.alloc (| constant |) in
-          Value.StructRecord
+          (let column_weights :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              column_weights
+            |) in
+          let constant := M.alloc (| F, constant |) in
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -473,8 +527,15 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ column_weights; constant ] =>
         ltac:(M.monadic
-          (let column_weights := M.alloc (| column_weights |) in
-          let constant := M.alloc (| constant |) in
+          (let column_weights :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.tuple [ Ty.path "usize"; F ]; Ty.path "alloc::alloc::Global" ],
+              column_weights
+            |) in
+          let constant := M.alloc (| F, constant |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -581,14 +642,14 @@ Module virtual_column.
                                   Ty.function
                                     [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
                                     (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.tuple [ Ty.path "usize"; F ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let i := M.copy (| γ0_0 |) in
-                                        let w := M.copy (| γ0_1 |) in
+                                        let i := M.copy (| Ty.path "usize", γ0_0 |) in
+                                        let w := M.copy (| F, γ0_1 |) in
                                         Value.Tuple
                                           [
                                             Value.StructTuple
@@ -634,8 +695,15 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ column_weights; constant ] =>
         ltac:(M.monadic
-          (let column_weights := M.alloc (| column_weights |) in
-          let constant := M.alloc (| constant |) in
+          (let column_weights :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.tuple [ Ty.path "usize"; F ]; Ty.path "alloc::alloc::Global" ],
+              column_weights
+            |) in
+          let constant := M.alloc (| F, constant |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -742,14 +810,14 @@ Module virtual_column.
                                   Ty.function
                                     [ Ty.tuple [ Ty.tuple [ Ty.path "usize"; F ] ] ]
                                     (Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.tuple [ Ty.path "usize"; F ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let i := M.copy (| γ0_0 |) in
-                                        let w := M.copy (| γ0_1 |) in
+                                        let i := M.copy (| Ty.path "usize", γ0_0 |) in
+                                        let w := M.copy (| F, γ0_1 |) in
                                         Value.Tuple
                                           [
                                             Value.StructTuple
@@ -785,6 +853,7 @@ Module virtual_column.
       let Self : Ty.t := Self F in
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -816,8 +885,8 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ x ] =>
         ltac:(M.monadic
-          (let x := M.alloc (| x |) in
-          Value.StructRecord
+          (let x := M.alloc (| F, x |) in
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -869,8 +938,8 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ column ] =>
         ltac:(M.monadic
-          (let column := M.alloc (| column |) in
-          Value.StructRecord
+          (let column := M.alloc (| Ty.path "p3_air::virtual_column::PairCol", column |) in
+          Value.mkStructRecord
             "p3_air::virtual_column::VirtualPairCol"
             []
             [ F ]
@@ -925,6 +994,10 @@ Module virtual_column.
                           |),
                           [
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ],
                               Value.Array
                                 [
                                   Value.Tuple
@@ -971,7 +1044,7 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ column ] =>
         ltac:(M.monadic
-          (let column := M.alloc (| column |) in
+          (let column := M.alloc (| Ty.path "usize", column |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -1007,7 +1080,7 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ column ] =>
         ltac:(M.monadic
-          (let column := M.alloc (| column |) in
+          (let column := M.alloc (| Ty.path "usize", column |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -1044,7 +1117,14 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ columns ] =>
         ltac:(M.monadic
-          (let columns := M.alloc (| columns |) in
+          (let columns :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+              columns
+            |) in
           M.read (|
             let~ column_weights :
                 Ty.apply
@@ -1140,11 +1220,11 @@ Module virtual_column.
                                   Ty.function
                                     [ Ty.tuple [ Ty.path "usize" ] ]
                                     (Ty.tuple [ Ty.path "usize"; F ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let col := M.copy (| γ |) in
+                                        (let col := M.copy (| Ty.path "usize", γ |) in
                                         Value.Tuple
                                           [
                                             M.read (| col |);
@@ -1164,6 +1244,7 @@ Module virtual_column.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
               M.call_closure (|
                 Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
                 M.get_associated_function (|
@@ -1206,7 +1287,14 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ columns ] =>
         ltac:(M.monadic
-          (let columns := M.alloc (| columns |) in
+          (let columns :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ],
+              columns
+            |) in
           M.read (|
             let~ column_weights :
                 Ty.apply
@@ -1302,11 +1390,11 @@ Module virtual_column.
                                   Ty.function
                                     [ Ty.tuple [ Ty.path "usize" ] ]
                                     (Ty.tuple [ Ty.path "usize"; F ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let col := M.copy (| γ |) in
+                                        (let col := M.copy (| Ty.path "usize", γ |) in
                                         Value.Tuple
                                           [
                                             M.read (| col |);
@@ -1326,6 +1414,7 @@ Module virtual_column.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
               M.call_closure (|
                 Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
                 M.get_associated_function (|
@@ -1367,8 +1456,8 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ a_col; b_col ] =>
         ltac:(M.monadic
-          (let a_col := M.alloc (| a_col |) in
-          let b_col := M.alloc (| b_col |) in
+          (let a_col := M.alloc (| Ty.path "usize", a_col |) in
+          let b_col := M.alloc (| Ty.path "usize", b_col |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -1421,6 +1510,10 @@ Module virtual_column.
                         |),
                         [
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.tuple [ Ty.path "usize"; F ] ],
                             Value.Array
                               [
                                 Value.Tuple
@@ -1472,8 +1565,8 @@ Module virtual_column.
       match ε, τ, α with
       | [], [], [ a_col; b_col ] =>
         ltac:(M.monadic
-          (let a_col := M.alloc (| a_col |) in
-          let b_col := M.alloc (| b_col |) in
+          (let a_col := M.alloc (| Ty.path "usize", a_col |) in
+          let b_col := M.alloc (| Ty.path "usize", b_col |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ],
             M.get_associated_function (|
@@ -1526,6 +1619,10 @@ Module virtual_column.
                         |),
                         [
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.tuple [ Ty.path "usize"; F ] ],
                             Value.Array
                               [
                                 Value.Tuple
@@ -1586,9 +1683,24 @@ Module virtual_column.
       match ε, τ, α with
       | [], [ Expr; Var ], [ self; preprocessed; main ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let preprocessed := M.alloc (| preprocessed |) in
-          let main := M.alloc (| main |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::virtual_column::VirtualPairCol") [] [ F ] ],
+              self
+            |) in
+          let preprocessed :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Var ] ],
+              preprocessed
+            |) in
+          let main :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Var ] ],
+              main
+            |) in
           M.call_closure (|
             Expr,
             M.get_trait_method (|
@@ -1708,11 +1820,11 @@ Module virtual_column.
                                 ]
                             ]
                             Expr,
-                          M.alloc (| α0 |),
+                          M.alloc (| Expr, α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let acc := M.copy (| γ |) in
+                                (let acc := M.copy (| Expr, γ |) in
                                 M.match_operator (|
                                   Ty.function
                                     [
@@ -1729,15 +1841,25 @@ Module virtual_column.
                                         ]
                                     ]
                                     Expr,
-                                  M.alloc (| α1 |),
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.tuple [ Ty.path "p3_air::virtual_column::PairCol"; F ] ],
+                                    α1
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ := M.read (| γ |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let col := M.copy (| γ1_0 |) in
-                                        let w := M.copy (| γ1_1 |) in
+                                        let col :=
+                                          M.copy (|
+                                            Ty.path "p3_air::virtual_column::PairCol",
+                                            γ1_0
+                                          |) in
+                                        let w := M.copy (| F, γ1_1 |) in
                                         M.call_closure (|
                                           Expr,
                                           M.get_trait_method (|

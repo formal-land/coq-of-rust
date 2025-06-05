@@ -21,8 +21,15 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ] ],
+                self
+              |) in
+            Value.mkStructRecord
               "core::async_iter::from_iter::FromIter"
               []
               [ I ]
@@ -71,8 +78,16 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -96,6 +111,7 @@ Module async_iter.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ I ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -146,8 +162,8 @@ Module async_iter.
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
-          Value.StructRecord
+          (let iter := M.alloc (| I, iter |) in
+          Value.mkStructRecord
             "core::async_iter::from_iter::FromIter"
             []
             [ Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] I "IntoIter"
@@ -199,8 +215,24 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self; _cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _cx := M.alloc (| _cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ] ]
+                  ],
+                self
+              |) in
+            let _cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                _cx
+              |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               []
@@ -282,7 +314,14 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::async_iter::from_iter::FromIter") [] [ I ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]

@@ -29,10 +29,10 @@ Module prelude.
       match ε, τ, α with
       | [], [ Acc; Id; F; R ], [ self; identity; fold_op; _reduce_op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let identity := M.alloc (| identity |) in
-          let fold_op := M.alloc (| fold_op |) in
-          let _reduce_op := M.alloc (| _reduce_op |) in
+          (let self := M.alloc (| I, self |) in
+          let identity := M.alloc (| Id, identity |) in
+          let fold_op := M.alloc (| F, fold_op |) in
+          let _reduce_op := M.alloc (| R, _reduce_op |) in
           M.call_closure (|
             Acc,
             M.get_trait_method (|

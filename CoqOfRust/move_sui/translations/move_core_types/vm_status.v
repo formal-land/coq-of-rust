@@ -7,7 +7,8 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 0 |) |))).
+    ltac:(M.monadic
+      (M.alloc (| Ty.path "u64", M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |) |))).
   
   Global Instance Instance_IsConstant_value_VALIDATION_STATUS_MIN_CODE :
     M.IsFunction.C
@@ -21,7 +22,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 999 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 999 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_VALIDATION_STATUS_MAX_CODE :
     M.IsFunction.C
@@ -35,7 +40,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1000 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1000 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_VERIFICATION_STATUS_MIN_CODE :
     M.IsFunction.C
@@ -49,7 +58,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1999 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1999 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_VERIFICATION_STATUS_MAX_CODE :
     M.IsFunction.C
@@ -63,7 +76,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2000 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 2000 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_INVARIANT_VIOLATION_STATUS_MIN_CODE :
     M.IsFunction.C
@@ -77,7 +94,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2999 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 2999 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_INVARIANT_VIOLATION_STATUS_MAX_CODE :
     M.IsFunction.C
@@ -91,7 +112,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3000 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3000 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_DESERIALIZATION_STATUS_MIN_CODE :
     M.IsFunction.C
@@ -105,7 +130,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3999 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3999 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_DESERIALIZATION_STATUS_MAX_CODE :
     M.IsFunction.C
@@ -119,7 +148,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4000 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 4000 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_EXECUTION_STATUS_MIN_CODE :
     M.IsFunction.C
@@ -133,7 +166,11 @@ Module vm_status.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4999 |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.path "u64",
+        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 4999 |)
+      |))).
   
   Global Instance Instance_IsConstant_value_EXECUTION_STATUS_MAX_CODE :
     M.IsFunction.C
@@ -198,7 +235,11 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusType" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::vm_status::StatusType",
@@ -213,6 +254,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Validation"
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple
                         "move_core_types::vm_status::StatusType::Validation"
                         []
@@ -228,6 +270,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Verification"
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple
                         "move_core_types::vm_status::StatusType::Verification"
                         []
@@ -243,6 +286,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::InvariantViolation"
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple
                         "move_core_types::vm_status::StatusType::InvariantViolation"
                         []
@@ -258,6 +302,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Deserialization"
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple
                         "move_core_types::vm_status::StatusType::Deserialization"
                         []
@@ -273,6 +318,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Execution"
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple "move_core_types::vm_status::StatusType::Execution" [] [] []
                     |)));
                 fun γ =>
@@ -284,6 +330,7 @@ Module vm_status.
                         "move_core_types::vm_status::StatusType::Unknown"
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] [] []
                     |)))
               ]
@@ -321,8 +368,16 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusType" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusType" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -345,6 +400,7 @@ Module vm_status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -376,7 +432,11 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusType" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -399,8 +459,13 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusType" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -423,6 +488,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Validation"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Validation" |) |) |)
                         |)));
                     fun γ =>
@@ -434,6 +500,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Verification"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Verification" |) |) |)
                         |)));
                     fun γ =>
@@ -445,6 +512,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::InvariantViolation"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvariantViolation" |) |)
@@ -459,6 +527,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Deserialization"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Deserialization" |) |)
@@ -473,6 +542,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Execution"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Execution" |) |) |)
                         |)));
                     fun γ =>
@@ -484,6 +554,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Unknown"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unknown" |) |) |)
                         |)))
                   ]
@@ -511,8 +582,12 @@ Module vm_status.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusType" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -525,6 +600,7 @@ Module vm_status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -1888,7 +1964,11 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1922,8 +2002,13 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1946,6 +2031,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VALIDATION_STATUS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_VALIDATION_STATUS" |) |)
@@ -1960,6 +2046,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_SIGNATURE" |) |)
@@ -1974,6 +2061,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_AUTH_KEY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_AUTH_KEY" |) |)
@@ -1988,6 +2076,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_OLD"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SEQUENCE_NUMBER_TOO_OLD" |) |)
@@ -2002,6 +2091,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_NEW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SEQUENCE_NUMBER_TOO_NEW" |) |)
@@ -2016,6 +2106,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE" |) |)
@@ -2030,6 +2121,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TRANSACTION_EXPIRED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TRANSACTION_EXPIRED" |) |)
@@ -2044,6 +2136,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_DOES_NOT_EXIST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SENDING_ACCOUNT_DOES_NOT_EXIST" |) |)
@@ -2058,6 +2151,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::REJECTED_WRITE_SET"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "REJECTED_WRITE_SET" |) |)
@@ -2072,6 +2166,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_WRITE_SET"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_WRITE_SET" |) |)
@@ -2086,6 +2181,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXCEEDED_MAX_TRANSACTION_SIZE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EXCEEDED_MAX_TRANSACTION_SIZE" |) |)
@@ -2100,6 +2196,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SCRIPT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_SCRIPT" |) |)
@@ -2114,6 +2211,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_MODULE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_MODULE" |) |)
@@ -2128,6 +2226,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND" |) |)
@@ -2142,6 +2241,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -2158,6 +2258,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_BELOW_MIN_BOUND"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "GAS_UNIT_PRICE_BELOW_MIN_BOUND" |) |)
@@ -2172,6 +2273,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::GAS_UNIT_PRICE_ABOVE_MAX_BOUND"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "GAS_UNIT_PRICE_ABOVE_MAX_BOUND" |) |)
@@ -2186,6 +2288,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_GAS_SPECIFIER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_GAS_SPECIFIER" |) |)
@@ -2200,6 +2303,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SENDING_ACCOUNT_FROZEN"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SENDING_ACCOUNT_FROZEN" |) |)
@@ -2214,6 +2318,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNABLE_TO_DESERIALIZE_ACCOUNT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNABLE_TO_DESERIALIZE_ACCOUNT" |) |)
@@ -2228,6 +2333,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CURRENCY_INFO_DOES_NOT_EXIST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CURRENCY_INFO_DOES_NOT_EXIST" |) |)
@@ -2242,6 +2348,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_PUBLISHER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_MODULE_PUBLISHER" |) |)
@@ -2256,6 +2363,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NO_ACCOUNT_ROLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NO_ACCOUNT_ROLE" |) |)
@@ -2270,6 +2378,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_CHAIN_ID"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_CHAIN_ID" |) |) |)
                         |)));
                     fun γ =>
@@ -2281,6 +2390,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NUMBER_TOO_BIG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SEQUENCE_NUMBER_TOO_BIG" |) |)
@@ -2295,6 +2405,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_TRANSACTION_FEE_CURRENCY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BAD_TRANSACTION_FEE_CURRENCY" |) |)
@@ -2309,6 +2420,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FEATURE_UNDER_GATING"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FEATURE_UNDER_GATING" |) |)
@@ -2323,6 +2435,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH" |) |)
@@ -2337,6 +2450,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SIGNERS_CONTAIN_DUPLICATES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SIGNERS_CONTAIN_DUPLICATES" |) |)
@@ -2351,6 +2465,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::SEQUENCE_NONCE_INVALID"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SEQUENCE_NONCE_INVALID" |) |)
@@ -2365,6 +2480,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST" |) |)
@@ -2379,6 +2495,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERIFICATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_VERIFICATION_ERROR" |) |)
@@ -2393,6 +2510,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INDEX_OUT_OF_BOUNDS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INDEX_OUT_OF_BOUNDS" |) |)
@@ -2407,6 +2525,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_SIGNATURE_TOKEN"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_SIGNATURE_TOKEN" |) |)
@@ -2421,6 +2540,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RECURSIVE_STRUCT_DEFINITION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RECURSIVE_STRUCT_DEFINITION" |) |)
@@ -2435,6 +2555,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FIELD_MISSING_TYPE_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FIELD_MISSING_TYPE_ABILITY" |) |)
@@ -2449,6 +2570,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FALL_THROUGH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_FALL_THROUGH" |) |)
@@ -2463,6 +2585,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NEGATIVE_STACK_SIZE_WITHIN_BLOCK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NEGATIVE_STACK_SIZE_WITHIN_BLOCK" |) |)
@@ -2477,6 +2600,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_MAIN_FUNCTION_SIGNATURE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_MAIN_FUNCTION_SIGNATURE" |) |)
@@ -2491,6 +2615,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::DUPLICATE_ELEMENT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DUPLICATE_ELEMENT" |) |)
@@ -2505,6 +2630,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_MODULE_HANDLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_MODULE_HANDLE" |) |)
@@ -2519,6 +2645,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNIMPLEMENTED_HANDLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNIMPLEMENTED_HANDLE" |) |)
@@ -2533,6 +2660,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::LOOKUP_FAILED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "LOOKUP_FAILED" |) |)
@@ -2547,6 +2675,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TYPE_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TYPE_MISMATCH" |) |)
@@ -2561,6 +2690,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MISSING_DEPENDENCY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MISSING_DEPENDENCY" |) |)
@@ -2575,6 +2705,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::POP_WITHOUT_DROP_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "POP_WITHOUT_DROP_ABILITY" |) |)
@@ -2589,6 +2720,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BR_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BR_TYPE_MISMATCH_ERROR" |) |)
@@ -2603,6 +2735,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::ABORT_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ABORT_TYPE_MISMATCH_ERROR" |) |)
@@ -2617,6 +2750,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::STLOC_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "STLOC_TYPE_MISMATCH_ERROR" |) |)
@@ -2631,6 +2765,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::STLOC_UNSAFE_TO_DESTROY_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "STLOC_UNSAFE_TO_DESTROY_ERROR" |) |)
@@ -2645,6 +2780,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED" |) |)
@@ -2659,6 +2795,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RET_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RET_TYPE_MISMATCH_ERROR" |) |)
@@ -2673,6 +2810,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RET_BORROWED_MUTABLE_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RET_BORROWED_MUTABLE_REFERENCE_ERROR" |) |)
@@ -2687,6 +2825,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FREEZEREF_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FREEZEREF_TYPE_MISMATCH_ERROR" |) |)
@@ -2701,6 +2840,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR" |) |)
@@ -2715,6 +2855,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWFIELD_TYPE_MISMATCH_ERROR" |) |)
@@ -2729,6 +2870,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_BAD_FIELD_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWFIELD_BAD_FIELD_ERROR" |) |)
@@ -2743,6 +2885,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR" |) |)
@@ -2757,6 +2900,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::COPYLOC_UNAVAILABLE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "COPYLOC_UNAVAILABLE_ERROR" |) |)
@@ -2771,6 +2915,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::COPYLOC_WITHOUT_COPY_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "COPYLOC_WITHOUT_COPY_ABILITY" |) |)
@@ -2785,6 +2930,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::COPYLOC_EXISTS_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "COPYLOC_EXISTS_BORROW_ERROR" |) |)
@@ -2799,6 +2945,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MOVELOC_UNAVAILABLE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVELOC_UNAVAILABLE_ERROR" |) |)
@@ -2813,6 +2960,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MOVELOC_EXISTS_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVELOC_EXISTS_BORROW_ERROR" |) |)
@@ -2827,6 +2975,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWLOC_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWLOC_REFERENCE_ERROR" |) |)
@@ -2841,6 +2990,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWLOC_UNAVAILABLE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWLOC_UNAVAILABLE_ERROR" |) |)
@@ -2855,6 +3005,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWLOC_EXISTS_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWLOC_EXISTS_BORROW_ERROR" |) |)
@@ -2869,6 +3020,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CALL_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CALL_TYPE_MISMATCH_ERROR" |) |)
@@ -2883,6 +3035,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CALL_BORROWED_MUTABLE_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CALL_BORROWED_MUTABLE_REFERENCE_ERROR" |) |)
@@ -2897,6 +3050,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::PACK_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "PACK_TYPE_MISMATCH_ERROR" |) |)
@@ -2911,6 +3065,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNPACK_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNPACK_TYPE_MISMATCH_ERROR" |) |)
@@ -2925,6 +3080,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::READREF_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "READREF_TYPE_MISMATCH_ERROR" |) |)
@@ -2939,6 +3095,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::READREF_WITHOUT_COPY_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "READREF_WITHOUT_COPY_ABILITY" |) |)
@@ -2953,6 +3110,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::READREF_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "READREF_EXISTS_MUTABLE_BORROW_ERROR" |) |)
@@ -2967,6 +3125,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::WRITEREF_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "WRITEREF_TYPE_MISMATCH_ERROR" |) |)
@@ -2981,6 +3140,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::WRITEREF_WITHOUT_DROP_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "WRITEREF_WITHOUT_DROP_ABILITY" |) |)
@@ -2995,6 +3155,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::WRITEREF_EXISTS_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "WRITEREF_EXISTS_BORROW_ERROR" |) |)
@@ -3009,6 +3170,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::WRITEREF_NO_MUTABLE_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "WRITEREF_NO_MUTABLE_REFERENCE_ERROR" |) |)
@@ -3023,6 +3185,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INTEGER_OP_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INTEGER_OP_TYPE_MISMATCH_ERROR" |) |)
@@ -3037,6 +3200,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BOOLEAN_OP_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BOOLEAN_OP_TYPE_MISMATCH_ERROR" |) |)
@@ -3051,6 +3215,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EQUALITY_OP_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EQUALITY_OP_TYPE_MISMATCH_ERROR" |) |)
@@ -3065,6 +3230,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT" |) |)
@@ -3079,6 +3245,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWGLOBAL_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWGLOBAL_TYPE_MISMATCH_ERROR" |) |)
@@ -3093,6 +3260,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BORROWGLOBAL_WITHOUT_KEY_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BORROWGLOBAL_WITHOUT_KEY_ABILITY" |) |)
@@ -3107,6 +3275,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MOVEFROM_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVEFROM_TYPE_MISMATCH_ERROR" |) |)
@@ -3121,6 +3290,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MOVEFROM_WITHOUT_KEY_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVEFROM_WITHOUT_KEY_ABILITY" |) |)
@@ -3135,6 +3305,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MOVETO_TYPE_MISMATCH_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVETO_TYPE_MISMATCH_ERROR" |) |)
@@ -3149,6 +3320,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MOVETO_WITHOUT_KEY_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MOVETO_WITHOUT_KEY_ABILITY" |) |)
@@ -3163,6 +3335,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MODULE_ADDRESS_DOES_NOT_MATCH_SENDER"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER" |) |)
@@ -3177,6 +3350,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NO_MODULE_HANDLES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NO_MODULE_HANDLES" |) |)
@@ -3191,6 +3365,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::POSITIVE_STACK_SIZE_AT_BLOCK_END"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "POSITIVE_STACK_SIZE_AT_BLOCK_END" |) |)
@@ -3205,6 +3380,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MISSING_ACQUIRES_ANNOTATION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MISSING_ACQUIRES_ANNOTATION" |) |)
@@ -3219,6 +3395,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXTRANEOUS_ACQUIRES_ANNOTATION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EXTRANEOUS_ACQUIRES_ANNOTATION" |) |)
@@ -3233,6 +3410,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::DUPLICATE_ACQUIRES_ANNOTATION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DUPLICATE_ACQUIRES_ANNOTATION" |) |)
@@ -3247,6 +3425,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_ACQUIRES_ANNOTATION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_ACQUIRES_ANNOTATION" |) |)
@@ -3261,6 +3440,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::GLOBAL_REFERENCE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "GLOBAL_REFERENCE_ERROR" |) |)
@@ -3275,6 +3455,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CONSTRAINT_NOT_SATISFIED" |) |)
@@ -3289,6 +3470,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_TYPE_ARGUMENTS_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH" |) |)
@@ -3303,6 +3485,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::LOOP_IN_INSTANTIATION_GRAPH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "LOOP_IN_INSTANTIATION_GRAPH" |) |)
@@ -3317,6 +3500,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::ZERO_SIZED_STRUCT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ZERO_SIZED_STRUCT" |) |)
@@ -3331,6 +3515,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::LINKER_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LINKER_ERROR" |) |) |)
                         |)));
                     fun γ =>
@@ -3342,6 +3527,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_CONSTANT_TYPE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_CONSTANT_TYPE" |) |)
@@ -3356,6 +3542,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MALFORMED_CONSTANT_DATA"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MALFORMED_CONSTANT_DATA" |) |)
@@ -3370,6 +3557,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EMPTY_CODE_UNIT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EMPTY_CODE_UNIT" |) |)
@@ -3384,6 +3572,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_SPLIT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_LOOP_SPLIT" |) |)
@@ -3398,6 +3587,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_BREAK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_LOOP_BREAK" |) |)
@@ -3412,6 +3602,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_LOOP_CONTINUE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_LOOP_CONTINUE" |) |)
@@ -3426,6 +3617,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP" |) |)
@@ -3440,6 +3632,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_LOCALS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_LOCALS" |) |)
@@ -3454,6 +3647,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::GENERIC_MEMBER_OPCODE_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "GENERIC_MEMBER_OPCODE_MISMATCH" |) |)
@@ -3468,6 +3662,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FUNCTION_RESOLUTION_FAILURE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FUNCTION_RESOLUTION_FAILURE" |) |)
@@ -3482,6 +3677,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_OPERATION_IN_SCRIPT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_OPERATION_IN_SCRIPT" |) |)
@@ -3496,6 +3692,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::DUPLICATE_MODULE_NAME"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DUPLICATE_MODULE_NAME" |) |)
@@ -3510,6 +3707,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BACKWARD_INCOMPATIBLE_MODULE_UPDATE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BACKWARD_INCOMPATIBLE_MODULE_UPDATE" |) |)
@@ -3524,6 +3722,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_DEPENDENCY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CYCLIC_MODULE_DEPENDENCY" |) |)
@@ -3538,6 +3737,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_ARGUMENTS_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NUMBER_OF_ARGUMENTS_MISMATCH" |) |)
@@ -3552,6 +3752,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_PARAM_TYPE_FOR_DESERIALIZATION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_PARAM_TYPE_FOR_DESERIALIZATION" |) |)
@@ -3566,6 +3767,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_ARGUMENT"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FAILED_TO_DESERIALIZE_ARGUMENT" |) |)
@@ -3580,6 +3782,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH" |) |)
@@ -3594,6 +3797,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -3610,6 +3814,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -3626,6 +3831,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_SELF"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_FRIEND_DECL_WITH_SELF" |) |)
@@ -3640,6 +3846,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -3658,6 +3865,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -3674,6 +3882,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CYCLIC_MODULE_FRIENDSHIP"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CYCLIC_MODULE_FRIENDSHIP" |) |)
@@ -3688,6 +3897,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_PHANTOM_TYPE_PARAM_POSITION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_PHANTOM_TYPE_PARAM_POSITION" |) |)
@@ -3702,6 +3912,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR" |) |)
@@ -3716,6 +3927,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -3732,6 +3944,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::LOOP_MAX_DEPTH_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "LOOP_MAX_DEPTH_REACHED" |) |)
@@ -3746,6 +3959,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_PARAMETERS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_TYPE_PARAMETERS" |) |)
@@ -3760,6 +3974,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_PARAMETERS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_PARAMETERS" |) |)
@@ -3774,6 +3989,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_BASIC_BLOCKS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_BASIC_BLOCKS" |) |)
@@ -3788,6 +4004,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VALUE_STACK_OVERFLOW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VALUE_STACK_OVERFLOW" |) |)
@@ -3802,6 +4019,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_TYPE_NODES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_TYPE_NODES" |) |)
@@ -3816,6 +4034,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VALUE_STACK_PUSH_OVERFLOW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VALUE_STACK_PUSH_OVERFLOW" |) |)
@@ -3830,6 +4049,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_DEPENDENCY_DEPTH_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MAX_DEPENDENCY_DEPTH_REACHED" |) |)
@@ -3844,6 +4064,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_FUNCTION_DEFINITIONS_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MAX_FUNCTION_DEFINITIONS_REACHED" |) |)
@@ -3858,6 +4079,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_STRUCT_DEFINITIONS_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MAX_STRUCT_DEFINITIONS_REACHED" |) |)
@@ -3872,6 +4094,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MAX_FIELD_DEFINITIONS_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MAX_FIELD_DEFINITIONS_REACHED" |) |)
@@ -3886,6 +4109,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_BACK_EDGES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_BACK_EDGES" |) |)
@@ -3900,6 +4124,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_1"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_1" |) |)
@@ -3914,6 +4139,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_2"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_2" |) |)
@@ -3928,6 +4154,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_3"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_3" |) |)
@@ -3942,6 +4169,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_4"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_4" |) |)
@@ -3956,6 +4184,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESERVED_VERIFICATION_ERROR_5"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_5" |) |)
@@ -3970,6 +4199,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TOO_MANY_VECTOR_ELEMENTS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TOO_MANY_VECTOR_ELEMENTS" |) |)
@@ -3984,6 +4214,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::IDENTIFIER_TOO_LONG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "IDENTIFIER_TOO_LONG" |) |)
@@ -3998,6 +4229,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::PROGRAM_TOO_COMPLEX"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "PROGRAM_TOO_COMPLEX" |) |)
@@ -4012,6 +4244,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_INVARIANT_VIOLATION_ERROR" |) |)
@@ -4026,6 +4259,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EMPTY_VALUE_STACK"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EMPTY_VALUE_STACK" |) |)
@@ -4040,6 +4274,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::PC_OVERFLOW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PC_OVERFLOW" |) |) |)
                         |)));
                     fun γ =>
@@ -4051,6 +4286,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VERIFICATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VERIFICATION_ERROR" |) |)
@@ -4065,6 +4301,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::STORAGE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "STORAGE_ERROR" |) |)
@@ -4079,6 +4316,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INTERNAL_TYPE_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INTERNAL_TYPE_ERROR" |) |)
@@ -4093,6 +4331,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EVENT_KEY_MISMATCH"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EVENT_KEY_MISMATCH" |) |)
@@ -4107,6 +4346,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNREACHABLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UNREACHABLE" |) |) |)
                         |)));
                     fun γ =>
@@ -4118,6 +4358,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VM_STARTUP_FAILURE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VM_STARTUP_FAILURE" |) |)
@@ -4132,6 +4373,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION" |) |)
@@ -4146,6 +4388,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VERIFIER_INVARIANT_VIOLATION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VERIFIER_INVARIANT_VIOLATION" |) |)
@@ -4160,6 +4403,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_VERIFIER_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNEXPECTED_VERIFIER_ERROR" |) |)
@@ -4174,6 +4418,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_DESERIALIZATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNEXPECTED_DESERIALIZATION_ERROR" |) |)
@@ -4188,6 +4433,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FAILED_TO_SERIALIZE_WRITE_SET_CHANGES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES" |) |)
@@ -4202,6 +4448,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::FAILED_TO_DESERIALIZE_RESOURCE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FAILED_TO_DESERIALIZE_RESOURCE" |) |)
@@ -4216,6 +4463,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TYPE_RESOLUTION_FAILURE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TYPE_RESOLUTION_FAILURE" |) |)
@@ -4230,6 +4478,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::DUPLICATE_NATIVE_FUNCTION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DUPLICATE_NATIVE_FUNCTION" |) |)
@@ -4244,6 +4493,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::ARITHMETIC_OVERFLOW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ARITHMETIC_OVERFLOW" |) |)
@@ -4258,6 +4508,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_BINARY_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_BINARY_ERROR" |) |)
@@ -4272,6 +4523,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MALFORMED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MALFORMED" |) |) |)
                         |)));
                     fun γ =>
@@ -4283,6 +4535,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_MAGIC"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_MAGIC" |) |) |)
                         |)));
                     fun γ =>
@@ -4294,6 +4547,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_VERSION"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_VERSION" |) |)
@@ -4308,6 +4562,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_TABLE_TYPE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_TABLE_TYPE" |) |)
@@ -4322,6 +4577,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SIGNATURE_TYPE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_SIGNATURE_TYPE" |) |)
@@ -4336,6 +4592,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_SERIALIZED_TYPE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_SERIALIZED_TYPE" |) |)
@@ -4350,6 +4607,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_OPCODE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_OPCODE" |) |)
@@ -4364,6 +4622,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_HEADER_TABLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "BAD_HEADER_TABLE" |) |)
@@ -4378,6 +4637,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNEXPECTED_SIGNATURE_TYPE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNEXPECTED_SIGNATURE_TYPE" |) |)
@@ -4392,6 +4652,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::DUPLICATE_TABLE"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DUPLICATE_TABLE" |) |)
@@ -4406,6 +4667,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_ABILITY"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_ABILITY" |) |)
@@ -4420,6 +4682,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_NATIVE_STRUCT_FLAG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_NATIVE_STRUCT_FLAG" |) |)
@@ -4434,6 +4697,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U16"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U16" |) |) |)
                         |)));
                     fun γ =>
@@ -4445,6 +4709,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U32"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U32" |) |) |)
                         |)));
                     fun γ =>
@@ -4456,6 +4721,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U64"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U64" |) |) |)
                         |)));
                     fun γ =>
@@ -4467,6 +4733,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U128"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U128" |) |) |)
                         |)));
                     fun γ =>
@@ -4478,6 +4745,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U256"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U256" |) |) |)
                         |)));
                     fun γ =>
@@ -4489,6 +4757,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VALUE_SERIALIZATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VALUE_SERIALIZATION_ERROR" |) |)
@@ -4503,6 +4772,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VALUE_DESERIALIZATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VALUE_DESERIALIZATION_ERROR" |) |)
@@ -4517,6 +4787,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CODE_DESERIALIZATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CODE_DESERIALIZATION_ERROR" |) |)
@@ -4531,6 +4802,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::INVALID_FLAG_BITS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "INVALID_FLAG_BITS" |) |)
@@ -4545,6 +4817,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::TRAILING_BYTES"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TRAILING_BYTES" |) |)
@@ -4559,6 +4832,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_RUNTIME_STATUS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_RUNTIME_STATUS" |) |)
@@ -4573,6 +4847,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXECUTED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EXECUTED" |) |) |)
                         |)));
                     fun γ =>
@@ -4584,6 +4859,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::OUT_OF_GAS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OUT_OF_GAS" |) |) |)
                         |)));
                     fun γ =>
@@ -4595,6 +4871,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESOURCE_DOES_NOT_EXIST"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESOURCE_DOES_NOT_EXIST" |) |)
@@ -4609,6 +4886,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::RESOURCE_ALREADY_EXISTS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "RESOURCE_ALREADY_EXISTS" |) |)
@@ -4623,6 +4901,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MISSING_DATA"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MISSING_DATA" |) |) |)
                         |)));
                     fun γ =>
@@ -4634,6 +4913,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::DATA_FORMAT_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "DATA_FORMAT_ERROR" |) |)
@@ -4648,6 +4928,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::ABORTED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ABORTED" |) |) |)
                         |)));
                     fun γ =>
@@ -4659,6 +4940,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::ARITHMETIC_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ARITHMETIC_ERROR" |) |)
@@ -4673,6 +4955,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VECTOR_OPERATION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VECTOR_OPERATION_ERROR" |) |)
@@ -4687,6 +4970,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXECUTION_STACK_OVERFLOW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EXECUTION_STACK_OVERFLOW" |) |)
@@ -4701,6 +4985,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::CALL_STACK_OVERFLOW"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CALL_STACK_OVERFLOW" |) |)
@@ -4715,6 +5000,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_DEPTH_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VM_MAX_TYPE_DEPTH_REACHED" |) |)
@@ -4729,6 +5015,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VM_MAX_VALUE_DEPTH_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VM_MAX_VALUE_DEPTH_REACHED" |) |)
@@ -4743,6 +5030,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VM_EXTENSION_ERROR"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VM_EXTENSION_ERROR" |) |)
@@ -4757,6 +5045,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::STORAGE_WRITE_LIMIT_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "STORAGE_WRITE_LIMIT_REACHED" |) |)
@@ -4771,6 +5060,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MEMORY_LIMIT_EXCEEDED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MEMORY_LIMIT_EXCEEDED" |) |)
@@ -4785,6 +5075,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::VM_MAX_TYPE_NODES_REACHED"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "VM_MAX_TYPE_NODES_REACHED" |) |)
@@ -4799,6 +5090,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNKNOWN_STATUS"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "UNKNOWN_STATUS" |) |)
@@ -4833,7 +5125,11 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4856,8 +5152,12 @@ Module vm_status.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "u64" :=
               M.call_closure (|
@@ -4870,6 +5170,7 @@ Module vm_status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -4923,8 +5224,16 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u64" :=
               M.call_closure (|
@@ -4947,6 +5256,7 @@ Module vm_status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -4974,8 +5284,16 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u64" :=
               M.call_closure (|
@@ -4998,6 +5316,7 @@ Module vm_status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
@@ -5042,8 +5361,16 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u64" :=
               M.call_closure (|
@@ -5066,6 +5393,7 @@ Module vm_status.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
@@ -5114,7 +5442,7 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "u64", value |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -5134,6 +5462,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 0
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5157,6 +5492,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5180,6 +5522,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5203,6 +5552,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5226,6 +5582,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5249,6 +5612,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 5
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5272,6 +5642,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 6
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5295,6 +5672,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 7
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5318,6 +5702,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 8
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5341,6 +5732,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 9
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5364,6 +5762,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 10
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5387,6 +5792,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 11
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5410,6 +5822,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 12
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5433,6 +5852,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 13
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5456,6 +5882,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 14
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5479,6 +5912,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 15
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5502,6 +5942,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 16
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5525,6 +5972,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 17
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5548,6 +6002,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 18
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5571,6 +6032,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 19
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5594,6 +6062,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 20
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5617,6 +6092,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 21
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5640,6 +6122,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 22
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5663,6 +6152,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 23
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5686,6 +6182,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 24
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5709,6 +6212,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 25
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5732,6 +6242,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 26
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5755,6 +6272,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 27
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5778,6 +6302,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 28
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5801,6 +6332,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 29
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5824,6 +6362,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 30
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5847,6 +6392,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1000
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5870,6 +6422,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1001
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5893,6 +6452,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1003
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5916,6 +6482,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1005
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5939,6 +6512,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1006
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5962,6 +6542,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1007
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5985,6 +6572,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1009
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6008,6 +6602,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1011
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6031,6 +6632,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1012
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6054,6 +6662,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1013
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6077,6 +6692,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1014
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6100,6 +6722,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1017
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6123,6 +6752,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1020
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6146,6 +6782,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1021
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6169,6 +6812,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1023
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6192,6 +6842,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1025
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6215,6 +6872,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1026
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6238,6 +6902,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1027
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6261,6 +6932,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1028
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6284,6 +6962,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1029
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6307,6 +6992,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1030
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6330,6 +7022,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1031
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6353,6 +7052,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1032
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6376,6 +7082,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1033
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6399,6 +7112,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1034
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6422,6 +7142,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1035
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6445,6 +7172,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1036
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6468,6 +7202,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1037
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6491,6 +7232,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1038
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6514,6 +7262,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1039
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6537,6 +7292,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1040
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6560,6 +7322,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1041
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6583,6 +7352,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1042
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6606,6 +7382,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1043
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6629,6 +7412,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1044
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6652,6 +7442,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1045
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6675,6 +7472,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1046
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6698,6 +7502,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1047
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6721,6 +7532,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1048
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6744,6 +7562,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1049
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6767,6 +7592,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1050
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6790,6 +7622,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1051
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6813,6 +7652,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1052
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6836,6 +7682,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1053
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6859,6 +7712,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1054
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6882,6 +7742,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1055
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6905,6 +7772,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1056
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6928,6 +7802,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1057
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6951,6 +7832,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1058
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6974,6 +7862,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1059
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -6997,6 +7892,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1060
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7020,6 +7922,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1061
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7043,6 +7952,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1062
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7066,6 +7982,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1063
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7089,6 +8012,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1064
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7112,6 +8042,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1065
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7135,6 +8072,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1067
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7158,6 +8102,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1068
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7181,6 +8132,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1069
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7204,6 +8162,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1070
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7227,6 +8192,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1071
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7250,6 +8222,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1072
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7273,6 +8252,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1073
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7296,6 +8282,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1074
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7319,6 +8312,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1075
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7342,6 +8342,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1076
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7365,6 +8372,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1077
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7388,6 +8402,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1080
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7411,6 +8432,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1081
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7434,6 +8462,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1082
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7457,6 +8492,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1083
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7480,6 +8522,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1084
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7503,6 +8552,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1085
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7526,6 +8582,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1086
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7549,6 +8612,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1087
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7572,6 +8642,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1088
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7595,6 +8672,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1089
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7618,6 +8702,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1090
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7641,6 +8732,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1091
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7664,6 +8762,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1094
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7687,6 +8792,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1095
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7710,6 +8822,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1096
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7733,6 +8852,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1097
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7756,6 +8882,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1098
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7779,6 +8912,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1099
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7802,6 +8942,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1100
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7825,6 +8972,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1101
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7848,6 +9002,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1102
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7871,6 +9032,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1103
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7894,6 +9062,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1104
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7917,6 +9092,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1105
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7940,6 +9122,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1106
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7963,6 +9152,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1107
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -7986,6 +9182,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1108
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8009,6 +9212,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1109
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8032,6 +9242,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1110
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8055,6 +9272,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1111
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8078,6 +9302,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1112
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8101,6 +9332,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1113
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8124,6 +9362,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1114
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8147,6 +9392,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1115
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8170,6 +9422,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1116
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8193,6 +9452,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1117
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8216,6 +9482,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1118
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8239,6 +9512,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1119
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8262,6 +9542,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1120
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8285,6 +9572,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1121
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8308,6 +9602,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1122
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8331,6 +9632,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1123
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8354,6 +9662,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1124
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8377,6 +9692,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1125
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8400,6 +9722,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1126
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8423,6 +9752,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1127
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8446,6 +9782,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1128
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8469,6 +9812,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1129
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8492,6 +9842,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 1130
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8515,6 +9872,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2000
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8538,6 +9902,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2003
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8561,6 +9932,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2005
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8584,6 +9962,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2006
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8607,6 +9992,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2008
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8630,6 +10022,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2009
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8653,6 +10052,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2010
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8676,6 +10082,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2011
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8699,6 +10112,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2012
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8722,6 +10142,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2015
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8745,6 +10172,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2016
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8768,6 +10202,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2017
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8791,6 +10232,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2018
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8814,6 +10262,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2019
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8837,6 +10292,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2020
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8860,6 +10322,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2021
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8883,6 +10352,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2022
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8906,6 +10382,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 2023
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8929,6 +10412,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3000
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8952,6 +10442,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3001
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8975,6 +10472,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3002
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -8998,6 +10502,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3003
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9021,6 +10532,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3004
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9044,6 +10562,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3005
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9067,6 +10592,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3006
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9090,6 +10622,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3007
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9113,6 +10652,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3008
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9136,6 +10682,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3009
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9159,6 +10712,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3010
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9182,6 +10742,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3013
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9205,6 +10772,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3014
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9228,6 +10802,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3017
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9251,6 +10832,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3018
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9274,6 +10862,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3019
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9297,6 +10892,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3020
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9320,6 +10922,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3021
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9343,6 +10952,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3022
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9366,6 +10982,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3023
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9389,6 +11012,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3024
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9412,6 +11042,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3025
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9435,6 +11072,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 3026
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9458,6 +11102,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4000
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9481,6 +11132,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4001
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9504,6 +11162,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4002
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9527,6 +11192,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4003
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9550,6 +11222,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4004
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9573,6 +11252,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4008
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9596,6 +11282,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4009
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9619,6 +11312,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4016
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9642,6 +11342,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4017
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9665,6 +11372,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4018
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9688,6 +11402,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4020
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9711,6 +11432,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4021
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9734,6 +11462,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4024
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9757,6 +11492,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4025
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9780,6 +11522,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4026
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9803,6 +11552,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4027
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9826,6 +11582,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4028
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9849,6 +11612,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 4029
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9872,6 +11642,13 @@ Module vm_status.
                         Value.Integer IntegerKind.U64 18446744073709551615
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -9890,6 +11667,13 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "move_core_types::vm_status::StatusCode";
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                        ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -9963,11 +11747,12 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", self |) in
           M.read (|
             M.catch_return (Ty.path "move_core_types::vm_status::StatusType") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "move_core_types::vm_status::StatusType",
                   M.read (|
                     let~ major_status_number : Ty.path "u64" :=
                       M.call_closure (|
@@ -9987,13 +11772,14 @@ Module vm_status.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.and (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -10038,6 +11824,7 @@ Module vm_status.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -10050,7 +11837,7 @@ Module vm_status.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -10058,13 +11845,14 @@ Module vm_status.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.and (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -10109,6 +11897,7 @@ Module vm_status.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -10121,7 +11910,7 @@ Module vm_status.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -10129,13 +11918,14 @@ Module vm_status.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.and (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -10180,6 +11970,7 @@ Module vm_status.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -10192,7 +11983,7 @@ Module vm_status.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -10200,13 +11991,14 @@ Module vm_status.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.and (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -10251,6 +12043,7 @@ Module vm_status.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -10263,7 +12056,7 @@ Module vm_status.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -10271,13 +12064,14 @@ Module vm_status.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.and (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -10322,6 +12116,7 @@ Module vm_status.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -10334,11 +12129,12 @@ Module vm_status.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::vm_status::StatusType",
                       Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] [] []
                     |)
                   |)
@@ -10369,8 +12165,12 @@ Module vm_status.
       match ε, τ, α with
       | [], [ _ as S ], [ self; serializer ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let serializer := M.alloc (| serializer |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::vm_status::StatusCode" ],
+              self
+            |) in
+          let serializer := M.alloc (| S, serializer |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -10440,7 +12240,7 @@ Module vm_status.
       match ε, τ, α with
       | [], [ D ], [ deserializer ] =>
         ltac:(M.monadic
-          (let deserializer := M.alloc (| deserializer |) in
+          (let deserializer := M.alloc (| D, deserializer |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -10491,7 +12291,7 @@ Module vm_status.
       match ε, τ, α with
       | [], [], [ status ] =>
         ltac:(M.monadic
-          (let status := M.alloc (| status |) in
+          (let status := M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", status |) in
           M.cast (Ty.path "u64") (M.read (| status |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -10511,7 +12311,7 @@ Module vm_status.
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |))).
     
     Global Instance Instance_IsConstant_value_NFE_VECTOR_ERROR_BASE :
       M.IsFunction.C
@@ -10521,7 +12321,7 @@ Module vm_status.
     Global Typeclasses Opaque value_NFE_VECTOR_ERROR_BASE.
     
     Definition value_NFE_OUT_OF_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     Global Instance Instance_IsConstant_value_NFE_OUT_OF_GAS :
       M.IsFunction.C "move_core_types::vm_status::sub_status::NFE_OUT_OF_GAS" value_NFE_OUT_OF_GAS.
@@ -10533,7 +12333,7 @@ Module vm_status.
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 453 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 453 |))).
     
     Global Instance Instance_IsConstant_value_NFE_BCS_SERIALIZATION_FAILURE :
       M.IsFunction.C

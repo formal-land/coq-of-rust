@@ -126,7 +126,7 @@ Module move_resource.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "move_core_types::language_storage::StructTag"
             []
             []
@@ -220,6 +220,7 @@ Module move_resource.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "move_core_types::language_storage::StructTag",
                   M.call_closure (|
                     Ty.path "move_core_types::language_storage::StructTag",
                     M.get_trait_method (|

@@ -18,8 +18,8 @@ Module array.
       match ε, τ, α with
       | [ N ], [ T; R; impl_for_'a__FnOnce_Drain_'a__T___arrow_R ], [ array; func ] =>
         ltac:(M.monadic
-          (let array := M.alloc (| array |) in
-          let func := M.alloc (| func |) in
+          (let array := M.alloc (| Ty.apply (Ty.path "array") [ N ] [ T ], array |) in
+          let func := M.alloc (| impl_for_'a__FnOnce_Drain_'a__T___arrow_R, func |) in
           M.read (|
             let~ array :
                 Ty.apply
@@ -87,6 +87,7 @@ Module array.
                   |)
                 ] in
             M.alloc (|
+              R,
               M.call_closure (|
                 R,
                 M.get_trait_method (|
@@ -132,7 +133,14 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_function (|
@@ -198,17 +206,35 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ T ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     M.read (|
                       let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
                         M.read (|
                           M.match_operator (|
                             Ty.apply (Ty.path "*const") [] [ T ],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::convert::Infallible" ];
+                                  Ty.apply (Ty.path "&mut") [] [ T ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -270,8 +296,16 @@ Module array.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "core::convert::Infallible" ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.apply (Ty.path "*const") [] [ T ],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -305,8 +339,10 @@ Module array.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val :=
+                                    M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
                                   M.alloc (|
+                                    Ty.apply (Ty.path "*const") [] [ T ],
                                     M.borrow (|
                                       Pointer.Kind.ConstPointer,
                                       M.deref (| M.read (| val |) |)
@@ -316,6 +352,7 @@ Module array.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ T ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -351,7 +388,14 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ],
+                self
+              |) in
             M.read (|
               let~ n : Ty.path "usize" :=
                 M.call_closure (|
@@ -368,6 +412,11 @@ Module array.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.path "usize";
+                    Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                  ],
                 Value.Tuple
                   [
                     M.read (| n |);
@@ -410,7 +459,14 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_trait_method (|
@@ -481,7 +537,14 @@ Module array.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] ],
+                self
+              |) in
             M.read (|
               let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
                 M.borrow (|
@@ -512,6 +575,7 @@ Module array.
                   |)
                 |) in
               M.alloc (|
+                T,
                 M.call_closure (|
                   T,
                   M.get_associated_function (|

@@ -19,8 +19,10 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   match ε, τ, α with
   | [], [], [ first_number_str; second_number_str ] =>
     ltac:(M.monadic
-      (let first_number_str := M.alloc (| first_number_str |) in
-      let second_number_str := M.alloc (| second_number_str |) in
+      (let first_number_str :=
+        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], first_number_str |) in
+      let second_number_str :=
+        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], second_number_str |) in
       M.call_closure (|
         Ty.apply
           (Ty.path "core::result::Result")
@@ -65,11 +67,11 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                           (Ty.path "core::result::Result")
                           []
                           [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ]),
-                      M.alloc (| α0 |),
+                      M.alloc (| Ty.path "i32", α0 |),
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let first_number := M.copy (| γ |) in
+                            (let first_number := M.copy (| Ty.path "i32", γ |) in
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::result::Result")
@@ -116,11 +118,12 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                             Ty.function
                                               [ Ty.tuple [ Ty.path "i32" ] ]
                                               (Ty.path "i32"),
-                                            M.alloc (| α0 |),
+                                            M.alloc (| Ty.path "i32", α0 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let second_number := M.copy (| γ |) in
+                                                  (let second_number :=
+                                                    M.copy (| Ty.path "i32", γ |) in
                                                   M.call_closure (|
                                                     Ty.path "i32",
                                                     BinOp.Wrap.mul,
@@ -161,7 +164,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ result ] =>
     ltac:(M.monadic
-      (let result := M.alloc (| result |) in
+      (let result :=
+        M.alloc (|
+          Ty.apply
+            (Ty.path "core::result::Result")
+            []
+            [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+          result
+        |) in
       M.read (|
         M.match_operator (|
           Ty.tuple [],
@@ -171,7 +181,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let n := M.copy (| γ0_0 |) in
+                let n := M.copy (| Ty.path "i32", γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -191,8 +201,14 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "n is " |); mk_str (| "
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "n is " |); mk_str (| "
+" |) ]
+                                |)
                               |)
                             |)
                           |);
@@ -202,6 +218,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -228,12 +248,12 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                let e := M.copy (| γ0_0 |) in
+                let e := M.copy (| Ty.path "core::num::error::ParseIntError", γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
@@ -254,6 +274,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 2 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                   Value.Array [ mk_str (| "Error: " |); mk_str (| "
 " |) ]
                                 |)
@@ -266,6 +290,10 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "core::fmt::rt::Argument" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -292,7 +320,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))
@@ -350,7 +378,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

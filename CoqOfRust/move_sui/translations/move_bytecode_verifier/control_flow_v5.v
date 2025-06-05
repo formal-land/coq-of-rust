@@ -26,9 +26,24 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ verifier_config; current_function_opt; code ] =>
       ltac:(M.monadic
-        (let verifier_config := M.alloc (| verifier_config |) in
-        let current_function_opt := M.alloc (| current_function_opt |) in
-        let code := M.alloc (| code |) in
+        (let verifier_config :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_vm_config::verifier::VerifierConfig" ],
+            verifier_config
+          |) in
+        let current_function_opt :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ],
+            current_function_opt
+          |) in
+        let code :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CodeUnit" ],
+            code
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -37,6 +52,10 @@ Module control_flow_v5.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ current_function :
                       Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" :=
@@ -65,6 +84,19 @@ Module control_flow_v5.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -135,8 +167,19 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -185,7 +228,7 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -199,7 +242,8 @@ Module control_flow_v5.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
-                        Value.StructRecord
+                        Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier",
+                        Value.mkStructRecord
                           "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier"
                           []
                           []
@@ -246,6 +290,10 @@ Module control_flow_v5.
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| context |) |) |) ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -295,8 +343,27 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ current_function; code ] =>
       ltac:(M.monadic
-        (let current_function := M.alloc (| current_function |) in
-        let code := M.alloc (| code |) in
+        (let current_function :=
+          M.alloc (|
+            Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+            current_function
+          |) in
+        let code :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [
+                    Ty.path "move_binary_format::file_format::Bytecode";
+                    Ty.path "alloc::alloc::Global"
+                  ]
+              ],
+            code
+          |) in
         M.read (|
           M.match_operator (|
             Ty.apply
@@ -304,6 +371,11 @@ Module control_flow_v5.
               []
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -364,6 +436,10 @@ Module control_flow_v5.
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -391,9 +467,17 @@ Module control_flow_v5.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let last := M.copy (| γ0_0 |) in
+                  let last :=
+                    M.copy (|
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                      γ0_0
+                    |) in
                   let γ :=
                     M.alloc (|
+                      Ty.path "bool",
                       UnOp.not (|
                         M.call_closure (|
                           Ty.path "bool",
@@ -409,6 +493,10 @@ Module control_flow_v5.
                     |) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -479,6 +567,10 @@ Module control_flow_v5.
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -528,7 +620,14 @@ Module control_flow_v5.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_bytecode_verifier::control_flow_v5::Label",
@@ -600,7 +699,14 @@ Module control_flow_v5.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -803,14 +909,31 @@ Module control_flow_v5.
                                   []
                                   [ Ty.path "move_binary_format::file_format::Bytecode" ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.path "usize";
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let idx := M.copy (| γ0_0 |) in
-                                let instr := M.copy (| γ0_1 |) in
+                                let idx := M.copy (| Ty.path "usize", γ0_0 |) in
+                                let instr :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                    γ0_1
+                                  |) in
                                 Value.Tuple
                                   [
                                     M.call_closure (|
@@ -878,8 +1001,27 @@ Module control_flow_v5.
       match ε, τ, α with
       | [], [], [ self; labels ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let labels := M.alloc (| labels |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+              self
+            |) in
+          let labels :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "slice")
+                    []
+                    [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+                ],
+              labels
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -1078,7 +1220,24 @@ Module control_flow_v5.
                                   []
                                   [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.path "u16";
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Bytecode" ]
+                                  ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -1086,9 +1245,23 @@ Module control_flow_v5.
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                 let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                 let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                let i := M.copy (| γ1_0 |) in
-                                let instr := M.copy (| γ1_1 |) in
-                                let lbl := M.copy (| γ0_1 |) in
+                                let i := M.copy (| Ty.path "u16", γ1_0 |) in
+                                let instr :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                    γ1_1
+                                  |) in
+                                let lbl :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
+                                    γ0_1
+                                  |) in
                                 Value.Tuple
                                   [ M.read (| i |); M.read (| instr |); M.read (| lbl |) ]))
                           ]
@@ -1114,9 +1287,16 @@ Module control_flow_v5.
       match ε, τ, α with
       | [], [], [ self; status; offset ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let status := M.alloc (| status |) in
-          let offset := M.alloc (| offset |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+              self
+            |) in
+          let status := M.alloc (| Ty.path "move_core_types::vm_status::StatusCode", status |) in
+          let offset := M.alloc (| Ty.path "u16", offset |) in
           M.call_closure (|
             Ty.path "move_binary_format::errors::PartialVMError",
             M.get_associated_function (|
@@ -1178,7 +1358,14 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ context ] =>
       ltac:(M.monadic
-        (let context := M.alloc (| context |) in
+        (let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
         M.read (|
           let~ labels :
               Ty.apply
@@ -1247,7 +1434,7 @@ Module control_flow_v5.
                     ]
                   |),
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -1294,7 +1481,7 @@ Module control_flow_v5.
                                 Ty.function
                                   [ Ty.tuple [ Ty.path "usize" ] ]
                                   (Ty.path "move_bytecode_verifier::control_flow_v5::Label"),
-                                M.alloc (| α0 |),
+                                M.alloc (| Ty.path "usize", α0 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
@@ -1321,20 +1508,20 @@ Module control_flow_v5.
                     ltac:(M.monadic
                       (M.match_operator (|
                         Ty.function [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ] (Ty.tuple []),
-                        M.alloc (| α0 |),
+                        M.alloc (| Ty.path "u16", α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let loop_idx := M.copy (| γ |) in
+                              (let loop_idx := M.copy (| Ty.path "u16", γ |) in
                               M.match_operator (|
                                 Ty.function
                                   [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
                                   (Ty.tuple []),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.path "u16", α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let last_continue := M.copy (| γ |) in
+                                      (let last_continue := M.copy (| Ty.path "u16", γ |) in
                                       M.write (|
                                         M.deref (|
                                           M.call_closure (|
@@ -1367,7 +1554,7 @@ Module control_flow_v5.
                                             ]
                                           |)
                                         |),
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "move_bytecode_verifier::control_flow_v5::Label::Loop"
                                           []
                                           []
@@ -1385,6 +1572,7 @@ Module control_flow_v5.
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.associated_unknown,
                     M.call_closure (|
                       Ty.associated_unknown,
                       M.get_trait_method (|
@@ -1413,7 +1601,7 @@ Module control_flow_v5.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter := M.copy (| Ty.associated_unknown, γ |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -1422,6 +1610,20 @@ Module control_flow_v5.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "u16";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Bytecode"
+                                              ]
+                                          ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -1462,6 +1664,7 @@ Module control_flow_v5.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -1474,8 +1677,16 @@ Module control_flow_v5.
                                           |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                        let i := M.copy (| γ1_0 |) in
-                                        let instr := M.copy (| γ1_1 |) in
+                                        let i := M.copy (| Ty.path "u16", γ1_0 |) in
+                                        let instr :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_binary_format::file_format::Bytecode"
+                                              ],
+                                            γ1_1
+                                          |) in
                                         M.match_operator (|
                                           Ty.tuple [],
                                           instr,
@@ -1497,8 +1708,24 @@ Module control_flow_v5.
                                                             "move_binary_format::file_format::Bytecode::Branch",
                                                             0
                                                           |) in
-                                                        let prev := M.alloc (| γ1_0 |) in
-                                                        M.alloc (| Value.Tuple [ prev ] |)));
+                                                        let prev :=
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u16" ],
+                                                            γ1_0
+                                                          |) in
+                                                        M.alloc (|
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u16" ]
+                                                            ],
+                                                          Value.Tuple [ prev ]
+                                                        |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ := M.read (| γ |) in
@@ -1508,8 +1735,24 @@ Module control_flow_v5.
                                                             "move_binary_format::file_format::Bytecode::BrTrue",
                                                             0
                                                           |) in
-                                                        let prev := M.alloc (| γ1_0 |) in
-                                                        M.alloc (| Value.Tuple [ prev ] |)));
+                                                        let prev :=
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u16" ],
+                                                            γ1_0
+                                                          |) in
+                                                        M.alloc (|
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u16" ]
+                                                            ],
+                                                          Value.Tuple [ prev ]
+                                                        |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ := M.read (| γ |) in
@@ -1519,8 +1762,24 @@ Module control_flow_v5.
                                                             "move_binary_format::file_format::Bytecode::BrFalse",
                                                             0
                                                           |) in
-                                                        let prev := M.alloc (| γ1_0 |) in
-                                                        M.alloc (| Value.Tuple [ prev ] |)))
+                                                        let prev :=
+                                                          M.alloc (|
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [ Ty.path "u16" ],
+                                                            γ1_0
+                                                          |) in
+                                                        M.alloc (|
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "u16" ]
+                                                            ],
+                                                          Value.Tuple [ prev ]
+                                                        |)))
                                                   ],
                                                   fun γ =>
                                                     ltac:(M.monadic
@@ -1529,6 +1788,7 @@ Module control_flow_v5.
                                                         ltac:(M.monadic
                                                           (let γ :=
                                                             M.alloc (|
+                                                              Ty.path "bool",
                                                               M.call_closure (|
                                                                 Ty.path "bool",
                                                                 M.get_function (|
@@ -1550,6 +1810,7 @@ Module control_flow_v5.
                                                               Value.Bool true
                                                             |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.call_closure (|
                                                               Ty.tuple [],
                                                               M.get_trait_method (|
@@ -1591,13 +1852,15 @@ Module control_flow_v5.
                                                         M.impossible "wrong number of arguments"
                                                       end)
                                                 |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))
@@ -1635,9 +1898,30 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ verifier_config; context; labels ] =>
       ltac:(M.monadic
-        (let verifier_config := M.alloc (| verifier_config |) in
-        let context := M.alloc (| context |) in
-        let labels := M.alloc (| labels |) in
+        (let verifier_config :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_vm_config::verifier::VerifierConfig" ],
+            verifier_config
+          |) in
+        let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
+        let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [
+                Ty.path "move_bytecode_verifier::control_flow_v5::Label";
+                Ty.path "alloc::alloc::Global"
+              ],
+            labels
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -1646,12 +1930,29 @@ Module control_flow_v5.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1753,8 +2054,19 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1803,7 +2115,7 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1813,6 +2125,19 @@ Module control_flow_v5.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1914,8 +2239,19 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1964,7 +2300,7 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -2029,6 +2365,19 @@ Module control_flow_v5.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "move_binary_format::errors::PartialVMError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2161,8 +2510,19 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "move_binary_format::errors::PartialVMError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -2211,12 +2571,16 @@ Module control_flow_v5.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -2349,9 +2713,28 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [ F ], [ context; labels; check ] =>
       ltac:(M.monadic
-        (let context := M.alloc (| context |) in
-        let labels := M.alloc (| labels |) in
-        let check := M.alloc (| check |) in
+        (let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
+        let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+              ],
+            labels
+          |) in
+        let check := M.alloc (| F, check |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -2360,6 +2743,10 @@ Module control_flow_v5.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ loop_stack :
                       Ty.apply
@@ -2393,6 +2780,7 @@ Module control_flow_v5.
                         (M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.associated_unknown,
                             M.call_closure (|
                               Ty.associated_unknown,
                               M.get_trait_method (|
@@ -2431,7 +2819,7 @@ Module control_flow_v5.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
+                                (let iter := M.copy (| Ty.associated_unknown, γ |) in
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
@@ -2440,6 +2828,29 @@ Module control_flow_v5.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.path "u16";
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Bytecode"
+                                                      ];
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::control_flow_v5::Label"
+                                                      ]
+                                                  ]
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -2492,6 +2903,7 @@ Module control_flow_v5.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -2508,14 +2920,34 @@ Module control_flow_v5.
                                                   M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                                 let γ1_2 :=
                                                   M.SubPointer.get_tuple_field (| γ0_0, 2 |) in
-                                                let cur_instr := M.copy (| γ1_0 |) in
-                                                let instr := M.copy (| γ1_1 |) in
-                                                let label := M.copy (| γ1_2 |) in
+                                                let cur_instr := M.copy (| Ty.path "u16", γ1_0 |) in
+                                                let instr :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_binary_format::file_format::Bytecode"
+                                                      ],
+                                                    γ1_1
+                                                  |) in
+                                                let label :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.path
+                                                          "move_bytecode_verifier::control_flow_v5::Label"
+                                                      ],
+                                                    γ1_2
+                                                  |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   M.read (|
                                                     M.match_operator (|
                                                       Ty.tuple [],
-                                                      M.alloc (| Value.Tuple [] |),
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                       [
                                                         fun γ =>
                                                           ltac:(M.monadic
@@ -2528,7 +2960,13 @@ Module control_flow_v5.
                                                                 "last_continue"
                                                               |) in
                                                             let last_continue :=
-                                                              M.alloc (| γ1_0 |) in
+                                                              M.alloc (|
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u16" ],
+                                                                γ1_0
+                                                              |) in
                                                             let~ _ : Ty.tuple [] :=
                                                               M.call_closure (|
                                                                 Ty.tuple [],
@@ -2564,10 +3002,16 @@ Module control_flow_v5.
                                                                     ]
                                                                 ]
                                                               |) in
-                                                            M.alloc (| Value.Tuple [] |)));
+                                                            M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (M.alloc (| Value.Tuple [] |)))
+                                                            (M.alloc (|
+                                                              Ty.tuple [],
+                                                              Value.Tuple []
+                                                            |)))
                                                       ]
                                                     |)
                                                   |) in
@@ -2576,6 +3020,21 @@ Module control_flow_v5.
                                                     M.match_operator (|
                                                       Ty.tuple [],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "core::ops::control_flow::ControlFlow")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "core::convert::Infallible";
+                                                                Ty.path
+                                                                  "move_binary_format::errors::PartialVMError"
+                                                              ];
+                                                            Ty.tuple []
+                                                          ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path
@@ -2696,8 +3155,21 @@ Module control_flow_v5.
                                                                 "core::ops::control_flow::ControlFlow::Break",
                                                                 0
                                                               |) in
-                                                            let residual := M.copy (| γ0_0 |) in
+                                                            let residual :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::result::Result")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "core::convert::Infallible";
+                                                                    Ty.path
+                                                                      "move_binary_format::errors::PartialVMError"
+                                                                  ],
+                                                                γ0_0
+                                                              |) in
                                                             M.alloc (|
+                                                              Ty.tuple [],
                                                               M.never_to_any (|
                                                                 M.read (|
                                                                   M.return_ (|
@@ -2753,7 +3225,8 @@ Module control_flow_v5.
                                                                 "core::ops::control_flow::ControlFlow::Continue",
                                                                 0
                                                               |) in
-                                                            let val := M.copy (| γ0_0 |) in
+                                                            let val :=
+                                                              M.copy (| Ty.tuple [], γ0_0 |) in
                                                             val))
                                                       ]
                                                     |)
@@ -2783,8 +3256,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::Branch",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)));
                                                             fun γ =>
@@ -2796,8 +3283,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::BrTrue",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)));
                                                             fun γ =>
@@ -2809,8 +3310,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::BrFalse",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)))
                                                           ],
@@ -2821,6 +3336,7 @@ Module control_flow_v5.
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.alloc (|
+                                                                      Ty.path "bool",
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
                                                                         M.get_function (|
@@ -2857,6 +3373,22 @@ Module control_flow_v5.
                                                                             ]
                                                                         ],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path "u16";
+                                                                                    Ty.path "u16"
+                                                                                  ]
+                                                                              ]
+                                                                          ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -2957,7 +3489,21 @@ Module control_flow_v5.
                                                                                 0
                                                                               |) in
                                                                             let x :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u16";
+                                                                                        Ty.path
+                                                                                          "u16"
+                                                                                      ]
+                                                                                  ],
+                                                                                γ0_0
+                                                                              |) in
                                                                             x));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
@@ -3047,6 +3593,24 @@ Module control_flow_v5.
                                                                                                       M.borrow (|
                                                                                                         Pointer.Kind.Ref,
                                                                                                         M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "array")
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1
+                                                                                                            ]
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "&")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "str"
+                                                                                                                ]
+                                                                                                            ],
                                                                                                           Value.Array
                                                                                                             [
                                                                                                               mk_str (|
@@ -3063,6 +3627,18 @@ Module control_flow_v5.
                                                                                                       M.borrow (|
                                                                                                         Pointer.Kind.Ref,
                                                                                                         M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "array")
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                0
+                                                                                                            ]
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::rt::Argument"
+                                                                                                            ],
                                                                                                           M.call_closure (|
                                                                                                             Ty.apply
                                                                                                               (Ty.path
@@ -3111,6 +3687,7 @@ Module control_flow_v5.
                                                                                     ]
                                                                                 ],
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |),
                                                                               [
@@ -3119,6 +3696,8 @@ Module control_flow_v5.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
+                                                                                          Ty.path
+                                                                                            "bool",
                                                                                           Value.Bool
                                                                                             true
                                                                                         |)) in
@@ -3131,6 +3710,19 @@ Module control_flow_v5.
                                                                                           true
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u16";
+                                                                                              Ty.path
+                                                                                                "u16"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.never_to_any (|
                                                                                         M.call_closure (|
                                                                                           Ty.path
@@ -3165,6 +3757,24 @@ Module control_flow_v5.
                                                                                                     M.borrow (|
                                                                                                       Pointer.Kind.Ref,
                                                                                                       M.alloc (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "array")
+                                                                                                          [
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              1
+                                                                                                          ]
+                                                                                                          [
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "&")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "str"
+                                                                                                              ]
+                                                                                                          ],
                                                                                                         Value.Array
                                                                                                           [
                                                                                                             mk_str (|
@@ -3181,6 +3791,18 @@ Module control_flow_v5.
                                                                                                     M.borrow (|
                                                                                                       Pointer.Kind.Ref,
                                                                                                       M.alloc (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "array")
+                                                                                                          [
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              1
+                                                                                                          ]
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::rt::Argument"
+                                                                                                          ],
                                                                                                         Value.Array
                                                                                                           [
                                                                                                             M.call_closure (|
@@ -3222,6 +3844,19 @@ Module control_flow_v5.
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u16";
+                                                                                              Ty.path
+                                                                                                "u16"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.never_to_any (|
                                                                                         M.read (|
                                                                                           M.return_ (|
@@ -3263,12 +3898,25 @@ Module control_flow_v5.
                                                                               1
                                                                             |) in
                                                                           let _cur_loop_head :=
-                                                                            M.alloc (| γ1_0 |) in
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              γ1_0
+                                                                            |) in
                                                                           let last_continue :=
-                                                                            M.alloc (| γ1_1 |) in
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              γ1_1
+                                                                            |) in
                                                                           M.match_operator (|
                                                                             Ty.tuple [],
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |),
                                                                             [
@@ -3277,6 +3925,8 @@ Module control_flow_v5.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "bool",
@@ -3359,11 +4009,13 @@ Module control_flow_v5.
                                                                                       ]
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)));
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)))
                                                                             ]
@@ -3377,18 +4029,22 @@ Module control_flow_v5.
                                                         |)));
                                                     fun γ =>
                                                       ltac:(M.monadic
-                                                        (M.alloc (| Value.Tuple [] |)))
+                                                        (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   ]
                                                 |)))
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 |)))
                           ]
                         |))
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -3416,8 +4072,8 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ cur_instr; target_instr ] =>
       ltac:(M.monadic
-        (let cur_instr := M.alloc (| cur_instr |) in
-        let target_instr := M.alloc (| target_instr |) in
+        (let cur_instr := M.alloc (| Ty.path "u16", cur_instr |) in
+        let target_instr := M.alloc (| Ty.path "u16", target_instr |) in
         M.call_closure (|
           Ty.path "bool",
           BinOp.le,
@@ -3456,8 +4112,27 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ context; labels ] =>
       ltac:(M.monadic
-        (let context := M.alloc (| context |) in
-        let labels := M.alloc (| labels |) in
+        (let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
+        let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+              ],
+            labels
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -3533,11 +4208,40 @@ Module control_flow_v5.
                             (Ty.path "core::result::Result")
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
-                        M.alloc (| α0 |),
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          α0
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let loop_stack := M.copy (| γ |) in
+                              (let loop_stack :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  γ
+                                |) in
                               M.match_operator (|
                                 Ty.function
                                   [
@@ -3569,11 +4273,11 @@ Module control_flow_v5.
                                       Ty.tuple [];
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ]),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.path "u16", α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let cur_instr := M.copy (| γ |) in
+                                      (let cur_instr := M.copy (| Ty.path "u16", γ |) in
                                       M.match_operator (|
                                         Ty.function
                                           [
@@ -3608,11 +4312,27 @@ Module control_flow_v5.
                                               Ty.tuple [];
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ]),
-                                        M.alloc (| α2 |),
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                          α2
+                                        |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let instr := M.copy (| γ |) in
+                                              (let instr :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Bytecode"
+                                                    ],
+                                                  γ
+                                                |) in
                                               M.read (|
                                                 M.match_operator (|
                                                   Ty.apply
@@ -3646,8 +4366,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::Branch",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)));
                                                             fun γ =>
@@ -3659,8 +4393,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::BrTrue",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)));
                                                             fun γ =>
@@ -3672,8 +4420,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::BrFalse",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)))
                                                           ],
@@ -3684,6 +4446,7 @@ Module control_flow_v5.
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.alloc (|
+                                                                      Ty.path "bool",
                                                                       M.call_closure (|
                                                                         Ty.path "bool",
                                                                         M.get_function (|
@@ -3728,6 +4491,22 @@ Module control_flow_v5.
                                                                             ]
                                                                         ],
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple
+                                                                                  [
+                                                                                    Ty.path "u16";
+                                                                                    Ty.path "u16"
+                                                                                  ]
+                                                                              ]
+                                                                          ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path
@@ -3832,7 +4611,21 @@ Module control_flow_v5.
                                                                                 0
                                                                               |) in
                                                                             let x :=
-                                                                              M.copy (| γ0_0 |) in
+                                                                              M.copy (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "&")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u16";
+                                                                                        Ty.path
+                                                                                          "u16"
+                                                                                      ]
+                                                                                  ],
+                                                                                γ0_0
+                                                                              |) in
                                                                             x));
                                                                         fun γ =>
                                                                           ltac:(M.monadic
@@ -3922,6 +4715,24 @@ Module control_flow_v5.
                                                                                                       M.borrow (|
                                                                                                         Pointer.Kind.Ref,
                                                                                                         M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "array")
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                1
+                                                                                                            ]
+                                                                                                            [
+                                                                                                              Ty.apply
+                                                                                                                (Ty.path
+                                                                                                                  "&")
+                                                                                                                []
+                                                                                                                [
+                                                                                                                  Ty.path
+                                                                                                                    "str"
+                                                                                                                ]
+                                                                                                            ],
                                                                                                           Value.Array
                                                                                                             [
                                                                                                               mk_str (|
@@ -3938,6 +4749,18 @@ Module control_flow_v5.
                                                                                                       M.borrow (|
                                                                                                         Pointer.Kind.Ref,
                                                                                                         M.alloc (|
+                                                                                                          Ty.apply
+                                                                                                            (Ty.path
+                                                                                                              "array")
+                                                                                                            [
+                                                                                                              Value.Integer
+                                                                                                                IntegerKind.Usize
+                                                                                                                0
+                                                                                                            ]
+                                                                                                            [
+                                                                                                              Ty.path
+                                                                                                                "core::fmt::rt::Argument"
+                                                                                                            ],
                                                                                                           M.call_closure (|
                                                                                                             Ty.apply
                                                                                                               (Ty.path
@@ -3986,6 +4809,7 @@ Module control_flow_v5.
                                                                                     ]
                                                                                 ],
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 Value.Tuple []
                                                                               |),
                                                                               [
@@ -3994,6 +4818,8 @@ Module control_flow_v5.
                                                                                     (let γ :=
                                                                                       M.use
                                                                                         (M.alloc (|
+                                                                                          Ty.path
+                                                                                            "bool",
                                                                                           Value.Bool
                                                                                             true
                                                                                         |)) in
@@ -4006,6 +4832,19 @@ Module control_flow_v5.
                                                                                           true
                                                                                       |) in
                                                                                     M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u16";
+                                                                                              Ty.path
+                                                                                                "u16"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.never_to_any (|
                                                                                         M.call_closure (|
                                                                                           Ty.path
@@ -4040,6 +4879,24 @@ Module control_flow_v5.
                                                                                                     M.borrow (|
                                                                                                       Pointer.Kind.Ref,
                                                                                                       M.alloc (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "array")
+                                                                                                          [
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              1
+                                                                                                          ]
+                                                                                                          [
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "&")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "str"
+                                                                                                              ]
+                                                                                                          ],
                                                                                                         Value.Array
                                                                                                           [
                                                                                                             mk_str (|
@@ -4056,6 +4913,18 @@ Module control_flow_v5.
                                                                                                     M.borrow (|
                                                                                                       Pointer.Kind.Ref,
                                                                                                       M.alloc (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "array")
+                                                                                                          [
+                                                                                                            Value.Integer
+                                                                                                              IntegerKind.Usize
+                                                                                                              1
+                                                                                                          ]
+                                                                                                          [
+                                                                                                            Ty.path
+                                                                                                              "core::fmt::rt::Argument"
+                                                                                                          ],
                                                                                                         Value.Array
                                                                                                           [
                                                                                                             M.call_closure (|
@@ -4097,6 +4966,19 @@ Module control_flow_v5.
                                                                                 fun γ =>
                                                                                   ltac:(M.monadic
                                                                                     (M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.tuple
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u16";
+                                                                                              Ty.path
+                                                                                                "u16"
+                                                                                            ]
+                                                                                        ],
                                                                                       M.never_to_any (|
                                                                                         M.read (|
                                                                                           M.return_ (|
@@ -4138,9 +5020,21 @@ Module control_flow_v5.
                                                                               1
                                                                             |) in
                                                                           let cur_loop_head :=
-                                                                            M.alloc (| γ1_0 |) in
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              γ1_0
+                                                                            |) in
                                                                           let _last_continue :=
-                                                                            M.alloc (| γ1_1 |) in
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              γ1_1
+                                                                            |) in
                                                                           M.match_operator (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -4152,6 +5046,7 @@ Module control_flow_v5.
                                                                                   "move_binary_format::errors::PartialVMError"
                                                                               ],
                                                                             M.alloc (|
+                                                                              Ty.tuple [],
                                                                               Value.Tuple []
                                                                             |),
                                                                             [
@@ -4160,6 +5055,8 @@ Module control_flow_v5.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
+                                                                                        Ty.path
+                                                                                          "bool",
                                                                                         M.call_closure (|
                                                                                           Ty.path
                                                                                             "bool",
@@ -4209,6 +5106,15 @@ Module control_flow_v5.
                                                                                         true
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Err"
                                                                                       []
@@ -4252,6 +5158,15 @@ Module control_flow_v5.
                                                                               fun γ =>
                                                                                 ltac:(M.monadic
                                                                                   (M.alloc (|
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "move_binary_format::errors::PartialVMError"
+                                                                                      ],
                                                                                     Value.StructTuple
                                                                                       "core::result::Result::Ok"
                                                                                       []
@@ -4277,6 +5192,14 @@ Module control_flow_v5.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
                                                             []
@@ -4336,8 +5259,27 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ context; labels ] =>
       ltac:(M.monadic
-        (let context := M.alloc (| context |) in
-        let labels := M.alloc (| labels |) in
+        (let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
+        let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+              ],
+            labels
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -4413,11 +5355,40 @@ Module control_flow_v5.
                             (Ty.path "core::result::Result")
                             []
                             [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]),
-                        M.alloc (| α0 |),
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          α0
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let loop_stack := M.copy (| γ |) in
+                              (let loop_stack :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  γ
+                                |) in
                               M.match_operator (|
                                 Ty.function
                                   [
@@ -4449,11 +5420,11 @@ Module control_flow_v5.
                                       Ty.tuple [];
                                       Ty.path "move_binary_format::errors::PartialVMError"
                                     ]),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.path "u16", α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let cur_instr := M.copy (| γ |) in
+                                      (let cur_instr := M.copy (| Ty.path "u16", γ |) in
                                       M.match_operator (|
                                         Ty.function
                                           [
@@ -4488,11 +5459,27 @@ Module control_flow_v5.
                                               Ty.tuple [];
                                               Ty.path "move_binary_format::errors::PartialVMError"
                                             ]),
-                                        M.alloc (| α2 |),
+                                        M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                          α2
+                                        |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let instr := M.copy (| γ |) in
+                                              (let instr :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Bytecode"
+                                                    ],
+                                                  γ
+                                                |) in
                                               M.read (|
                                                 M.match_operator (|
                                                   Ty.apply
@@ -4526,8 +5513,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::Branch",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)));
                                                             fun γ =>
@@ -4539,8 +5540,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::BrTrue",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)));
                                                             fun γ =>
@@ -4552,8 +5567,22 @@ Module control_flow_v5.
                                                                     "move_binary_format::file_format::Bytecode::BrFalse",
                                                                     0
                                                                   |) in
-                                                                let target := M.alloc (| γ1_0 |) in
+                                                                let target :=
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    γ1_0
+                                                                  |) in
                                                                 M.alloc (|
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ]
+                                                                    ],
                                                                   Value.Tuple [ target ]
                                                                 |)))
                                                           ],
@@ -4564,6 +5593,7 @@ Module control_flow_v5.
                                                                 ltac:(M.monadic
                                                                   (let γ :=
                                                                     M.alloc (|
+                                                                      Ty.path "bool",
                                                                       UnOp.not (|
                                                                         M.call_closure (|
                                                                           Ty.path "bool",
@@ -4599,6 +5629,22 @@ Module control_flow_v5.
                                                                           "move_binary_format::errors::PartialVMError"
                                                                       ],
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple
+                                                                                [
+                                                                                  Ty.path "u16";
+                                                                                  Ty.path "u16"
+                                                                                ]
+                                                                            ]
+                                                                        ],
                                                                       M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -4715,11 +5761,24 @@ Module control_flow_v5.
                                                                               1
                                                                             |) in
                                                                           let _cur_loop_head :=
-                                                                            M.alloc (| γ2_0 |) in
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              γ2_0
+                                                                            |) in
                                                                           let last_continue :=
-                                                                            M.alloc (| γ2_1 |) in
+                                                                            M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              γ2_1
+                                                                            |) in
                                                                           let γ :=
                                                                             M.alloc (|
+                                                                              Ty.path "bool",
                                                                               M.call_closure (|
                                                                                 Ty.path "bool",
                                                                                 M.get_trait_method (|
@@ -4751,6 +5810,14 @@ Module control_flow_v5.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.Ref,
                                                                                     M.alloc (|
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u16"
+                                                                                        ],
                                                                                       M.borrow (|
                                                                                         Pointer.Kind.Ref,
                                                                                         M.deref (|
@@ -4771,6 +5838,7 @@ Module control_flow_v5.
                                                                             |) in
                                                                           let γ :=
                                                                             M.alloc (|
+                                                                              Ty.path "bool",
                                                                               M.call_closure (|
                                                                                 Ty.path "bool",
                                                                                 BinOp.ne,
@@ -4821,6 +5889,15 @@ Module control_flow_v5.
                                                                               Value.Bool true
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ],
                                                                             Value.StructTuple
                                                                               "core::result::Result::Err"
                                                                               []
@@ -4864,6 +5941,15 @@ Module control_flow_v5.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (M.alloc (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.tuple [];
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                              ],
                                                                             Value.StructTuple
                                                                               "core::result::Result::Ok"
                                                                               []
@@ -4884,6 +5970,14 @@ Module control_flow_v5.
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ],
                                                           Value.StructTuple
                                                             "core::result::Result::Ok"
                                                             []
@@ -4955,9 +6049,32 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ context; labels; loop_depth ] =>
       ltac:(M.monadic
-        (let context := M.alloc (| context |) in
-        let labels := M.alloc (| labels |) in
-        let loop_depth := M.alloc (| loop_depth |) in
+        (let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
+        let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+              ],
+            labels
+          |) in
+        let loop_depth :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ],
+            loop_depth
+          |) in
         M.read (|
           let~ is_break :
               Ty.function
@@ -5007,11 +6124,40 @@ Module control_flow_v5.
                               ]
                           ]
                           (Ty.path "bool"),
-                        M.alloc (| α0 |),
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "alloc::vec::Vec")
+                                []
+                                [
+                                  Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
+                          α0
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let loop_stack := M.copy (| γ |) in
+                              (let loop_stack :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  γ
+                                |) in
                               M.match_operator (|
                                 Ty.function
                                   [
@@ -5033,15 +6179,24 @@ Module control_flow_v5.
                                       ]
                                   ]
                                   (Ty.path "bool"),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.path "u16", α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let jump_target := M.copy (| γ |) in
+                                      (let jump_target := M.copy (| Ty.path "u16", γ |) in
                                       M.read (|
                                         M.match_operator (|
                                           Ty.path "bool",
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.tuple [ Ty.path "u16"; Ty.path "u16" ] ]
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -5114,7 +6269,7 @@ Module control_flow_v5.
                                                     γ,
                                                     "core::option::Option::None"
                                                   |) in
-                                                M.alloc (| Value.Bool false |)));
+                                                M.alloc (| Ty.path "bool", Value.Bool false |)));
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ0_0 :=
@@ -5128,9 +6283,18 @@ Module control_flow_v5.
                                                   M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                 let γ2_1 :=
                                                   M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                let _cur_loop_head := M.alloc (| γ2_0 |) in
-                                                let last_continue := M.alloc (| γ2_1 |) in
+                                                let _cur_loop_head :=
+                                                  M.alloc (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                                    γ2_0
+                                                  |) in
+                                                let last_continue :=
+                                                  M.alloc (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                                    γ2_1
+                                                  |) in
                                                 M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     BinOp.gt,
@@ -5152,6 +6316,10 @@ Module control_flow_v5.
                   | _ => M.impossible "wrong number of arguments"
                   end)) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -5228,11 +6396,40 @@ Module control_flow_v5.
                                 []
                                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError"
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [
+                                      Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ]
+                                ],
+                              α0
+                            |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let loop_stack := M.copy (| γ |) in
+                                  (let loop_stack :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
+                                      γ
+                                    |) in
                                   M.match_operator (|
                                     Ty.function
                                       [
@@ -5265,11 +6462,11 @@ Module control_flow_v5.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ]),
-                                    M.alloc (| α1 |),
+                                    M.alloc (| Ty.path "u16", α1 |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let i := M.copy (| γ |) in
+                                          (let i := M.copy (| Ty.path "u16", γ |) in
                                           M.match_operator (|
                                             Ty.function
                                               [
@@ -5306,11 +6503,30 @@ Module control_flow_v5.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ]),
-                                            M.alloc (| α2 |),
+                                            M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_binary_format::file_format::Bytecode"
+                                                ],
+                                              α2
+                                            |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let instr := M.copy (| γ |) in
+                                                  (let instr :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
+                                                        ],
+                                                      γ
+                                                    |) in
                                                   M.read (|
                                                     M.match_operator (|
                                                       Ty.apply
@@ -5344,8 +6560,22 @@ Module control_flow_v5.
                                                                         "move_binary_format::file_format::Bytecode::Branch",
                                                                         0
                                                                       |) in
-                                                                    let j := M.alloc (| γ1_0 |) in
+                                                                    let j :=
+                                                                      M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "u16" ],
+                                                                        γ1_0
+                                                                      |) in
                                                                     M.alloc (|
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "u16" ]
+                                                                        ],
                                                                       Value.Tuple [ j ]
                                                                     |)));
                                                                 fun γ =>
@@ -5357,8 +6587,22 @@ Module control_flow_v5.
                                                                         "move_binary_format::file_format::Bytecode::BrTrue",
                                                                         0
                                                                       |) in
-                                                                    let j := M.alloc (| γ1_0 |) in
+                                                                    let j :=
+                                                                      M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "u16" ],
+                                                                        γ1_0
+                                                                      |) in
                                                                     M.alloc (|
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "u16" ]
+                                                                        ],
                                                                       Value.Tuple [ j ]
                                                                     |)));
                                                                 fun γ =>
@@ -5370,8 +6614,22 @@ Module control_flow_v5.
                                                                         "move_binary_format::file_format::Bytecode::BrFalse",
                                                                         0
                                                                       |) in
-                                                                    let j := M.alloc (| γ1_0 |) in
+                                                                    let j :=
+                                                                      M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "u16" ],
+                                                                        γ1_0
+                                                                      |) in
                                                                     M.alloc (|
+                                                                      Ty.tuple
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&")
+                                                                            []
+                                                                            [ Ty.path "u16" ]
+                                                                        ],
                                                                       Value.Tuple [ j ]
                                                                     |)))
                                                               ],
@@ -5382,6 +6640,7 @@ Module control_flow_v5.
                                                                     ltac:(M.monadic
                                                                       (let γ :=
                                                                         M.alloc (|
+                                                                          Ty.path "bool",
                                                                           M.call_closure (|
                                                                             Ty.path "bool",
                                                                             BinOp.gt,
@@ -5402,6 +6661,7 @@ Module control_flow_v5.
                                                                         |) in
                                                                       let γ :=
                                                                         M.alloc (|
+                                                                          Ty.path "bool",
                                                                           UnOp.not (|
                                                                             M.call_closure (|
                                                                               Ty.path "bool",
@@ -5527,6 +6787,13 @@ Module control_flow_v5.
                                                                           M.match_operator (|
                                                                             Ty.path "usize",
                                                                             M.alloc (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "move_bytecode_verifier::control_flow_v5::Label"
+                                                                                ],
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
                                                                                 M.SubPointer.get_array_field (|
@@ -5555,6 +6822,7 @@ Module control_flow_v5.
                                                                                       "move_bytecode_verifier::control_flow_v5::Label::Loop"
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.path "usize",
                                                                                     M.call_closure (|
                                                                                       Ty.path
                                                                                         "usize",
@@ -5619,6 +6887,7 @@ Module control_flow_v5.
                                                                               "move_binary_format::errors::PartialVMError"
                                                                           ],
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |),
                                                                         [
@@ -5627,6 +6896,7 @@ Module control_flow_v5.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
+                                                                                    Ty.path "bool",
                                                                                     M.call_closure (|
                                                                                       Ty.path
                                                                                         "bool",
@@ -5647,6 +6917,15 @@ Module control_flow_v5.
                                                                                   Value.Bool true
                                                                                 |) in
                                                                               M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
                                                                                 Value.StructTuple
                                                                                   "core::result::Result::Err"
                                                                                   []
@@ -5690,6 +6969,15 @@ Module control_flow_v5.
                                                                           fun γ =>
                                                                             ltac:(M.monadic
                                                                               (M.alloc (|
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ],
                                                                                 Value.StructTuple
                                                                                   "core::result::Result::Ok"
                                                                                   []
@@ -5710,6 +6998,14 @@ Module control_flow_v5.
                                                         fun γ =>
                                                           ltac:(M.monadic
                                                             (M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               Value.StructTuple
                                                                 "core::result::Result::Ok"
                                                                 []
@@ -5768,10 +7064,37 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ verifier_config; context; labels; loop_depth ] =>
       ltac:(M.monadic
-        (let verifier_config := M.alloc (| verifier_config |) in
-        let context := M.alloc (| context |) in
-        let labels := M.alloc (| labels |) in
-        let loop_depth := M.alloc (| loop_depth |) in
+        (let verifier_config :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "move_vm_config::verifier::VerifierConfig" ],
+            verifier_config
+          |) in
+        let context :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "move_bytecode_verifier::control_flow_v5::ControlFlowVerifier" ],
+            context
+          |) in
+        let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+              ],
+            labels
+          |) in
+        let loop_depth :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ],
+            loop_depth
+          |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -5780,6 +7103,10 @@ Module control_flow_v5.
               [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                 M.read (|
                   let~ max_depth : Ty.path "usize" :=
                     M.read (|
@@ -5799,12 +7126,13 @@ Module control_flow_v5.
                                   "core::option::Option::Some",
                                   0
                                 |) in
-                              let depth := M.copy (| γ0_0 |) in
+                              let depth := M.copy (| Ty.path "usize", γ0_0 |) in
                               depth));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                               M.alloc (|
+                                Ty.path "usize",
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -5824,6 +7152,10 @@ Module control_flow_v5.
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::result::Result")
@@ -5903,11 +7235,40 @@ Module control_flow_v5.
                                           Ty.tuple [];
                                           Ty.path "move_binary_format::errors::PartialVMError"
                                         ]),
-                                    M.alloc (| α0 |),
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ],
+                                      α0
+                                    |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let _loop_stack := M.copy (| γ |) in
+                                          (let _loop_stack :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::Vec")
+                                                    []
+                                                    [
+                                                      Ty.tuple [ Ty.path "u16"; Ty.path "u16" ];
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ],
+                                              γ
+                                            |) in
                                           M.match_operator (|
                                             Ty.function
                                               [
@@ -5944,11 +7305,11 @@ Module control_flow_v5.
                                                   Ty.path
                                                     "move_binary_format::errors::PartialVMError"
                                                 ]),
-                                            M.alloc (| α1 |),
+                                            M.alloc (| Ty.path "u16", α1 |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let i := M.copy (| γ |) in
+                                                  (let i := M.copy (| Ty.path "u16", γ |) in
                                                   M.match_operator (|
                                                     Ty.function
                                                       [
@@ -5986,23 +7347,46 @@ Module control_flow_v5.
                                                           Ty.path
                                                             "move_binary_format::errors::PartialVMError"
                                                         ]),
-                                                    M.alloc (| α2 |),
+                                                    M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
+                                                        ],
+                                                      α2
+                                                    |),
                                                     [
                                                       fun γ =>
                                                         ltac:(M.monadic
-                                                          (let _instr := M.copy (| γ |) in
+                                                          (let _instr :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::Bytecode"
+                                                                ],
+                                                              γ
+                                                            |) in
                                                           M.read (|
                                                             let~ _ : Ty.tuple [] :=
                                                               M.read (|
                                                                 M.match_operator (|
                                                                   Ty.tuple [],
-                                                                  M.alloc (| Value.Tuple [] |),
+                                                                  M.alloc (|
+                                                                    Ty.tuple [],
+                                                                    Value.Tuple []
+                                                                  |),
                                                                   [
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
+                                                                              Ty.path "bool",
                                                                               M.call_closure (|
                                                                                 Ty.path "bool",
                                                                                 BinOp.gt,
@@ -6034,6 +7418,7 @@ Module control_flow_v5.
                                                                             Value.Bool true
                                                                           |) in
                                                                         M.alloc (|
+                                                                          Ty.tuple [],
                                                                           M.never_to_any (|
                                                                             M.read (|
                                                                               M.return_ (|
@@ -6083,12 +7468,21 @@ Module control_flow_v5.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (M.alloc (|
+                                                                          Ty.tuple [],
                                                                           Value.Tuple []
                                                                         |)))
                                                                   ]
                                                                 |)
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
                                                               Value.StructTuple
                                                                 "core::result::Result::Ok"
                                                                 []
@@ -6150,7 +7544,19 @@ Module control_flow_v5.
     match ε, τ, α with
     | [], [], [ labels ] =>
       ltac:(M.monadic
-        (let labels := M.alloc (| labels |) in
+        (let labels :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [
+                Ty.apply
+                  (Ty.path "slice")
+                  []
+                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+              ],
+            labels
+          |) in
         M.read (|
           let~ last_continues :
               Ty.apply
@@ -6278,11 +7684,27 @@ Module control_flow_v5.
                                       ]
                                   ]
                                   (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ]),
-                                M.alloc (| α0 |),
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ],
+                                  α0
+                                |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let label := M.copy (| γ |) in
+                                      (let label :=
+                                        M.copy (|
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_bytecode_verifier::control_flow_v5::Label"
+                                            ],
+                                          γ
+                                        |) in
                                       M.read (|
                                         M.match_operator (|
                                           Ty.apply
@@ -6300,8 +7722,16 @@ Module control_flow_v5.
                                                     "move_bytecode_verifier::control_flow_v5::Label::Loop",
                                                     "last_continue"
                                                   |) in
-                                                let last_continue := M.alloc (| γ1_0 |) in
+                                                let last_continue :=
+                                                  M.alloc (|
+                                                    Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                                    γ1_0
+                                                  |) in
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "u16" ],
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
                                                     []
@@ -6321,6 +7751,10 @@ Module control_flow_v5.
                                                     "move_bytecode_verifier::control_flow_v5::Label::Code"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "u16" ],
                                                   Value.StructTuple
                                                     "core::option::Option::None"
                                                     []
@@ -6366,6 +7800,15 @@ Module control_flow_v5.
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::slice::iter::Iter")
+                          []
+                          [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+                      ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::iter::adapters::enumerate::Enumerate")
@@ -6441,7 +7884,19 @@ Module control_flow_v5.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::enumerate::Enumerate")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "move_bytecode_verifier::control_flow_v5::Label" ]
+                              ],
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -6450,6 +7905,22 @@ Module control_flow_v5.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.tuple
+                                          [
+                                            Ty.path "usize";
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::control_flow_v5::Label"
+                                              ]
+                                          ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -6501,6 +7972,7 @@ Module control_flow_v5.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -6513,13 +7985,23 @@ Module control_flow_v5.
                                           |) in
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                        let idx := M.copy (| γ1_0 |) in
-                                        let label := M.copy (| γ1_1 |) in
+                                        let idx := M.copy (| Ty.path "usize", γ1_0 |) in
+                                        let label :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_bytecode_verifier::control_flow_v5::Label"
+                                              ],
+                                            γ1_1
+                                          |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.read (|
                                             M.match_operator (|
                                               Ty.tuple [],
-                                              M.alloc (| Value.Tuple [] |),
+                                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                               [
                                                 fun γ =>
                                                   ltac:(M.monadic
@@ -6531,6 +8013,7 @@ Module control_flow_v5.
                                                         "move_bytecode_verifier::control_flow_v5::Label::Loop"
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       let β := count in
                                                       M.write (|
                                                         β,
@@ -6545,7 +8028,8 @@ Module control_flow_v5.
                                                       |)
                                                     |)));
                                                 fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                  ltac:(M.monadic
+                                                    (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)
                                           |) in
@@ -6568,13 +8052,14 @@ Module control_flow_v5.
                                           |) in
                                         M.match_operator (|
                                           Ty.tuple [],
-                                          M.alloc (| Value.Tuple [] |),
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
+                                                      Ty.path "bool",
                                                       M.call_closure (|
                                                         Ty.path "bool",
                                                         M.get_associated_function (|
@@ -6602,6 +8087,7 @@ Module control_flow_v5.
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
                                                                 M.alloc (|
+                                                                  Ty.path "u16",
                                                                   M.call_closure (|
                                                                     Ty.path "u16",
                                                                     M.get_associated_function (|
@@ -6667,14 +8153,16 @@ Module control_flow_v5.
                                                       ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))

@@ -33,8 +33,12 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "operator_overloading::FooBar" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -71,8 +75,12 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "operator_overloading::BarFoo" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -110,8 +118,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
     match ε, τ, α with
     | [], [], [ self; _rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _rhs := M.alloc (| _rhs |) in
+        (let self := M.alloc (| Ty.path "operator_overloading::Foo", self |) in
+        let _rhs := M.alloc (| Ty.path "operator_overloading::Bar", _rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -135,6 +143,10 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "> Foo.add(Bar) was called
 " |) ]
                               |)
@@ -145,9 +157,12 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.StructTuple "operator_overloading::FooBar" [] [] [] |)
+          M.alloc (|
+            Ty.path "operator_overloading::FooBar",
+            Value.StructTuple "operator_overloading::FooBar" [] [] []
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -178,8 +193,8 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
     match ε, τ, α with
     | [], [], [ self; _rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _rhs := M.alloc (| _rhs |) in
+        (let self := M.alloc (| Ty.path "operator_overloading::Bar", self |) in
+        let _rhs := M.alloc (| Ty.path "operator_overloading::Foo", _rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -203,6 +218,10 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "> Bar.add(Foo) was called
 " |) ]
                               |)
@@ -213,9 +232,12 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.StructTuple "operator_overloading::BarFoo" [] [] [] |)
+          M.alloc (|
+            Ty.path "operator_overloading::BarFoo",
+            Value.StructTuple "operator_overloading::BarFoo" [] [] []
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -262,6 +284,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Foo + Bar = " |); mk_str (| "
 " |) ]
                             |)
@@ -274,6 +300,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -291,6 +321,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "operator_overloading::FooBar",
                                               M.call_closure (|
                                                 Ty.path "operator_overloading::FooBar",
                                                 M.get_trait_method (|
@@ -330,7 +361,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -354,6 +385,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Bar + Foo = " |); mk_str (| "
 " |) ]
                             |)
@@ -366,6 +401,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -383,6 +422,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "operator_overloading::BarFoo",
                                               M.call_closure (|
                                                 Ty.path "operator_overloading::BarFoo",
                                                 M.get_trait_method (|
@@ -422,9 +462,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

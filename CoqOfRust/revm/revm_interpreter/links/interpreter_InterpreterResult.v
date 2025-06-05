@@ -6,18 +6,18 @@ Require Import revm_interpreter.links.gas.
 
 Module InterpreterResult.
   Record t : Set := {
-    result: InstructionResult.t;
-    output: Bytes.t;
     gas: Gas.t;
+    output: Bytes.t;
+    result: InstructionResult.t;
   }.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter::InterpreterResult";
-    φ '(Build_t result output gas) :=
+    φ x :=
       Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [] [] [
-        ("result", φ result);
-        ("output", φ output);
-        ("gas", φ gas)
+        ("gas", φ x.(gas));
+        ("output", φ x.(output));
+        ("result", φ x.(result))
       ]
   }.
 
@@ -33,11 +33,11 @@ Module InterpreterResult.
     output' = φ output ->
     gas' = φ gas ->
     Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [] [] [
-      ("result", result');
+      ("gas", gas');
       ("output", output');
-      ("gas", gas')
+      ("result", result')
     ] =
-    φ (Build_t result output gas).
+    φ (Build_t gas output result).
   Proof. now intros; subst. Qed.
   Smpl Add eapply of_value_with : of_value.
 
@@ -50,9 +50,9 @@ Module InterpreterResult.
     gas' = φ gas ->
     OfValue.t (
       Value.StructRecord "revm_interpreter::interpreter::InterpreterResult" [] [] [
-        ("result", result');
+        ("gas", gas');
         ("output", output');
-        ("gas", gas')
+        ("result", result')
       ]
     ).
   Proof.

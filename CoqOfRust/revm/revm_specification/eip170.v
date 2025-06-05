@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module eip170.
   Definition value_MAX_CODE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24576 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 24576 |))).
   
   Global Instance Instance_IsConstant_value_MAX_CODE_SIZE :
     M.IsFunction.C "revm_specification::eip170::MAX_CODE_SIZE" value_MAX_CODE_SIZE.

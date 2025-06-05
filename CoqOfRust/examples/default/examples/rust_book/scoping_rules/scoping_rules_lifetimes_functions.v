@@ -10,7 +10,7 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -34,6 +34,10 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "`print_one`: x is " |); mk_str (| "
 " |) ]
                             |)
@@ -46,6 +50,10 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -72,9 +80,9 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -93,7 +101,7 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   match ε, τ, α with
   | [], [], [ x ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], x |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           let β := M.deref (| M.read (| x |) |) in
@@ -105,7 +113,7 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
               [ M.read (| β |); Value.Integer IntegerKind.I32 1 ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -124,8 +132,8 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ x; y ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
-      let y := M.alloc (| y |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
+      let y := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], y |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -149,6 +157,10 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 3 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (| "`print_multi`: x is " |);
@@ -166,6 +178,10 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -207,9 +223,9 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -228,8 +244,8 @@ Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   match ε, τ, α with
   | [], [], [ x; β1 ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
-      let β1 := M.alloc (| β1 |) in
+      (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], x |) in
+      let β1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], β1 |) in
       M.match_operator (|
         Ty.apply (Ty.path "&") [] [ Ty.path "i32" ],
         β1,
@@ -314,7 +330,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_function (| "scoping_rules_lifetimes_functions::print_one", [], [] |),
             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, t |) |) |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

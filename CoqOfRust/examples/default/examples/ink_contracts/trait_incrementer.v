@@ -27,8 +27,8 @@ Module Impl_trait_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ init_value ] =>
       ltac:(M.monadic
-        (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord
+        (let init_value := M.alloc (| Ty.path "u64", init_value |) in
+        Value.mkStructRecord
           "trait_incrementer::Incrementer"
           []
           []
@@ -49,8 +49,12 @@ Module Impl_trait_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self; delta ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let delta := M.alloc (| delta |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_incrementer::Incrementer" ],
+            self
+          |) in
+        let delta := M.alloc (| Ty.path "u64", delta |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             let β :=
@@ -67,7 +71,7 @@ Module Impl_trait_incrementer_Incrementer.
                 [ M.read (| β |); M.read (| delta |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -89,7 +93,11 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_incrementer::Incrementer" ],
+            self
+          |) in
         M.call_closure (|
           Ty.tuple [],
           M.get_associated_function (|
@@ -115,7 +123,11 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "trait_incrementer::Incrementer" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -147,7 +159,11 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "trait_incrementer::Incrementer" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -158,7 +174,7 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
               |),
               Value.Integer IntegerKind.U64 0
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -5,6 +5,7 @@ Module identity.
   Definition value_FUN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "revm_precompile::PrecompileWithAddress",
         Value.StructTuple
           "revm_precompile::PrecompileWithAddress"
           []
@@ -27,7 +28,7 @@ Module identity.
   Global Typeclasses Opaque value_FUN.
   
   Definition value_IDENTITY_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 15 |))).
   
   Global Instance Instance_IsConstant_value_IDENTITY_BASE :
     M.IsFunction.C "revm_precompile::identity::IDENTITY_BASE" value_IDENTITY_BASE.
@@ -35,7 +36,7 @@ Module identity.
   Global Typeclasses Opaque value_IDENTITY_BASE.
   
   Definition value_IDENTITY_PER_WORD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 3 |))).
   
   Global Instance Instance_IsConstant_value_IDENTITY_PER_WORD :
     M.IsFunction.C "revm_precompile::identity::IDENTITY_PER_WORD" value_IDENTITY_PER_WORD.
@@ -55,8 +56,12 @@ Module identity.
     match ε, τ, α with
     | [], [], [ input; gas_limit ] =>
       ltac:(M.monadic
-        (let input := M.alloc (| input |) in
-        let gas_limit := M.alloc (| gas_limit |) in
+        (let input :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+            input
+          |) in
+        let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -68,6 +73,13 @@ Module identity.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "revm_precompile::interface::PrecompileOutput";
+                    Ty.path "revm_precompile::interface::PrecompileErrors"
+                  ],
                 M.read (|
                   let~ gas_used : Ty.path "u64" :=
                     M.call_closure (|
@@ -126,13 +138,14 @@ Module identity.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.gt,
@@ -142,6 +155,7 @@ Module identity.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -180,11 +194,18 @@ Module identity.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "revm_precompile::interface::PrecompileOutput";
+                        Ty.path "revm_precompile::interface::PrecompileErrors"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []

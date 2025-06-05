@@ -32,8 +32,16 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -89,6 +97,15 @@ Module sparse.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "usize"; Ty.path "alloc::alloc::Global" ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -135,30 +152,38 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           UnOp.not (|
                                             M.call_closure (|
                                               Ty.path "bool",
@@ -196,6 +221,7 @@ Module sparse.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.call_closure (|
                                           Ty.path "never",
@@ -204,17 +230,19 @@ Module sparse.
                                         |)
                                       |)
                                     |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]
@@ -307,8 +335,15 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -385,8 +420,15 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -406,6 +448,10 @@ Module sparse.
                     ]
                   |) in
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "slice") [] [ Ty.tuple [ Ty.path "usize"; T ] ] ],
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.deref (|
@@ -491,10 +537,10 @@ Module sparse.
       match ε, τ, α with
       | [], [ R ], [ rng; rows; cols; row_weight ] =>
         ltac:(M.monadic
-          (let rng := M.alloc (| rng |) in
-          let rows := M.alloc (| rows |) in
-          let cols := M.alloc (| cols |) in
-          let row_weight := M.alloc (| row_weight |) in
+          (let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
+          let rows := M.alloc (| Ty.path "usize", rows |) in
+          let cols := M.alloc (| Ty.path "usize", cols |) in
+          let row_weight := M.alloc (| Ty.path "usize", row_weight |) in
           M.read (|
             let~ nonzero_values :
                 Ty.apply
@@ -574,7 +620,7 @@ Module sparse.
                                   ltac:(M.monadic
                                     (M.match_operator (|
                                       Ty.function [ Ty.tuple [] ] (Ty.tuple [ Ty.path "usize"; T ]),
-                                      M.alloc (| α0 |),
+                                      M.alloc (| Ty.tuple [], α0 |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -602,7 +648,7 @@ Module sparse.
                                                       Pointer.Kind.MutRef,
                                                       M.deref (| M.read (| rng |) |)
                                                     |);
-                                                    Value.StructRecord
+                                                    Value.mkStructRecord
                                                       "core::ops::range::Range"
                                                       []
                                                       [ Ty.path "usize" ]
@@ -726,11 +772,11 @@ Module sparse.
                               ltac:(M.monadic
                                 (M.match_operator (|
                                   Ty.function [ Ty.tuple [ Ty.path "usize" ] ] (Ty.path "usize"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.path "usize", α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let r := M.copy (| γ |) in
+                                        (let r := M.copy (| Ty.path "usize", γ |) in
                                         M.call_closure (|
                                           Ty.path "usize",
                                           BinOp.Wrap.mul,
@@ -745,7 +791,8 @@ Module sparse.
                 ]
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ],
+              Value.mkStructRecord
                 "p3_matrix::sparse::CsrMatrix"
                 []
                 [ T ]
@@ -779,7 +826,14 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -800,7 +854,14 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.sub,
@@ -847,9 +908,16 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self; r; c ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
-          let c := M.alloc (| c |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
+          let c := M.alloc (| Ty.path "usize", c |) in
           M.call_closure (|
             T,
             M.get_associated_function (|
@@ -909,6 +977,10 @@ Module sparse.
                       M.borrow (|
                         Pointer.Kind.MutRef,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::slice::iter::Iter")
+                            []
+                            [ Ty.tuple [ Ty.path "usize"; T ] ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::slice::iter::Iter")
@@ -977,7 +1049,18 @@ Module sparse.
                                         ]
                                     ]
                                     (Ty.path "bool"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.tuple [ Ty.path "usize"; T ] ]
+                                      ],
+                                    α0
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
@@ -985,7 +1068,11 @@ Module sparse.
                                         let γ := M.read (| γ |) in
                                         let γ2_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ2_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                        let col := M.alloc (| γ2_0 |) in
+                                        let col :=
+                                          M.alloc (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                            γ2_0
+                                          |) in
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.eq,
@@ -1014,14 +1101,18 @@ Module sparse.
                                     ]
                                 ]
                                 T,
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.tuple [ Ty.path "usize"; T ] ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ := M.read (| γ |) in
                                     let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let val := M.alloc (| γ1_1 |) in
+                                    let val :=
+                                      M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_1 |) in
                                     M.call_closure (|
                                       T,
                                       M.get_trait_method (|
@@ -1079,8 +1170,15 @@ Module sparse.
       match ε, τ, α with
       | [], [], [ self; r ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let r := M.alloc (| r |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_matrix::sparse::CsrMatrix") [] [ T ] ],
+              self
+            |) in
+          let r := M.alloc (| Ty.path "usize", r |) in
           M.read (|
             let~ row :
                 Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
@@ -1114,6 +1212,10 @@ Module sparse.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.tuple [ Ty.path "usize"; T ] ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::slice::iter::Iter")
@@ -1154,7 +1256,14 @@ Module sparse.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "core::slice::iter::Iter")
+                                []
+                                [ Ty.tuple [ Ty.path "usize"; T ] ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -1163,6 +1272,15 @@ Module sparse.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.tuple [ Ty.path "usize"; T ] ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -1202,6 +1320,7 @@ Module sparse.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -1215,8 +1334,13 @@ Module sparse.
                                           let γ0_0 := M.read (| γ0_0 |) in
                                           let γ2_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                           let γ2_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let c := M.alloc (| γ2_0 |) in
-                                          let v := M.alloc (| γ2_1 |) in
+                                          let c :=
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                              γ2_0
+                                            |) in
+                                          let v :=
+                                            M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_1 |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.write (|
                                               M.deref (|
@@ -1259,16 +1383,20 @@ Module sparse.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::into_iter::IntoIter")
+                []
+                [ T; Ty.path "alloc::alloc::Global" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::vec::into_iter::IntoIter")

@@ -35,7 +35,11 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -69,8 +73,13 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -93,6 +102,7 @@ Module signed.
                               "alloy_primitives::signed::sign::Sign::Negative"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Negative" |) |) |)
                           |)));
                       fun γ =>
@@ -104,6 +114,7 @@ Module signed.
                               "alloy_primitives::signed::sign::Sign::Positive"
                             |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Positive" |) |) |)
                           |)))
                     ]
@@ -143,8 +154,16 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "i8" :=
                 M.call_closure (|
@@ -167,6 +186,7 @@ Module signed.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   BinOp.eq,
@@ -198,7 +218,11 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -233,12 +257,19 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; rhs ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let rhs := M.alloc (| rhs |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::signed::sign::Sign", self |) in
+            let rhs := M.alloc (| Ty.path "alloy_primitives::signed::sign::Sign", rhs |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signed::sign::Sign",
-                M.alloc (| Value.Tuple [ M.read (| self |); M.read (| rhs |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.path "alloy_primitives::signed::sign::Sign";
+                      Ty.path "alloy_primitives::signed::sign::Sign"
+                    ],
+                  Value.Tuple [ M.read (| self |); M.read (| rhs |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -255,6 +286,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)));
                   fun γ =>
@@ -272,6 +304,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
@@ -289,6 +322,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
@@ -306,6 +340,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
@@ -342,7 +377,7 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::signed::sign::Sign", self |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signed::sign::Sign",
@@ -356,6 +391,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
@@ -366,6 +402,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
@@ -402,7 +439,7 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::signed::sign::Sign", self |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signed::sign::Sign",
@@ -416,6 +453,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Negative" [] [] []
                       |)));
                   fun γ =>
@@ -426,6 +464,7 @@ Module signed.
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
                       M.alloc (|
+                        Ty.path "alloy_primitives::signed::sign::Sign",
                         Value.StructTuple "alloy_primitives::signed::sign::Sign::Positive" [] [] []
                       |)))
                 ]
@@ -459,8 +498,13 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -468,6 +512,11 @@ Module signed.
                   []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ];
+                      Ty.path "bool"
+                    ],
                   Value.Tuple
                     [
                       M.read (| self |);
@@ -497,6 +546,10 @@ Module signed.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -506,6 +559,10 @@ Module signed.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -562,8 +619,8 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "alloy_primitives::signed::sign::Sign", self |) in
+            let other := M.alloc (| Ty.path "alloy_primitives::signed::sign::Sign", other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -589,7 +646,11 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -603,8 +664,8 @@ Module signed.
                           γ,
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -625,7 +686,11 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
@@ -639,8 +704,8 @@ Module signed.
                           γ,
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)))
@@ -664,7 +729,11 @@ Module signed.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signed::sign::Sign" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "char",
@@ -678,7 +747,7 @@ Module signed.
                           γ,
                           "alloy_primitives::signed::sign::Sign::Positive"
                         |) in
-                      M.alloc (| Value.UnicodeChar 43 |)));
+                      M.alloc (| Ty.path "char", Value.UnicodeChar 43 |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
@@ -687,7 +756,7 @@ Module signed.
                           γ,
                           "alloy_primitives::signed::sign::Sign::Negative"
                         |) in
-                      M.alloc (| Value.UnicodeChar 45 |)))
+                      M.alloc (| Ty.path "char", Value.UnicodeChar 45 |)))
                 ]
               |)
             |)))

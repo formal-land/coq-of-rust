@@ -42,8 +42,13 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -101,6 +106,7 @@ Module io.
                                         M.borrow (|
                                           Pointer.Kind.MutRef,
                                           M.alloc (|
+                                            Ty.path "core::fmt::builders::DebugStruct",
                                             M.call_closure (|
                                               Ty.path "core::fmt::builders::DebugStruct",
                                               M.get_associated_function (|
@@ -177,6 +183,7 @@ Module io.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "usize",
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -233,7 +240,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ slice ] =>
           ltac:(M.monadic
-            (let slice := M.alloc (| slice |) in
+            (let slice :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                slice
+              |) in
             M.read (|
               let~ len : Ty.path "usize" :=
                 M.call_closure (|
@@ -247,7 +258,8 @@ Module io.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                 |) in
               M.alloc (|
-                Value.StructRecord
+                Ty.path "core::io::borrowed_buf::BorrowedBuf",
+                Value.mkStructRecord
                   "core::io::borrowed_buf::BorrowedBuf"
                   []
                   []
@@ -332,6 +344,10 @@ Module io.
                                       M.read (|
                                         M.use
                                           (M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "*mut")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                             M.borrow (|
                                               Pointer.Kind.MutPointer,
                                               M.deref (| M.read (| slice |) |)
@@ -376,8 +392,25 @@ Module io.
         match ε, τ, α with
         | [], [], [ buf ] =>
           ltac:(M.monadic
-            (let buf := M.alloc (| buf |) in
-            Value.StructRecord
+            (let buf :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ]
+                      ]
+                  ],
+                buf
+              |) in
+            Value.mkStructRecord
               "core::io::borrowed_buf::BorrowedBuf"
               []
               []
@@ -421,7 +454,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_associated_function (|
@@ -465,7 +502,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -489,7 +530,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -518,7 +563,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
             M.read (|
               let~ buf :
                   Ty.apply
@@ -577,7 +626,7 @@ Module io.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -594,6 +643,7 @@ Module io.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -634,7 +684,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -700,7 +754,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -717,6 +771,10 @@ Module io.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
@@ -765,7 +823,7 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::io::borrowed_buf::BorrowedBuf", self |) in
             M.read (|
               let~ buf :
                   Ty.apply
@@ -824,7 +882,7 @@ Module io.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::RangeTo"
                       []
                       [ Ty.path "usize" ]
@@ -841,6 +899,7 @@ Module io.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -882,7 +941,7 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::io::borrowed_buf::BorrowedBuf", self |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -948,7 +1007,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -965,6 +1024,10 @@ Module io.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
@@ -1016,8 +1079,12 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
+            Value.mkStructRecord
               "core::io::borrowed_buf::BorrowedCursor"
               []
               []
@@ -1081,7 +1148,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1095,7 +1166,10 @@ Module io.
                       |),
                       Value.Integer IntegerKind.Usize 0
                     |) in
-                  M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                  M.alloc (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                  |)
                 |)
               |)
             |)))
@@ -1116,8 +1190,12 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "usize", n |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1144,7 +1222,10 @@ Module io.
                         ]
                       |)
                     |) in
-                  M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                  M.alloc (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedBuf" ],
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                  |)
                 |)
               |)
             |)))
@@ -1177,8 +1258,13 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1218,6 +1304,7 @@ Module io.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -1265,8 +1352,12 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
+            Value.mkStructRecord
               "core::io::borrowed_buf::BorrowedCursor"
               []
               []
@@ -1342,7 +1433,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.sub,
@@ -1404,7 +1499,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               BinOp.Wrap.sub,
@@ -1453,7 +1552,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.read (|
               let~ buf :
                   Ty.apply
@@ -1520,7 +1623,7 @@ Module io.
                         |)
                       |)
                     |);
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "core::ops::range::Range"
                       []
                       [ Ty.path "usize" ]
@@ -1561,6 +1664,7 @@ Module io.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1602,7 +1706,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1675,7 +1783,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -1716,6 +1824,10 @@ Module io.
                           ]
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.deref (|
@@ -1761,7 +1873,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1826,7 +1942,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeFrom"
                               []
                               [ Ty.path "usize" ]
@@ -1874,7 +1990,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -1939,7 +2059,7 @@ Module io.
                                 |)
                               |)
                             |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeFrom"
                               []
                               [ Ty.path "usize" ]
@@ -1989,8 +2109,12 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "usize", n |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2022,13 +2146,14 @@ Module io.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -2057,6 +2182,7 @@ Module io.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -2065,7 +2191,7 @@ Module io.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -2086,7 +2212,13 @@ Module io.
                       |),
                       M.read (| filled |)
                     |) in
-                  M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                  |)
                 |)
               |)
             |)))
@@ -2108,8 +2240,12 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "usize", n |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2189,7 +2325,13 @@ Module io.
                         ]
                       |)
                     |) in
-                  M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                  |)
                 |)
               |)
             |)))
@@ -2218,7 +2360,11 @@ Module io.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2329,7 +2475,7 @@ Module io.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.write (|
@@ -2370,7 +2516,13 @@ Module io.
                         ]
                       |)
                     |) in
-                  M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                  |)
                 |)
               |)
             |)))
@@ -2392,8 +2544,12 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "usize", n |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2457,7 +2613,13 @@ Module io.
                         ]
                       |)
                     |) in
-                  M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
+                  M.alloc (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
+                  |)
                 |)
               |)
             |)))
@@ -2489,20 +2651,29 @@ Module io.
         match ε, τ, α with
         | [], [], [ self; buf ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let buf := M.alloc (| buf |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::io::borrowed_buf::BorrowedCursor" ],
+                self
+              |) in
+            let buf :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                buf
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 UnOp.not (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -2545,6 +2716,7 @@ Module io.
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -2553,7 +2725,7 @@ Module io.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
@@ -2656,7 +2828,7 @@ Module io.
                                         |)
                                       |)
                                     |);
-                                    Value.StructRecord
+                                    Value.mkStructRecord
                                       "core::ops::range::RangeTo"
                                       []
                                       [ Ty.path "usize" ]
@@ -2687,7 +2859,7 @@ Module io.
                         M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf |) |) |)
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
@@ -2721,7 +2893,7 @@ Module io.
                         |)
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                 |) in
               let~ _ : Ty.tuple [] :=
                 let β :=
@@ -2758,7 +2930,7 @@ Module io.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

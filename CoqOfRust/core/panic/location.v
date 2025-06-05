@@ -36,7 +36,11 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::panic::location::Location",
@@ -72,8 +76,13 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -129,6 +138,7 @@ Module panic.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -167,7 +177,11 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -178,7 +192,7 @@ Module panic.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -204,8 +218,12 @@ Module panic.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -266,6 +284,7 @@ Module panic.
                   ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -316,12 +335,21 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "core::cmp::Ordering",
                   M.call_closure (|
                     Ty.path "core::cmp::Ordering",
                     M.get_trait_method (|
@@ -370,6 +398,7 @@ Module panic.
                       M.match_operator (|
                         Ty.path "core::cmp::Ordering",
                         M.alloc (|
+                          Ty.path "core::cmp::Ordering",
                           M.call_closure (|
                             Ty.path "core::cmp::Ordering",
                             M.get_trait_method (|
@@ -416,6 +445,7 @@ Module panic.
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -459,13 +489,13 @@ Module panic.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let cmp := M.copy (| γ |) in
+                              (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                               cmp))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                       cmp))
                 ]
               |)
@@ -502,8 +532,16 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
@@ -600,12 +638,21 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                other
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                     M.get_trait_method (|
@@ -663,6 +710,10 @@ Module panic.
                           []
                           [ Ty.path "core::cmp::Ordering" ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -718,6 +769,10 @@ Module panic.
                                 |) in
                               let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -764,13 +819,27 @@ Module panic.
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let cmp := M.copy (| γ |) in
+                              (let cmp :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::cmp::Ordering" ],
+                                  γ
+                                |) in
                               cmp))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let cmp := M.copy (| γ |) in
+                      (let cmp :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [ Ty.path "core::cmp::Ordering" ],
+                          γ
+                        |) in
                       cmp))
                 ]
               |)
@@ -820,7 +889,11 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -849,7 +922,11 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -873,7 +950,11 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -896,10 +977,10 @@ Module panic.
         match ε, τ, α with
         | [], [], [ file; line; col ] =>
           ltac:(M.monadic
-            (let file := M.alloc (| file |) in
-            let line := M.alloc (| line |) in
-            let col := M.alloc (| col |) in
-            Value.StructRecord
+            (let file := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], file |) in
+            let line := M.alloc (| Ty.path "u32", line |) in
+            let col := M.alloc (| Ty.path "u32", col |) in
+            Value.mkStructRecord
               "core::panic::location::Location"
               []
               []
@@ -930,8 +1011,16 @@ Module panic.
         match ε, τ, α with
         | [], [], [ self; formatter ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let formatter := M.alloc (| formatter |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ],
+                self
+              |) in
+            let formatter :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ],
+                formatter
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -955,6 +1044,10 @@ Module panic.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array [ mk_str (| "" |); mk_str (| ":" |); mk_str (| ":" |) ]
                           |)
                         |)
@@ -966,6 +1059,10 @@ Module panic.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 3 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             Value.Array
                               [
                                 M.call_closure (|

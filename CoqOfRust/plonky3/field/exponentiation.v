@@ -11,7 +11,7 @@ Module exponentiation.
     match ε, τ, α with
     | [], [], [ n ] =>
       ltac:(M.monadic
-        (let n := M.alloc (| n |) in
+        (let n := M.alloc (| Ty.path "u64", n |) in
         M.cast
           (Ty.path "usize")
           (M.call_closure (|
@@ -59,7 +59,7 @@ Module exponentiation.
     match ε, τ, α with
     | [], [ R ], [ val ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
+        (let val := M.alloc (| R, val |) in
         M.read (|
           let~ p1 : R := M.read (| val |) in
           let~ p10 : R :=
@@ -218,6 +218,7 @@ Module exponentiation.
               ]
             |) in
           M.alloc (|
+            R,
             M.call_closure (|
               R,
               M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
@@ -258,7 +259,7 @@ Module exponentiation.
     match ε, τ, α with
     | [], [ R ], [ val ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
+        (let val := M.alloc (| R, val |) in
         M.read (|
           let~ p1 : R := M.read (| val |) in
           let~ p100 : R :=
@@ -414,6 +415,7 @@ Module exponentiation.
               [ M.borrow (| Pointer.Kind.Ref, p101010010101010101010101010101 |) ]
             |) in
           M.alloc (|
+            R,
             M.call_closure (|
               R,
               M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
@@ -456,7 +458,7 @@ Module exponentiation.
     match ε, τ, α with
     | [], [ R ], [ val ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
+        (let val := M.alloc (| R, val |) in
         M.read (|
           let~ p1 : R := M.read (| val |) in
           let~ p10 : R :=
@@ -648,6 +650,7 @@ Module exponentiation.
               ]
             |) in
           M.alloc (|
+            R,
             M.call_closure (|
               R,
               M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),
@@ -703,7 +706,7 @@ Module exponentiation.
     match ε, τ, α with
     | [], [ R ], [ val ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
+        (let val := M.alloc (| R, val |) in
         M.read (|
           let~ p1 : R := M.read (| val |) in
           let~ p10 : R :=
@@ -916,6 +919,7 @@ Module exponentiation.
               ]
             |) in
           M.alloc (|
+            R,
             M.call_closure (|
               R,
               M.get_trait_method (| "core::ops::arith::Mul", R, [], [ R ], "mul", [], [] |),

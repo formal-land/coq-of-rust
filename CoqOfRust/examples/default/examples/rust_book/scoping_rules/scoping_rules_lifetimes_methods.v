@@ -21,7 +21,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "scoping_rules_lifetimes_methods::Owner" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             let β :=
@@ -38,7 +42,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                 [ M.read (| β |); Value.Integer IntegerKind.I32 1 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -56,7 +60,11 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "scoping_rules_lifetimes_methods::Owner" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -80,6 +88,10 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "`print`: " |); mk_str (| "
 " |) ]
                               |)
@@ -92,6 +104,10 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -127,9 +143,9 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -180,7 +196,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.borrow (| Pointer.Kind.Ref, owner |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

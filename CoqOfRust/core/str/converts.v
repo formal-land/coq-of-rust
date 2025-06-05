@@ -19,7 +19,11 @@ Module str.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              v
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -28,6 +32,10 @@ Module str.
                 [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error"
                 ],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -43,6 +51,13 @@ Module str.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -71,8 +86,15 @@ Module str.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let err := M.copy (| γ0_0 |) in
+                    let err := M.copy (| Ty.path "core::str::error::Utf8Error", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -109,7 +131,11 @@ Module str.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              v
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -120,6 +146,10 @@ Module str.
                   Ty.path "core::str::error::Utf8Error"
                 ],
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::str::error::Utf8Error" ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -135,6 +165,13 @@ Module str.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -173,8 +210,15 @@ Module str.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let err := M.copy (| γ0_0 |) in
+                    let err := M.copy (| Ty.path "core::str::error::Utf8Error", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ];
+                          Ty.path "core::str::error::Utf8Error"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -206,7 +250,11 @@ Module str.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              v
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
             M.get_function (|
@@ -240,7 +288,11 @@ Module str.
       match ε, τ, α with
       | [], [], [ v ] =>
         ltac:(M.monadic
-          (let v := M.alloc (| v |) in
+          (let v :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              v
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -258,6 +310,10 @@ Module str.
                             (M.read (|
                               M.use
                                 (M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
                                   M.borrow (|
                                     Pointer.Kind.MutPointer,
                                     M.deref (| M.read (| v |) |)
@@ -290,8 +346,8 @@ Module str.
       match ε, τ, α with
       | [], [], [ ptr; len ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let len := M.alloc (| len |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], ptr |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -329,8 +385,8 @@ Module str.
       match ε, τ, α with
       | [], [], [ ptr; len ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let len := M.alloc (| len |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], ptr |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|

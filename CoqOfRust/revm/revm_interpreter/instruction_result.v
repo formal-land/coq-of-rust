@@ -302,7 +302,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -336,8 +343,16 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -360,6 +375,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Continue"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Continue" |) |) |)
                         |)));
                     fun γ =>
@@ -371,6 +387,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Stop"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stop" |) |) |)
                         |)));
                     fun γ =>
@@ -382,6 +399,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Return"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |)
                         |)));
                     fun γ =>
@@ -393,6 +411,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestruct" |) |) |)
                         |)));
                     fun γ =>
@@ -404,6 +423,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ReturnContract" |) |)
@@ -418,6 +438,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Revert"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Revert" |) |) |)
                         |)));
                     fun γ =>
@@ -429,6 +450,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallTooDeep" |) |) |)
                         |)));
                     fun γ =>
@@ -440,6 +462,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
                         |)));
                     fun γ =>
@@ -451,6 +474,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateInitCodeStartingEF00" |) |)
@@ -465,6 +489,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidEOFInitCode" |) |)
@@ -479,6 +504,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidExtDelegateCallTarget" |) |)
@@ -493,6 +519,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallOrCreate" |) |) |)
                         |)));
                     fun γ =>
@@ -504,6 +531,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfGas" |) |) |)
                         |)));
                     fun γ =>
@@ -515,6 +543,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryOOG" |) |) |)
                         |)));
                     fun γ =>
@@ -526,6 +555,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MemoryLimitOOG" |) |)
@@ -540,6 +570,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "PrecompileOOG" |) |)
@@ -554,6 +585,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidOperandOOG" |) |)
@@ -568,6 +600,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ReentrancySentryOOG" |) |)
@@ -582,6 +615,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "OpcodeNotFound" |) |)
@@ -596,6 +630,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CallNotAllowedInsideStatic" |) |)
@@ -610,6 +645,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "StateChangeDuringStaticCall" |) |)
@@ -624,6 +660,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidFEOpcode" |) |)
@@ -638,6 +675,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidJump" |) |) |)
                         |)));
                     fun γ =>
@@ -649,6 +687,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotActivated" |) |) |)
                         |)));
                     fun γ =>
@@ -660,6 +699,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "StackUnderflow" |) |)
@@ -674,6 +714,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "StackOverflow" |) |)
@@ -688,6 +729,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfOffset" |) |) |)
                         |)));
                     fun γ =>
@@ -699,6 +741,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateCollision" |) |)
@@ -713,6 +756,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "OverflowPayment" |) |)
@@ -727,6 +771,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "PrecompileError" |) |)
@@ -741,6 +786,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "NonceOverflow" |) |)
@@ -755,6 +801,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateContractSizeLimit" |) |)
@@ -769,6 +816,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateContractStartingWithEF" |) |)
@@ -783,6 +831,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
@@ -797,6 +846,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "FatalExternalError" |) |)
@@ -811,6 +861,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ReturnContractInNotInitEOF" |) |)
@@ -825,6 +876,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EOFOpcodeDisabledInLegacy" |) |)
@@ -839,6 +891,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "SubRoutineStackOverflow" |) |)
@@ -853,6 +906,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EofAuxDataOverflow" |) |)
@@ -867,6 +921,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "EofAuxDataTooSmall" |) |)
@@ -881,6 +936,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidEXTCALLTarget" |) |)
@@ -948,8 +1004,22 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -972,6 +1042,7 @@ Module instruction_result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -1004,7 +1075,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1027,8 +1105,15 @@ Module instruction_result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "u8" :=
               M.call_closure (|
@@ -1041,6 +1126,7 @@ Module instruction_result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -1090,7 +1176,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ e ] =>
         ltac:(M.monadic
-          (let e := M.alloc (| e |) in
+          (let e :=
+            M.alloc (| Ty.path "revm_context_interface::journaled_state::TransferError", e |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
@@ -1104,6 +1191,7 @@ Module instruction_result.
                         "revm_context_interface::journaled_state::TransferError::OutOfFunds"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                         []
@@ -1118,6 +1206,7 @@ Module instruction_result.
                         "revm_context_interface::journaled_state::TransferError::OverflowPayment"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                         []
@@ -1132,6 +1221,7 @@ Module instruction_result.
                         "revm_context_interface::journaled_state::TransferError::CreateCollision"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                         []
@@ -1165,7 +1255,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "revm_interpreter::instruction_result::InstructionResult", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1183,7 +1274,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Continue"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1191,7 +1282,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Stop"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1199,7 +1290,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Return"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1207,7 +1298,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1215,16 +1306,16 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1244,7 +1335,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "revm_interpreter::instruction_result::InstructionResult", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1267,7 +1359,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Continue"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1275,7 +1367,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Stop"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1283,7 +1375,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Return"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1291,7 +1383,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1299,12 +1391,13 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ],
                               fun γ =>
                                 ltac:(M.monadic
                                   match γ with
-                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  | [] =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   | _ => M.impossible "wrong number of arguments"
                                   end)
                             |)));
@@ -1320,7 +1413,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::Revert"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1328,7 +1421,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1336,7 +1429,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1344,7 +1437,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1352,7 +1445,7 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let _ :=
@@ -1360,12 +1453,13 @@ Module instruction_result.
                                         γ,
                                         "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ],
                               fun γ =>
                                 ltac:(M.monadic
                                   match γ with
-                                  | [] => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  | [] =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   | _ => M.impossible "wrong number of arguments"
                                   end)
                             |)))
@@ -1373,11 +1467,11 @@ Module instruction_result.
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1398,7 +1492,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "revm_interpreter::instruction_result::InstructionResult", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1411,8 +1506,8 @@ Module instruction_result.
                         γ,
                         "revm_interpreter::instruction_result::InstructionResult::Continue"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1433,7 +1528,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "revm_interpreter::instruction_result::InstructionResult", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1451,7 +1547,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::Revert"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1459,7 +1555,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1467,7 +1563,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1475,7 +1571,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1483,7 +1579,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1491,16 +1587,16 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1521,7 +1617,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.path "revm_interpreter::instruction_result::InstructionResult", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -1539,7 +1636,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1547,7 +1644,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1555,7 +1652,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1563,7 +1660,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1571,7 +1668,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1579,7 +1676,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1587,7 +1684,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1595,7 +1692,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1603,7 +1700,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1611,7 +1708,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1619,7 +1716,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1627,7 +1724,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1635,7 +1732,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1643,7 +1740,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1651,7 +1748,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1659,7 +1756,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1667,7 +1764,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1675,7 +1772,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1683,7 +1780,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1691,7 +1788,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1699,7 +1796,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1707,7 +1804,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1715,7 +1812,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1723,7 +1820,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1731,7 +1828,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1739,7 +1836,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1747,7 +1844,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1755,7 +1852,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -1763,16 +1860,16 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1801,7 +1898,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value :=
+            M.alloc (| Ty.path "revm_context_interface::result::SuccessReason", value |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
@@ -1815,6 +1913,7 @@ Module instruction_result.
                         "revm_context_interface::result::SuccessReason::Return"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::Return"
                         []
@@ -1829,6 +1928,7 @@ Module instruction_result.
                         "revm_context_interface::result::SuccessReason::Stop"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::Stop"
                         []
@@ -1843,6 +1943,7 @@ Module instruction_result.
                         "revm_context_interface::result::SuccessReason::SelfDestruct"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                         []
@@ -1857,6 +1958,7 @@ Module instruction_result.
                         "revm_context_interface::result::SuccessReason::EofReturnContract"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                         []
@@ -1921,7 +2023,7 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| Ty.path "revm_context_interface::result::HaltReason", value |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::instruction_result::InstructionResult",
@@ -1935,7 +2037,8 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::OutOfGas",
                         0
                       |) in
-                    let error := M.copy (| γ0_0 |) in
+                    let error :=
+                      M.copy (| Ty.path "revm_context_interface::result::OutOfGasError", γ0_0 |) in
                     M.match_operator (|
                       Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       error,
@@ -1948,6 +2051,7 @@ Module instruction_result.
                                 "revm_context_interface::result::OutOfGasError::Basic"
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::instruction_result::InstructionResult",
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                                 []
@@ -1962,6 +2066,7 @@ Module instruction_result.
                                 "revm_context_interface::result::OutOfGasError::InvalidOperand"
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::instruction_result::InstructionResult",
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                                 []
@@ -1976,6 +2081,7 @@ Module instruction_result.
                                 "revm_context_interface::result::OutOfGasError::Memory"
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::instruction_result::InstructionResult",
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                                 []
@@ -1990,6 +2096,7 @@ Module instruction_result.
                                 "revm_context_interface::result::OutOfGasError::MemoryLimit"
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::instruction_result::InstructionResult",
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                                 []
@@ -2004,6 +2111,7 @@ Module instruction_result.
                                 "revm_context_interface::result::OutOfGasError::Precompile"
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::instruction_result::InstructionResult",
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                                 []
@@ -2018,6 +2126,7 @@ Module instruction_result.
                                 "revm_context_interface::result::OutOfGasError::ReentrancySentry"
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::instruction_result::InstructionResult",
                               Value.StructTuple
                                 "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                                 []
@@ -2034,6 +2143,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::OpcodeNotFound"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                         []
@@ -2048,6 +2158,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::InvalidFEOpcode"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                         []
@@ -2062,6 +2173,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::InvalidJump"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                         []
@@ -2076,6 +2188,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::NotActivated"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                         []
@@ -2090,6 +2203,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::StackOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                         []
@@ -2104,6 +2218,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::StackUnderflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                         []
@@ -2118,6 +2233,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::OutOfOffset"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                         []
@@ -2132,6 +2248,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::CreateCollision"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                         []
@@ -2146,6 +2263,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::PrecompileError"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                         []
@@ -2160,6 +2278,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::NonceOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                         []
@@ -2174,6 +2293,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::CreateContractSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                         []
@@ -2188,6 +2308,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::CreateContractStartingWithEF"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                         []
@@ -2202,6 +2323,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::CreateInitCodeSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                         []
@@ -2216,6 +2338,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::OverflowPayment"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                         []
@@ -2230,6 +2353,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::StateChangeDuringStaticCall"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                         []
@@ -2244,6 +2368,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::CallNotAllowedInsideStatic"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                         []
@@ -2258,6 +2383,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::OutOfFunds"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                         []
@@ -2272,6 +2398,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::CallTooDeep"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                         []
@@ -2286,6 +2413,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::EofAuxDataOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                         []
@@ -2300,6 +2428,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::EofAuxDataTooSmall"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
                         []
@@ -2314,6 +2443,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::SubRoutineStackOverflow"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                         []
@@ -2328,6 +2458,7 @@ Module instruction_result.
                         "revm_context_interface::result::HaltReason::InvalidEXTCALLTarget"
                       |) in
                     M.alloc (|
+                      Ty.path "revm_interpreter::instruction_result::InstructionResult",
                       Value.StructTuple
                         "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                         []
@@ -2398,8 +2529,16 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2422,6 +2561,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InternalResult::InternalContinue"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InternalContinue" |) |)
@@ -2436,6 +2576,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InternalResult::InternalCallOrCreate"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InternalCallOrCreate" |) |)
@@ -2450,6 +2591,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InternalResult::CreateInitCodeStartingEF00"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateInitCodeStartingEF00" |) |)
@@ -2464,6 +2606,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InternalResult::InvalidExtDelegateCallTarget"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidExtDelegateCallTarget" |) |)
@@ -2506,7 +2649,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2540,8 +2690,22 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2564,6 +2728,7 @@ Module instruction_result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -2596,7 +2761,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2619,8 +2791,15 @@ Module instruction_result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -2633,6 +2812,7 @@ Module instruction_result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -2737,7 +2917,19 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2755,8 +2947,19 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         []
@@ -2786,6 +2989,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
@@ -2801,8 +3008,12 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -2832,6 +3043,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                         []
@@ -2847,8 +3062,19 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
                         []
@@ -2895,8 +3121,21 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -2914,8 +3153,19 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -2948,6 +3198,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -2974,8 +3228,12 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3008,6 +3266,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3037,8 +3299,19 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -3102,8 +3375,32 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                    []
+                    [ HaltReasonT ]
+                ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3136,6 +3433,7 @@ Module instruction_result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3146,7 +3444,30 @@ Module instruction_result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                                  []
+                                  [ HaltReasonT ]
+                              ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                                  []
+                                  [ HaltReasonT ]
+                              ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -3159,7 +3480,14 @@ Module instruction_result.
                                 "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -3167,8 +3495,16 @@ Module instruction_result.
                                 "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -3205,7 +3541,8 @@ Module instruction_result.
                                 "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -3213,8 +3550,10 @@ Module instruction_result.
                                 "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -3243,7 +3582,15 @@ Module instruction_result.
                                 "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_interpreter::instruction_result::InternalResult"
+                                  ],
+                                γ2_0
+                              |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -3251,8 +3598,17 @@ Module instruction_result.
                                 "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 :=
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "revm_interpreter::instruction_result::InternalResult"
+                                  ],
+                                γ2_0
+                              |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -3282,7 +3638,7 @@ Module instruction_result.
                                 ]
                               |)
                             |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                        fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                       ]
                     |)
                   |)))
@@ -3323,7 +3679,19 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -3340,7 +3708,10 @@ Module instruction_result.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -3379,8 +3750,20 @@ Module instruction_result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                    []
+                    [ HaltReasonT ]
+                ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3430,8 +3813,16 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_context_interface::result::SuccessReason" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3458,8 +3849,9 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ HaltReasonT ], γ1_0 |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3486,8 +3878,16 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 :=
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.path "revm_interpreter::instruction_result::InternalResult" ],
+                        γ1_0
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3505,7 +3905,7 @@ Module instruction_result.
                         ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |)))
@@ -3541,7 +3941,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -3555,8 +3962,8 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -3587,7 +3994,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3604,8 +4018,13 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success",
                         0
                       |) in
-                    let reason := M.copy (| γ0_0 |) in
+                    let reason :=
+                      M.copy (| Ty.path "revm_context_interface::result::SuccessReason", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_context_interface::result::SuccessReason" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -3615,6 +4034,10 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_context_interface::result::SuccessReason" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -3648,7 +4071,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -3661,8 +4091,8 @@ Module instruction_result.
                         γ,
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -3690,7 +4120,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -3704,8 +4141,8 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                         0
                       |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -3736,7 +4173,14 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                []
+                [ HaltReasonT ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ HaltReasonT ],
@@ -3750,8 +4194,9 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt",
                         0
                       |) in
-                    let reason := M.copy (| γ0_0 |) in
+                    let reason := M.copy (| HaltReasonT, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ HaltReasonT ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -3761,6 +4206,7 @@ Module instruction_result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ HaltReasonT ],
                       Value.StructTuple "core::option::Option::None" [] [ HaltReasonT ] []
                     |)))
               ]
@@ -3790,7 +4236,8 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ reason ] =>
         ltac:(M.monadic
-          (let reason := M.alloc (| reason |) in
+          (let reason :=
+            M.alloc (| Ty.path "revm_context_interface::result::HaltReason", reason |) in
           Value.StructTuple
             "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
             []
@@ -3918,7 +4365,11 @@ Module instruction_result.
       match ε, τ, α with
       | [], [], [ result ] =>
         ltac:(M.monadic
-          (let result := M.alloc (| result |) in
+          (let result :=
+            M.alloc (|
+              Ty.path "revm_interpreter::instruction_result::InstructionResult",
+              result
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3935,6 +4386,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::Continue"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
                         []
@@ -3955,6 +4410,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::Stop"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         []
@@ -3975,6 +4434,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::Return"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         []
@@ -3995,6 +4458,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         []
@@ -4015,6 +4482,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::Revert"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
@@ -4029,6 +4500,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeStartingEF00"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
@@ -4043,6 +4518,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
                         []
@@ -4063,6 +4542,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4097,6 +4580,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4131,6 +4618,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4171,6 +4662,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::MemoryLimitOOG"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4211,6 +4706,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4251,6 +4750,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::PrecompileOOG"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4291,6 +4794,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4331,6 +4838,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::ReentrancySentryOOG"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4375,7 +4886,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::OpcodeNotFound"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -4383,7 +4894,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::ReturnContractInNotInitEOF"
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -4391,6 +4902,10 @@ Module instruction_result.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                                  []
+                                  [ HaltReasonT ],
                                 Value.StructTuple
                                   "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                                   []
@@ -4428,6 +4943,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::CallNotAllowedInsideStatic"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4462,6 +4981,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::StateChangeDuringStaticCall"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4496,6 +5019,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::InvalidFEOpcode"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4530,6 +5057,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4564,6 +5095,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4598,6 +5133,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4632,6 +5171,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::StackOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4666,6 +5209,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4700,6 +5247,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::CreateCollision"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4734,6 +5285,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::OverflowPayment"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4768,6 +5323,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::PrecompileError"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4802,6 +5361,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::NonceOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4840,7 +5403,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractSizeLimit"
                               |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -4848,7 +5411,7 @@ Module instruction_result.
                                 γ,
                                 "revm_interpreter::instruction_result::InstructionResult::CreateContractStartingWithEF"
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
@@ -4856,6 +5419,10 @@ Module instruction_result.
                           | [] =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                                  []
+                                  [ HaltReasonT ],
                                 Value.StructTuple
                                   "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                                   []
@@ -4893,6 +5460,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::CreateInitCodeSizeLimit"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4927,6 +5498,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::InvalidEOFInitCode"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Revert"
                         []
@@ -4941,6 +5516,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::FatalExternalError"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::FatalExternalError"
                         []
@@ -4955,6 +5534,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::EOFOpcodeDisabledInLegacy"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -4989,6 +5572,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::SubRoutineStackOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -5023,6 +5610,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::ReturnContract"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Success"
                         []
@@ -5043,6 +5634,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::EofAuxDataOverflow"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -5077,6 +5672,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::EofAuxDataTooSmall"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -5111,6 +5710,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::InvalidEXTCALLTarget"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
                         []
@@ -5145,6 +5748,10 @@ Module instruction_result.
                         "revm_interpreter::instruction_result::InstructionResult::InvalidExtDelegateCallTarget"
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+                        []
+                        [ HaltReasonT ],
                       Value.StructTuple
                         "revm_interpreter::instruction_result::SuccessOrHalt::Internal"
                         []

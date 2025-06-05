@@ -59,8 +59,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -83,6 +91,7 @@ Module result.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               LogicalOp.and (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -93,7 +102,20 @@ Module result.
                   (M.read (|
                     M.match_operator (|
                       Ty.path "bool",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -106,7 +128,7 @@ Module result.
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -114,8 +136,9 @@ Module result.
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -144,7 +167,7 @@ Module result.
                                 "core::result::Result::Err",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -152,8 +175,9 @@ Module result.
                                 "core::result::Result::Err",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -174,6 +198,7 @@ Module result.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "bool",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -210,8 +235,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -235,7 +268,20 @@ Module result.
               |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                  ],
+                Value.Tuple [ M.read (| self |); M.read (| other |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -248,7 +294,7 @@ Module result.
                         "core::result::Result::Ok",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ2_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -256,8 +302,12 @@ Module result.
                         "core::result::Result::Ok",
                         0
                       |) in
-                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                    let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -289,7 +339,7 @@ Module result.
                         "core::result::Result::Err",
                         0
                       |) in
-                    let __self_0 := M.alloc (| γ2_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -297,8 +347,12 @@ Module result.
                         "core::result::Result::Err",
                         0
                       |) in
-                    let __arg1_0 := M.alloc (| γ2_0 |) in
+                    let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -322,6 +376,10 @@ Module result.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "core::cmp::Ordering" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -378,7 +436,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -389,7 +451,7 @@ Module result.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -417,8 +479,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -443,6 +513,7 @@ Module result.
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -464,7 +535,20 @@ Module result.
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      M.alloc (|
+                        Ty.tuple
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                          ],
+                        Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                      |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -477,7 +561,7 @@ Module result.
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -485,8 +569,9 @@ Module result.
                                 "core::result::Result::Ok",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
@@ -513,7 +598,7 @@ Module result.
                                 "core::result::Result::Err",
                                 0
                               |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
                               M.SubPointer.get_struct_tuple_field (|
@@ -521,8 +606,9 @@ Module result.
                                 "core::result::Result::Err",
                                 0
                               |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            let __arg1_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (| "core::cmp::Ord", E, [], [], "cmp", [], [] |),
@@ -541,6 +627,7 @@ Module result.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.never_to_any (|
                                 M.call_closure (|
                                   Ty.path "never",
@@ -553,7 +640,7 @@ Module result.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -580,8 +667,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -595,8 +687,12 @@ Module result.
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -625,8 +721,12 @@ Module result.
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -675,8 +775,12 @@ Module result.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -717,8 +821,9 @@ Module result.
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
@@ -733,8 +838,9 @@ Module result.
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
+                    let __self_0 := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_0 |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (| "core::hash::Hash", E, [], [], "hash", [], [ __H ] |),
@@ -773,7 +879,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -783,8 +893,8 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -810,8 +920,8 @@ Module result.
       match ε, τ, α with
       | [], [ impl_FnOnce_T__arrow_bool ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let f := M.alloc (| impl_FnOnce_T__arrow_bool, f |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -821,13 +931,14 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.Bool false |)));
+                    M.alloc (| Ty.path "bool", Value.Bool false |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.copy (| γ0_0 |) in
+                    let x := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         M.get_trait_method (|
@@ -864,7 +975,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           UnOp.not (|
             M.call_closure (|
               Ty.path "bool",
@@ -899,8 +1014,8 @@ Module result.
       match ε, τ, α with
       | [], [ impl_FnOnce_E__arrow_bool ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let f := M.alloc (| impl_FnOnce_E__arrow_bool, f |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -910,13 +1025,14 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.Bool false |)));
+                    M.alloc (| Ty.path "bool", Value.Bool false |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         M.get_trait_method (|
@@ -956,7 +1072,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
@@ -966,15 +1082,19 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.copy (| γ0_0 |) in
+                    let x := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| x |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
+                    M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      Value.StructTuple "core::option::Option::None" [] [ T ] []
+                    |)))
               ]
             |)
           |)))
@@ -1000,7 +1120,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ E ],
@@ -1010,13 +1130,17 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] [ E ] [] |)));
+                    M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ E ],
+                      Value.StructTuple "core::option::Option::None" [] [ E ] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let x := M.copy (| γ0_0 |) in
+                    let x := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ E ],
                       Value.StructTuple "core::option::Option::Some" [] [ E ] [ M.read (| x |) ]
                     |)))
               ]
@@ -1044,7 +1168,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1057,8 +1185,12 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.alloc (| γ0_0 |) in
+                    let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1069,8 +1201,12 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let x := M.alloc (| γ0_0 |) in
+                    let x := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ E ] ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -1102,7 +1238,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -1115,8 +1258,12 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.alloc (| γ0_0 |) in
+                    let x := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1127,8 +1274,12 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let x := M.alloc (| γ0_0 |) in
+                    let x := M.alloc (| Ty.apply (Ty.path "&mut") [] [ E ], γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.apply (Ty.path "&mut") [] [ T ]; Ty.apply (Ty.path "&mut") [] [ E ] ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -1160,8 +1311,8 @@ Module result.
       match ε, τ, α with
       | [], [ U; F ], [ self; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let op := M.alloc (| op |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let op := M.alloc (| F, op |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
@@ -1171,8 +1322,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -1197,8 +1349,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
                       Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
                     |)))
               ]
@@ -1226,9 +1379,9 @@ Module result.
       match ε, τ, α with
       | [], [ U; F ], [ self; default; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let default := M.alloc (| default |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let default := M.alloc (| U, default |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             M.match_operator (|
               U,
@@ -1238,8 +1391,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      U,
                       M.call_closure (|
                         U,
                         M.get_trait_method (|
@@ -1284,9 +1438,9 @@ Module result.
       match ε, τ, α with
       | [], [ U; D; F ], [ self; default; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let default := M.alloc (| default |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let default := M.alloc (| D, default |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             M.match_operator (|
               U,
@@ -1296,8 +1450,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      U,
                       M.call_closure (|
                         U,
                         M.get_trait_method (|
@@ -1316,8 +1471,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      U,
                       M.call_closure (|
                         U,
                         M.get_trait_method (|
@@ -1357,8 +1513,8 @@ Module result.
       match ε, τ, α with
       | [], [ F; _ as O ], [ self; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let op := M.alloc (| op |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let op := M.alloc (| O, op |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
@@ -1368,16 +1524,18 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                       Value.StructTuple "core::result::Result::Ok" [] [ T; F ] [ M.read (| t |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -1424,14 +1582,14 @@ Module result.
       match ε, τ, α with
       | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1442,7 +1600,7 @@ Module result.
                             "core::result::Result::Ok",
                             0
                           |) in
-                        let t := M.alloc (| γ0_0 |) in
+                        let t := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ0_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.call_closure (|
                             Ty.tuple [],
@@ -1461,8 +1619,8 @@ Module result.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |) ]
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -1491,14 +1649,14 @@ Module result.
       match ε, τ, α with
       | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -1509,7 +1667,7 @@ Module result.
                             "core::result::Result::Err",
                             0
                           |) in
-                        let e := M.alloc (| γ0_0 |) in
+                        let e := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ0_0 |) in
                         let~ _ : Ty.tuple [] :=
                           M.call_closure (|
                             Ty.tuple [],
@@ -1528,8 +1686,8 @@ Module result.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| e |) |) |) ]
                             ]
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -1557,7 +1715,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1617,11 +1779,11 @@ Module result.
                               []
                               [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let t := M.copy (| γ |) in
+                                (let t := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "&")
@@ -1678,7 +1840,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1738,11 +1907,11 @@ Module result.
                               []
                               [ Ty.associated_in_trait "core::ops::deref::Deref" [] [] T "Target"
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let t := M.copy (| γ |) in
+                                (let t := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ |) in
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "&mut")
@@ -1792,8 +1961,12 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "core::result::Iter"
             []
             [ T ]
@@ -1846,8 +2019,15 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "core::result::IterMut"
             []
             [ T ]
@@ -1909,8 +2089,8 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; msg ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let msg := M.alloc (| msg |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let msg := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], msg |) in
           M.read (|
             M.match_operator (|
               T,
@@ -1920,14 +2100,15 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     t));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -1972,7 +2153,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               T,
@@ -1982,14 +2163,15 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     t));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2044,7 +2226,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               T,
@@ -2054,13 +2236,14 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.copy (| γ0_0 |) in
+                    let x := M.copy (| T, γ0_0 |) in
                     x));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_trait_method (|
@@ -2103,8 +2286,8 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; msg ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let msg := M.alloc (| msg |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let msg := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], msg |) in
           M.read (|
             M.match_operator (|
               E,
@@ -2114,8 +2297,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      E,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2136,7 +2320,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     e))
               ]
             |)
@@ -2166,7 +2350,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               E,
@@ -2176,8 +2360,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      E,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2203,7 +2388,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     e))
               ]
             |)
@@ -2233,7 +2418,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               T,
@@ -2243,14 +2428,15 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.copy (| γ0_0 |) in
+                    let x := M.copy (| T, γ0_0 |) in
                     x));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2295,7 +2481,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               E,
@@ -2305,8 +2491,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.copy (| γ0_0 |) in
+                    let x := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      E,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2327,7 +2514,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     e))
               ]
             |)
@@ -2354,8 +2541,8 @@ Module result.
       match ε, τ, α with
       | [], [ U ], [ self; res ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let res := M.alloc (| res |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let res := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ U; E ], res |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
@@ -2370,8 +2557,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
                       Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
                     |)))
               ]
@@ -2399,8 +2587,8 @@ Module result.
       match ε, τ, α with
       | [], [ U; F ], [ self; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let op := M.alloc (| op |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let op := M.alloc (| F, op |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
@@ -2410,8 +2598,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
                         M.get_trait_method (|
@@ -2430,8 +2619,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ U; E ],
                       Value.StructTuple "core::result::Result::Err" [] [ U; E ] [ M.read (| e |) ]
                     |)))
               ]
@@ -2459,8 +2649,8 @@ Module result.
       match ε, τ, α with
       | [], [ F ], [ self; res ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let res := M.alloc (| res |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let res := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; F ], res |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
@@ -2470,8 +2660,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let v := M.copy (| γ0_0 |) in
+                    let v := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                       Value.StructTuple "core::result::Result::Ok" [] [ T; F ] [ M.read (| v |) ]
                     |)));
                 fun γ =>
@@ -2504,8 +2695,8 @@ Module result.
       match ε, τ, α with
       | [], [ F; _ as O ], [ self; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let op := M.alloc (| op |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let op := M.alloc (| O, op |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
@@ -2515,16 +2706,18 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                       Value.StructTuple "core::result::Result::Ok" [] [ T; F ] [ M.read (| t |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                       M.call_closure (|
                         Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                         M.get_trait_method (|
@@ -2564,8 +2757,8 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; default ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let default := M.alloc (| default |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let default := M.alloc (| T, default |) in
           M.read (|
             M.match_operator (|
               T,
@@ -2575,7 +2768,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     t));
                 fun γ =>
                   ltac:(M.monadic
@@ -2612,8 +2805,8 @@ Module result.
       match ε, τ, α with
       | [], [ F ], [ self; op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let op := M.alloc (| op |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          let op := M.alloc (| F, op |) in
           M.read (|
             M.match_operator (|
               T,
@@ -2623,14 +2816,15 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     t));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_trait_method (|
@@ -2676,7 +2870,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               T,
@@ -2686,13 +2880,14 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| T, γ0_0 |) in
                     t));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2732,7 +2927,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               E,
@@ -2743,6 +2938,7 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     M.alloc (|
+                      E,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -2755,7 +2951,7 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     e))
               ]
             |)
@@ -2792,7 +2988,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
@@ -2803,16 +3003,18 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let γ0_0 := M.read (| γ0_0 |) in
-                    let v := M.copy (| γ0_0 |) in
+                    let v := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| e |) ]
                     |)))
               ]
@@ -2840,7 +3042,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
             M.get_associated_function (|
@@ -2859,11 +3065,11 @@ Module result.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T,
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let t := M.copy (| γ |) in
+                                (let t := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                 M.call_closure (|
                                   T,
                                   M.get_trait_method (|
@@ -2915,7 +3121,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
@@ -2926,16 +3139,18 @@ Module result.
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let γ0_0 := M.read (| γ0_0 |) in
-                    let v := M.copy (| γ0_0 |) in
+                    let v := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| v |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| e |) ]
                     |)))
               ]
@@ -2963,7 +3178,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
             M.get_associated_function (|
@@ -2985,11 +3207,11 @@ Module result.
                       ltac:(M.monadic
                         (M.match_operator (|
                           Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T,
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let t := M.copy (| γ |) in
+                                (let t := M.copy (| Ty.apply (Ty.path "&mut") [] [ T ], γ |) in
                                 M.call_closure (|
                                   T,
                                   M.get_trait_method (|
@@ -3040,7 +3262,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "core::option::Option") [] [ T ]; E ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -3059,8 +3288,12 @@ Module result.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let x := M.copy (| γ1_0 |) in
+                    let x := M.copy (| T, γ1_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -3079,6 +3312,10 @@ Module result.
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -3089,8 +3326,12 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -3137,7 +3378,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ]; E ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
@@ -3147,14 +3395,16 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let inner := M.copy (| γ0_0 |) in
+                    let inner :=
+                      M.copy (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], γ0_0 |) in
                     inner));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple "core::result::Result::Err" [] [ T; E ] [ M.read (| e |) ]
                     |)))
               ]
@@ -3179,8 +3429,12 @@ Module result.
     match ε, τ, α with
     | [], [], [ msg; error ] =>
       ltac:(M.monadic
-        (let msg := M.alloc (| msg |) in
-        let error := M.alloc (| error |) in
+        (let msg := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], msg |) in
+        let error :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+            error
+          |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -3199,7 +3453,13 @@ Module result.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| ": " |) ] |)
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ mk_str (| "" |); mk_str (| ": " |) ]
+                      |)
                     |)
                   |)
                 |);
@@ -3209,6 +3469,10 @@ Module result.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 2 ]
+                          [ Ty.path "core::fmt::rt::Argument" ],
                         Value.Array
                           [
                             M.call_closure (|
@@ -3279,7 +3543,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
@@ -3290,8 +3558,9 @@ Module result.
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let x := M.alloc (| γ1_0 |) in
+                    let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -3317,8 +3586,9 @@ Module result.
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let x := M.alloc (| γ1_0 |) in
+                    let x := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ1_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; E ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -3359,12 +3629,36 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; source ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let source := M.alloc (| source |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
+          let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              source
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| source |) ] |),
+              M.alloc (|
+                Ty.tuple
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ];
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
+                  ],
+                Value.Tuple [ M.read (| self |); M.read (| source |) ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -3377,7 +3671,7 @@ Module result.
                         "core::result::Result::Ok",
                         0
                       |) in
-                    let to := M.alloc (| γ2_0 |) in
+                    let to := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -3385,8 +3679,9 @@ Module result.
                         "core::result::Result::Ok",
                         0
                       |) in
-                    let from := M.alloc (| γ2_0 |) in
+                    let from := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], γ2_0 |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3415,7 +3710,7 @@ Module result.
                         "core::result::Result::Err",
                         0
                       |) in
-                    let to := M.alloc (| γ2_0 |) in
+                    let to := M.alloc (| Ty.apply (Ty.path "&mut") [] [ E ], γ2_0 |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let γ2_0 :=
                       M.SubPointer.get_struct_tuple_field (|
@@ -3423,8 +3718,9 @@ Module result.
                         "core::result::Result::Err",
                         0
                       |) in
-                    let from := M.alloc (| γ2_0 |) in
+                    let from := M.alloc (| Ty.apply (Ty.path "&") [] [ E ], γ2_0 |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_trait_method (|
@@ -3446,9 +3742,24 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let to := M.copy (| γ0_0 |) in
-                    let from := M.copy (| γ0_1 |) in
+                    let to :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+                        γ0_0
+                      |) in
+                    let from :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+                        γ0_1
+                      |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.write (|
                         M.deref (| M.read (| to |) |),
                         M.call_closure (|
@@ -3506,8 +3817,8 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
+          Value.mkStructRecord
             "core::result::IntoIter"
             []
             [ T ]
@@ -3562,7 +3873,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::result::Iter") [] [ T ],
             M.get_associated_function (|
@@ -3611,7 +3926,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::result::IterMut") [] [ T ],
             M.get_associated_function (|
@@ -3661,8 +3983,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Iter") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3686,6 +4013,15 @@ Module result.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ T ] ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -3729,7 +4065,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::Iter") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
@@ -3763,19 +4103,24 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Iter") [] [ T ] ],
+              self
+            |) in
           M.read (|
             let~ n : Ty.path "usize" :=
               M.read (|
                 M.match_operator (|
                   Ty.path "usize",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_associated_function (|
@@ -3800,12 +4145,17 @@ Module result.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                        M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1 |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               Value.Tuple
                 [
                   M.read (| n |);
@@ -3848,7 +4198,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::Iter") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
             M.get_associated_function (|
@@ -3933,8 +4287,12 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::Iter") [] [ T ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "core::result::Iter"
             []
             [ T ]
@@ -3982,8 +4340,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::IterMut") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -4007,6 +4370,15 @@ Module result.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -4050,7 +4422,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::IterMut") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
@@ -4084,19 +4460,24 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::IterMut") [] [ T ] ],
+              self
+            |) in
           M.read (|
             let~ n : Ty.path "usize" :=
               M.read (|
                 M.match_operator (|
                   Ty.path "usize",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_associated_function (|
@@ -4121,12 +4502,17 @@ Module result.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                        M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1 |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               Value.Tuple
                 [
                   M.read (| n |);
@@ -4169,7 +4555,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::IterMut") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
             M.get_associated_function (|
@@ -4258,8 +4648,12 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::IntoIter") [] [ T ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "core::result::IntoIter"
             []
             [ T ]
@@ -4315,8 +4709,13 @@ Module result.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::IntoIter") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -4340,6 +4739,10 @@ Module result.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -4383,7 +4786,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::IntoIter") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ T ],
             M.get_associated_function (|
@@ -4417,19 +4824,24 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::result::IntoIter") [] [ T ] ],
+              self
+            |) in
           M.read (|
             let~ n : Ty.path "usize" :=
               M.read (|
                 M.match_operator (|
                   Ty.path "usize",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_associated_function (|
@@ -4451,12 +4863,17 @@ Module result.
                               |)
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer IntegerKind.Usize 1 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                        M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1 |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               Value.Tuple
                 [
                   M.read (| n |);
@@ -4499,7 +4916,11 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::result::IntoIter") [] [ T ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ T ],
             M.get_associated_function (|
@@ -4584,7 +5005,7 @@ Module result.
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
-          (let iter := M.alloc (| iter |) in
+          (let iter := M.alloc (| I, iter |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::result::Result") [] [ V; E ],
             M.get_function (|
@@ -4675,11 +5096,46 @@ Module result.
                                 ]
                             ]
                             V,
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::GenericShunt")
+                              []
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::collect::IntoIterator"
+                                  []
+                                  []
+                                  I
+                                  "IntoIter";
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "core::convert::Infallible"; E ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let i := M.copy (| γ |) in
+                                (let i :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::GenericShunt")
+                                      []
+                                      [
+                                        Ty.associated_in_trait
+                                          "core::iter::traits::collect::IntoIterator"
+                                          []
+                                          []
+                                          I
+                                          "IntoIter";
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [ Ty.path "core::convert::Infallible"; E ]
+                                      ],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   V,
                                   M.get_trait_method (|
@@ -4746,7 +5202,16 @@ Module result.
       match ε, τ, α with
       | [], [], [ output ] =>
         ltac:(M.monadic
-          (let output := M.alloc (| output |) in
+          (let output :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "core::ops::try_trait::Try"
+                []
+                []
+                (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
+                "Output",
+              output
+            |) in
           Value.StructTuple "core::result::Result::Ok" [] [ T; E ] [ M.read (| output |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4764,7 +5229,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "core::result::Result") [] [ T; E ], self |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -4783,8 +5248,18 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let v := M.copy (| γ0_0 |) in
+                    let v := M.copy (| T, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; E ];
+                          T
+                        ],
                       Value.StructTuple
                         "core::ops::control_flow::ControlFlow::Continue"
                         []
@@ -4801,8 +5276,18 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::ops::control_flow::ControlFlow")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "core::convert::Infallible"; E ];
+                          T
+                        ],
                       Value.StructTuple
                         "core::ops::control_flow::ControlFlow::Break"
                         []
@@ -4863,7 +5348,14 @@ Module result.
       match ε, τ, α with
       | [], [], [ residual ] =>
         ltac:(M.monadic
-          (let residual := M.alloc (| residual |) in
+          (let residual :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.path "core::convert::Infallible"; E ],
+              residual
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
@@ -4873,8 +5365,9 @@ Module result.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                    let e := M.copy (| γ0_0 |) in
+                    let e := M.copy (| E, γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -4930,7 +5423,7 @@ Module result.
       match ε, τ, α with
       | [], [], [ β0 ] =>
         ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
+          (let β0 := M.alloc (| Ty.apply (Ty.path "core::ops::try_trait::Yeet") [] [ E ], β0 |) in
           M.match_operator (|
             Ty.apply (Ty.path "core::result::Result") [] [ T; F ],
             β0,
@@ -4939,7 +5432,12 @@ Module result.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::ops::try_trait::Yeet", 0 |) in
-                  let e := M.copy (| γ0_0 |) in
+                  let e :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_0
+                    |) in
                   Value.StructTuple
                     "core::result::Result::Err"
                     []

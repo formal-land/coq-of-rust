@@ -39,7 +39,7 @@ Module Impl_core_default_Default_for_call_builder_delegate_CallBuilderDelegateTe
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
           []
           []
@@ -83,8 +83,8 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     match ε, τ, α with
     | [], [], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
-        Value.StructRecord
+        (let value := M.alloc (| Ty.path "i32", value |) in
+        Value.mkStructRecord
           "call_builder_delegate::CallBuilderDelegateTest"
           []
           []
@@ -119,9 +119,24 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     match ε, τ, α with
     | [], [], [ self; code_hash; selector ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let code_hash := M.alloc (| code_hash |) in
-        let selector := M.alloc (| selector |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "call_builder_delegate::CallBuilderDelegateTest" ],
+            self
+          |) in
+        let code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            code_hash
+          |) in
+        let selector :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            selector
+          |) in
         Value.StructTuple
           "core::option::Option::None"
           []
@@ -150,9 +165,24 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
     match ε, τ, α with
     | [], [], [ self; code_hash; selector ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let code_hash := M.alloc (| code_hash |) in
-        let selector := M.alloc (| selector |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.path "call_builder_delegate::CallBuilderDelegateTest" ],
+            self
+          |) in
+        let code_hash :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            code_hash
+          |) in
+        let selector :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ],
+            selector
+          |) in
         Value.Integer IntegerKind.I32 0))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

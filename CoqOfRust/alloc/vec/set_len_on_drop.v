@@ -27,8 +27,8 @@ Module vec.
         match ε, τ, α with
         | [], [], [ len ] =>
           ltac:(M.monadic
-            (let len := M.alloc (| len |) in
-            Value.StructRecord
+            (let len := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], len |) in
+            Value.mkStructRecord
               "alloc::vec::set_len_on_drop::SetLenOnDrop"
               []
               []
@@ -52,8 +52,15 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self; increment ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let increment := M.alloc (| increment |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop" ],
+                self
+              |) in
+            let increment := M.alloc (| Ty.path "usize", increment |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 let β :=
@@ -70,7 +77,7 @@ Module vec.
                     [ M.read (| β |); M.read (| increment |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -89,7 +96,11 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -118,7 +129,14 @@ Module vec.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "alloc::vec::set_len_on_drop::SetLenOnDrop" ],
+                self
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -139,7 +157,7 @@ Module vec.
                     |)
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

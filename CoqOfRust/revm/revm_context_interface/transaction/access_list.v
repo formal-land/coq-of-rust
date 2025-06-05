@@ -14,7 +14,7 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
             M.read (|
               let~ storage_num : Ty.path "usize" :=
                 M.call_closure (|
@@ -161,11 +161,37 @@ Module transaction.
                                           ]
                                       ]
                                       (Ty.path "usize"),
-                                    M.alloc (| α0 |),
+                                    M.alloc (|
+                                      Ty.tuple
+                                        [
+                                          Ty.path "alloy_primitives::bits::address::Address";
+                                          Ty.associated_in_trait
+                                            "revm_context_interface::transaction::access_list::AccessListTrait"
+                                            []
+                                            []
+                                            Self
+                                            "{{synthetic}}'1"
+                                        ],
+                                      α0
+                                    |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let i := M.copy (| γ |) in
+                                          (let i :=
+                                            M.copy (|
+                                              Ty.tuple
+                                                [
+                                                  Ty.path
+                                                    "alloy_primitives::bits::address::Address";
+                                                  Ty.associated_in_trait
+                                                    "revm_context_interface::transaction::access_list::AccessListTrait"
+                                                    []
+                                                    []
+                                                    Self
+                                                    "{{synthetic}}'1"
+                                                ],
+                                              γ
+                                            |) in
                                           M.call_closure (|
                                             Ty.path "usize",
                                             M.get_trait_method (|
@@ -230,7 +256,10 @@ Module transaction.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [ M.read (| account_num |); M.read (| storage_num |) ] |)
+              M.alloc (|
+                Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
+                Value.Tuple [ M.read (| account_num |); M.read (| storage_num |) ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -252,7 +281,8 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "revm_context_interface::transaction::access_list::AccessListTrait"
@@ -290,7 +320,8 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
               M.call_closure (|
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                 M.get_trait_method (|
@@ -335,7 +366,19 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ]
+                    ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "revm_context_interface::transaction::access_list::AccessListTrait"
@@ -373,7 +416,19 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ]
+                    ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                 M.get_trait_method (|
@@ -418,7 +473,15 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "revm_context_interface::transaction::access_list::AccessListTrait"
@@ -473,7 +536,15 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; Ty.path "alloc::alloc::Global" ]
+                    ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                 M.get_trait_method (|
@@ -535,7 +606,14 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "revm_context_interface::transaction::access_list::AccessListTrait"
@@ -590,7 +668,14 @@ Module transaction.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+                  self
+                |) in
               M.call_closure (|
                 Ty.tuple [ Ty.path "usize"; Ty.path "usize" ],
                 M.get_trait_method (|
@@ -662,7 +747,11 @@ Module transaction.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_eip2930::AccessList" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::iter::adapters::map::Map")
@@ -841,11 +930,21 @@ Module transaction.
                                         ]
                                     ]
                                 ]),
-                            M.alloc (| α0 |),
+                            M.alloc (|
+                              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_eip2930::AccessListItem" ],
+                              α0
+                            |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let item := M.copy (| γ |) in
+                                  (let item :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_eip2930::AccessListItem" ],
+                                      γ
+                                    |) in
                                   M.read (|
                                     let~ slots :
                                         Ty.apply
@@ -986,6 +1085,25 @@ Module transaction.
                                         ]
                                       |) in
                                     M.alloc (|
+                                      Ty.tuple
+                                        [
+                                          Ty.path "alloy_primitives::bits::address::Address";
+                                          Ty.apply
+                                            (Ty.path "core::iter::adapters::copied::Copied")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::bits::fixed::FixedBytes")
+                                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                                    []
+                                                ]
+                                            ]
+                                        ],
                                       Value.Tuple
                                         [
                                           M.read (|

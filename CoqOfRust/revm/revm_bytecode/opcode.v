@@ -18,7 +18,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_bytecode::opcode::OpCode",
@@ -58,8 +62,13 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -82,6 +91,7 @@ Module opcode.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -167,8 +177,16 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.eq,
@@ -213,12 +231,16 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -242,8 +264,16 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -304,8 +334,16 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], [], "cmp", [], [] |),
@@ -358,8 +396,12 @@ Module opcode.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], [], "hash", [], [ __H ] |),
@@ -409,8 +451,13 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ n : Ty.path "u8" :=
               M.call_closure (|
@@ -428,7 +475,7 @@ Module opcode.
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -454,8 +501,12 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let val := M.copy (| γ0_0 |) in
+                    let val := M.copy (| Ty.path "revm_bytecode::opcode::OpCodeInfo", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -490,6 +541,10 @@ Module opcode.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::result::Result")
@@ -520,6 +575,10 @@ Module opcode.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "UNKNOWN(0x" |); mk_str (| ")" |) ]
                                       |)
                                     |)
@@ -533,6 +592,10 @@ Module opcode.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -563,6 +626,10 @@ Module opcode.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Placeholder" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -644,7 +711,7 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.read (|
             M.match_operator (|
               Ty.apply
@@ -676,6 +743,10 @@ Module opcode.
                         0
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCode" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -692,6 +763,10 @@ Module opcode.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCode" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -717,7 +792,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           Value.Bool false))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -740,16 +819,20 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "revm_bytecode::opcode::OpCode" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -770,8 +853,9 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let opcode := M.copy (| γ0_0 |) in
+                    let opcode := M.copy (| Ty.path "revm_bytecode::opcode::OpCode", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         M.get_associated_function (|
@@ -783,7 +867,7 @@ Module opcode.
                         [ M.borrow (| Pointer.Kind.Ref, opcode |) ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -804,7 +888,7 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "revm_bytecode::opcode::OpCode", self |) in
           Value.Bool false))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -826,16 +910,20 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "revm_bytecode::opcode::OpCode" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -856,8 +944,9 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let opcode := M.copy (| γ0_0 |) in
+                    let opcode := M.copy (| Ty.path "revm_bytecode::opcode::OpCode", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         M.get_associated_function (|
@@ -869,7 +958,7 @@ Module opcode.
                         [ M.read (| opcode |) ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -890,7 +979,7 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "revm_bytecode::opcode::OpCode", self |) in
           Value.Bool false))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -912,16 +1001,20 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "revm_bytecode::opcode::OpCode" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -942,8 +1035,9 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let opcode := M.copy (| γ0_0 |) in
+                    let opcode := M.copy (| Ty.path "revm_bytecode::opcode::OpCode", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "bool",
                       M.call_closure (|
                         Ty.path "bool",
                         M.get_associated_function (|
@@ -955,7 +1049,7 @@ Module opcode.
                         [ M.read (| opcode |) ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -976,7 +1070,7 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [ M.read (| opcode |) ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -995,7 +1089,7 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "revm_bytecode::opcode::OpCode", self |) in
           M.call_closure (|
             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
             M.get_associated_function (|
@@ -1008,6 +1102,7 @@ Module opcode.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
                   M.call_closure (|
                     Ty.path "revm_bytecode::opcode::OpCodeInfo",
                     M.get_associated_function (|
@@ -1042,16 +1137,20 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "revm_bytecode::opcode::OpCode" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1072,8 +1171,9 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let opcode := M.copy (| γ0_0 |) in
+                    let opcode := M.copy (| Ty.path "revm_bytecode::opcode::OpCode", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                       M.call_closure (|
                         Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.get_associated_function (|
@@ -1085,7 +1185,12 @@ Module opcode.
                         [ M.read (| opcode |) ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "Unknown" |) |)))
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                      mk_str (| "Unknown" |)
+                    |)))
               ]
             |)
           |)))
@@ -1106,7 +1211,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "u8",
             M.get_associated_function (|
@@ -1119,6 +1228,7 @@ Module opcode.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
                   M.call_closure (|
                     Ty.path "revm_bytecode::opcode::OpCodeInfo",
                     M.get_associated_function (|
@@ -1149,7 +1259,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "u8",
             M.get_associated_function (|
@@ -1162,6 +1276,7 @@ Module opcode.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
                   M.call_closure (|
                     Ty.path "revm_bytecode::opcode::OpCodeInfo",
                     M.get_associated_function (|
@@ -1192,7 +1307,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "i16",
             M.get_associated_function (|
@@ -1205,6 +1324,7 @@ Module opcode.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
                   M.call_closure (|
                     Ty.path "revm_bytecode::opcode::OpCodeInfo",
                     M.get_associated_function (|
@@ -1239,19 +1359,23 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ opcode ] =>
         ltac:(M.monadic
-          (let opcode := M.alloc (| opcode |) in
+          (let opcode := M.alloc (| Ty.path "u8", opcode |) in
           M.read (|
             M.match_operator (|
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
                 [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "revm_bytecode::opcode::OpCode" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -1272,8 +1396,12 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let opcode := M.copy (| γ0_0 |) in
+                    let opcode := M.copy (| Ty.path "revm_bytecode::opcode::OpCode", γ0_0 |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -1294,6 +1422,10 @@ Module opcode.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
                       Value.StructTuple
                         "core::option::Option::None"
                         []
@@ -1320,7 +1452,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.cast
             (Ty.path "usize")
             (M.read (|
@@ -1350,11 +1486,15 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_bytecode::opcode::OpCodeInfo",
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -1388,11 +1528,12 @@ Module opcode.
                         "core::option::Option::Some",
                         0
                       |) in
-                    let t := M.copy (| γ0_0 |) in
+                    let t := M.copy (| Ty.path "revm_bytecode::opcode::OpCodeInfo", γ0_0 |) in
                     t));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.path "revm_bytecode::opcode::OpCodeInfo",
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -1412,7 +1553,13 @@ Module opcode.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (| Value.Array [ mk_str (| "opcode not found" |) ] |)
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                        Value.Array [ mk_str (| "opcode not found" |) ]
+                                      |)
                                     |)
                                   |)
                                 |)
@@ -1442,7 +1589,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           M.read (|
             let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
               M.call_closure (|
@@ -1456,6 +1607,7 @@ Module opcode.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [ Ty.path "u8"; Ty.path "u8" ],
               Value.Tuple
                 [
                   M.read (|
@@ -1492,7 +1644,7 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "revm_bytecode::opcode::OpCode", self |) in
           M.read (|
             M.SubPointer.get_struct_tuple_field (| self, "revm_bytecode::opcode::OpCode", 0 |)
           |)))
@@ -1512,7 +1664,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCode" ],
+              self
+            |) in
           Value.Bool false))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1526,6 +1682,7 @@ Module opcode.
     Definition value_STOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "revm_bytecode::opcode::OpCode",
           Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [ Value.Integer IntegerKind.U8 0 ]
         |))).
     
@@ -1538,6 +1695,7 @@ Module opcode.
     Definition value_ADD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "revm_bytecode::opcode::OpCode",
           Value.StructTuple "revm_bytecode::opcode::OpCode" [] [] [ Value.Integer IntegerKind.U8 1 ]
         |))).
     
@@ -1550,6 +1708,7 @@ Module opcode.
     Definition value_BALANCE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "revm_bytecode::opcode::OpCode",
           Value.StructTuple
             "revm_bytecode::opcode::OpCode"
             []
@@ -1588,7 +1747,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_bytecode::opcode::OpCodeInfo",
@@ -1656,8 +1819,16 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
@@ -1850,7 +2021,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1867,7 +2042,10 @@ Module opcode.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -1895,12 +2073,21 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1958,6 +2145,10 @@ Module opcode.
                         []
                         [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -2018,6 +2209,10 @@ Module opcode.
                                 []
                                 [ Ty.path "core::cmp::Ordering" ],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -2079,6 +2274,10 @@ Module opcode.
                                         []
                                         [ Ty.path "core::cmp::Ordering" ],
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -2143,6 +2342,10 @@ Module opcode.
                                                 []
                                                 [ Ty.path "core::cmp::Ordering" ],
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -2207,6 +2410,10 @@ Module opcode.
                                                         []
                                                         [ Ty.path "core::cmp::Ordering" ],
                                                       M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "core::option::Option")
@@ -2268,6 +2475,10 @@ Module opcode.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [ Ty.path "core::cmp::Ordering" ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -2318,37 +2529,79 @@ Module opcode.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let cmp := M.copy (| γ |) in
+                                                            (let cmp :=
+                                                              M.copy (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
+                                                                  []
+                                                                  [ Ty.path "core::cmp::Ordering" ],
+                                                                γ
+                                                              |) in
                                                             cmp))
                                                       ]
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let cmp := M.copy (| γ |) in
+                                                    (let cmp :=
+                                                      M.copy (|
+                                                        Ty.apply
+                                                          (Ty.path "core::option::Option")
+                                                          []
+                                                          [ Ty.path "core::cmp::Ordering" ],
+                                                        γ
+                                                      |) in
                                                     cmp))
                                               ]
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let cmp := M.copy (| γ |) in
+                                            (let cmp :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "core::cmp::Ordering" ],
+                                                γ
+                                              |) in
                                             cmp))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let cmp := M.copy (| γ |) in
+                                    (let cmp :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::cmp::Ordering" ],
+                                        γ
+                                      |) in
                                     cmp))
                               ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
+                                γ
+                              |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
+                        γ
+                      |) in
                     cmp))
               ]
             |)
@@ -2373,12 +2626,21 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
@@ -2427,6 +2689,7 @@ Module opcode.
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
                       M.alloc (|
+                        Ty.path "core::cmp::Ordering",
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
@@ -2475,6 +2738,7 @@ Module opcode.
                             M.match_operator (|
                               Ty.path "core::cmp::Ordering",
                               M.alloc (|
+                                Ty.path "core::cmp::Ordering",
                                 M.call_closure (|
                                   Ty.path "core::cmp::Ordering",
                                   M.get_trait_method (|
@@ -2524,6 +2788,7 @@ Module opcode.
                                     M.match_operator (|
                                       Ty.path "core::cmp::Ordering",
                                       M.alloc (|
+                                        Ty.path "core::cmp::Ordering",
                                         M.call_closure (|
                                           Ty.path "core::cmp::Ordering",
                                           M.get_trait_method (|
@@ -2576,6 +2841,7 @@ Module opcode.
                                             M.match_operator (|
                                               Ty.path "core::cmp::Ordering",
                                               M.alloc (|
+                                                Ty.path "core::cmp::Ordering",
                                                 M.call_closure (|
                                                   Ty.path "core::cmp::Ordering",
                                                   M.get_trait_method (|
@@ -2628,6 +2894,7 @@ Module opcode.
                                                     M.match_operator (|
                                                       Ty.path "core::cmp::Ordering",
                                                       M.alloc (|
+                                                        Ty.path "core::cmp::Ordering",
                                                         M.call_closure (|
                                                           Ty.path "core::cmp::Ordering",
                                                           M.get_trait_method (|
@@ -2680,6 +2947,7 @@ Module opcode.
                                                                 "core::cmp::Ordering::Equal"
                                                               |) in
                                                             M.alloc (|
+                                                              Ty.path "core::cmp::Ordering",
                                                               M.call_closure (|
                                                                 Ty.path "core::cmp::Ordering",
                                                                 M.get_trait_method (|
@@ -2727,37 +2995,46 @@ Module opcode.
                                                             |)));
                                                         fun γ =>
                                                           ltac:(M.monadic
-                                                            (let cmp := M.copy (| γ |) in
+                                                            (let cmp :=
+                                                              M.copy (|
+                                                                Ty.path "core::cmp::Ordering",
+                                                                γ
+                                                              |) in
                                                             cmp))
                                                       ]
                                                     |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
-                                                    (let cmp := M.copy (| γ |) in
+                                                    (let cmp :=
+                                                      M.copy (|
+                                                        Ty.path "core::cmp::Ordering",
+                                                        γ
+                                                      |) in
                                                     cmp))
                                               ]
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
-                                            (let cmp := M.copy (| γ |) in
+                                            (let cmp :=
+                                              M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                                             cmp))
                                       ]
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let cmp := M.copy (| γ |) in
+                                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                                     cmp))
                               ]
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -2782,8 +3059,12 @@ Module opcode.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2960,6 +3241,7 @@ Module opcode.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -3021,8 +3303,13 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3130,6 +3417,8 @@ Module opcode.
                                                               M.borrow (|
                                                                 Pointer.Kind.MutRef,
                                                                 M.alloc (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::DebugStruct",
                                                                   M.call_closure (|
                                                                     Ty.path
                                                                       "core::fmt::builders::DebugStruct",
@@ -3167,6 +3456,10 @@ Module opcode.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
+                                                                          []
+                                                                          [ Ty.path "str" ],
                                                                         M.call_closure (|
                                                                           Ty.apply
                                                                             (Ty.path "&")
@@ -3208,6 +3501,7 @@ Module opcode.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.path "u8",
                                                                 M.call_closure (|
                                                                   Ty.path "u8",
                                                                   M.get_associated_function (|
@@ -3246,6 +3540,7 @@ Module opcode.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.path "u8",
                                                         M.call_closure (|
                                                           Ty.path "u8",
                                                           M.get_associated_function (|
@@ -3282,6 +3577,7 @@ Module opcode.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.path "bool",
                                                 M.call_closure (|
                                                   Ty.path "bool",
                                                   M.get_associated_function (|
@@ -3317,6 +3613,7 @@ Module opcode.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           M.get_associated_function (|
@@ -3349,6 +3646,7 @@ Module opcode.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.path "u8",
                                 M.call_closure (|
                                   Ty.path "u8",
                                   M.get_associated_function (|
@@ -3403,19 +3701,20 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ name ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
+          (let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -3438,6 +3737,7 @@ Module opcode.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -3458,6 +3758,10 @@ Module opcode.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array [ mk_str (| "opcode name is too long" |) ]
                                           |)
                                         |)
@@ -3469,12 +3773,13 @@ Module opcode.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.path "revm_bytecode::opcode::OpCodeInfo",
+              Value.mkStructRecord
                 "revm_bytecode::opcode::OpCodeInfo"
                 []
                 []
@@ -3544,7 +3849,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             let~ slice :
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
@@ -3584,6 +3893,7 @@ Module opcode.
                 ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3612,7 +3922,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "i16",
             BinOp.Wrap.sub,
@@ -3653,7 +3967,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -3677,7 +3995,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -3701,7 +4023,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -3726,7 +4052,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -3751,7 +4081,11 @@ Module opcode.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -3778,7 +4112,7 @@ Module opcode.
     match ε, τ, α with
     | [], [], [ op ] =>
       ltac:(M.monadic
-        (let op := M.alloc (| op |) in
+        (let op := M.alloc (| Ty.path "revm_bytecode::opcode::OpCodeInfo", op |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -3809,8 +4143,8 @@ Module opcode.
     match ε, τ, α with
     | [], [], [ op; n ] =>
       ltac:(M.monadic
-        (let op := M.alloc (| op |) in
-        let n := M.alloc (| n |) in
+        (let op := M.alloc (| Ty.path "revm_bytecode::opcode::OpCodeInfo", op |) in
+        let n := M.alloc (| Ty.path "u8", n |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -3841,7 +4175,7 @@ Module opcode.
     match ε, τ, α with
     | [], [], [ op ] =>
       ltac:(M.monadic
-        (let op := M.alloc (| op |) in
+        (let op := M.alloc (| Ty.path "revm_bytecode::opcode::OpCodeInfo", op |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -3873,9 +4207,9 @@ Module opcode.
     match ε, τ, α with
     | [], [], [ op; inputs; outputs ] =>
       ltac:(M.monadic
-        (let op := M.alloc (| op |) in
-        let inputs := M.alloc (| inputs |) in
-        let outputs := M.alloc (| outputs |) in
+        (let op := M.alloc (| Ty.path "revm_bytecode::opcode::OpCodeInfo", op |) in
+        let inputs := M.alloc (| Ty.path "u8", inputs |) in
+        let outputs := M.alloc (| Ty.path "u8", outputs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -3906,7 +4240,7 @@ Module opcode.
   Global Typeclasses Opaque stack_io.
   
   Definition value_STOP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 0 |))).
   
   Global Instance Instance_IsConstant_value_STOP :
     M.IsFunction.C "revm_bytecode::opcode::STOP" value_STOP.
@@ -3914,7 +4248,7 @@ Module opcode.
   Global Typeclasses Opaque value_STOP.
   
   Definition value_ADD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 1 |))).
   
   Global Instance Instance_IsConstant_value_ADD :
     M.IsFunction.C "revm_bytecode::opcode::ADD" value_ADD.
@@ -3922,7 +4256,7 @@ Module opcode.
   Global Typeclasses Opaque value_ADD.
   
   Definition value_BALANCE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 49 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 49 |))).
   
   Global Instance Instance_IsConstant_value_BALANCE :
     M.IsFunction.C "revm_bytecode::opcode::BALANCE" value_BALANCE.
@@ -3956,13 +4290,14 @@ Module opcode.
         M.read (|
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         UnOp.not (|
                           LogicalOp.or (|
                             M.call_closure (|
@@ -3981,6 +4316,7 @@ Module opcode.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.tuple [],
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -4001,6 +4337,10 @@ Module opcode.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "opcodes must be sorted in ascending order" |) ]
                                     |)
@@ -4013,7 +4353,7 @@ Module opcode.
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |) in
@@ -4055,13 +4395,14 @@ Module opcode.
         M.read (|
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         UnOp.not (|
                           LogicalOp.or (|
                             M.call_closure (|
@@ -4080,6 +4421,7 @@ Module opcode.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.tuple [],
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -4100,6 +4442,10 @@ Module opcode.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "opcodes must be sorted in ascending order" |) ]
                                     |)
@@ -4112,7 +4458,7 @@ Module opcode.
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |) in
@@ -4148,13 +4494,14 @@ Module opcode.
         M.read (|
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         UnOp.not (|
                           LogicalOp.or (|
                             M.call_closure (|
@@ -4173,6 +4520,7 @@ Module opcode.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.tuple [],
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -4193,6 +4541,10 @@ Module opcode.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [ mk_str (| "opcodes must be sorted in ascending order" |) ]
                                     |)
@@ -4205,7 +4557,7 @@ Module opcode.
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |) in
@@ -4258,8 +4610,17 @@ Module opcode.
   Definition value_NAME_TO_OPCODE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "phf::map::Map")
+          []
+          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "revm_bytecode::opcode::OpCode" ],
         M.alloc (|
-          Value.StructRecord
+          Ty.apply
+            (Ty.path "phf::map::Map")
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "revm_bytecode::opcode::OpCode"
+            ],
+          Value.mkStructRecord
             "phf::map::Map"
             []
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "revm_bytecode::opcode::OpCode" ]
@@ -4274,6 +4635,10 @@ Module opcode.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ],
                           Value.Array
                             [
                               Value.Tuple
@@ -4292,6 +4657,16 @@ Module opcode.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                  Ty.path "revm_bytecode::opcode::OpCode"
+                                ]
+                            ],
                           Value.Array
                             [
                               Value.Tuple

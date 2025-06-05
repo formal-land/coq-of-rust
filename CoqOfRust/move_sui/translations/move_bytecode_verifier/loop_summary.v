@@ -30,7 +30,11 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_bytecode_verifier::loop_summary::NodeId",
@@ -58,8 +62,13 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -82,6 +91,7 @@ Module loop_summary.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -128,8 +138,16 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.eq,
@@ -174,12 +192,16 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -203,8 +225,16 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -265,8 +295,16 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u16", [], [], "cmp", [], [] |),
@@ -498,7 +536,14 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ cfg ] =>
         ltac:(M.monadic
-          (let cfg := M.alloc (| cfg |) in
+          (let cfg :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph" ],
+              cfg
+            |) in
           M.read (|
             let~ num_blocks : Ty.path "usize" :=
               M.cast
@@ -956,12 +1001,16 @@ Module loop_summary.
                                   Ty.function
                                     [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ] ]
                                     (Ty.path "move_bytecode_verifier::loop_summary::new::Frontier"),
-                                  M.alloc (| α0 |),
+                                  M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let succ := M.copy (| γ |) in
-                                        Value.StructRecord
+                                        (let succ :=
+                                          M.copy (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                            γ
+                                          |) in
+                                        Value.mkStructRecord
                                           "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
                                           []
                                           []
@@ -985,12 +1034,16 @@ Module loop_summary.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Ty.tuple [],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "move_bytecode_verifier::loop_summary::new::Frontier" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -1019,7 +1072,11 @@ Module loop_summary.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let action := M.copy (| γ0_0 |) in
+                            let action :=
+                              M.copy (|
+                                Ty.path "move_bytecode_verifier::loop_summary::new::Frontier",
+                                γ0_0
+                              |) in
                             M.match_operator (|
                               Ty.tuple [],
                               action,
@@ -1044,9 +1101,17 @@ Module loop_summary.
                                         "move_bytecode_verifier::loop_summary::new::Frontier::Finish",
                                         "parent"
                                       |) in
-                                    let block := M.copy (| γ0_0 |) in
-                                    let node_id := M.copy (| γ0_1 |) in
-                                    let parent := M.copy (| γ0_2 |) in
+                                    let block := M.copy (| Ty.path "u16", γ0_0 |) in
+                                    let node_id :=
+                                      M.copy (|
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                        γ0_1
+                                      |) in
+                                    let parent :=
+                                      M.copy (|
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                        γ0_2
+                                      |) in
                                     let~ _ : Ty.tuple [] :=
                                       let β :=
                                         M.deref (|
@@ -1219,7 +1284,7 @@ Module loop_summary.
                                           []
                                           [ M.read (| node_id |) ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
@@ -1234,11 +1299,24 @@ Module loop_summary.
                                         "move_bytecode_verifier::loop_summary::new::Frontier::Visit",
                                         "to_block"
                                       |) in
-                                    let from_node := M.copy (| γ0_0 |) in
-                                    let to_block := M.copy (| γ0_1 |) in
+                                    let from_node :=
+                                      M.copy (|
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                        γ0_0
+                                      |) in
+                                    let to_block := M.copy (| Ty.path "u16", γ0_1 |) in
                                     M.match_operator (|
                                       Ty.tuple [],
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::entry::Entry")
+                                          []
+                                          [
+                                            Ty.path "u16";
+                                            Ty.path
+                                              "move_bytecode_verifier::loop_summary::new::Exploration";
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::map::entry::Entry")
@@ -1278,10 +1356,30 @@ Module loop_summary.
                                                 "alloc::collections::btree::map::entry::Entry::Occupied",
                                                 0
                                               |) in
-                                            let entry := M.copy (| γ0_0 |) in
+                                            let entry :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                  []
+                                                  [
+                                                    Ty.path "u16";
+                                                    Ty.path
+                                                      "move_bytecode_verifier::loop_summary::new::Exploration";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                γ0_0
+                                              |) in
                                             M.match_operator (|
                                               Ty.tuple [],
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_bytecode_verifier::loop_summary::new::Exploration"
+                                                  ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "&")
@@ -1318,8 +1416,19 @@ Module loop_summary.
                                                         "move_bytecode_verifier::loop_summary::new::Exploration::InProgress",
                                                         0
                                                       |) in
-                                                    let to_node := M.alloc (| γ1_0 |) in
+                                                    let to_node :=
+                                                      M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::loop_summary::NodeId"
+                                                          ],
+                                                        γ1_0
+                                                      |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.call_closure (|
                                                         Ty.tuple [],
                                                         M.get_associated_function (|
@@ -1421,8 +1530,19 @@ Module loop_summary.
                                                         "move_bytecode_verifier::loop_summary::new::Exploration::Done",
                                                         0
                                                       |) in
-                                                    let to_node := M.alloc (| γ1_0 |) in
+                                                    let to_node :=
+                                                      M.alloc (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_bytecode_verifier::loop_summary::NodeId"
+                                                          ],
+                                                        γ1_0
+                                                      |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.call_closure (|
                                                         Ty.tuple [],
                                                         M.get_associated_function (|
@@ -1525,7 +1645,20 @@ Module loop_summary.
                                                 "alloc::collections::btree::map::entry::Entry::Vacant",
                                                 0
                                               |) in
-                                            let entry := M.copy (| γ0_0 |) in
+                                            let entry :=
+                                              M.copy (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::map::entry::VacantEntry")
+                                                  []
+                                                  [
+                                                    Ty.path "u16";
+                                                    Ty.path
+                                                      "move_bytecode_verifier::loop_summary::new::Exploration";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                γ0_0
+                                              |) in
                                             let~ to_node :
                                                 Ty.path
                                                   "move_bytecode_verifier::loop_summary::NodeId" :=
@@ -1723,7 +1856,7 @@ Module loop_summary.
                                                 |),
                                                 [
                                                   M.borrow (| Pointer.Kind.MutRef, stack |);
-                                                  Value.StructRecord
+                                                  Value.mkStructRecord
                                                     "move_bytecode_verifier::loop_summary::new::Frontier::Finish"
                                                     []
                                                     []
@@ -1939,13 +2072,25 @@ Module loop_summary.
                                                                     ]
                                                                     (Ty.path
                                                                       "move_bytecode_verifier::loop_summary::new::Frontier"),
-                                                                  M.alloc (| α0 |),
+                                                                  M.alloc (|
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [ Ty.path "u16" ],
+                                                                    α0
+                                                                  |),
                                                                   [
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let succ :=
-                                                                          M.copy (| γ |) in
-                                                                        Value.StructRecord
+                                                                          M.copy (|
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [ Ty.path "u16" ],
+                                                                            γ
+                                                                          |) in
+                                                                        Value.mkStructRecord
                                                                           "move_bytecode_verifier::loop_summary::new::Frontier::Visit"
                                                                           []
                                                                           []
@@ -1969,7 +2114,7 @@ Module loop_summary.
                                                   |)
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)))
                               ]
@@ -1977,11 +2122,12 @@ Module loop_summary.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.tuple [],
                               M.never_to_any (|
                                 M.read (|
                                   let~ _ : Ty.tuple [] :=
                                     M.never_to_any (| M.read (| M.break (||) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                 |)
                               |)
                             |)))
@@ -1990,7 +2136,8 @@ Module loop_summary.
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.path "move_bytecode_verifier::loop_summary::LoopSummary",
+              Value.mkStructRecord
                 "move_bytecode_verifier::loop_summary::LoopSummary"
                 []
                 []
@@ -2021,9 +2168,16 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; β1; β2 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
-          let β2 := M.alloc (| β2 |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" ],
+              self
+            |) in
+          let β1 := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", β1 |) in
+          let β2 := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", β2 |) in
           M.match_operator (|
             Ty.path "bool",
             β1,
@@ -2036,7 +2190,12 @@ Module loop_summary.
                       "move_bytecode_verifier::loop_summary::NodeId",
                       0
                     |) in
-                  let ancestor := M.copy (| γ0_0 |) in
+                  let ancestor :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_0
+                    |) in
                   M.match_operator (|
                     Ty.path "bool",
                     β2,
@@ -2049,7 +2208,12 @@ Module loop_summary.
                               "move_bytecode_verifier::loop_summary::NodeId",
                               0
                             |) in
-                          let descendant := M.copy (| γ0_0 |) in
+                          let descendant :=
+                            M.copy (|
+                              Ty.path
+                                "Type for variables in patterns in function parameters is not handled",
+                              γ0_0
+                            |) in
                           LogicalOp.and (|
                             M.call_closure (|
                               Ty.path "bool",
@@ -2125,7 +2289,14 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::iter::adapters::map::Map")
@@ -2151,7 +2322,7 @@ Module loop_summary.
               ]
             |),
             [
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]
@@ -2191,11 +2362,11 @@ Module loop_summary.
                           Ty.function
                             [ Ty.tuple [ Ty.path "usize" ] ]
                             (Ty.path "move_bytecode_verifier::loop_summary::NodeId"),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "usize", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let id := M.copy (| γ |) in
+                                (let id := M.copy (| Ty.path "usize", γ |) in
                                 Value.StructTuple
                                   "move_bytecode_verifier::loop_summary::NodeId"
                                   []
@@ -2223,8 +2394,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.read (|
             M.deref (|
               M.call_closure (|
@@ -2283,8 +2461,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2370,8 +2555,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2465,7 +2657,14 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ summary ] =>
         ltac:(M.monadic
-          (let summary := M.alloc (| summary |) in
+          (let summary :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopSummary" ],
+              summary
+            |) in
           M.read (|
             let~ num_blocks : Ty.path "usize" :=
               M.call_closure (|
@@ -2491,7 +2690,8 @@ Module loop_summary.
                 ]
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.path "move_bytecode_verifier::loop_summary::LoopPartition",
+              Value.mkStructRecord
                 "move_bytecode_verifier::loop_summary::LoopPartition"
                 []
                 []
@@ -2556,7 +2756,7 @@ Module loop_summary.
                             ]
                           |),
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -2574,11 +2774,11 @@ Module loop_summary.
                                         Ty.function
                                           [ Ty.tuple [ Ty.path "usize" ] ]
                                           (Ty.path "move_bytecode_verifier::loop_summary::NodeId"),
-                                        M.alloc (| α0 |),
+                                        M.alloc (| Ty.path "usize", α0 |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let id := M.copy (| γ |) in
+                                              (let id := M.copy (| Ty.path "usize", γ |) in
                                               Value.StructTuple
                                                 "move_bytecode_verifier::loop_summary::NodeId"
                                                 []
@@ -2644,12 +2844,20 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; id ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let id := M.alloc (| id |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" ],
+              self
+            |) in
+          let id := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", id |) in
           M.read (|
             M.catch_return (Ty.path "move_bytecode_verifier::loop_summary::NodeId") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "move_bytecode_verifier::loop_summary::NodeId",
                   M.read (|
                     let~ child : Ty.path "move_bytecode_verifier::loop_summary::NodeId" :=
                       M.read (| id |) in
@@ -2685,13 +2893,14 @@ Module loop_summary.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       LogicalOp.or (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -2739,11 +2948,12 @@ Module loop_summary.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (| M.return_ (| M.read (| parent |) |) |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -2807,6 +3017,12 @@ Module loop_summary.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.tuple
+                                      [
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId";
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId";
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId"
+                                      ],
                                     Value.Tuple
                                       [
                                         M.read (| parent |);
@@ -2836,28 +3052,41 @@ Module loop_summary.
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                                        let lhs := M.copy (| γ0_0 |) in
-                                        let lhs := M.copy (| γ0_1 |) in
-                                        let lhs := M.copy (| γ0_2 |) in
+                                        let lhs :=
+                                          M.copy (|
+                                            Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                            γ0_0
+                                          |) in
+                                        let lhs :=
+                                          M.copy (|
+                                            Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                            γ0_1
+                                          |) in
+                                        let lhs :=
+                                          M.copy (|
+                                            Ty.path "move_bytecode_verifier::loop_summary::NodeId",
+                                            γ0_2
+                                          |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.write (| child, M.read (| lhs |) |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.write (| parent, M.read (| lhs |) |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.write (| grandparent, M.read (| lhs |) |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
                             M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           M.call_closure (|
                                             Ty.path "bool",
                                             M.get_trait_method (|
@@ -2884,8 +3113,12 @@ Module loop_summary.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
-                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (|
+                                      Ty.tuple [],
+                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                               ]
                             |)))
                         |)
@@ -2896,6 +3129,13 @@ Module loop_summary.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                []
+                                [
+                                  Ty.path "move_bytecode_verifier::loop_summary::NodeId";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::into_iter::IntoIter")
@@ -2925,7 +3165,17 @@ Module loop_summary.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [
+                                          Ty.path "move_bytecode_verifier::loop_summary::NodeId";
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -2934,6 +3184,13 @@ Module loop_summary.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::loop_summary::NodeId"
+                                                ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -2977,6 +3234,7 @@ Module loop_summary.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -2987,7 +3245,12 @@ Module loop_summary.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let descendant := M.copy (| γ0_0 |) in
+                                                  let descendant :=
+                                                    M.copy (|
+                                                      Ty.path
+                                                        "move_bytecode_verifier::loop_summary::NodeId",
+                                                      γ0_0
+                                                    |) in
                                                   let~ _ : Ty.tuple [] :=
                                                     M.write (|
                                                       M.deref (|
@@ -3017,11 +3280,11 @@ Module loop_summary.
                                                       |),
                                                       M.read (| parent |)
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)))
+                                                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
@@ -3059,31 +3322,65 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; head; body ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let head := M.alloc (| head |) in
-          let body := M.alloc (| body |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" ],
+              self
+            |) in
+          let head := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", head |) in
+          let body :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::set::BTreeSet")
+                    []
+                    [
+                      Ty.path "move_bytecode_verifier::loop_summary::NodeId";
+                      Ty.path "alloc::alloc::Global"
+                    ]
+                ],
+              body
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.read (|
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.tuple
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ]
+                                  ],
                                 Value.Tuple
                                   [
                                     M.borrow (| Pointer.Kind.Ref, head |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.path "move_bytecode_verifier::loop_summary::NodeId",
                                         M.call_closure (|
                                           Ty.path "move_bytecode_verifier::loop_summary::NodeId",
                                           M.get_associated_function (|
@@ -3110,17 +3407,34 @@ Module loop_summary.
                                   ltac:(M.monadic
                                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let left_val := M.copy (| γ0_0 |) in
-                                    let right_val := M.copy (| γ0_1 |) in
+                                    let left_val :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_bytecode_verifier::loop_summary::NodeId"
+                                          ],
+                                        γ0_0
+                                      |) in
+                                    let right_val :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_bytecode_verifier::loop_summary::NodeId"
+                                          ],
+                                        γ0_1
+                                      |) in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   UnOp.not (|
                                                     M.call_closure (|
                                                       Ty.path "bool",
@@ -3156,6 +3470,7 @@ Module loop_summary.
                                                 Value.Bool true
                                               |) in
                                             M.alloc (|
+                                              Ty.tuple [],
                                               M.never_to_any (|
                                                 M.read (|
                                                   let~ kind :
@@ -3166,6 +3481,7 @@ Module loop_summary.
                                                       []
                                                       [] in
                                                   M.alloc (|
+                                                    Ty.path "never",
                                                     M.call_closure (|
                                                       Ty.path "never",
                                                       M.get_function (|
@@ -3209,14 +3525,16 @@ Module loop_summary.
                                                 |)
                                               |)
                                             |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -3240,6 +3558,10 @@ Module loop_summary.
                   (M.match_operator (|
                     Ty.tuple [],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::set::Iter")
+                        []
+                        [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::set::Iter")
@@ -3271,7 +3593,14 @@ Module loop_summary.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
+                          (let iter :=
+                            M.copy (|
+                              Ty.apply
+                                (Ty.path "alloc::collections::btree::set::Iter")
+                                []
+                                [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+                              γ
+                            |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -3280,6 +3609,16 @@ Module loop_summary.
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_bytecode_verifier::loop_summary::NodeId"
+                                            ]
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::option::Option")
@@ -3323,6 +3662,7 @@ Module loop_summary.
                                               "core::option::Option::None"
                                             |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (| M.read (| M.break (||) |) |)
                                           |)));
                                       fun γ =>
@@ -3333,17 +3673,31 @@ Module loop_summary.
                                               "core::option::Option::Some",
                                               0
                                             |) in
-                                          let constituent := M.copy (| γ0_0 |) in
+                                          let constituent :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_bytecode_verifier::loop_summary::NodeId"
+                                                ],
+                                              γ0_0
+                                            |) in
                                           let~ _ : Ty.tuple [] :=
                                             M.read (|
                                               M.match_operator (|
                                                 Ty.tuple [],
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ :=
-                                                        M.use (M.alloc (| Value.Bool true |)) in
+                                                        M.use
+                                                          (M.alloc (|
+                                                            Ty.path "bool",
+                                                            Value.Bool true
+                                                          |)) in
                                                       let _ :=
                                                         is_constant_or_break_match (|
                                                           M.read (| γ |),
@@ -3354,6 +3708,23 @@ Module loop_summary.
                                                           M.match_operator (|
                                                             Ty.tuple [],
                                                             M.alloc (|
+                                                              Ty.tuple
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::loop_summary::NodeId"
+                                                                    ];
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::loop_summary::NodeId"
+                                                                    ]
+                                                                ],
                                                               Value.Tuple
                                                                 [
                                                                   M.borrow (|
@@ -3365,6 +3736,8 @@ Module loop_summary.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
+                                                                      Ty.path
+                                                                        "move_bytecode_verifier::loop_summary::NodeId",
                                                                       M.call_closure (|
                                                                         Ty.path
                                                                           "move_bytecode_verifier::loop_summary::NodeId",
@@ -3409,18 +3782,40 @@ Module loop_summary.
                                                                       1
                                                                     |) in
                                                                   let left_val :=
-                                                                    M.copy (| γ0_0 |) in
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::loop_summary::NodeId"
+                                                                        ],
+                                                                      γ0_0
+                                                                    |) in
                                                                   let right_val :=
-                                                                    M.copy (| γ0_1 |) in
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_bytecode_verifier::loop_summary::NodeId"
+                                                                        ],
+                                                                      γ0_1
+                                                                    |) in
                                                                   M.match_operator (|
                                                                     Ty.tuple [],
-                                                                    M.alloc (| Value.Tuple [] |),
+                                                                    M.alloc (|
+                                                                      Ty.tuple [],
+                                                                      Value.Tuple []
+                                                                    |),
                                                                     [
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
+                                                                                Ty.path "bool",
                                                                                 UnOp.not (|
                                                                                   M.call_closure (|
                                                                                     Ty.path "bool",
@@ -3464,6 +3859,7 @@ Module loop_summary.
                                                                               Value.Bool true
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             M.never_to_any (|
                                                                               M.read (|
                                                                                 let~ kind :
@@ -3475,6 +3871,7 @@ Module loop_summary.
                                                                                     []
                                                                                     [] in
                                                                                 M.alloc (|
+                                                                                  Ty.path "never",
                                                                                   M.call_closure (|
                                                                                     Ty.path "never",
                                                                                     M.get_function (|
@@ -3534,6 +3931,7 @@ Module loop_summary.
                                                                       fun γ =>
                                                                         ltac:(M.monadic
                                                                           (M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |)))
                                                                     ]
@@ -3541,9 +3939,10 @@ Module loop_summary.
                                                             ]
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)));
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)
                                             |) in
@@ -3616,11 +4015,11 @@ Module loop_summary.
                                                 ]
                                               |)
                                             |) in
-                                          M.alloc (| Value.Tuple [] |)))
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           |)))
                     ]
                   |))
@@ -3673,8 +4072,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.read (|
             M.deref (|
               M.call_closure (|
@@ -3739,8 +4145,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -3817,8 +4230,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.read (|
             M.deref (|
               M.call_closure (|
@@ -3877,8 +4297,15 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self; l ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let l := M.alloc (| l |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::LoopPartition" ],
+              self
+            |) in
+          let l := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", l |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -3955,7 +4382,14 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "move_bytecode_verifier::loop_summary::NodeId" ],
+              self
+            |) in
           M.read (|
             let~ ret : Ty.path "move_bytecode_verifier::loop_summary::NodeId" :=
               M.read (| M.deref (| M.read (| self |) |) |) in
@@ -3996,7 +4430,7 @@ Module loop_summary.
       match ε, τ, α with
       | [], [], [ β0 ] =>
         ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
+          (let β0 := M.alloc (| Ty.path "move_bytecode_verifier::loop_summary::NodeId", β0 |) in
           M.match_operator (|
             Ty.path "usize",
             β0,
@@ -4009,7 +4443,12 @@ Module loop_summary.
                       "move_bytecode_verifier::loop_summary::NodeId",
                       0
                     |) in
-                  let id := M.copy (| γ0_0 |) in
+                  let id :=
+                    M.copy (|
+                      Ty.path
+                        "Type for variables in patterns in function parameters is not handled",
+                      γ0_0
+                    |) in
                   M.cast (Ty.path "usize") (M.read (| id |))))
             ]
           |)))

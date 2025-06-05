@@ -24,7 +24,11 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
           Value.StructTuple
             "core::ascii::EscapeDefault"
             []
@@ -85,7 +89,7 @@ Module ascii.
     match ε, τ, α with
     | [], [], [ c ] =>
       ltac:(M.monadic
-        (let c := M.alloc (| c |) in
+        (let c := M.alloc (| Ty.path "u8", c |) in
         M.call_closure (|
           Ty.path "core::ascii::EscapeDefault",
           M.get_associated_function (| Ty.path "core::ascii::EscapeDefault", "new", [], [] |),
@@ -111,7 +115,7 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ c ] =>
         ltac:(M.monadic
-          (let c := M.alloc (| c |) in
+          (let c := M.alloc (| Ty.path "u8", c |) in
           Value.StructTuple
             "core::ascii::EscapeDefault"
             []
@@ -188,7 +192,11 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -239,7 +247,11 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
             M.get_associated_function (|
@@ -275,7 +287,11 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
           M.read (|
             let~ n : Ty.path "usize" :=
               M.call_closure (|
@@ -301,6 +317,9 @@ Module ascii.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple
+                [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                ],
               Value.Tuple
                 [
                   M.read (| n |);
@@ -324,7 +343,7 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::ascii::EscapeDefault", self |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_associated_function (|
@@ -355,7 +374,7 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::ascii::EscapeDefault", self |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
             M.get_associated_function (|
@@ -386,8 +405,12 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self; n ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let n := M.alloc (| n |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
+          let n := M.alloc (| Ty.path "usize", n |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -447,7 +470,11 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
             M.get_associated_function (|
@@ -482,8 +509,12 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self; n ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let n := M.alloc (| n |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
+          let n := M.alloc (| Ty.path "usize", n |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -539,7 +570,11 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "usize",
             M.get_associated_function (|
@@ -598,8 +633,13 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -661,8 +701,13 @@ Module ascii.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::ascii::EscapeDefault" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -678,6 +723,7 @@ Module ascii.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.alloc (|
+                  Ty.path "core::fmt::builders::DebugStruct",
                   M.call_closure (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     M.get_associated_function (|

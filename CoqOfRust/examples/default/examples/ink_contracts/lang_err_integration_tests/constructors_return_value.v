@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_constructors_return_value_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "constructors_return_value::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "constructors_return_value::AccountId",
@@ -100,7 +104,11 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_Ac
     match ε, τ, α with
     | [], [], [ _value ] =>
       ltac:(M.monadic
-        (let _value := M.alloc (| _value |) in
+        (let _value :=
+          M.alloc (|
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
+            _value
+          |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -173,8 +181,12 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "constructors_return_value::ConstructorError" ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -215,7 +227,7 @@ Module Impl_constructors_return_value_ReturnFlags.
     match ε, τ, α with
     | [], [], [ has_reverted ] =>
       ltac:(M.monadic
-        (let has_reverted := M.alloc (| has_reverted |) in
+        (let has_reverted := M.alloc (| Ty.path "bool", has_reverted |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -241,8 +253,9 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   match ε, τ, α with
   | [], [ R ], [ return_flags; return_value ] =>
     ltac:(M.monadic
-      (let return_flags := M.alloc (| return_flags |) in
-      let return_value := M.alloc (| return_value |) in
+      (let return_flags :=
+        M.alloc (| Ty.path "constructors_return_value::ReturnFlags", return_flags |) in
+      let return_value := M.alloc (| Ty.apply (Ty.path "&") [] [ R ], return_value |) in
       M.call_closure (|
         Ty.path "never",
         M.get_function (| "core::panicking::panic", [], [] |),
@@ -268,8 +281,8 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match ε, τ, α with
     | [], [], [ init_value ] =>
       ltac:(M.monadic
-        (let init_value := M.alloc (| init_value |) in
-        Value.StructRecord
+        (let init_value := M.alloc (| Ty.path "bool", init_value |) in
+        Value.mkStructRecord
           "constructors_return_value::ConstructorsReturnValue"
           []
           []
@@ -294,7 +307,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match ε, τ, α with
     | [], [], [ succeed ] =>
       ltac:(M.monadic
-        (let succeed := M.alloc (| succeed |) in
+        (let succeed := M.alloc (| Ty.path "bool", succeed |) in
         M.read (|
           M.match_operator (|
             Ty.apply
@@ -304,13 +317,20 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                 Ty.path "constructors_return_value::ConstructorsReturnValue";
                 Ty.path "constructors_return_value::ConstructorError"
               ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use succeed in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "constructors_return_value::ConstructorsReturnValue";
+                        Ty.path "constructors_return_value::ConstructorError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -334,6 +354,13 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "constructors_return_value::ConstructorsReturnValue";
+                        Ty.path "constructors_return_value::ConstructorError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Err"
                       []
@@ -365,7 +392,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match ε, τ, α with
     | [], [], [ _init_value ] =>
       ltac:(M.monadic
-        (let _init_value := M.alloc (| _init_value |) in
+        (let _init_value := M.alloc (| Ty.path "bool", _init_value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -399,6 +426,13 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "constructors_return_value::AccountId";
+                          Ty.path "constructors_return_value::LangError"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -464,7 +498,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match ε, τ, α with
     | [], [], [ init_value ] =>
       ltac:(M.monadic
-        (let init_value := M.alloc (| init_value |) in
+        (let init_value := M.alloc (| Ty.path "bool", init_value |) in
         M.read (|
           let~ value :
               Ty.apply
@@ -495,13 +529,26 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                       ];
                     Ty.path "constructors_return_value::LangError"
                   ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use init_value in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "constructors_return_value::AccountId";
+                                Ty.path "constructors_return_value::ConstructorError"
+                              ];
+                            Ty.path "constructors_return_value::LangError"
+                          ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -553,6 +600,19 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.path "constructors_return_value::AccountId";
+                                Ty.path "constructors_return_value::ConstructorError"
+                              ];
+                            Ty.path "constructors_return_value::LangError"
+                          ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -578,6 +638,13 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
               |)
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.path "constructors_return_value::ConstructorsReturnValue";
+                Ty.path "constructors_return_value::ConstructorError"
+              ],
             M.never_to_any (|
               M.call_closure (|
                 Ty.path "never",
@@ -637,7 +704,14 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "constructors_return_value::ConstructorsReturnValue" ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),

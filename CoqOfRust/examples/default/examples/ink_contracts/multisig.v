@@ -22,7 +22,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Mapping"
           []
           [ K; V ]
@@ -82,8 +82,12 @@ Module Impl_multisig_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -110,8 +114,12 @@ Module Impl_multisig_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| Ty.apply (Ty.path "&") [] [ K ], _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -138,9 +146,13 @@ Module Impl_multisig_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key; _value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
-        let _value := M.alloc (| _value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
+        let _value := M.alloc (| V, _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -167,8 +179,12 @@ Module Impl_multisig_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -195,8 +211,12 @@ Module Impl_multisig_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -223,8 +243,12 @@ Module Impl_multisig_Mapping_K_V.
     match ε, τ, α with
     | [], [], [ self; _key ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _key := M.alloc (| _key |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "multisig::Mapping") [] [ K; V ] ],
+            self
+          |) in
+        let _key := M.alloc (| K, _key |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -297,8 +321,9 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
@@ -318,6 +343,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_tuple_field (|
@@ -352,7 +378,8 @@ Module Impl_core_clone_Clone_for_multisig_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "multisig::AccountId",
@@ -404,8 +431,10 @@ Module Impl_core_cmp_PartialEq_multisig_AccountId_for_multisig_AccountId.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], self |) in
+        let other :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], other |) in
         M.call_closure (|
           Ty.path "bool",
           BinOp.eq,
@@ -450,12 +479,13 @@ Module Impl_core_cmp_Eq_for_multisig_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
             Value.DeclaredButUndefined,
-            [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+            [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -479,8 +509,10 @@ Module Impl_core_cmp_PartialOrd_multisig_AccountId_for_multisig_AccountId.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], self |) in
+        let other :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], other |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
           M.get_trait_method (|
@@ -541,8 +573,10 @@ Module Impl_core_cmp_Ord_for_multisig_AccountId.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], self |) in
+        let other :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], other |) in
         M.call_closure (|
           Ty.path "core::cmp::Ordering",
           M.get_trait_method (| "core::cmp::Ord", Ty.path "u128", [], [], "cmp", [], [] |),
@@ -598,7 +632,7 @@ Axiom Balance : (Ty.path "multisig::Balance") = (Ty.path "u128").
   } *)
 
 Definition value_MAX_OWNERS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 50 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 50 |))).
 
 Global Instance Instance_IsConstant_value_MAX_OWNERS :
   M.IsFunction.C "multisig::MAX_OWNERS" value_MAX_OWNERS.
@@ -609,7 +643,10 @@ Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
 Definition value_WRONG_TRANSACTION_ID (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   ltac:(M.monadic
-    (M.alloc (| mk_str (| "The user specified an invalid transaction id. Abort." |) |))).
+    (M.alloc (|
+      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+      mk_str (| "The user specified an invalid transaction id. Abort." |)
+    |))).
 
 Global Instance Instance_IsConstant_value_WRONG_TRANSACTION_ID :
   M.IsFunction.C "multisig::WRONG_TRANSACTION_ID" value_WRONG_TRANSACTION_ID.
@@ -656,7 +693,11 @@ Module Impl_core_clone_Clone_for_multisig_ConfirmationStatus.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "multisig::ConfirmationStatus" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "multisig::ConfirmationStatus",
@@ -714,7 +755,7 @@ Module Impl_core_default_Default_for_multisig_Transaction.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Transaction"
           []
           []
@@ -848,7 +889,7 @@ Module Impl_core_clone_Clone_for_multisig_Error.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Error" ], self |) in
         M.read (| M.deref (| M.read (| self |) |) |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -894,8 +935,8 @@ Module Impl_core_cmp_PartialEq_multisig_Error_for_multisig_Error.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Error" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Error" ], other |) in
         Value.Bool true))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -921,7 +962,7 @@ Module Impl_core_cmp_Eq_for_multisig_Error.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Error" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -960,7 +1001,7 @@ Module Impl_core_default_Default_for_multisig_Transactions.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Transactions"
           []
           []
@@ -1165,7 +1206,7 @@ Module Impl_multisig_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Env" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -1189,8 +1230,8 @@ Module Impl_multisig_Env.
     match ε, τ, α with
     | [], [], [ self; _event ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _event := M.alloc (| _event |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Env" ], self |) in
+        let _event := M.alloc (| Ty.path "multisig::Event", _event |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1215,7 +1256,7 @@ Module Impl_multisig_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Env" ], self |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1240,7 +1281,7 @@ Module Impl_multisig_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Env" ], self |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -1296,7 +1337,7 @@ Module Impl_core_default_Default_for_multisig_Multisig.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "multisig::Multisig"
           []
           []
@@ -1445,20 +1486,21 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
   match ε, τ, α with
   | [], [], [ owners; requirement ] =>
     ltac:(M.monadic
-      (let owners := M.alloc (| owners |) in
-      let requirement := M.alloc (| requirement |) in
+      (let owners := M.alloc (| Ty.path "u32", owners |) in
+      let requirement := M.alloc (| Ty.path "u32", requirement |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           UnOp.not (|
                             LogicalOp.and (|
                               LogicalOp.and (|
@@ -1490,6 +1532,7 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -1502,11 +1545,11 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -1551,7 +1594,8 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
         M.call_closure (|
           Ty.path "multisig::Env",
           M.get_associated_function (| Ty.path "multisig::Multisig", "init_env", [], [] |),
@@ -1585,8 +1629,15 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ requirement; owners ] =>
       ltac:(M.monadic
-        (let requirement := M.alloc (| requirement |) in
-        let owners := M.alloc (| owners |) in
+        (let requirement := M.alloc (| Ty.path "u32", requirement |) in
+        let owners :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "multisig::AccountId"; Ty.path "alloc::alloc::Global" ],
+            owners
+          |) in
         M.read (|
           let~ contract : Ty.path "multisig::Multisig" :=
             M.call_closure (|
@@ -1681,6 +1732,10 @@ Module Impl_multisig_Multisig.
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::slice::iter::Iter")
+                      []
+                      [ Ty.path "multisig::AccountId" ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::slice::iter::Iter")
@@ -1709,7 +1764,14 @@ Module Impl_multisig_Multisig.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.apply
+                              (Ty.path "core::slice::iter::Iter")
+                              []
+                              [ Ty.path "multisig::AccountId" ],
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -1718,6 +1780,11 @@ Module Impl_multisig_Multisig.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -1754,6 +1821,7 @@ Module Impl_multisig_Multisig.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -1764,7 +1832,14 @@ Module Impl_multisig_Multisig.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let owner := M.copy (| γ0_0 |) in
+                                        let owner :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "multisig::AccountId" ],
+                                            γ0_0
+                                          |) in
                                         let~ _ :
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -1797,11 +1872,11 @@ Module Impl_multisig_Multisig.
                                               Value.Tuple []
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))
@@ -1864,20 +1939,22 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -1950,6 +2027,7 @@ Module Impl_multisig_Multisig.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -1963,11 +2041,11 @@ Module Impl_multisig_Multisig.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1988,8 +2066,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ _ : Ty.path "multisig::Transaction" :=
             M.call_closure (|
@@ -2040,7 +2119,7 @@ Module Impl_multisig_Multisig.
                 |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2059,20 +2138,23 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let owner :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], owner |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -2101,6 +2183,7 @@ Module Impl_multisig_Multisig.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -2109,11 +2192,11 @@ Module Impl_multisig_Multisig.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2132,7 +2215,8 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -2146,6 +2230,7 @@ Module Impl_multisig_Multisig.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "multisig::AccountId",
                         M.call_closure (|
                           Ty.path "multisig::AccountId",
                           M.get_associated_function (| Ty.path "multisig::Env", "caller", [], [] |),
@@ -2153,6 +2238,7 @@ Module Impl_multisig_Multisig.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.path "multisig::Env",
                                 M.call_closure (|
                                   Ty.path "multisig::Env",
                                   M.get_associated_function (|
@@ -2174,7 +2260,7 @@ Module Impl_multisig_Multisig.
                 |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2193,18 +2279,25 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "multisig::AccountId",
                           M.call_closure (|
                             Ty.path "multisig::AccountId",
                             M.get_associated_function (|
@@ -2217,6 +2310,7 @@ Module Impl_multisig_Multisig.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "multisig::Env",
                                   M.call_closure (|
                                     Ty.path "multisig::Env",
                                     M.get_associated_function (|
@@ -2241,6 +2335,7 @@ Module Impl_multisig_Multisig.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "multisig::AccountId",
                           M.call_closure (|
                             Ty.path "multisig::AccountId",
                             M.get_associated_function (|
@@ -2253,6 +2348,7 @@ Module Impl_multisig_Multisig.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "multisig::Env",
                                   M.call_closure (|
                                     Ty.path "multisig::Env",
                                     M.get_associated_function (|
@@ -2281,17 +2377,26 @@ Module Impl_multisig_Multisig.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ],
+                          γ0_0
+                        |) in
+                      let right_val :=
+                        M.copy (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ],
+                          γ0_1
+                        |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -2320,6 +2425,7 @@ Module Impl_multisig_Multisig.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2329,6 +2435,7 @@ Module Impl_multisig_Multisig.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -2370,13 +2477,13 @@ Module Impl_multisig_Multisig.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2395,20 +2502,23 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let owner :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], owner |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               UnOp.not (|
                                 M.call_closure (|
@@ -2442,6 +2552,7 @@ Module Impl_multisig_Multisig.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -2450,11 +2561,11 @@ Module Impl_multisig_Multisig.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2479,8 +2590,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; new_owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let new_owner := M.alloc (| new_owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let new_owner := M.alloc (| Ty.path "multisig::AccountId", new_owner |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -2612,6 +2724,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -2624,7 +2737,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerAddition"
                       []
                       []
@@ -2632,7 +2745,7 @@ Module Impl_multisig_Multisig.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2654,8 +2767,10 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let owner :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], owner |) in
         M.cast
           (Ty.path "u32")
           (M.call_closure (|
@@ -2686,6 +2801,10 @@ Module Impl_multisig_Multisig.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::slice::iter::Iter")
+                        []
+                        [ Ty.path "multisig::AccountId" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::slice::iter::Iter")
@@ -2750,11 +2869,18 @@ Module Impl_multisig_Multisig.
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ] ]
                                 ]
                                 (Ty.path "bool"),
-                              M.alloc (| α0 |),
+                              M.alloc (|
+                                Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ],
+                                α0
+                              |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x :=
+                                      M.copy (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ],
+                                        γ
+                                      |) in
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_trait_method (|
@@ -2819,13 +2945,16 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let owner :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "multisig::AccountId" ], owner |) in
         M.read (|
           M.use
             (M.match_operator (|
               Ty.tuple [],
               M.alloc (|
+                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
                   M.get_trait_method (|
@@ -2864,7 +2993,11 @@ Module Impl_multisig_Multisig.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let iter := M.copy (| γ |) in
+                    (let iter :=
+                      M.copy (|
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u32" ],
+                        γ
+                      |) in
                     M.loop (|
                       Ty.tuple [],
                       ltac:(M.monadic
@@ -2873,6 +3006,10 @@ Module Impl_multisig_Multisig.
                             M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -2903,7 +3040,10 @@ Module Impl_multisig_Multisig.
                                   ltac:(M.monadic
                                     (let _ :=
                                       M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
+                                    M.alloc (|
+                                      Ty.tuple [],
+                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                    |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ0_0 :=
@@ -2912,7 +3052,11 @@ Module Impl_multisig_Multisig.
                                         "core::option::Option::Some",
                                         0
                                       |) in
-                                    let trans_id := M.copy (| γ0_0 |) in
+                                    let trans_id :=
+                                      M.copy (|
+                                        Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                        γ0_0
+                                      |) in
                                     let~ key :
                                         Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ] :=
                                       Value.Tuple
@@ -2922,13 +3066,14 @@ Module Impl_multisig_Multisig.
                                         ] in
                                     M.match_operator (|
                                       Ty.tuple [],
-                                      M.alloc (| Value.Tuple [] |),
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
+                                                  Ty.path "bool",
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     M.get_associated_function (|
@@ -3046,6 +3191,7 @@ Module Impl_multisig_Multisig.
                                                   M.read (|
                                                     M.use
                                                       (M.alloc (|
+                                                        Ty.path "u32",
                                                         Value.Integer IntegerKind.U32 0
                                                       |))
                                                   |)
@@ -3094,14 +3240,16 @@ Module Impl_multisig_Multisig.
                                                   M.read (| count |)
                                                 ]
                                               |) in
-                                            M.alloc (| Value.Tuple [] |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                       ]
                                     |)))
                               ]
                             |)
                           |) in
-                        M.alloc (| Value.Tuple [] |)))
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     |)))
               ]
             |))
@@ -3134,8 +3282,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let owner := M.alloc (| owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let owner := M.alloc (| Ty.path "multisig::AccountId", owner |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -3309,6 +3458,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -3321,7 +3471,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerRemoval"
                       []
                       []
@@ -3329,7 +3479,7 @@ Module Impl_multisig_Multisig.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3359,9 +3509,10 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; old_owner; new_owner ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let old_owner := M.alloc (| old_owner |) in
-        let new_owner := M.alloc (| new_owner |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let old_owner := M.alloc (| Ty.path "multisig::AccountId", old_owner |) in
+        let new_owner := M.alloc (| Ty.path "multisig::AccountId", new_owner |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -3521,6 +3672,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -3533,7 +3685,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerRemoval"
                       []
                       []
@@ -3549,6 +3701,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -3561,7 +3714,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::OwnerAddition"
                       []
                       []
@@ -3569,7 +3722,7 @@ Module Impl_multisig_Multisig.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3594,8 +3747,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; new_requirement ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let new_requirement := M.alloc (| new_requirement |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let new_requirement := M.alloc (| Ty.path "u32", new_requirement |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -3657,6 +3811,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -3669,7 +3824,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::RequirementChange"
                       []
                       []
@@ -3677,7 +3832,7 @@ Module Impl_multisig_Multisig.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3725,9 +3880,10 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; confirmer; transaction ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let confirmer := M.alloc (| confirmer |) in
-        let transaction := M.alloc (| transaction |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let confirmer := M.alloc (| Ty.path "multisig::AccountId", confirmer |) in
+        let transaction := M.alloc (| Ty.path "u32", transaction |) in
         M.read (|
           let~ count : Ty.path "u32" :=
             M.call_closure (|
@@ -3762,7 +3918,7 @@ Module Impl_multisig_Multisig.
                     |)
                   ]
                 |);
-                M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |)
+                M.read (| M.use (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 0 |)) |)
               ]
             |) in
           let~ key : Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ] :=
@@ -3800,7 +3956,7 @@ Module Impl_multisig_Multisig.
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3869,8 +4025,8 @@ Module Impl_multisig_Multisig.
                             M.read (| count |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -3878,13 +4034,14 @@ Module Impl_multisig_Multisig.
             M.read (|
               M.match_operator (|
                 Ty.path "multisig::ConfirmationStatus",
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               BinOp.ge,
@@ -3902,11 +4059,13 @@ Module Impl_multisig_Multisig.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.path "multisig::ConfirmationStatus",
                         Value.StructTuple "multisig::ConfirmationStatus::Confirmed" [] [] []
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "multisig::ConfirmationStatus",
                         Value.StructTuple
                           "multisig::ConfirmationStatus::ConfirmationsNeeded"
                           []
@@ -3935,7 +4094,7 @@ Module Impl_multisig_Multisig.
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -3954,6 +4113,7 @@ Module Impl_multisig_Multisig.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.path "multisig::Env",
                                 M.call_closure (|
                                   Ty.path "multisig::Env",
                                   M.get_associated_function (|
@@ -3972,7 +4132,7 @@ Module Impl_multisig_Multisig.
                               []
                               []
                               [
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "multisig::Confirmation"
                                   []
                                   []
@@ -3984,8 +4144,8 @@ Module Impl_multisig_Multisig.
                               ]
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -4024,8 +4184,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; transaction ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let transaction := M.alloc (| transaction |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let transaction := M.alloc (| Ty.path "multisig::Transaction", transaction |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -4075,7 +4236,9 @@ Module Impl_multisig_Multisig.
                     M.get_associated_function (| Ty.path "u32", "checked_add", [], [] |),
                     [
                       M.read (| trans_id |);
-                      M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 1 |)) |)
+                      M.read (|
+                        M.use (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 1 |))
+                      |)
                     ]
                   |);
                   M.borrow (|
@@ -4146,6 +4309,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -4158,7 +4322,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::Submission"
                       []
                       []
@@ -4167,6 +4331,7 @@ Module Impl_multisig_Multisig.
               ]
             |) in
           M.alloc (|
+            Ty.tuple [ Ty.path "u32"; Ty.path "multisig::ConfirmationStatus" ],
             Value.Tuple
               [
                 M.read (| trans_id |);
@@ -4187,6 +4352,7 @@ Module Impl_multisig_Multisig.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "multisig::Env",
                             M.call_closure (|
                               Ty.path "multisig::Env",
                               M.get_associated_function (|
@@ -4239,8 +4405,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ transaction :
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "multisig::Transaction" ] :=
@@ -4274,13 +4441,14 @@ Module Impl_multisig_Multisig.
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_associated_function (|
@@ -4349,6 +4517,10 @@ Module Impl_multisig_Multisig.
                                 M.borrow (|
                                   Pointer.Kind.MutRef,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::slice::iter::Iter")
+                                      []
+                                      [ Ty.path "u32" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::slice::iter::Iter")
@@ -4415,11 +4587,18 @@ Module Impl_multisig_Multisig.
                                                   [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
                                               ]
                                               (Ty.path "bool"),
-                                            M.alloc (| α0 |),
+                                            M.alloc (|
+                                              Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                              α0
+                                            |),
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let t := M.copy (| γ |) in
+                                                  (let t :=
+                                                    M.copy (|
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                                      γ
+                                                    |) in
                                                   M.call_closure (|
                                                     Ty.path "bool",
                                                     M.get_trait_method (|
@@ -4437,6 +4616,10 @@ Module Impl_multisig_Multisig.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "u32" ],
                                                           M.borrow (| Pointer.Kind.Ref, trans_id |)
                                                         |)
                                                       |)
@@ -4492,6 +4675,10 @@ Module Impl_multisig_Multisig.
                             (M.match_operator (|
                               Ty.tuple [],
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::slice::iter::Iter")
+                                  []
+                                  [ Ty.path "multisig::AccountId" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::slice::iter::Iter")
@@ -4574,7 +4761,14 @@ Module Impl_multisig_Multisig.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let iter := M.copy (| γ |) in
+                                    (let iter :=
+                                      M.copy (|
+                                        Ty.apply
+                                          (Ty.path "core::slice::iter::Iter")
+                                          []
+                                          [ Ty.path "multisig::AccountId" ],
+                                        γ
+                                      |) in
                                     M.loop (|
                                       Ty.tuple [],
                                       ltac:(M.monadic
@@ -4583,6 +4777,15 @@ Module Impl_multisig_Multisig.
                                             M.match_operator (|
                                               Ty.tuple [],
                                               M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [ Ty.path "multisig::AccountId" ]
+                                                  ],
                                                 M.call_closure (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -4624,6 +4827,7 @@ Module Impl_multisig_Multisig.
                                                         "core::option::Option::None"
                                                       |) in
                                                     M.alloc (|
+                                                      Ty.tuple [],
                                                       M.never_to_any (| M.read (| M.break (||) |) |)
                                                     |)));
                                                 fun γ =>
@@ -4634,7 +4838,14 @@ Module Impl_multisig_Multisig.
                                                         "core::option::Option::Some",
                                                         0
                                                       |) in
-                                                    let owner := M.copy (| γ0_0 |) in
+                                                    let owner :=
+                                                      M.copy (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [ Ty.path "multisig::AccountId" ],
+                                                        γ0_0
+                                                      |) in
                                                     let~ _ : Ty.tuple [] :=
                                                       M.call_closure (|
                                                         Ty.tuple [],
@@ -4672,11 +4883,11 @@ Module Impl_multisig_Multisig.
                                                             ]
                                                         ]
                                                       |) in
-                                                    M.alloc (| Value.Tuple [] |)))
+                                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                     |)))
                               ]
                             |))
@@ -4705,8 +4916,8 @@ Module Impl_multisig_Multisig.
                             M.read (| trans_id |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -4734,8 +4945,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -4750,13 +4962,14 @@ Module Impl_multisig_Multisig.
             |) in
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -4772,6 +4985,10 @@ Module Impl_multisig_Multisig.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "multisig::Transaction" ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::option::Option")
@@ -4805,6 +5022,7 @@ Module Impl_multisig_Multisig.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "multisig::Env",
                             M.call_closure (|
                               Ty.path "multisig::Env",
                               M.get_associated_function (|
@@ -4822,7 +5040,7 @@ Module Impl_multisig_Multisig.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "multisig::Cancellation"
                               []
                               []
@@ -4830,8 +5048,8 @@ Module Impl_multisig_Multisig.
                           ]
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -4854,8 +5072,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -4883,6 +5102,7 @@ Module Impl_multisig_Multisig.
               ]
             |) in
           M.alloc (|
+            Ty.path "multisig::ConfirmationStatus",
             M.call_closure (|
               Ty.path "multisig::ConfirmationStatus",
               M.get_associated_function (|
@@ -4900,6 +5120,7 @@ Module Impl_multisig_Multisig.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "multisig::Env",
                         M.call_closure (|
                           Ty.path "multisig::Env",
                           M.get_associated_function (|
@@ -4951,8 +5172,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -4973,6 +5195,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -4984,13 +5207,14 @@ Module Impl_multisig_Multisig.
             |) in
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -5020,6 +5244,7 @@ Module Impl_multisig_Multisig.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.tuple [ Ty.path "u32"; Ty.path "multisig::AccountId" ],
                                     Value.Tuple [ M.read (| trans_id |); M.read (| caller |) ]
                                   |)
                                 |)
@@ -5140,6 +5365,7 @@ Module Impl_multisig_Multisig.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.path "multisig::Env",
                             M.call_closure (|
                               Ty.path "multisig::Env",
                               M.get_associated_function (|
@@ -5157,7 +5383,7 @@ Module Impl_multisig_Multisig.
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "multisig::Revocation"
                               []
                               []
@@ -5168,8 +5394,8 @@ Module Impl_multisig_Multisig.
                           ]
                       ]
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -5212,8 +5438,9 @@ Module Impl_multisig_Multisig.
     match ε, τ, α with
     | [], [], [ self; trans_id ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let trans_id := M.alloc (| trans_id |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "multisig::Multisig" ], self |) in
+        let trans_id := M.alloc (| Ty.path "u32", trans_id |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -5269,13 +5496,14 @@ Module Impl_multisig_Multisig.
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -5293,6 +5521,7 @@ Module Impl_multisig_Multisig.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.path "multisig::Env",
                                           M.call_closure (|
                                             Ty.path "multisig::Env",
                                             M.get_associated_function (|
@@ -5325,6 +5554,7 @@ Module Impl_multisig_Multisig.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -5337,7 +5567,7 @@ Module Impl_multisig_Multisig.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -5393,6 +5623,10 @@ Module Impl_multisig_Multisig.
                           0
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "multisig::Error" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -5402,6 +5636,10 @@ Module Impl_multisig_Multisig.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "multisig::Error" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5419,6 +5657,7 @@ Module Impl_multisig_Multisig.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "multisig::Env",
                     M.call_closure (|
                       Ty.path "multisig::Env",
                       M.get_associated_function (| Ty.path "multisig::Multisig", "env", [], [] |),
@@ -5431,7 +5670,7 @@ Module Impl_multisig_Multisig.
                   []
                   []
                   [
-                    Value.StructRecord
+                    Value.mkStructRecord
                       "multisig::Execution"
                       []
                       []
@@ -5504,7 +5743,7 @@ Module Impl_multisig_Multisig.
                                                   []
                                                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                               ]),
-                                          M.alloc (| α0 |),
+                                          M.alloc (| Ty.tuple [], α0 |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic

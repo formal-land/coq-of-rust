@@ -14,23 +14,27 @@ Module bool.
       match ε, τ, α with
       | [], [ T ], [ self; t ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let t := M.alloc (| t |) in
+          (let self := M.alloc (| Ty.path "bool", self |) in
+          let t := M.alloc (| T, t |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use self in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       Value.StructTuple "core::option::Option::Some" [] [ T ] [ M.read (| t |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
+                    (M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      Value.StructTuple "core::option::Option::None" [] [ T ] []
+                    |)))
               ]
             |)
           |)))
@@ -51,18 +55,19 @@ Module bool.
       match ε, τ, α with
       | [], [ T; F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.path "bool", self |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ T ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use self in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -85,7 +90,10 @@ Module bool.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
+                    (M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                      Value.StructTuple "core::option::Option::None" [] [ T ] []
+                    |)))
               ]
             |)
           |)))

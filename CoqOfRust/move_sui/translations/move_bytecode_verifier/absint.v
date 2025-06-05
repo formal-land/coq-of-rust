@@ -71,8 +71,13 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_bytecode_verifier::absint::JoinResult" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -95,6 +100,7 @@ Module absint.
                             "move_bytecode_verifier::absint::JoinResult::Changed"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Changed" |) |) |)
                         |)));
                     fun γ =>
@@ -106,6 +112,7 @@ Module absint.
                             "move_bytecode_verifier::absint::JoinResult::Unchanged"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unchanged" |) |) |)
                         |)))
                   ]
@@ -143,8 +150,16 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_bytecode_verifier::absint::BlockInvariant") [] [ State ]
+                ],
+              self
+            |) in
+          Value.mkStructRecord
             "move_bytecode_verifier::absint::BlockInvariant"
             []
             [ State ]
@@ -200,7 +215,7 @@ Module absint.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 10 |))).
   
   Global Instance Instance_IsConstant_value_ANALYZE_FUNCTION_BASE_COST :
     M.IsFunction.C
@@ -214,7 +229,7 @@ Module absint.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 10 |))).
   
   Global Instance Instance_IsConstant_value_EXECUTE_BLOCK_BASE_COST :
     M.IsFunction.C
@@ -224,7 +239,7 @@ Module absint.
   Global Typeclasses Opaque value_EXECUTE_BLOCK_BASE_COST.
   
   Definition value_PER_BACKEDGE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 10 |))).
   
   Global Instance Instance_IsConstant_value_PER_BACKEDGE_COST :
     M.IsFunction.C "move_bytecode_verifier::absint::PER_BACKEDGE_COST" value_PER_BACKEDGE_COST.
@@ -232,7 +247,7 @@ Module absint.
   Global Typeclasses Opaque value_PER_BACKEDGE_COST.
   
   Definition value_PER_SUCCESSOR_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 10 |))).
   
   Global Instance Instance_IsConstant_value_PER_SUCCESSOR_COST :
     M.IsFunction.C "move_bytecode_verifier::absint::PER_SUCCESSOR_COST" value_PER_SUCCESSOR_COST.
@@ -253,10 +268,27 @@ Module absint.
       match ε, τ, α with
       | [], [ impl_Meter__plus___Sized ], [ self; initial_state; function_context; meter ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let initial_state := M.alloc (| initial_state |) in
-          let function_context := M.alloc (| function_context |) in
-          let meter := M.alloc (| meter |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let initial_state :=
+            M.alloc (|
+              Ty.associated_in_trait
+                "move_bytecode_verifier::absint::TransferFunctions"
+                []
+                []
+                Self
+                "State",
+              initial_state
+            |) in
+          let function_context :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              function_context
+            |) in
+          let meter :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -265,12 +297,29 @@ Module absint.
                 [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -348,8 +397,19 @@ Module absint.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -399,7 +459,7 @@ Module absint.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -575,7 +635,7 @@ Module absint.
                         [
                           M.borrow (| Pointer.Kind.MutRef, inv_map |);
                           M.read (| entry_block_id |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "move_bytecode_verifier::absint::BlockInvariant"
                             []
                             [
@@ -596,7 +656,7 @@ Module absint.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -607,7 +667,7 @@ Module absint.
                                         "core::option::Option::Some",
                                         0
                                       |) in
-                                    let block_id := M.copy (| γ0_0 |) in
+                                    let block_id := M.copy (| Ty.path "u16", γ0_0 |) in
                                     let~ block_invariant :
                                         Ty.apply
                                           (Ty.path "&mut")
@@ -646,6 +706,28 @@ Module absint.
                                                 ]
                                             ],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "move_bytecode_verifier::absint::BlockInvariant")
+                                                      []
+                                                      [
+                                                        Ty.associated_in_trait
+                                                          "move_bytecode_verifier::absint::TransferFunctions"
+                                                          []
+                                                          []
+                                                          Self
+                                                          "State"
+                                                      ]
+                                                  ]
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -714,7 +796,27 @@ Module absint.
                                                     "core::option::Option::Some",
                                                     0
                                                   |) in
-                                                let invariant := M.copy (| γ0_0 |) in
+                                                let invariant :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "&mut")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path
+                                                            "move_bytecode_verifier::absint::BlockInvariant")
+                                                          []
+                                                          [
+                                                            Ty.associated_in_trait
+                                                              "move_bytecode_verifier::absint::TransferFunctions"
+                                                              []
+                                                              []
+                                                              Self
+                                                              "State"
+                                                          ]
+                                                      ],
+                                                    γ0_0
+                                                  |) in
                                                 invariant));
                                             fun γ =>
                                               ltac:(M.monadic
@@ -724,6 +826,23 @@ Module absint.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.apply
+                                                    (Ty.path "&mut")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "move_bytecode_verifier::absint::BlockInvariant")
+                                                        []
+                                                        [
+                                                          Ty.associated_in_trait
+                                                            "move_bytecode_verifier::absint::TransferFunctions"
+                                                            []
+                                                            []
+                                                            Self
+                                                            "State"
+                                                        ]
+                                                    ],
                                                   M.never_to_any (|
                                                     M.read (|
                                                       let~ _ : Ty.tuple [] :=
@@ -823,6 +942,25 @@ Module absint.
                                             Self
                                             "State",
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::ops::control_flow::ControlFlow")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path
+                                                      "move_binary_format::errors::PartialVMError"
+                                                  ];
+                                                Ty.associated_in_trait
+                                                  "move_bytecode_verifier::absint::TransferFunctions"
+                                                  []
+                                                  []
+                                                  Self
+                                                  "State"
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -920,8 +1058,25 @@ Module absint.
                                                     "core::ops::control_flow::ControlFlow::Break",
                                                     0
                                                   |) in
-                                                let residual := M.copy (| γ0_0 |) in
+                                                let residual :=
+                                                  M.copy (|
+                                                    Ty.apply
+                                                      (Ty.path "core::result::Result")
+                                                      []
+                                                      [
+                                                        Ty.path "core::convert::Infallible";
+                                                        Ty.path
+                                                          "move_binary_format::errors::PartialVMError"
+                                                      ],
+                                                    γ0_0
+                                                  |) in
                                                 M.alloc (|
+                                                  Ty.associated_in_trait
+                                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                                    []
+                                                    []
+                                                    Self
+                                                    "State",
                                                   M.never_to_any (|
                                                     M.read (|
                                                       M.return_ (|
@@ -974,7 +1129,16 @@ Module absint.
                                                     "core::ops::control_flow::ControlFlow::Continue",
                                                     0
                                                   |) in
-                                                let val := M.copy (| γ0_0 |) in
+                                                let val :=
+                                                  M.copy (|
+                                                    Ty.associated_in_trait
+                                                      "move_bytecode_verifier::absint::TransferFunctions"
+                                                      []
+                                                      []
+                                                      Self
+                                                      "State",
+                                                    γ0_0
+                                                  |) in
                                                 val))
                                           ]
                                         |)
@@ -1036,6 +1200,10 @@ Module absint.
                                           (M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::slice::iter::Iter")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::Iter")
@@ -1124,7 +1292,14 @@ Module absint.
                                             [
                                               fun γ =>
                                                 ltac:(M.monadic
-                                                  (let iter := M.copy (| γ |) in
+                                                  (let iter :=
+                                                    M.copy (|
+                                                      Ty.apply
+                                                        (Ty.path "core::slice::iter::Iter")
+                                                        []
+                                                        [ Ty.path "u16" ],
+                                                      γ
+                                                    |) in
                                                   M.loop (|
                                                     Ty.tuple [],
                                                     ltac:(M.monadic
@@ -1133,6 +1308,15 @@ Module absint.
                                                           M.match_operator (|
                                                             Ty.tuple [],
                                                             M.alloc (|
+                                                              Ty.apply
+                                                                (Ty.path "core::option::Option")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "u16" ]
+                                                                ],
                                                               M.call_closure (|
                                                                 Ty.apply
                                                                   (Ty.path "core::option::Option")
@@ -1178,6 +1362,7 @@ Module absint.
                                                                       "core::option::Option::None"
                                                                     |) in
                                                                   M.alloc (|
+                                                                    Ty.tuple [],
                                                                     M.never_to_any (|
                                                                       M.read (| M.break (||) |)
                                                                     |)
@@ -1191,12 +1376,35 @@ Module absint.
                                                                       0
                                                                     |) in
                                                                   let successor_block_id :=
-                                                                    M.copy (| γ0_0 |) in
+                                                                    M.copy (|
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "u16" ],
+                                                                      γ0_0
+                                                                    |) in
                                                                   let~ _ : Ty.tuple [] :=
                                                                     M.read (|
                                                                       M.match_operator (|
                                                                         Ty.tuple [],
                                                                         M.alloc (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::ops::control_flow::ControlFlow")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.path
+                                                                                    "core::convert::Infallible";
+                                                                                  Ty.path
+                                                                                    "move_binary_format::errors::PartialVMError"
+                                                                                ];
+                                                                              Ty.tuple []
+                                                                            ],
                                                                           M.call_closure (|
                                                                             Ty.apply
                                                                               (Ty.path
@@ -1287,8 +1495,21 @@ Module absint.
                                                                                   0
                                                                                 |) in
                                                                               let residual :=
-                                                                                M.copy (| γ0_0 |) in
+                                                                                M.copy (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ],
+                                                                                  γ0_0
+                                                                                |) in
                                                                               M.alloc (|
+                                                                                Ty.tuple [],
                                                                                 M.never_to_any (|
                                                                                   M.read (|
                                                                                     M.return_ (|
@@ -1351,7 +1572,10 @@ Module absint.
                                                                                   0
                                                                                 |) in
                                                                               let val :=
-                                                                                M.copy (| γ0_0 |) in
+                                                                                M.copy (|
+                                                                                  Ty.tuple [],
+                                                                                  γ0_0
+                                                                                |) in
                                                                               val))
                                                                         ]
                                                                       |)
@@ -1359,6 +1583,29 @@ Module absint.
                                                                   M.match_operator (|
                                                                     Ty.tuple [],
                                                                     M.alloc (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::option::Option")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "&mut")
+                                                                            []
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "move_bytecode_verifier::absint::BlockInvariant")
+                                                                                []
+                                                                                [
+                                                                                  Ty.associated_in_trait
+                                                                                    "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                    []
+                                                                                    []
+                                                                                    Self
+                                                                                    "State"
+                                                                                ]
+                                                                            ]
+                                                                        ],
                                                                       M.call_closure (|
                                                                         Ty.apply
                                                                           (Ty.path
@@ -1436,7 +1683,26 @@ Module absint.
                                                                             |) in
                                                                           let
                                                                                 next_block_invariant :=
-                                                                            M.copy (| γ0_0 |) in
+                                                                            M.copy (|
+                                                                              Ty.apply
+                                                                                (Ty.path "&mut")
+                                                                                []
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "move_bytecode_verifier::absint::BlockInvariant")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.associated_in_trait
+                                                                                        "move_bytecode_verifier::absint::TransferFunctions"
+                                                                                        []
+                                                                                        []
+                                                                                        Self
+                                                                                        "State"
+                                                                                    ]
+                                                                                ],
+                                                                              γ0_0
+                                                                            |) in
                                                                           let~ join_result :
                                                                               Ty.path
                                                                                 "move_bytecode_verifier::absint::JoinResult" :=
@@ -1445,6 +1711,24 @@ Module absint.
                                                                                 Ty.path
                                                                                   "move_bytecode_verifier::absint::JoinResult",
                                                                                 M.alloc (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::ops::control_flow::ControlFlow")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::convert::Infallible";
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError"
+                                                                                        ];
+                                                                                      Ty.path
+                                                                                        "move_bytecode_verifier::absint::JoinResult"
+                                                                                    ],
                                                                                   M.call_closure (|
                                                                                     Ty.apply
                                                                                       (Ty.path
@@ -1511,6 +1795,16 @@ Module absint.
                                                                                             |)
                                                                                           |) in
                                                                                         M.alloc (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::result::Result")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "move_bytecode_verifier::absint::JoinResult";
+                                                                                              Ty.path
+                                                                                                "move_binary_format::errors::PartialVMError"
+                                                                                            ],
                                                                                           M.call_closure (|
                                                                                             Ty.apply
                                                                                               (Ty.path
@@ -1583,9 +1877,21 @@ Module absint.
                                                                                       let
                                                                                             residual :=
                                                                                         M.copy (|
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "core::result::Result")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "core::convert::Infallible";
+                                                                                              Ty.path
+                                                                                                "move_binary_format::errors::PartialVMError"
+                                                                                            ],
                                                                                           γ0_0
                                                                                         |) in
                                                                                       M.alloc (|
+                                                                                        Ty.path
+                                                                                          "move_bytecode_verifier::absint::JoinResult",
                                                                                         M.never_to_any (|
                                                                                           M.read (|
                                                                                             M.return_ (|
@@ -1649,6 +1955,8 @@ Module absint.
                                                                                         |) in
                                                                                       let val :=
                                                                                         M.copy (|
+                                                                                          Ty.path
+                                                                                            "move_bytecode_verifier::absint::JoinResult",
                                                                                           γ0_0
                                                                                         |) in
                                                                                       val))
@@ -1667,6 +1975,7 @@ Module absint.
                                                                                       "move_bytecode_verifier::absint::JoinResult::Unchanged"
                                                                                     |) in
                                                                                   M.alloc (|
+                                                                                    Ty.tuple [],
                                                                                     Value.Tuple []
                                                                                   |)));
                                                                               fun γ =>
@@ -1679,6 +1988,7 @@ Module absint.
                                                                                   M.match_operator (|
                                                                                     Ty.tuple [],
                                                                                     M.alloc (|
+                                                                                      Ty.tuple [],
                                                                                       Value.Tuple []
                                                                                     |),
                                                                                     [
@@ -1687,6 +1997,8 @@ Module absint.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
+                                                                                                Ty.path
+                                                                                                  "bool",
                                                                                                 M.call_closure (|
                                                                                                   Ty.path
                                                                                                     "bool",
@@ -1755,6 +2067,8 @@ Module absint.
                                                                                                 true
                                                                                             |) in
                                                                                           M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             M.never_to_any (|
                                                                                               M.read (|
                                                                                                 let~
@@ -1766,6 +2080,24 @@ Module absint.
                                                                                                       Ty.tuple
                                                                                                         [],
                                                                                                       M.alloc (|
+                                                                                                        Ty.apply
+                                                                                                          (Ty.path
+                                                                                                            "core::ops::control_flow::ControlFlow")
+                                                                                                          []
+                                                                                                          [
+                                                                                                            Ty.apply
+                                                                                                              (Ty.path
+                                                                                                                "core::result::Result")
+                                                                                                              []
+                                                                                                              [
+                                                                                                                Ty.path
+                                                                                                                  "core::convert::Infallible";
+                                                                                                                Ty.path
+                                                                                                                  "move_binary_format::errors::PartialVMError"
+                                                                                                              ];
+                                                                                                            Ty.tuple
+                                                                                                              []
+                                                                                                          ],
                                                                                                         M.call_closure (|
                                                                                                           Ty.apply
                                                                                                             (Ty.path
@@ -1864,9 +2196,21 @@ Module absint.
                                                                                                             let
                                                                                                                   residual :=
                                                                                                               M.copy (|
+                                                                                                                Ty.apply
+                                                                                                                  (Ty.path
+                                                                                                                    "core::result::Result")
+                                                                                                                  []
+                                                                                                                  [
+                                                                                                                    Ty.path
+                                                                                                                      "core::convert::Infallible";
+                                                                                                                    Ty.path
+                                                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                                                  ],
                                                                                                                 γ0_0
                                                                                                               |) in
                                                                                                             M.alloc (|
+                                                                                                              Ty.tuple
+                                                                                                                [],
                                                                                                               M.never_to_any (|
                                                                                                                 M.read (|
                                                                                                                   M.return_ (|
@@ -1933,6 +2277,8 @@ Module absint.
                                                                                                             let
                                                                                                                   val :=
                                                                                                               M.copy (|
+                                                                                                                Ty.tuple
+                                                                                                                  [],
                                                                                                                 γ0_0
                                                                                                               |) in
                                                                                                             val))
@@ -1969,6 +2315,8 @@ Module absint.
                                                                                       fun γ =>
                                                                                         ltac:(M.monadic
                                                                                           (M.alloc (|
+                                                                                            Ty.tuple
+                                                                                              [],
                                                                                             Value.Tuple
                                                                                               []
                                                                                           |)))
@@ -2059,7 +2407,7 @@ Module absint.
                                                                                     |)
                                                                                   |)
                                                                                 |);
-                                                                                Value.StructRecord
+                                                                                Value.mkStructRecord
                                                                                   "move_bytecode_verifier::absint::BlockInvariant"
                                                                                   []
                                                                                   [
@@ -2104,6 +2452,7 @@ Module absint.
                                                                               ]
                                                                             |) in
                                                                           M.alloc (|
+                                                                            Ty.tuple [],
                                                                             Value.Tuple []
                                                                           |)))
                                                                     ]
@@ -2111,22 +2460,23 @@ Module absint.
                                                             ]
                                                           |)
                                                         |) in
-                                                      M.alloc (| Value.Tuple [] |)))
+                                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                   |)))
                                             ]
                                           |))
                                       |) in
                                     let~ _ : Ty.tuple [] :=
                                       M.write (| next_block, M.read (| next_block_candidate |) |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Value.Tuple [] |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                         |)
                                       |)
                                     |)))
@@ -2135,6 +2485,10 @@ Module absint.
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "move_binary_format::errors::PartialVMError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -2162,11 +2516,33 @@ Module absint.
       match ε, τ, α with
       | [], [ impl_Meter__plus___Sized ], [ self; block_id; pre_state; function_context; meter ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let block_id := M.alloc (| block_id |) in
-          let pre_state := M.alloc (| pre_state |) in
-          let function_context := M.alloc (| function_context |) in
-          let meter := M.alloc (| meter |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let block_id := M.alloc (| Ty.path "u16", block_id |) in
+          let pre_state :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.associated_in_trait
+                    "move_bytecode_verifier::absint::TransferFunctions"
+                    []
+                    []
+                    Self
+                    "State"
+                ],
+              pre_state
+            |) in
+          let function_context :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              function_context
+            |) in
+          let meter :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ impl_Meter__plus___Sized ], meter |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -2183,12 +2559,37 @@ Module absint.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "move_bytecode_verifier::absint::TransferFunctions"
+                        []
+                        []
+                        Self
+                        "State";
+                      Ty.path "move_binary_format::errors::PartialVMError"
+                    ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::ops::control_flow::ControlFlow")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [
+                                    Ty.path "core::convert::Infallible";
+                                    Ty.path "move_binary_format::errors::PartialVMError"
+                                  ];
+                                Ty.tuple []
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2266,8 +2667,19 @@ Module absint.
                                     "core::ops::control_flow::ControlFlow::Break",
                                     0
                                   |) in
-                                let residual := M.copy (| γ0_0 |) in
+                                let residual :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [
+                                        Ty.path "core::convert::Infallible";
+                                        Ty.path "move_binary_format::errors::PartialVMError"
+                                      ],
+                                    γ0_0
+                                  |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -2327,7 +2739,7 @@ Module absint.
                                     "core::ops::control_flow::ControlFlow::Continue",
                                     0
                                   |) in
-                                let val := M.copy (| γ0_0 |) in
+                                let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                 val))
                           ]
                         |)
@@ -2410,6 +2822,13 @@ Module absint.
                           (M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.dyn [ ("core::iter::traits::iterator::Iterator::Trait", []) ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "alloc::boxed::Box")
@@ -2492,7 +2911,19 @@ Module absint.
                             [
                               fun γ =>
                                 ltac:(M.monadic
-                                  (let iter := M.copy (| γ |) in
+                                  (let iter :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.dyn
+                                            [ ("core::iter::traits::iterator::Iterator::Trait", [])
+                                            ];
+                                          Ty.path "alloc::alloc::Global"
+                                        ],
+                                      γ
+                                    |) in
                                   M.loop (|
                                     Ty.tuple [],
                                     ltac:(M.monadic
@@ -2501,6 +2932,10 @@ Module absint.
                                           M.match_operator (|
                                             Ty.tuple [],
                                             M.alloc (|
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "u16" ],
                                               M.call_closure (|
                                                 Ty.apply
                                                   (Ty.path "core::option::Option")
@@ -2544,6 +2979,7 @@ Module absint.
                                                       "core::option::Option::None"
                                                     |) in
                                                   M.alloc (|
+                                                    Ty.tuple [],
                                                     M.never_to_any (| M.read (| M.break (||) |) |)
                                                   |)));
                                               fun γ =>
@@ -2554,7 +2990,7 @@ Module absint.
                                                       "core::option::Option::Some",
                                                       0
                                                     |) in
-                                                  let offset := M.copy (| γ0_0 |) in
+                                                  let offset := M.copy (| Ty.path "u16", γ0_0 |) in
                                                   let~ instr :
                                                       Ty.apply
                                                         (Ty.path "&")
@@ -2636,6 +3072,21 @@ Module absint.
                                                   M.match_operator (|
                                                     Ty.tuple [],
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path
+                                                          "core::ops::control_flow::ControlFlow")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.path "core::convert::Infallible";
+                                                              Ty.path
+                                                                "move_binary_format::errors::PartialVMError"
+                                                            ];
+                                                          Ty.tuple []
+                                                        ],
                                                       M.call_closure (|
                                                         Ty.apply
                                                           (Ty.path
@@ -2725,8 +3176,21 @@ Module absint.
                                                               "core::ops::control_flow::ControlFlow::Break",
                                                               0
                                                             |) in
-                                                          let residual := M.copy (| γ0_0 |) in
+                                                          let residual :=
+                                                            M.copy (|
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.path
+                                                                    "core::convert::Infallible";
+                                                                  Ty.path
+                                                                    "move_binary_format::errors::PartialVMError"
+                                                                ],
+                                                              γ0_0
+                                                            |) in
                                                           M.alloc (|
+                                                            Ty.tuple [],
                                                             M.never_to_any (|
                                                               M.read (|
                                                                 M.return_ (|
@@ -2792,19 +3256,32 @@ Module absint.
                                                               "core::ops::control_flow::ControlFlow::Continue",
                                                               0
                                                             |) in
-                                                          let val := M.copy (| γ0_0 |) in
+                                                          let val :=
+                                                            M.copy (| Ty.tuple [], γ0_0 |) in
                                                           val))
                                                     ]
                                                   |)))
                                             ]
                                           |)
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   |)))
                             ]
                           |))
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "move_bytecode_verifier::absint::TransferFunctions"
+                            []
+                            []
+                            Self
+                            "State";
+                          Ty.path "move_binary_format::errors::PartialVMError"
+                        ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -2858,11 +3335,33 @@ Module absint.
       match ε, τ, α with
       | [], [], [ module; index; code; function_handle ] =>
         ltac:(M.monadic
-          (let module := M.alloc (| module |) in
-          let index := M.alloc (| index |) in
-          let code := M.alloc (| code |) in
-          let function_handle := M.alloc (| function_handle |) in
-          Value.StructRecord
+          (let module :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::CompiledModule" ],
+              module
+            |) in
+          let index :=
+            M.alloc (|
+              Ty.path "move_binary_format::file_format::FunctionDefinitionIndex",
+              index
+            |) in
+          let code :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_binary_format::file_format::CodeUnit" ],
+              code
+            |) in
+          let function_handle :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_binary_format::file_format::FunctionHandle" ],
+              function_handle
+            |) in
+          Value.mkStructRecord
             "move_bytecode_verifier::absint::FunctionContext"
             []
             []
@@ -3080,7 +3579,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -3104,7 +3610,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3133,7 +3646,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3163,7 +3683,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3192,7 +3719,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3221,7 +3755,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -3251,7 +3792,14 @@ Module absint.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "move_bytecode_verifier::absint::FunctionContext" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|

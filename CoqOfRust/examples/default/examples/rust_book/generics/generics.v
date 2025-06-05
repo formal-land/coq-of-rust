@@ -64,7 +64,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             [ Value.Integer IntegerKind.I32 6 ] in
         let~ _char : Ty.apply (Ty.path "generics::SingleGen") [] [ Ty.path "char" ] :=
           Value.StructTuple "generics::SingleGen" [] [ Ty.path "char" ] [ Value.UnicodeChar 97 ] in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -13,9 +13,9 @@ Module algorithms.
       match ε, τ, α with
       | [], [], [ lhs; rhs; carry ] =>
         ltac:(M.monadic
-          (let lhs := M.alloc (| lhs |) in
-          let rhs := M.alloc (| rhs |) in
-          let carry := M.alloc (| carry |) in
+          (let lhs := M.alloc (| Ty.path "u64", lhs |) in
+          let rhs := M.alloc (| Ty.path "u64", rhs |) in
+          let carry := M.alloc (| Ty.path "u64", carry |) in
           M.read (|
             let~ result : Ty.path "u128" :=
               M.call_closure (|
@@ -70,6 +70,7 @@ Module algorithms.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
               M.call_closure (|
                 Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                 M.get_trait_method (|
@@ -104,9 +105,9 @@ Module algorithms.
       match ε, τ, α with
       | [], [], [ lhs; rhs; borrow ] =>
         ltac:(M.monadic
-          (let lhs := M.alloc (| lhs |) in
-          let rhs := M.alloc (| rhs |) in
-          let borrow := M.alloc (| borrow |) in
+          (let lhs := M.alloc (| Ty.path "u64", lhs |) in
+          let rhs := M.alloc (| Ty.path "u64", rhs |) in
+          let borrow := M.alloc (| Ty.path "u64", borrow |) in
           M.read (|
             let~ result : Ty.path "u128" :=
               M.call_closure (|
@@ -161,6 +162,7 @@ Module algorithms.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
               Value.Tuple
                 [
                   M.call_closure (|

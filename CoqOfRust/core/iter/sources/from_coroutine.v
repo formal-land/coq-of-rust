@@ -13,7 +13,7 @@ Module iter.
         match ε, τ, α with
         | [], [ G ], [ coroutine ] =>
           ltac:(M.monadic
-            (let coroutine := M.alloc (| coroutine |) in
+            (let coroutine := M.alloc (| G, coroutine |) in
             Value.StructTuple
               "core::iter::sources::from_coroutine::FromCoroutine"
               []
@@ -45,7 +45,19 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::sources::from_coroutine::FromCoroutine")
+                        []
+                        [ G ]
+                    ],
+                  self
+                |) in
               Value.StructTuple
                 "core::iter::sources::from_coroutine::FromCoroutine"
                 []
@@ -105,7 +117,19 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::sources::from_coroutine::FromCoroutine")
+                        []
+                        [ G ]
+                    ],
+                  self
+                |) in
               M.read (|
                 M.match_operator (|
                   Ty.apply
@@ -120,6 +144,18 @@ Module iter.
                         "Yield"
                     ],
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::ops::coroutine::CoroutineState")
+                      []
+                      [
+                        Ty.associated_in_trait
+                          "core::ops::coroutine::Coroutine"
+                          []
+                          [ Ty.tuple [] ]
+                          G
+                          "Yield";
+                        Ty.tuple []
+                      ],
                     M.call_closure (|
                       Ty.apply
                         (Ty.path "core::ops::coroutine::CoroutineState")
@@ -181,8 +217,28 @@ Module iter.
                             "core::ops::coroutine::CoroutineState::Yielded",
                             0
                           |) in
-                        let n := M.copy (| γ0_0 |) in
+                        let n :=
+                          M.copy (|
+                            Ty.associated_in_trait
+                              "core::ops::coroutine::Coroutine"
+                              []
+                              [ Ty.tuple [] ]
+                              G
+                              "Yield",
+                            γ0_0
+                          |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::ops::coroutine::Coroutine"
+                                []
+                                [ Ty.tuple [] ]
+                                G
+                                "Yield"
+                            ],
                           Value.StructTuple
                             "core::option::Option::Some"
                             []
@@ -205,6 +261,17 @@ Module iter.
                             0
                           |) in
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::ops::coroutine::Coroutine"
+                                []
+                                [ Ty.tuple [] ]
+                                G
+                                "Yield"
+                            ],
                           Value.StructTuple
                             "core::option::Option::None"
                             []
@@ -249,8 +316,21 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "core::iter::sources::from_coroutine::FromCoroutine")
+                        []
+                        [ G ]
+                    ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -266,6 +346,7 @@ Module iter.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
+                      Ty.path "core::fmt::builders::DebugStruct",
                       M.call_closure (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|

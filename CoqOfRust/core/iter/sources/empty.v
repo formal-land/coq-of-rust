@@ -48,8 +48,16 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self; f ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ] ],
+                  self
+                |) in
+              let f :=
+                M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -65,6 +73,7 @@ Module iter.
                   M.borrow (|
                     Pointer.Kind.MutRef,
                     M.alloc (|
+                      Ty.path "core::fmt::builders::DebugStruct",
                       M.call_closure (|
                         Ty.path "core::fmt::builders::DebugStruct",
                         M.get_associated_function (|
@@ -112,7 +121,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ] ],
+                  self
+                |) in
               Value.StructTuple "core::option::Option::None" [] [ T ] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -127,7 +143,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ] ],
+                  self
+                |) in
               Value.Tuple
                 [
                   Value.Integer IntegerKind.Usize 0;
@@ -169,7 +192,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ] ],
+                  self
+                |) in
               Value.StructTuple "core::option::Option::None" [] [ T ] []))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -198,7 +228,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ] ],
+                  self
+                |) in
               Value.Integer IntegerKind.Usize 0))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -255,7 +292,14 @@ Module iter.
           match ε, τ, α with
           | [], [], [ self ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "core::iter::sources::empty::Empty") [] [ T ] ],
+                  self
+                |) in
               Value.StructTuple
                 "core::iter::sources::empty::Empty"
                 []

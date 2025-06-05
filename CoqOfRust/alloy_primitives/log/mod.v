@@ -15,7 +15,7 @@ Module log.
     match ε, τ, α with
     | [], [ impl_IntoIterator_Item____'a_Log_ ], [ logs ] =>
       ltac:(M.monadic
-        (let logs := M.alloc (| logs |) in
+        (let logs := M.alloc (| impl_IntoIterator_Item____'a_Log_, logs |) in
         M.read (|
           let~ bloom : Ty.path "alloy_primitives::bits::bloom::Bloom" :=
             M.read (|
@@ -31,6 +31,12 @@ Module log.
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.associated_in_trait
+                      "core::iter::traits::collect::IntoIterator"
+                      []
+                      []
+                      impl_IntoIterator_Item____'a_Log_
+                      "IntoIter",
                     M.call_closure (|
                       Ty.associated_in_trait
                         "core::iter::traits::collect::IntoIterator"
@@ -53,7 +59,16 @@ Module log.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              impl_IntoIterator_Item____'a_Log_
+                              "IntoIter",
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -62,6 +77,20 @@ Module log.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::log::Log")
+                                              []
+                                              [ Ty.path "alloy_primitives::log::LogData" ]
+                                          ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -105,6 +134,7 @@ Module log.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -115,7 +145,19 @@ Module log.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let log := M.copy (| γ0_0 |) in
+                                        let log :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::log::Log")
+                                                  []
+                                                  [ Ty.path "alloy_primitives::log::LogData" ]
+                                              ],
+                                            γ0_0
+                                          |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
@@ -133,11 +175,11 @@ Module log.
                                               |)
                                             ]
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))
@@ -182,8 +224,12 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
+          Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -283,8 +329,13 @@ Module log.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -324,6 +375,7 @@ Module log.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -358,7 +410,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -442,8 +494,16 @@ Module log.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -551,7 +611,11 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -562,7 +626,7 @@ Module log.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -588,8 +652,12 @@ Module log.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -630,6 +698,7 @@ Module log.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -684,9 +753,22 @@ Module log.
       match ε, τ, α with
       | [], [], [ topics; data ] =>
         ltac:(M.monadic
-          (let topics := M.alloc (| topics |) in
-          let data := M.alloc (| data |) in
-          Value.StructRecord
+          (let topics :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              topics
+            |) in
+          let data := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", data |) in
+          Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -709,8 +791,21 @@ Module log.
       match ε, τ, α with
       | [], [], [ topics; data ] =>
         ltac:(M.monadic
-          (let topics := M.alloc (| topics |) in
-          let data := M.alloc (| data |) in
+          (let topics :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              topics
+            |) in
+          let data := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", data |) in
           M.read (|
             let~ this : Ty.path "alloy_primitives::log::LogData" :=
               M.call_closure (|
@@ -724,6 +819,10 @@ Module log.
                 [ M.read (| topics |); M.read (| data |) ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.path "alloy_primitives::log::LogData" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -767,7 +866,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::LogData"
             []
             []
@@ -829,7 +928,11 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.le,
@@ -881,7 +984,11 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -952,7 +1059,11 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1029,7 +1140,11 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1065,8 +1180,25 @@ Module log.
       match ε, τ, α with
       | [], [], [ self; topics ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let topics := M.alloc (| topics |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
+          let topics :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              topics
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -1077,7 +1209,7 @@ Module log.
                 |),
                 M.read (| topics |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1097,8 +1229,25 @@ Module log.
       match ε, τ, α with
       | [], [], [ self; topics ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let topics := M.alloc (| topics |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
+          let topics :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              topics
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1134,7 +1283,7 @@ Module log.
                   M.read (| topics |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1153,7 +1302,7 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::log::LogData", self |) in
           Value.Tuple
             [
               M.read (|
@@ -1194,7 +1343,11 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::log::LogData" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "alloy_primitives::log::LogData",
             M.get_trait_method (|
@@ -1220,7 +1373,7 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::log::LogData", self |) in
           M.read (| self |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1255,8 +1408,15 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ T ]
@@ -1332,8 +1492,16 @@ Module log.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1373,6 +1541,7 @@ Module log.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1409,7 +1578,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ T ]
@@ -1470,8 +1639,22 @@ Module log.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -1554,7 +1737,14 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1565,7 +1755,7 @@ Module log.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -1593,8 +1783,15 @@ Module log.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1626,6 +1823,7 @@ Module log.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
@@ -1677,7 +1875,14 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1718,7 +1923,14 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1766,9 +1978,23 @@ Module log.
       match ε, τ, α with
       | [], [], [ address; topics; data ] =>
         ltac:(M.monadic
-          (let address := M.alloc (| address |) in
-          let topics := M.alloc (| topics |) in
-          let data := M.alloc (| data |) in
+          (let address :=
+            M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+          let topics :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              topics
+            |) in
+          let data := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", data |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -1826,12 +2052,13 @@ Module log.
                               (Ty.path "alloy_primitives::log::Log")
                               []
                               [ Ty.path "alloy_primitives::log::LogData" ]),
-                          M.alloc (| α0 |),
+                          M.alloc (| Ty.path "alloy_primitives::log::LogData", α0 |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let data := M.copy (| γ |) in
-                                Value.StructRecord
+                                (let data :=
+                                  M.copy (| Ty.path "alloy_primitives::log::LogData", γ |) in
+                                Value.mkStructRecord
                                   "alloy_primitives::log::Log"
                                   []
                                   [ Ty.path "alloy_primitives::log::LogData" ]
@@ -1859,10 +2086,24 @@ Module log.
       match ε, τ, α with
       | [], [], [ address; topics; data ] =>
         ltac:(M.monadic
-          (let address := M.alloc (| address |) in
-          let topics := M.alloc (| topics |) in
-          let data := M.alloc (| data |) in
-          Value.StructRecord
+          (let address :=
+            M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+          let topics :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::vec::Vec")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              topics
+            |) in
+          let data := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", data |) in
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ Ty.path "alloy_primitives::log::LogData" ]
@@ -1897,7 +2138,7 @@ Module log.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ Ty.path "alloy_primitives::log::LogData" ]
@@ -1948,9 +2189,10 @@ Module log.
       match ε, τ, α with
       | [], [], [ address; data ] =>
         ltac:(M.monadic
-          (let address := M.alloc (| address |) in
-          let data := M.alloc (| data |) in
-          Value.StructRecord
+          (let address :=
+            M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+          let data := M.alloc (| T, data |) in
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ T ]
@@ -1980,8 +2222,9 @@ Module log.
       match ε, τ, α with
       | [], [], [ address; data ] =>
         ltac:(M.monadic
-          (let address := M.alloc (| address |) in
-          let data := M.alloc (| data |) in
+          (let address :=
+            M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+          let data := M.alloc (| T, data |) in
           M.read (|
             let~ this : Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] :=
               M.call_closure (|
@@ -1995,6 +2238,10 @@ Module log.
                 [ M.read (| address |); M.read (| data |) ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::option::Option")
@@ -2019,6 +2266,7 @@ Module log.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "alloy_primitives::log::LogData",
                           M.call_closure (|
                             Ty.path "alloy_primitives::log::LogData",
                             M.get_trait_method (|
@@ -2074,8 +2322,15 @@ Module log.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloy_primitives::log::Log") [] [ T ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "alloy_primitives::log::Log"
             []
             [ Ty.path "alloy_primitives::log::LogData" ]

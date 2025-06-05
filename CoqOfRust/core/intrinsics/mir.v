@@ -112,7 +112,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [], [ reason ] =>
         ltac:(M.monadic
-          (let reason := M.alloc (| reason |) in
+          (let reason :=
+            M.alloc (| Ty.path "core::intrinsics::mir::UnwindTerminateReason", reason |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -137,7 +138,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [], [ goto ] =>
         ltac:(M.monadic
-          (let goto := M.alloc (| goto |) in
+          (let goto := M.alloc (| Ty.path "core::intrinsics::mir::BasicBlock", goto |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -170,7 +171,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [], [ goto ] =>
         ltac:(M.monadic
-          (let goto := M.alloc (| goto |) in
+          (let goto := M.alloc (| Ty.path "core::intrinsics::mir::BasicBlock", goto |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -211,7 +212,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [], [ destination ] =>
         ltac:(M.monadic
-          (let destination := M.alloc (| destination |) in
+          (let destination :=
+            M.alloc (| Ty.path "core::intrinsics::mir::BasicBlock", destination |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -252,9 +254,10 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place; goto; unwind_action ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
-          let goto := M.alloc (| goto |) in
-          let unwind_action := M.alloc (| unwind_action |) in
+          (let place := M.alloc (| T, place |) in
+          let goto := M.alloc (| Ty.path "core::intrinsics::mir::ReturnToArg", goto |) in
+          let unwind_action :=
+            M.alloc (| Ty.path "core::intrinsics::mir::UnwindActionArg", unwind_action |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -275,9 +278,10 @@ Module intrinsics.
       match ε, τ, α with
       | [], [], [ call; goto; unwind_action ] =>
         ltac:(M.monadic
-          (let call := M.alloc (| call |) in
-          let goto := M.alloc (| goto |) in
-          let unwind_action := M.alloc (| unwind_action |) in
+          (let call := M.alloc (| Ty.tuple [], call |) in
+          let goto := M.alloc (| Ty.path "core::intrinsics::mir::ReturnToArg", goto |) in
+          let unwind_action :=
+            M.alloc (| Ty.path "core::intrinsics::mir::UnwindActionArg", unwind_action |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -298,7 +302,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ call ] =>
         ltac:(M.monadic
-          (let call := M.alloc (| call |) in
+          (let call := M.alloc (| T, call |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -343,7 +347,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ local ] =>
         ltac:(M.monadic
-          (let local := M.alloc (| local |) in
+          (let local := M.alloc (| T, local |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -364,7 +368,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ local ] =>
         ltac:(M.monadic
-          (let local := M.alloc (| local |) in
+          (let local := M.alloc (| T, local |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -385,7 +389,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [], [ operand ] =>
         ltac:(M.monadic
-          (let operand := M.alloc (| operand |) in
+          (let operand := M.alloc (| Ty.path "bool", operand |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -406,7 +410,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -427,7 +431,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ binop ] =>
         ltac:(M.monadic
-          (let binop := M.alloc (| binop |) in
+          (let binop := M.alloc (| T, binop |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -448,7 +452,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -469,7 +473,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ P ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| Ty.apply (Ty.path "*const") [] [ P ], place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -490,7 +494,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -515,7 +519,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -536,7 +540,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -557,7 +561,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
-          (let s := M.alloc (| s |) in
+          (let s := M.alloc (| T, s |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -578,7 +582,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ s ] =>
         ltac:(M.monadic
-          (let s := M.alloc (| s |) in
+          (let s := M.alloc (| T, s |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -599,7 +603,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -624,8 +628,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place; index ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
-          let index := M.alloc (| index |) in
+          (let place := M.alloc (| T, place |) in
+          let index := M.alloc (| Ty.path "u32", index |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -650,8 +654,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T; U ], [ ptr; count ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
-          let count := M.alloc (| count |) in
+          (let ptr := M.alloc (| T, ptr |) in
+          let count := M.alloc (| U, count |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -672,8 +676,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ F ], [ place; field ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
-          let field := M.alloc (| field |) in
+          (let place := M.alloc (| Ty.tuple [], place |) in
+          let field := M.alloc (| Ty.path "u32", field |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -694,8 +698,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place; index ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
-          let index := M.alloc (| index |) in
+          (let place := M.alloc (| T, place |) in
+          let index := M.alloc (| Ty.path "u32", index |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -716,7 +720,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T; U ], [ operand ] =>
         ltac:(M.monadic
-          (let operand := M.alloc (| operand |) in
+          (let operand := M.alloc (| T, operand |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -741,7 +745,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T; U ], [ operand ] =>
         ltac:(M.monadic
-          (let operand := M.alloc (| operand |) in
+          (let operand := M.alloc (| T, operand |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -766,7 +770,7 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ place ] =>
         ltac:(M.monadic
-          (let place := M.alloc (| place |) in
+          (let place := M.alloc (| T, place |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",
@@ -791,8 +795,8 @@ Module intrinsics.
       match ε, τ, α with
       | [], [ T ], [ name; s ] =>
         ltac:(M.monadic
-          (let name := M.alloc (| name |) in
-          let s := M.alloc (| s |) in
+          (let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
+          let s := M.alloc (| T, s |) in
           M.never_to_any (|
             M.call_closure (|
               Ty.path "never",

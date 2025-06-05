@@ -30,19 +30,20 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ fmt ] =>
       ltac:(M.monadic
-        (let fmt := M.alloc (| fmt |) in
+        (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -51,7 +52,7 @@ Module panicking.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
@@ -86,6 +87,7 @@ Module panicking.
               ]
             |) in
           M.alloc (|
+            Ty.path "never",
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic_fmt::panic_impl", [], [] |),
@@ -146,8 +148,8 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ fmt; force_no_backtrace ] =>
       ltac:(M.monadic
-        (let fmt := M.alloc (| fmt |) in
-        let force_no_backtrace := M.alloc (| force_no_backtrace |) in
+        (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
+        let force_no_backtrace := M.alloc (| Ty.path "bool", force_no_backtrace |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (|
@@ -204,7 +206,7 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ expr ] =>
       ltac:(M.monadic
-        (let expr := M.alloc (| expr |) in
+        (let expr := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], expr |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -221,7 +223,16 @@ Module panicking.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ M.read (| expr |) ] |) |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ M.read (| expr |) ]
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -269,7 +280,13 @@ Module panicking.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ mk_str (| "attempt to add with overflow" |) ] |)
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "attempt to add with overflow" |) ]
+                        |)
                       |)
                     |)
                   |)
@@ -321,6 +338,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "attempt to subtract with overflow" |) ]
                         |)
                       |)
@@ -374,6 +395,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "attempt to multiply with overflow" |) ]
                         |)
                       |)
@@ -426,7 +451,13 @@ Module panicking.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ mk_str (| "attempt to divide with overflow" |) ] |)
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "attempt to divide with overflow" |) ]
+                        |)
                       |)
                     |)
                   |)
@@ -478,6 +509,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [ mk_str (| "attempt to calculate the remainder with overflow" |) ]
                         |)
@@ -531,7 +566,13 @@ Module panicking.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ mk_str (| "attempt to negate with overflow" |) ] |)
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "attempt to negate with overflow" |) ]
+                        |)
                       |)
                     |)
                   |)
@@ -583,6 +624,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "attempt to shift right with overflow" |) ]
                         |)
                       |)
@@ -636,6 +681,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "attempt to shift left with overflow" |) ]
                         |)
                       |)
@@ -688,7 +737,13 @@ Module panicking.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ mk_str (| "attempt to divide by zero" |) ] |)
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "attempt to divide by zero" |) ]
+                        |)
                       |)
                     |)
                   |)
@@ -740,6 +795,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [
                               mk_str (|
@@ -802,6 +861,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "coroutine resumed after completion" |) ]
                         |)
                       |)
@@ -859,6 +922,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "`async fn` resumed after completion" |) ]
                         |)
                       |)
@@ -916,6 +983,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "`async gen fn` resumed after completion" |) ]
                         |)
                       |)
@@ -969,6 +1040,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [
                               mk_str (|
@@ -1031,6 +1106,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "coroutine resumed after panicking" |) ]
                         |)
                       |)
@@ -1088,6 +1167,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "`async fn` resumed after panicking" |) ]
                         |)
                       |)
@@ -1145,6 +1228,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "`async gen fn` resumed after panicking" |) ]
                         |)
                       |)
@@ -1202,6 +1289,10 @@ Module panicking.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array
                             [
                               mk_str (|
@@ -1236,7 +1327,7 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ expr ] =>
       ltac:(M.monadic
-        (let expr := M.alloc (| expr |) in
+        (let expr := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], expr |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
@@ -1253,7 +1344,16 @@ Module panicking.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ M.read (| expr |) ] |) |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ M.read (| expr |) ]
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1278,7 +1378,7 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ expr ] =>
       ltac:(M.monadic
-        (let expr := M.alloc (| expr |) in
+        (let expr := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], expr |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
@@ -1295,7 +1395,16 @@ Module panicking.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ M.read (| expr |) ] |) |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ M.read (| expr |) ]
+                      |)
+                    |)
                   |)
                 |)
               ]
@@ -1331,7 +1440,13 @@ Module panicking.
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
-                M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "explicit panic" |) |) |)
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    mk_str (| "explicit panic" |)
+                  |)
+                |)
               |)
             |)
           ]
@@ -1353,7 +1468,7 @@ Module panicking.
     match ε, τ, α with
     | [], [ T ], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -1373,6 +1488,10 @@ Module panicking.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                         Value.Array [ mk_str (| "internal error: entered unreachable code: " |) ]
                       |)
                     |)
@@ -1384,6 +1503,10 @@ Module panicking.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.path "core::fmt::rt::Argument" ],
                         Value.Array
                           [
                             M.call_closure (|
@@ -1429,7 +1552,7 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ expr ] =>
       ltac:(M.monadic
-        (let expr := M.alloc (| expr |) in
+        (let expr := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], expr |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (|
@@ -1456,7 +1579,7 @@ Module panicking.
     match ε, τ, α with
     | [], [ T ], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -1473,7 +1596,16 @@ Module panicking.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                        Value.Array [ mk_str (| "" |) ]
+                      |)
+                    |)
                   |)
                 |);
                 M.borrow (|
@@ -1482,6 +1614,10 @@ Module panicking.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.path "core::fmt::rt::Argument" ],
                         Value.Array
                           [
                             M.call_closure (|
@@ -1531,20 +1667,21 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ index; len ] =>
       ltac:(M.monadic
-        (let index := M.alloc (| index |) in
-        let len := M.alloc (| len |) in
+        (let index := M.alloc (| Ty.path "usize", index |) in
+        let len := M.alloc (| Ty.path "usize", len |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -1553,11 +1690,12 @@ Module panicking.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.path "never",
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -1577,6 +1715,10 @@ Module panicking.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                             Value.Array
                               [
                                 mk_str (| "index out of bounds: the len is " |);
@@ -1592,6 +1734,10 @@ Module panicking.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 2 ]
+                              [ Ty.path "core::fmt::rt::Argument" ],
                             Value.Array
                               [
                                 M.call_closure (|
@@ -1665,20 +1811,21 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ required; found ] =>
       ltac:(M.monadic
-        (let required := M.alloc (| required |) in
-        let found := M.alloc (| found |) in
+        (let required := M.alloc (| Ty.path "usize", required |) in
+        let found := M.alloc (| Ty.path "usize", found |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool false |)) in
+                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool false |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -1687,11 +1834,12 @@ Module panicking.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.path "never",
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic_nounwind_fmt", [], [] |),
@@ -1713,6 +1861,10 @@ Module panicking.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [
                                   mk_str (|
@@ -1732,6 +1884,10 @@ Module panicking.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -1777,6 +1933,10 @@ Module panicking.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.path "core::fmt::rt::Placeholder" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -1916,16 +2076,20 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ fmt ] =>
       ltac:(M.monadic
-        (let fmt := M.alloc (| fmt |) in
+        (let fmt := M.alloc (| Ty.path "core::fmt::Arguments", fmt |) in
         M.read (|
           M.match_operator (|
             Ty.path "never",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "core::option::Option")
@@ -1942,8 +2106,9 @@ Module panicking.
                     |) in
                   let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let msg := M.copy (| γ0_0 |) in
+                  let msg := M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], γ0_0 |) in
                   M.alloc (|
+                    Ty.path "never",
                     M.call_closure (|
                       Ty.path "never",
                       M.get_function (|
@@ -1969,7 +2134,7 @@ Module panicking.
                         []
                       |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -2016,8 +2181,13 @@ Module panicking.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::panicking::AssertKind" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2036,6 +2206,7 @@ Module panicking.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eq" |) |) |)
                         |)));
                     fun γ =>
@@ -2043,6 +2214,7 @@ Module panicking.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ne" |) |) |)
                         |)));
                     fun γ =>
@@ -2050,6 +2222,7 @@ Module panicking.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Match" |) |) |)
                         |)))
                   ]
@@ -2087,10 +2260,14 @@ Module panicking.
     match ε, τ, α with
     | [], [ T; U ], [ kind; _ as left; _ as right; args ] =>
       ltac:(M.monadic
-        (let kind := M.alloc (| kind |) in
-        let left := M.alloc (| left |) in
-        let right := M.alloc (| right |) in
-        let args := M.alloc (| args |) in
+        (let kind := M.alloc (| Ty.path "core::panicking::AssertKind", kind |) in
+        let left := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], left |) in
+        let right := M.alloc (| Ty.apply (Ty.path "&") [] [ U ], right |) in
+        let args :=
+          M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::fmt::Arguments" ],
+            args
+          |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::assert_failed_inner", [], [] |),
@@ -2139,9 +2316,13 @@ Module panicking.
     match ε, τ, α with
     | [], [ T ], [ _ as left; _ as right; args ] =>
       ltac:(M.monadic
-        (let left := M.alloc (| left |) in
-        let right := M.alloc (| right |) in
-        let args := M.alloc (| args |) in
+        (let left := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], left |) in
+        let right := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], right |) in
+        let args :=
+          M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::fmt::Arguments" ],
+            args
+          |) in
         M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::assert_failed_inner", [], [] |),
@@ -2161,6 +2342,7 @@ Module panicking.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.path "core::panicking::assert_matches_failed::Pattern",
                       Value.StructTuple
                         "core::panicking::assert_matches_failed::Pattern"
                         []
@@ -2202,8 +2384,16 @@ Module panicking.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "core::panicking::assert_matches_failed::Pattern" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -2270,10 +2460,22 @@ Module panicking.
     match ε, τ, α with
     | [], [], [ kind; _ as left; _ as right; args ] =>
       ltac:(M.monadic
-        (let kind := M.alloc (| kind |) in
-        let left := M.alloc (| left |) in
-        let right := M.alloc (| right |) in
-        let args := M.alloc (| args |) in
+        (let kind := M.alloc (| Ty.path "core::panicking::AssertKind", kind |) in
+        let left :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+            left
+          |) in
+        let right :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ],
+            right
+          |) in
+        let args :=
+          M.alloc (|
+            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::fmt::Arguments" ],
+            args
+          |) in
         M.read (|
           let~ op : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
             M.read (|
@@ -2284,17 +2486,22 @@ Module panicking.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Eq" |) in
-                      M.alloc (| mk_str (| "==" |) |)));
+                      M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                        mk_str (| "==" |)
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Ne" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "!=" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::panicking::AssertKind::Match" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                         M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "matches" |) |) |)
                       |)))
                 ]
@@ -2308,8 +2515,9 @@ Module panicking.
                 ltac:(M.monadic
                   (let γ0_0 :=
                     M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                  let args := M.copy (| γ0_0 |) in
+                  let args := M.copy (| Ty.path "core::fmt::Arguments", γ0_0 |) in
                   M.alloc (|
+                    Ty.path "never",
                     M.call_closure (|
                       Ty.path "never",
                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -2330,6 +2538,10 @@ Module panicking.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     Value.Array
                                       [
                                         mk_str (| "assertion `left " |);
@@ -2349,6 +2561,10 @@ Module panicking.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|
@@ -2435,6 +2651,7 @@ Module panicking.
                 ltac:(M.monadic
                   (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                   M.alloc (|
+                    Ty.path "never",
                     M.call_closure (|
                       Ty.path "never",
                       M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -2455,6 +2672,10 @@ Module panicking.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 3 ]
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                     Value.Array
                                       [
                                         mk_str (| "assertion `left " |);
@@ -2473,6 +2694,10 @@ Module panicking.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 3 ]
+                                      [ Ty.path "core::fmt::rt::Argument" ],
                                     Value.Array
                                       [
                                         M.call_closure (|

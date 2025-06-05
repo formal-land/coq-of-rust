@@ -56,7 +56,8 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "e2e_call_runtime::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "e2e_call_runtime::AccountId",
@@ -110,7 +111,8 @@ Module Impl_e2e_call_runtime_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "e2e_call_runtime::Env" ], self |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -188,7 +190,8 @@ Module Impl_e2e_call_runtime_Contract.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "e2e_call_runtime::Contract" ], self |) in
         M.call_closure (|
           Ty.path "e2e_call_runtime::Env",
           M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [], [] |),
@@ -225,7 +228,8 @@ Module Impl_e2e_call_runtime_Contract.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "e2e_call_runtime::Contract" ], self |) in
         M.call_closure (|
           Ty.path "u128",
           M.get_associated_function (| Ty.path "e2e_call_runtime::Env", "balance", [], [] |),
@@ -233,6 +237,7 @@ Module Impl_e2e_call_runtime_Contract.
             M.borrow (|
               Pointer.Kind.Ref,
               M.alloc (|
+                Ty.path "e2e_call_runtime::Env",
                 M.call_closure (|
                   Ty.path "e2e_call_runtime::Env",
                   M.get_associated_function (|

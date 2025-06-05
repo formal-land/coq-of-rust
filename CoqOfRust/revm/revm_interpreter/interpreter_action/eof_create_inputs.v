@@ -46,8 +46,17 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                  ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -65,8 +74,16 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
                           "initdata"
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -112,10 +129,29 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
                           "created_address"
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
-                      let __self_1 := M.alloc (| γ1_1 |) in
-                      let __self_2 := M.alloc (| γ1_2 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                          γ1_0
+                        |) in
+                      let __self_1 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_1
+                        |) in
+                      let __self_2 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ],
+                          γ1_2
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -181,7 +217,15 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
@@ -196,9 +240,15 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
                           "initdata"
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
-                        Value.StructRecord
+                        Ty.path
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
+                        Value.mkStructRecord
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
                           []
                           []
@@ -245,11 +295,28 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
                           "created_address"
                         |) in
-                      let __self_0 := M.alloc (| γ1_0 |) in
-                      let __self_1 := M.alloc (| γ1_1 |) in
-                      let __self_2 := M.alloc (| γ1_2 |) in
+                      let __self_0 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                          γ1_0
+                        |) in
+                      let __self_1 :=
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                          γ1_1
+                        |) in
+                      let __self_2 :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ],
+                          γ1_2
+                        |) in
                       M.alloc (|
-                        Value.StructRecord
+                        Ty.path
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
+                        Value.mkStructRecord
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
                           []
                           []
@@ -350,8 +417,24 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                  ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -380,6 +463,7 @@ Module interpreter_action.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 LogicalOp.and (|
                   M.call_closure (|
                     Ty.path "bool",
@@ -390,7 +474,26 @@ Module interpreter_action.
                     (M.read (|
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        M.alloc (|
+                          Ty.tuple
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                                ];
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                                ]
+                            ],
+                          Value.Tuple [ M.read (| self |); M.read (| other |) ]
+                        |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -403,7 +506,14 @@ Module interpreter_action.
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
                                   "initdata"
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  γ2_0
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_record_field (|
@@ -411,8 +521,16 @@ Module interpreter_action.
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
                                   "initdata"
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  γ2_0
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_trait_method (|
@@ -461,9 +579,27 @@ Module interpreter_action.
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
                                   "created_address"
                                 |) in
-                              let __self_0 := M.alloc (| γ2_0 |) in
-                              let __self_1 := M.alloc (| γ2_1 |) in
-                              let __self_2 := M.alloc (| γ2_2 |) in
+                              let __self_0 :=
+                                M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                                  γ2_0
+                                |) in
+                              let __self_1 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  γ2_1
+                                |) in
+                              let __self_2 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  γ2_2
+                                |) in
                               let γ0_1 := M.read (| γ0_1 |) in
                               let γ2_0 :=
                                 M.SubPointer.get_struct_record_field (|
@@ -483,10 +619,29 @@ Module interpreter_action.
                                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
                                   "created_address"
                                 |) in
-                              let __arg1_0 := M.alloc (| γ2_0 |) in
-                              let __arg1_1 := M.alloc (| γ2_1 |) in
-                              let __arg1_2 := M.alloc (| γ2_2 |) in
+                              let __arg1_0 :=
+                                M.alloc (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ],
+                                  γ2_0
+                                |) in
+                              let __arg1_1 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                  γ2_1
+                                |) in
+                              let __arg1_2 :=
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                  γ2_2
+                                |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 LogicalOp.and (|
                                   LogicalOp.and (|
                                     M.call_closure (|
@@ -569,6 +724,7 @@ Module interpreter_action.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.never_to_any (|
                                   M.call_closure (|
                                     Ty.path "never",
@@ -609,7 +765,15 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -626,7 +790,10 @@ Module interpreter_action.
                               (M.match_operator (|
                                 Ty.tuple [],
                                 Value.DeclaredButUndefined,
-                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                ]
                               |)))
                         ]
                       |)))
@@ -664,7 +831,15 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -683,8 +858,24 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
                           "created_address"
                         |) in
-                      let created_address := M.alloc (| γ1_0 |) in
+                      let created_address :=
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloy_primitives::bits::address::Address" ],
+                          γ1_0
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -710,6 +901,15 @@ Module interpreter_action.
                           "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.path "alloy_primitives::bits::address::Address" ]
+                          ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -750,7 +950,7 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
               []
               []
@@ -838,8 +1038,19 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+                  ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -911,6 +1122,13 @@ Module interpreter_action.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.path
+                                "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -946,7 +1164,7 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               []
               []
@@ -1037,8 +1255,18 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+                  ],
+                self
+              |) in
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               []
               []
@@ -1198,8 +1426,28 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+                  ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+                  ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
@@ -1358,7 +1606,17 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+                  ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -1381,7 +1639,11 @@ Module interpreter_action.
                                       (M.match_operator (|
                                         Ty.tuple [],
                                         Value.DeclaredButUndefined,
-                                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -1422,11 +1684,23 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ caller; value; gas_limit; kind ] =>
           ltac:(M.monadic
-            (let caller := M.alloc (| caller |) in
-            let value := M.alloc (| value |) in
-            let gas_limit := M.alloc (| gas_limit |) in
-            let kind := M.alloc (| kind |) in
-            Value.StructRecord
+            (let caller :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", caller |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
+            let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
+            let kind :=
+              M.alloc (|
+                Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
+                kind
+              |) in
+            Value.mkStructRecord
               "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               []
               []
@@ -1468,12 +1742,21 @@ Module interpreter_action.
         match ε, τ, α with
         | [], [], [ caller; created_address; value; eof_init_code; gas_limit; input ] =>
           ltac:(M.monadic
-            (let caller := M.alloc (| caller |) in
-            let created_address := M.alloc (| created_address |) in
-            let value := M.alloc (| value |) in
-            let eof_init_code := M.alloc (| eof_init_code |) in
-            let gas_limit := M.alloc (| gas_limit |) in
-            let input := M.alloc (| input |) in
+            (let caller :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", caller |) in
+            let created_address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", created_address |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
+            let eof_init_code := M.alloc (| Ty.path "revm_bytecode::eof::Eof", eof_init_code |) in
+            let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
+            let input := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", input |) in
             M.call_closure (|
               Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
               M.get_associated_function (|
@@ -1486,7 +1769,7 @@ Module interpreter_action.
                 M.read (| caller |);
                 M.read (| value |);
                 M.read (| gas_limit |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
                   []
                   []

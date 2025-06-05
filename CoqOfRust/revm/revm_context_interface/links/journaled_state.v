@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.option.
+Require Import core.ops.links.deref.
 Require Import revm.revm_context_interface.journaled_state.
 
 (*
@@ -79,6 +80,19 @@ Module StateLoad.
     Smpl Add apply get_is_cold_is_valid : run_sub_pointer.
   End SubPointer.
 End StateLoad.
+
+(*
+impl<T> Deref for StateLoad<T> {
+    type Target = T;
+*)
+Module Impl_Deref_for_StateLoad.
+  Definition Self (T : Set) : Set :=
+    StateLoad.t T.
+
+  Instance run (T : Set) `{Link T} : Deref.Run (Self T) T.
+  Admitted.
+End Impl_Deref_for_StateLoad.
+Export Impl_Deref_for_StateLoad.
 
 (*
 pub struct Eip7702CodeLoad<T> {

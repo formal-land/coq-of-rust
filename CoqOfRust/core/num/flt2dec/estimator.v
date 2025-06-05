@@ -21,8 +21,8 @@ Module num.
         match ε, τ, α with
         | [], [], [ mant; exp ] =>
           ltac:(M.monadic
-            (let mant := M.alloc (| mant |) in
-            let exp := M.alloc (| exp |) in
+            (let mant := M.alloc (| Ty.path "u64", mant |) in
+            let exp := M.alloc (| Ty.path "i16", exp |) in
             M.read (|
               let~ nbits : Ty.path "i64" :=
                 M.call_closure (|
@@ -46,6 +46,7 @@ Module num.
                   ]
                 |) in
               M.alloc (|
+                Ty.path "i16",
                 M.cast
                   (Ty.path "i16")
                   (M.call_closure (|

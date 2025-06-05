@@ -33,8 +33,22 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ] ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "generics_phantom_type::PhantomTuple") [] [ A; B ] ],
+            other
+          |) in
         LogicalOp.and (|
           M.call_closure (|
             Ty.path "bool",
@@ -137,8 +151,22 @@ Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_Partial
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ] ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.apply (Ty.path "generics_phantom_type::PhantomStruct") [] [ A; B ] ],
+            other
+          |) in
         LogicalOp.and (|
           M.call_closure (|
             Ty.path "bool",
@@ -272,7 +300,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "generics_phantom_type::PhantomStruct")
               []
               [ Ty.path "char"; Ty.path "f32" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_phantom_type::PhantomStruct"
             []
             [ Ty.path "char"; Ty.path "f32" ]
@@ -285,7 +313,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "generics_phantom_type::PhantomStruct")
               []
               [ Ty.path "char"; Ty.path "f64" ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "generics_phantom_type::PhantomStruct"
             []
             [ Ty.path "char"; Ty.path "f64" ]
@@ -293,7 +321,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ("first", Value.UnicodeChar 81);
               ("phantom", Value.StructTuple "core::marker::PhantomData" [] [ Ty.path "f64" ] [])
             ] in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

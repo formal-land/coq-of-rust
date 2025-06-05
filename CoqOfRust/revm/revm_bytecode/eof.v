@@ -5,6 +5,10 @@ Module eof.
   Definition value_EOF_MAGIC_HASH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+          [ Value.Integer IntegerKind.Usize 32 ]
+          [],
         M.call_closure (|
           Ty.apply
             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -36,7 +40,7 @@ Module eof.
   Global Typeclasses Opaque value_EOF_MAGIC_HASH.
   
   Definition value_EOF_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61184 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u16", Value.Integer IntegerKind.U16 61184 |))).
   
   Global Instance Instance_IsConstant_value_EOF_MAGIC :
     M.IsFunction.C "revm_bytecode::eof::EOF_MAGIC" value_EOF_MAGIC.
@@ -46,7 +50,9 @@ Module eof.
   Definition value_EOF_MAGIC_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "alloy_primitives::bytes_::Bytes",
         M.alloc (|
+          Ty.path "alloy_primitives::bytes_::Bytes",
           M.call_closure (|
             Ty.path "alloy_primitives::bytes_::Bytes",
             M.get_associated_function (|
@@ -93,8 +99,9 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          Value.mkStructRecord
             "revm_bytecode::eof::Eof"
             []
             []
@@ -204,8 +211,10 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -261,6 +270,7 @@ Module eof.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -307,8 +317,10 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], other |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -429,7 +441,8 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -446,7 +459,10 @@ Module eof.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -474,8 +490,9 @@ Module eof.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -536,6 +553,7 @@ Module eof.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -586,12 +604,15 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], other |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_trait_method (|
@@ -640,6 +661,7 @@ Module eof.
                     M.match_operator (|
                       Ty.path "core::cmp::Ordering",
                       M.alloc (|
+                        Ty.path "core::cmp::Ordering",
                         M.call_closure (|
                           Ty.path "core::cmp::Ordering",
                           M.get_trait_method (|
@@ -686,6 +708,7 @@ Module eof.
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
+                              Ty.path "core::cmp::Ordering",
                               M.call_closure (|
                                 Ty.path "core::cmp::Ordering",
                                 M.get_trait_method (|
@@ -729,13 +752,13 @@ Module eof.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp := M.copy (| Ty.path "core::cmp::Ordering", γ |) in
                     cmp))
               ]
             |)
@@ -760,12 +783,15 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], other |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -823,6 +849,10 @@ Module eof.
                         []
                         [ Ty.path "core::cmp::Ordering" ],
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::option::Option")
@@ -878,6 +908,10 @@ Module eof.
                               |) in
                             let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Equal" |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [ Ty.path "core::cmp::Ordering" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::option::Option")
@@ -924,13 +958,27 @@ Module eof.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let cmp := M.copy (| γ |) in
+                            (let cmp :=
+                              M.copy (|
+                                Ty.apply
+                                  (Ty.path "core::option::Option")
+                                  []
+                                  [ Ty.path "core::cmp::Ordering" ],
+                                γ
+                              |) in
                             cmp))
                       ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
+                    (let cmp :=
+                      M.copy (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
+                        γ
+                      |) in
                     cmp))
               ]
             |)
@@ -971,7 +1019,7 @@ Module eof.
         ltac:(M.monadic
           (M.read (|
             let~ body : Ty.path "revm_bytecode::eof::body::EofBody" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_bytecode::eof::body::EofBody"
                 []
                 []
@@ -1026,6 +1074,10 @@ Module eof.
                               |),
                               [
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "revm_bytecode::eof::types_section::TypesSection" ],
                                   Value.Array
                                     [
                                       M.call_closure (|
@@ -1090,7 +1142,15 @@ Module eof.
                                 [],
                                 []
                               |),
-                              [ M.alloc (| Value.Array [ Value.Integer IntegerKind.Usize 1 ] |) ]
+                              [
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "usize" ],
+                                  Value.Array [ Value.Integer IntegerKind.Usize 1 ]
+                                |)
+                              ]
                             |)
                           |))
                       ]
@@ -1112,7 +1172,13 @@ Module eof.
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ Value.Integer IntegerKind.U8 0 ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "u8" ],
+                                  Value.Array [ Value.Integer IntegerKind.U8 0 ]
+                                |)
                               |)
                             |)
                           |))
@@ -1153,6 +1219,7 @@ Module eof.
                   ("is_data_filled", Value.Bool true)
                 ] in
             M.alloc (|
+              Ty.path "revm_bytecode::eof::Eof",
               M.call_closure (|
                 Ty.path "revm_bytecode::eof::Eof",
                 M.get_associated_function (|
@@ -1189,7 +1256,8 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1214,7 +1282,7 @@ Module eof.
       match ε, τ, α with
       | [], [], [ bytes ] =>
         ltac:(M.monadic
-          (let bytes := M.alloc (| bytes |) in
+          (let bytes := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", bytes |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1243,8 +1311,9 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; mode ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let mode := M.alloc (| mode |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let mode := M.alloc (| Ty.path "revm_bytecode::eof::verification::CodeType", mode |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1277,7 +1346,7 @@ Module eof.
       match ε, τ, α with
       | [], [], [ body ] =>
         ltac:(M.monadic
-          (let body := M.alloc (| body |) in
+          (let body := M.alloc (| Ty.path "revm_bytecode::eof::body::EofBody", body |) in
           M.call_closure (|
             Ty.path "revm_bytecode::eof::Eof",
             M.get_associated_function (|
@@ -1304,7 +1373,8 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
           M.call_closure (|
             Ty.path "usize",
             BinOp.Wrap.add,
@@ -1365,7 +1435,8 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1399,9 +1470,10 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; offset; len ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let offset := M.alloc (| offset |) in
-          let len := M.alloc (| len |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
+          let offset := M.alloc (| Ty.path "usize", offset |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1534,7 +1606,7 @@ Module eof.
                               |)
                             |)
                           |);
-                          Value.StructRecord
+                          Value.mkStructRecord
                             "core::ops::range::RangeFrom"
                             []
                             [ Ty.path "usize" ]
@@ -1567,11 +1639,24 @@ Module eof.
                                           []
                                           [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                                       ]),
-                                  M.alloc (| α0 |),
+                                  M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                    α0
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let bytes := M.copy (| γ |) in
+                                        (let bytes :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                            γ
+                                          |) in
                                         M.call_closure (|
                                           Ty.apply
                                             (Ty.path "core::option::Option")
@@ -1598,7 +1683,7 @@ Module eof.
                                               Pointer.Kind.Ref,
                                               M.deref (| M.read (| bytes |) |)
                                             |);
-                                            Value.StructRecord
+                                            Value.mkStructRecord
                                               "core::ops::range::RangeTo"
                                               []
                                               [ Ty.path "usize" ]
@@ -1646,7 +1731,18 @@ Module eof.
                   M.pointer_coercion
                     (M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [] |) |) |)
+                      M.deref (|
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 0 ]
+                              [ Ty.path "u8" ],
+                            Value.Array []
+                          |)
+                        |)
+                      |)
                     |))
                 ]
               |)
@@ -1669,7 +1765,8 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1744,7 +1841,8 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::Eof" ], self |) in
           M.read (|
             let~ buffer :
                 Ty.apply
@@ -1827,6 +1925,7 @@ Module eof.
                 ]
               |) in
             M.alloc (|
+              Ty.path "alloy_primitives::bytes_::Bytes",
               M.call_closure (|
                 Ty.path "alloy_primitives::bytes_::Bytes",
                 M.get_trait_method (|
@@ -1869,7 +1968,7 @@ Module eof.
       match ε, τ, α with
       | [], [], [ raw ] =>
         ltac:(M.monadic
-          (let raw := M.alloc (| raw |) in
+          (let raw := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", raw |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1883,6 +1982,17 @@ Module eof.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.path "revm_bytecode::eof::Eof";
+                          Ty.path "alloy_primitives::bytes_::Bytes"
+                        ];
+                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                    ],
                   M.read (|
                     M.match_operator (|
                       Ty.apply
@@ -1906,6 +2016,26 @@ Module eof.
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "revm_bytecode::eof::EofDecodeError"
+                                ];
+                              Ty.tuple
+                                [
+                                  Ty.path "revm_bytecode::eof::header::EofHeader";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                ]
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2036,8 +2166,26 @@ Module eof.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple
+                                  [
+                                    Ty.path "revm_bytecode::eof::header::EofHeader";
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                  ],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -2094,7 +2242,18 @@ Module eof.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val :=
+                                M.copy (|
+                                  Ty.tuple
+                                    [
+                                      Ty.path "revm_bytecode::eof::header::EofHeader";
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                    ],
+                                  γ0_0
+                                |) in
                               val))
                         ]
                       |),
@@ -2103,7 +2262,8 @@ Module eof.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let header := M.copy (| γ0_0 |) in
+                            let header :=
+                              M.copy (| Ty.path "revm_bytecode::eof::header::EofHeader", γ0_0 |) in
                             let~ eof_size : Ty.path "usize" :=
                               M.call_closure (|
                                 Ty.path "usize",
@@ -2135,13 +2295,14 @@ Module eof.
                               M.read (|
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               M.call_closure (|
                                                 Ty.path "bool",
                                                 BinOp.gt,
@@ -2189,6 +2350,7 @@ Module eof.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -2214,7 +2376,8 @@ Module eof.
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
@@ -2234,6 +2397,19 @@ Module eof.
                                 M.match_operator (|
                                   Ty.path "revm_bytecode::eof::body::EofBody",
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                                          ];
+                                        Ty.path "revm_bytecode::eof::body::EofBody"
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2301,8 +2477,19 @@ Module eof.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "revm_bytecode::eof::EofDecodeError"
+                                              ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.path "revm_bytecode::eof::body::EofBody",
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -2361,12 +2548,27 @@ Module eof.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val :=
+                                          M.copy (|
+                                            Ty.path "revm_bytecode::eof::body::EofBody",
+                                            γ0_0
+                                          |) in
                                         val))
                                   ]
                                 |)
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple
+                                    [
+                                      Ty.path "revm_bytecode::eof::Eof";
+                                      Ty.path "alloy_primitives::bytes_::Bytes"
+                                    ];
+                                  Ty.path "revm_bytecode::eof::EofDecodeError"
+                                ],
                               Value.StructTuple
                                 "core::result::Result::Ok"
                                 []
@@ -2381,7 +2583,7 @@ Module eof.
                                 [
                                   Value.Tuple
                                     [
-                                      Value.StructRecord
+                                      Value.mkStructRecord
                                         "revm_bytecode::eof::Eof"
                                         []
                                         []
@@ -2419,7 +2621,7 @@ Module eof.
       match ε, τ, α with
       | [], [], [ raw ] =>
         ltac:(M.monadic
-          (let raw := M.alloc (| raw |) in
+          (let raw := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", raw |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -2429,6 +2631,13 @@ Module eof.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "revm_bytecode::eof::Eof";
+                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                    ],
                   M.read (|
                     M.match_operator (|
                       Ty.apply
@@ -2448,6 +2657,26 @@ Module eof.
                               [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                           ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "revm_bytecode::eof::EofDecodeError"
+                                ];
+                              Ty.tuple
+                                [
+                                  Ty.path "revm_bytecode::eof::header::EofHeader";
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                ]
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2578,8 +2807,26 @@ Module eof.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "revm_bytecode::eof::EofDecodeError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple
+                                  [
+                                    Ty.path "revm_bytecode::eof::header::EofHeader";
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                  ],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -2628,7 +2875,18 @@ Module eof.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val :=
+                                M.copy (|
+                                  Ty.tuple
+                                    [
+                                      Ty.path "revm_bytecode::eof::header::EofHeader";
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                    ],
+                                  γ0_0
+                                |) in
                               val))
                         ]
                       |),
@@ -2637,12 +2895,26 @@ Module eof.
                           ltac:(M.monadic
                             (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let header := M.copy (| γ0_0 |) in
+                            let header :=
+                              M.copy (| Ty.path "revm_bytecode::eof::header::EofHeader", γ0_0 |) in
                             let~ body : Ty.path "revm_bytecode::eof::body::EofBody" :=
                               M.read (|
                                 M.match_operator (|
                                   Ty.path "revm_bytecode::eof::body::EofBody",
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "revm_bytecode::eof::EofDecodeError"
+                                          ];
+                                        Ty.path "revm_bytecode::eof::body::EofBody"
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -2710,8 +2982,19 @@ Module eof.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path "revm_bytecode::eof::EofDecodeError"
+                                              ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.path "revm_bytecode::eof::body::EofBody",
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -2761,12 +3044,23 @@ Module eof.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val :=
+                                          M.copy (|
+                                            Ty.path "revm_bytecode::eof::body::EofBody",
+                                            γ0_0
+                                          |) in
                                         val))
                                   ]
                                 |)
                               |) in
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "revm_bytecode::eof::Eof";
+                                  Ty.path "revm_bytecode::eof::EofDecodeError"
+                                ],
                               Value.StructTuple
                                 "core::result::Result::Ok"
                                 []
@@ -2775,7 +3069,7 @@ Module eof.
                                   Ty.path "revm_bytecode::eof::EofDecodeError"
                                 ]
                                 [
-                                  Value.StructRecord
+                                  Value.mkStructRecord
                                     "revm_bytecode::eof::Eof"
                                     []
                                     []
@@ -2940,7 +3234,11 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2974,8 +3272,13 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2998,6 +3301,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::MissingInput"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MissingInput" |) |) |)
                         |)));
                     fun γ =>
@@ -3009,6 +3313,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::MissingBodyWithoutData"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MissingBodyWithoutData" |) |)
@@ -3023,6 +3328,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::DanglingData"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DanglingData" |) |) |)
                         |)));
                     fun γ =>
@@ -3034,6 +3340,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidTypesSection" |) |)
@@ -3048,6 +3355,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTypesSectionSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidTypesSectionSize" |) |)
@@ -3062,6 +3370,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidEOFMagicNumber"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidEOFMagicNumber" |) |)
@@ -3076,6 +3385,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidEOFVersion"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidEOFVersion" |) |)
@@ -3090,6 +3400,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTypesKind"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidTypesKind" |) |)
@@ -3104,6 +3415,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidCodeKind"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidCodeKind" |) |)
@@ -3118,6 +3430,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTerminalByte"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidTerminalByte" |) |)
@@ -3132,6 +3445,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidDataKind"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidDataKind" |) |)
@@ -3146,6 +3460,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidKindAfterCode"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidKindAfterCode" |) |)
@@ -3160,6 +3475,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::MismatchCodeAndTypesSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "MismatchCodeAndTypesSize" |) |)
@@ -3174,6 +3490,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::NonSizes"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NonSizes" |) |) |)
                         |)));
                     fun γ =>
@@ -3185,6 +3502,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ShortInputForSizes"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ShortInputForSizes" |) |)
@@ -3199,6 +3517,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ZeroSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ZeroSize" |) |) |)
                         |)));
                     fun γ =>
@@ -3210,6 +3529,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::TooManyCodeSections"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooManyCodeSections" |) |)
@@ -3224,6 +3544,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ZeroCodeSections"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "ZeroCodeSections" |) |)
@@ -3238,6 +3559,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::TooManyContainerSections"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooManyContainerSections" |) |)
@@ -3252,6 +3574,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidEOFSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "InvalidEOFSize" |) |)
@@ -3282,8 +3605,12 @@ Module eof.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3296,6 +3623,7 @@ Module eof.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -3349,8 +3677,16 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3373,6 +3709,7 @@ Module eof.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -3404,7 +3741,11 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3427,8 +3768,16 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3451,6 +3800,7 @@ Module eof.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
@@ -3495,8 +3845,16 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -3519,6 +3877,7 @@ Module eof.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], [], "cmp", [], [] |),
@@ -3581,8 +3940,13 @@ Module eof.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_bytecode::eof::EofDecodeError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ s : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.read (|
@@ -3598,7 +3962,10 @@ Module eof.
                             γ,
                             "revm_bytecode::eof::EofDecodeError::MissingInput"
                           |) in
-                        M.alloc (| mk_str (| "Short input while processing EOF" |) |)));
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          mk_str (| "Short input while processing EOF" |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -3608,6 +3975,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::MissingBodyWithoutData"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Short body while processing EOF" |) |)
@@ -3622,6 +3990,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::DanglingData"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -3638,6 +4007,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTypesSection"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid types section data" |) |)
@@ -3652,6 +4022,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTypesSectionSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid types section size" |) |)
@@ -3666,6 +4037,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidEOFMagicNumber"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid EOF magic number" |) |)
@@ -3680,6 +4052,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidEOFVersion"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid EOF version" |) |)
@@ -3694,6 +4067,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTypesKind"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid number for types kind" |) |)
@@ -3708,6 +4082,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidCodeKind"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid number for code kind" |) |)
@@ -3722,6 +4097,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidTerminalByte"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid terminal code" |) |)
@@ -3736,6 +4112,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidDataKind"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid data kind" |) |)
@@ -3750,6 +4127,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidKindAfterCode"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid kind after code" |) |)
@@ -3764,6 +4142,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::MismatchCodeAndTypesSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Mismatch of code and types sizes" |) |)
@@ -3778,6 +4157,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::NonSizes"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "There should be at least one size" |) |)
@@ -3792,6 +4172,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ShortInputForSizes"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Missing size" |) |) |)
                         |)));
                     fun γ =>
@@ -3803,6 +4184,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ZeroSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Size cant be zero" |) |)
@@ -3817,6 +4199,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::TooManyCodeSections"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid code number" |) |)
@@ -3831,6 +4214,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::ZeroCodeSections"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid number of code sections" |) |)
@@ -3845,6 +4229,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::TooManyContainerSections"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid container number" |) |)
@@ -3859,6 +4244,7 @@ Module eof.
                             "revm_bytecode::eof::EofDecodeError::InvalidEOFSize"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "Invalid initcode size" |) |)
@@ -3868,6 +4254,10 @@ Module eof.
                 |)
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")

@@ -32,8 +32,8 @@ Module my.
       match ε, τ, α with
       | [], [], [ contents ] =>
         ltac:(M.monadic
-          (let contents := M.alloc (| contents |) in
-          Value.StructRecord
+          (let contents := M.alloc (| T, contents |) in
+          Value.mkStructRecord
             "struct_visibility::my::ClosedBox"
             []
             [ T ]
@@ -84,7 +84,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "struct_visibility::my::OpenBox")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          Value.StructRecord
+          Value.mkStructRecord
             "struct_visibility::my::OpenBox"
             []
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
@@ -111,6 +111,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array
                                 [ mk_str (| "The open box contains: " |); mk_str (| "
 " |) ]
@@ -124,6 +128,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -159,7 +167,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _closed_box :
             Ty.apply
@@ -182,7 +190,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ mk_str (| "classified information" |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

@@ -66,10 +66,89 @@ pub struct SelfDestructResult {
 }
 *)
 Module SelfDestructResult.
-  Parameter t : Set.
+  Record t : Set := {
+    had_value : bool;
+    target_exists : bool;
+    previously_destroyed : bool;
+  }.
 
-  Global Instance IsLink : Link t.
-  Admitted.
+  Global Instance IsLink : Link t := {
+    Φ := Ty.path "revm_context_interface::host::SelfDestructResult";
+    φ x :=
+      Value.StructRecord "revm_context_interface::host::SelfDestructResult" [] [] [
+        ("had_value", φ x.(had_value));
+        ("target_exists", φ x.(target_exists));
+        ("previously_destroyed", φ x.(previously_destroyed))
+      ]
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "revm_context_interface::host::SelfDestructResult").
+  Proof.
+    eapply OfTy.Make with (A := t).
+    reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with
+      had_value' had_value
+      target_exists' target_exists
+      previously_destroyed' previously_destroyed :
+    had_value' = φ had_value ->
+    target_exists' = φ target_exists ->
+    previously_destroyed' = φ previously_destroyed ->
+    Value.StructRecord "revm_context_interface::host::SelfDestructResult" [] [] [
+      ("had_value", had_value');
+      ("target_exists", target_exists');
+      ("previously_destroyed", previously_destroyed')
+    ] = φ (Build_t had_value target_exists previously_destroyed).
+  Proof.
+    now intros; subst.
+  Qed.
+  Smpl Add unshelve eapply of_value_with : of_value.
+
+  Module SubPointer.
+    Definition get_had_value : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "revm_context_interface::host::SelfDestructResult" "had_value") :=
+    {|
+      SubPointer.Runner.projection x := Some x.(had_value);
+      SubPointer.Runner.injection x y := Some (x <| had_value := y |>);
+    |}.
+
+    Lemma get_had_value_is_valid :
+      SubPointer.Runner.Valid.t get_had_value.
+    Proof.
+      now constructor.
+    Qed.
+    Smpl Add apply get_had_value_is_valid : run_sub_pointer.
+  End SubPointer.
+
+  Definition get_target_exists : SubPointer.Runner.t t
+    (Pointer.Index.StructRecord "revm_context_interface::host::SelfDestructResult" "target_exists") :=
+  {|
+    SubPointer.Runner.projection x := Some x.(target_exists);
+    SubPointer.Runner.injection x y := Some (x <| target_exists := y |>);
+  |}.
+
+  Lemma get_target_exists_is_valid :
+    SubPointer.Runner.Valid.t get_target_exists.
+  Proof.
+    now constructor.
+  Qed.
+  Smpl Add apply get_target_exists_is_valid : run_sub_pointer.
+
+  Definition get_previously_destroyed : SubPointer.Runner.t t
+    (Pointer.Index.StructRecord "revm_context_interface::host::SelfDestructResult" "previously_destroyed") :=
+  {|
+    SubPointer.Runner.projection x := Some x.(previously_destroyed);
+    SubPointer.Runner.injection x y := Some (x <| previously_destroyed := y |>);
+  |}.
+
+  Lemma get_previously_destroyed_is_valid :
+    SubPointer.Runner.Valid.t get_previously_destroyed.
+  Proof.
+    now constructor.
+  Qed.
+  Smpl Add apply get_previously_destroyed_is_valid : run_sub_pointer.
 End SelfDestructResult.
 
 (*
@@ -238,11 +317,11 @@ Module Host.
   Definition Run_log (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "log" (fun method =>
       forall (self : Ref.t Pointer.Kind.MutRef Self)
-             (log' : Log.t),
+             (log' : Log.t LogData.t),
         Run.Trait method [] [] [ φ self; φ log' ] unit
     ).
 
-  (* 
+  (*
   fn selfdestruct(
     &mut self,
     address: Address,

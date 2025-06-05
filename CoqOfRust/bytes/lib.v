@@ -50,12 +50,16 @@ Definition saturating_sub_usize_u64 (ε : list Value.t) (τ : list Ty.t) (α : l
   match ε, τ, α with
   | [], [], [ a; b ] =>
     ltac:(M.monadic
-      (let a := M.alloc (| a |) in
-      let b := M.alloc (| b |) in
+      (let a := M.alloc (| Ty.path "usize", a |) in
+      let b := M.alloc (| Ty.path "u64", b |) in
       M.read (|
         M.match_operator (|
           Ty.path "usize",
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -78,8 +82,9 @@ Definition saturating_sub_usize_u64 (ε : list Value.t) (τ : list Ty.t) (α : l
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let b := M.copy (| γ0_0 |) in
+                let b := M.copy (| Ty.path "usize", γ0_0 |) in
                 M.alloc (|
+                  Ty.path "usize",
                   M.call_closure (|
                     Ty.path "usize",
                     M.get_associated_function (| Ty.path "usize", "saturating_sub", [], [] |),
@@ -90,7 +95,7 @@ Definition saturating_sub_usize_u64 (ε : list Value.t) (τ : list Ty.t) (α : l
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
-                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 0 |)))
           ]
         |)
       |)))
@@ -115,12 +120,16 @@ Definition min_u64_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   match ε, τ, α with
   | [], [], [ a; b ] =>
     ltac:(M.monadic
-      (let a := M.alloc (| a |) in
-      let b := M.alloc (| b |) in
+      (let a := M.alloc (| Ty.path "u64", a |) in
+      let b := M.alloc (| Ty.path "usize", b |) in
       M.read (|
         M.match_operator (|
           Ty.path "usize",
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -143,8 +152,9 @@ Definition min_u64_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                let a := M.copy (| γ0_0 |) in
+                let a := M.copy (| Ty.path "usize", γ0_0 |) in
                 M.alloc (|
+                  Ty.path "usize",
                   M.call_closure (|
                     Ty.path "usize",
                     M.get_trait_method (|
@@ -187,8 +197,8 @@ Definition panic_advance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   match ε, τ, α with
   | [], [], [ idx; len ] =>
     ltac:(M.monadic
-      (let idx := M.alloc (| idx |) in
-      let len := M.alloc (| len |) in
+      (let idx := M.alloc (| Ty.path "usize", idx |) in
+      let len := M.alloc (| Ty.path "usize", len |) in
       M.call_closure (|
         Ty.path "never",
         M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -208,6 +218,10 @@ Definition panic_advance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       Value.Array
                         [
                           mk_str (| "advance out of bounds: the len is " |);
@@ -223,6 +237,10 @@ Definition panic_advance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "core::fmt::rt::Argument" ],
                       Value.Array
                         [
                           M.call_closure (|
@@ -284,8 +302,8 @@ Definition panic_does_not_fit (ε : list Value.t) (τ : list Ty.t) (α : list Va
   match ε, τ, α with
   | [], [], [ size; nbytes ] =>
     ltac:(M.monadic
-      (let size := M.alloc (| size |) in
-      let nbytes := M.alloc (| nbytes |) in
+      (let size := M.alloc (| Ty.path "usize", size |) in
+      let nbytes := M.alloc (| Ty.path "usize", nbytes |) in
       M.call_closure (|
         Ty.path "never",
         M.get_function (| "core::panicking::panic_fmt", [], [] |),
@@ -305,6 +323,10 @@ Definition panic_does_not_fit (ε : list Value.t) (τ : list Ty.t) (α : list Va
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       Value.Array
                         [
                           mk_str (| "size too large: the integer type can fit " |);
@@ -320,6 +342,10 @@ Definition panic_does_not_fit (ε : list Value.t) (τ : list Ty.t) (α : list Va
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 2 ]
+                        [ Ty.path "core::fmt::rt::Argument" ],
                       Value.Array
                         [
                           M.call_closure (|
@@ -378,8 +404,8 @@ Definition offset_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   match ε, τ, α with
   | [], [], [ dst; original ] =>
     ltac:(M.monadic
-      (let dst := M.alloc (| dst |) in
-      let original := M.alloc (| original |) in
+      (let dst := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], dst |) in
+      let original := M.alloc (| Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ], original |) in
       M.call_closure (|
         Ty.path "usize",
         BinOp.Wrap.sub,

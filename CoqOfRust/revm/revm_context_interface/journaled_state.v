@@ -8,9 +8,10 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; address; code ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let address := M.alloc (| address |) in
-          let code := M.alloc (| code |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let address :=
+            M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+          let code := M.alloc (| Ty.path "revm_bytecode::bytecode::Bytecode", code |) in
           M.read (|
             let~ hash :
                 Ty.apply
@@ -49,7 +50,7 @@ Module journaled_state.
                   M.read (| hash |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -108,7 +109,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::TransferError" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -130,8 +138,16 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::TransferError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -154,6 +170,7 @@ Module journaled_state.
                             "revm_context_interface::journaled_state::TransferError::OutOfFunds"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
                         |)));
                     fun γ =>
@@ -165,6 +182,7 @@ Module journaled_state.
                             "revm_context_interface::journaled_state::TransferError::OverflowPayment"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "OverflowPayment" |) |)
@@ -179,6 +197,7 @@ Module journaled_state.
                             "revm_context_interface::journaled_state::TransferError::CreateCollision"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "CreateCollision" |) |)
@@ -221,8 +240,22 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::TransferError" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::TransferError" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -245,6 +278,7 @@ Module journaled_state.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -277,7 +311,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::TransferError" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -308,8 +349,16 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -349,6 +398,7 @@ Module journaled_state.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -395,7 +445,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_context_interface::journaled_state::JournalCheckpoint",
@@ -435,8 +492,22 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -505,12 +576,19 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::JournalCheckpoint" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -544,8 +622,16 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::StateLoad"
             []
             [ T ]
@@ -622,8 +708,17 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -663,6 +758,7 @@ Module journaled_state.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -700,7 +796,7 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::journaled_state::StateLoad"
             []
             [ T ]
@@ -763,8 +859,24 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -839,7 +951,15 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -850,7 +970,7 @@ Module journaled_state.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -886,7 +1006,15 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -928,7 +1056,15 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -974,9 +1110,9 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ data; is_cold ] =>
         ltac:(M.monadic
-          (let data := M.alloc (| data |) in
-          let is_cold := M.alloc (| is_cold |) in
-          Value.StructRecord
+          (let data := M.alloc (| T, data |) in
+          let is_cold := M.alloc (| Ty.path "bool", is_cold |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::StateLoad"
             []
             [ T ]
@@ -1003,8 +1139,12 @@ Module journaled_state.
       match ε, τ, α with
       | [], [ B; F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ],
+              self
+            |) in
+          let f := M.alloc (| F, f |) in
           M.call_closure (|
             Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ B ],
             M.get_associated_function (|
@@ -1082,8 +1222,15 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::AccountLoad"
             []
             []
@@ -1171,8 +1318,16 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1212,6 +1367,7 @@ Module journaled_state.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1246,7 +1402,7 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::journaled_state::AccountLoad"
             []
             []
@@ -1318,8 +1474,22 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -1406,7 +1576,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1417,7 +1594,7 @@ Module journaled_state.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -1454,7 +1631,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1493,7 +1677,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.path "revm_context_interface::journaled_state::AccountLoad" ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -1548,8 +1739,20 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -1637,8 +1840,21 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1681,6 +1897,10 @@ Module journaled_state.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "bool" ] ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1718,7 +1938,7 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -1792,8 +2012,32 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -1887,7 +2131,19 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1898,7 +2154,7 @@ Module journaled_state.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -1935,7 +2191,19 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1977,7 +2245,19 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -2031,8 +2311,12 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ state_load ] =>
         ltac:(M.monadic
-          (let state_load := M.alloc (| state_load |) in
-          Value.StructRecord
+          (let state_load :=
+            M.alloc (|
+              Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ],
+              state_load
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -2068,9 +2352,9 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ data; is_cold ] =>
         ltac:(M.monadic
-          (let data := M.alloc (| data |) in
-          let is_cold := M.alloc (| is_cold |) in
-          Value.StructRecord
+          (let data := M.alloc (| T, data |) in
+          let is_cold := M.alloc (| Ty.path "bool", is_cold |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -2123,7 +2407,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                []
+                [ T ],
+              self
+            |) in
           M.read (|
             let~ is_cold : Ty.path "bool" :=
               M.read (|
@@ -2159,6 +2450,14 @@ Module journaled_state.
                 |)
               |) in
             M.alloc (|
+              Ty.tuple
+                [
+                  T;
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ Ty.tuple [] ]
+                ],
               Value.Tuple
                 [
                   M.read (|
@@ -2172,7 +2471,7 @@ Module journaled_state.
                       "data"
                     |)
                   |);
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "revm_context_interface::journaled_state::Eip7702CodeLoad"
                     []
                     [ Ty.tuple [] ]
@@ -2230,8 +2529,20 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self; is_delegate_account_cold ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let is_delegate_account_cold := M.alloc (| is_delegate_account_cold |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_context_interface::journaled_state::Eip7702CodeLoad")
+                    []
+                    [ T ]
+                ],
+              self
+            |) in
+          let is_delegate_account_cold := M.alloc (| Ty.path "bool", is_delegate_account_cold |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2246,7 +2557,7 @@ Module journaled_state.
                   [ Ty.path "bool" ]
                   [ M.read (| is_delegate_account_cold |) ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2270,9 +2581,13 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ state_load; is_delegate_account_cold ] =>
         ltac:(M.monadic
-          (let state_load := M.alloc (| state_load |) in
-          let is_delegate_account_cold := M.alloc (| is_delegate_account_cold |) in
-          Value.StructRecord
+          (let state_load :=
+            M.alloc (|
+              Ty.apply (Ty.path "revm_context_interface::journaled_state::StateLoad") [] [ T ],
+              state_load
+            |) in
+          let is_delegate_account_cold := M.alloc (| Ty.path "bool", is_delegate_account_cold |) in
+          Value.mkStructRecord
             "revm_context_interface::journaled_state::Eip7702CodeLoad"
             []
             [ T ]
@@ -2340,7 +2655,11 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -2392,7 +2711,8 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -2467,7 +2787,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -2536,7 +2863,14 @@ Module journaled_state.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|

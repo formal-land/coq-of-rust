@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_custom_environment_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "custom_environment::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "custom_environment::AccountId",
@@ -148,7 +152,7 @@ Module Impl_core_default_Default_for_custom_environment_EventWithTopics.
     match ε, τ, α with
     | [], [], [] =>
       ltac:(M.monadic
-        (Value.StructRecord
+        (Value.mkStructRecord
           "custom_environment::EventWithTopics"
           []
           []
@@ -266,7 +270,8 @@ Module Impl_custom_environment_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "custom_environment::Env" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -290,8 +295,9 @@ Module Impl_custom_environment_Env.
     match ε, τ, α with
     | [], [], [ self; _event ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _event := M.alloc (| _event |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "custom_environment::Env" ], self |) in
+        let _event := M.alloc (| Ty.path "custom_environment::Event", _event |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -343,7 +349,8 @@ Module Impl_custom_environment_Topics.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "custom_environment::Topics" ], self |) in
         M.call_closure (|
           Ty.path "custom_environment::Env",
           M.get_associated_function (| Ty.path "custom_environment::Topics", "init_env", [], [] |),
@@ -395,7 +402,11 @@ Module Impl_custom_environment_Topics.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "custom_environment::Topics" ],
+            self
+          |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -410,6 +421,7 @@ Module Impl_custom_environment_Topics.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "custom_environment::Env",
                     M.call_closure (|
                       Ty.path "custom_environment::Env",
                       M.get_associated_function (|
@@ -443,7 +455,7 @@ Module Impl_custom_environment_Topics.
                   ]
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

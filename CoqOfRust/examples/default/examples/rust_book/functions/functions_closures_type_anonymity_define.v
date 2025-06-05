@@ -36,7 +36,7 @@ Module main.
     match ε, τ, α with
     | [], [ F ], [ f ] =>
       ltac:(M.monadic
-        (let f := M.alloc (| f |) in
+        (let f := M.alloc (| F, f |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -52,7 +52,7 @@ Module main.
               |),
               [ M.read (| f |); Value.Tuple [] ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

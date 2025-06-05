@@ -21,6 +21,7 @@ Arguments Φ _ {_}.
 Global Opaque φ.
 
 Smpl Create of_ty.
+Smpl Add reflexivity : of_ty.
 
 Module OfTy.
   Inductive t (ty' : Ty.t) : Type :=
@@ -48,6 +49,7 @@ Module OfTy.
 End OfTy.
 
 Smpl Create of_value.
+Smpl Add reflexivity : of_value.
 (* Because some types contain constant parameters *)
 Smpl Add smpl of_value : of_ty.
 
@@ -832,14 +834,17 @@ Module Run.
     exception' = Output.Exception.to_exception exception ->
     {{ LowM.Pure (inr exception') 🔽 R, Output }}
   | CallPrimitiveStateAlloc
+      (ty' : Ty.t)
       (value' : Value.t)
       (k : Value.t -> M)
-      (of_value : OfValue.t value') :
-    (forall (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value)),
+      (of_ty : OfTy.t ty')
+      (value : OfTy.get_Set of_ty) :
+    value' = φ value ->
+    (forall (ref : Ref.t Pointer.Kind.Raw (OfTy.get_Set of_ty)),
       {{ k (φ ref) 🔽 R, Output }}
     ) ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }}
-  | CallPrimitiveStateAllocImmediate
+    {{ LowM.CallPrimitive (Primitive.StateAlloc ty' value') k 🔽 R, Output }}
+  (* | CallPrimitiveStateAllocImmediate
       (value' : Value.t)
       (k : Value.t -> M)
       (of_value : OfValue.t value') :
@@ -847,7 +852,7 @@ Module Run.
       k (φ (Ref.immediate Pointer.Kind.Raw (OfValue.get_value of_value))) 🔽
       R, Output
     }} ->
-    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }}
+    {{ LowM.CallPrimitive (Primitive.StateAlloc value') k 🔽 R, Output }} *)
   | CallPrimitiveStateRead {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (k : Value.t -> M) :
@@ -864,14 +869,14 @@ Module Run.
     let ref := Ref.immediate Pointer.Kind.Raw value in
     {{ k (φ value) 🔽 R, Output }} ->
     {{ LowM.CallPrimitive (Primitive.StateRead (φ ref)) k 🔽 R, Output }}
-  | CallPrimitiveStateWrite
-      (value' : Value.t) (of_value : OfValue.t value')
-      (ref' : Value.t)
-      (ref : Ref.t Pointer.Kind.Raw (OfValue.get_Set of_value))
+  | CallPrimitiveStateWrite {A : Set} `{Link A}
+      (ref_core : Ref.Core.t A)
+      (value' : Value.t) (value : A)
       (k : Value.t -> M) :
-    ref' = φ ref ->
+    let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
+    value' = φ value ->
     {{ k (φ tt) 🔽 R, Output }} ->
-    {{ LowM.CallPrimitive (Primitive.StateWrite ref' value') k 🔽 R, Output }}
+    {{ LowM.CallPrimitive (Primitive.StateWrite (φ ref) value') k 🔽 R, Output }}
   | CallPrimitiveGetSubPointer {A : Set} `{Link A}
       (ref_core : Ref.Core.t A)
       (index : Pointer.Index.t)
@@ -1102,16 +1107,16 @@ Proof.
     exact (LowM.Pure (Output.Exception exception)).
   }
   { (* Alloc *)
-    apply (LowM.CallPrimitive (Primitive.StateAlloc (OfValue.get_value of_value))).
+    apply (LowM.CallPrimitive (Primitive.StateAlloc value)).
     intros ref_core.
     eapply evaluate.
     match goal with
     | H : forall _, _ |- _ => apply (H {| Ref.core := ref_core |})
     end.
   }
-  { (* AllocImmediate *)
+  (* { (* AllocImmediate *)
     exact (evaluate _ _ _ _ _ run).
-  }
+  } *)
   { (* Read *)
     apply (LowM.CallPrimitive (Primitive.StateRead ref_core)).
     intros value.
@@ -1124,7 +1129,7 @@ Proof.
     exact (evaluate _ _ _ _ _ run).
   }
   { (* Write *)
-    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) (OfValue.get_value of_value))).
+    apply (LowM.CallPrimitive (Primitive.StateWrite ref.(Ref.core) value)).
     intros _.
     exact (evaluate _ _ _ _ _ run).
   }
@@ -1225,20 +1230,25 @@ Defined.
 
 Ltac run_symbolic_pure :=
   (
-    eapply Run.PureSuccess;
+    eapply Run.PureSuccess; cbn;
     repeat (smpl of_value || reflexivity)
   ) ||
   (
-    eapply Run.PureException;
+    eapply Run.PureException; cbn;
     repeat smpl of_output;
     repeat (smpl of_value || reflexivity)
   ).
 
 Ltac run_symbolic_state_alloc :=
-  unshelve eapply Run.CallPrimitiveStateAlloc; [now repeat (smpl of_value || smpl of_ty) | cbn; intro].
+  unshelve eapply Run.CallPrimitiveStateAlloc; cbn; [
+    now repeat (smpl of_ty || smpl of_value) |
+    |
+    repeat (smpl of_value) |
+    intro
+  ].
 
-Ltac run_symbolic_state_alloc_immediate :=
-  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |].
+(* Ltac run_symbolic_state_alloc_immediate :=
+  unshelve eapply Run.CallPrimitiveStateAllocImmediate; [now repeat (smpl of_value || smpl of_ty) |]. *)
 
 Ltac run_symbolic_state_read :=
   eapply Run.CallPrimitiveStateRead;
@@ -1249,10 +1259,9 @@ Ltac run_symbolic_state_read_immediate :=
   apply Run.CallPrimitiveStateReadImmediate.
 
 Ltac run_symbolic_state_write :=
-  unshelve eapply Run.CallPrimitiveStateWrite; [
-    now repeat smpl of_value |
+  unshelve eapply Run.CallPrimitiveStateWrite; cbn; [
     |
-    now repeat smpl of_value |
+    repeat smpl of_value |
   ].
 
 Ltac run_symbolic_get_function :=

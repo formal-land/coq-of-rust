@@ -33,7 +33,7 @@ Module net.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord
+            (Value.mkStructRecord
               "core::net::display_buffer::DisplayBuffer"
               [ SIZE ]
               []
@@ -86,7 +86,14 @@ Module net.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::net::display_buffer::DisplayBuffer") [ SIZE ] [] ],
+                self
+              |) in
             M.read (|
               let~ s :
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
@@ -151,7 +158,7 @@ Module net.
                                     "buf"
                                   |)
                                 |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeTo"
                                   []
                                   [ Ty.path "usize" ]
@@ -174,6 +181,7 @@ Module net.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -223,8 +231,15 @@ Module net.
         match ε, τ, α with
         | [], [], [ self; s ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let s := M.alloc (| s |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::net::display_buffer::DisplayBuffer") [ SIZE ] [] ],
+                self
+              |) in
+            let s := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], s |) in
             M.read (|
               let~ bytes :
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
@@ -238,12 +253,31 @@ Module net.
                   (Ty.path "core::result::Result")
                   []
                   [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&mut")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "slice")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ Ty.path "u8" ]
+                                    ]
+                                ]
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::option::Option")
@@ -290,7 +324,7 @@ Module net.
                                     "buf"
                                   |)
                                 |));
-                              Value.StructRecord
+                              Value.mkStructRecord
                                 "core::ops::range::Range"
                                 []
                                 [ Ty.path "usize" ]
@@ -342,7 +376,24 @@ Module net.
                           "core::option::Option::Some",
                           0
                         |) in
-                      let buf := M.copy (| γ0_0 |) in
+                      let buf :=
+                        M.copy (|
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "slice")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ Ty.path "u8" ]
+                                ]
+                            ],
+                          γ0_0
+                        |) in
                       let~ _ :
                           Ty.apply
                             (Ty.path "&mut")
@@ -396,6 +447,10 @@ Module net.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         Value.StructTuple
                           "core::result::Result::Ok"
                           []
@@ -405,6 +460,10 @@ Module net.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []

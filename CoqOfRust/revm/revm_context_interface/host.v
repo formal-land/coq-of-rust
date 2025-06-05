@@ -20,8 +20,13 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -53,8 +58,12 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; number ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let number := M.alloc (| number |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let number := M.alloc (| Ty.path "u64", number |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -91,8 +100,13 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -134,8 +148,13 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -172,8 +191,13 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -215,9 +239,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -260,10 +296,29 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index; value ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
-            let value := M.alloc (| value |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -302,9 +357,21 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -337,10 +404,29 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index; value ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
-            let value := M.alloc (| value |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -371,8 +457,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; log ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let log := M.alloc (| log |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let log :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::log::Log")
+                  []
+                  [ Ty.path "alloy_primitives::log::LogData" ],
+                log
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -406,9 +503,15 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; target ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let target := M.alloc (| target |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let target :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", target |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -477,8 +580,17 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -510,8 +622,16 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; number ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let number := M.alloc (| number |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let number := M.alloc (| Ty.path "u64", number |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -548,8 +668,17 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -591,8 +720,17 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -629,8 +767,17 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -672,9 +819,25 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -717,10 +880,33 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index; value ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
-            let value := M.alloc (| value |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -759,9 +945,25 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -794,10 +996,33 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; index; value ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let index := M.alloc (| index |) in
-            let value := M.alloc (| value |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let index :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                index
+              |) in
+            let value :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                value
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -828,8 +1053,23 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; log ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let log := M.alloc (| log |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let log :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::log::Log")
+                  []
+                  [ Ty.path "alloy_primitives::log::LogData" ],
+                log
+              |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -863,9 +1103,19 @@ Module host.
         match ε, τ, α with
         | [], [], [ self; address; target ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let address := M.alloc (| address |) in
-            let target := M.alloc (| target |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ]
+                  ],
+                self
+              |) in
+            let address :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", address |) in
+            let target :=
+              M.alloc (| Ty.path "alloy_primitives::bits::address::Address", target |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -955,8 +1205,12 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::host::SStoreResult"
             []
             []
@@ -1084,8 +1338,13 @@ Module host.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1141,6 +1400,18 @@ Module host.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1175,7 +1446,7 @@ Module host.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::host::SStoreResult"
             []
             []
@@ -1273,8 +1544,16 @@ Module host.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -1419,12 +1698,16 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1452,7 +1735,11 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1508,7 +1795,11 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1564,7 +1855,11 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1620,7 +1915,11 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -1660,7 +1959,11 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -1700,7 +2003,11 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_context_interface::host::SStoreResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -1753,8 +2060,15 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_context_interface::host::SelfDestructResult"
             []
             []
@@ -1864,8 +2178,16 @@ Module host.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1921,6 +2243,7 @@ Module host.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1955,7 +2278,7 @@ Module host.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_context_interface::host::SelfDestructResult"
             []
             []
@@ -2035,8 +2358,22 @@ Module host.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -2127,12 +2464,19 @@ Module host.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2156,8 +2500,15 @@ Module host.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_context_interface::host::SelfDestructResult" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2218,6 +2569,7 @@ Module host.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|

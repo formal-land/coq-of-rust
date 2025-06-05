@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module u256.
   Definition value_NUM_BITS_PER_BYTE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 8 |))).
   
   Global Instance Instance_IsConstant_value_NUM_BITS_PER_BYTE :
     M.IsFunction.C "move_core_types::u256::NUM_BITS_PER_BYTE" value_NUM_BITS_PER_BYTE.
@@ -11,7 +11,7 @@ Module u256.
   Global Typeclasses Opaque value_NUM_BITS_PER_BYTE.
   
   Definition value_U256_NUM_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 256 |))).
   
   Global Instance Instance_IsConstant_value_U256_NUM_BITS :
     M.IsFunction.C "move_core_types::u256::U256_NUM_BITS" value_U256_NUM_BITS.
@@ -21,6 +21,7 @@ Module u256.
   Definition value_U256_NUM_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "usize",
         M.call_closure (|
           Ty.path "usize",
           BinOp.Wrap.div,
@@ -54,8 +55,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256FromStrError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -78,6 +84,7 @@ Module u256.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "uint::uint::FromStrRadixErr" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -154,8 +161,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastErrorKind" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -178,6 +190,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU8"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooLargeForU8" |) |)
@@ -192,6 +205,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU16"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooLargeForU16" |) |)
@@ -206,6 +220,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU32"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooLargeForU32" |) |)
@@ -220,6 +235,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU64"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooLargeForU64" |) |)
@@ -234,6 +250,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU128"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| mk_str (| "TooLargeForU128" |) |)
@@ -276,8 +293,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastErrorKind" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastErrorKind" ],
+              other
+            |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -300,6 +325,7 @@ Module u256.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -331,7 +357,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastErrorKind" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -354,7 +384,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastErrorKind" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -388,8 +422,12 @@ Module u256.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastErrorKind" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
               M.call_closure (|
@@ -402,6 +440,7 @@ Module u256.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -455,8 +494,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -496,6 +540,7 @@ Module u256.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -537,9 +582,9 @@ Module u256.
       match ε, τ, α with
       | [], [ T ], [ val; kind ] =>
         ltac:(M.monadic
-          (let val := M.alloc (| val |) in
-          let kind := M.alloc (| kind |) in
-          Value.StructRecord
+          (let val := M.alloc (| T, val |) in
+          let kind := M.alloc (| Ty.path "move_core_types::u256::U256CastErrorKind", kind |) in
+          Value.mkStructRecord
             "move_core_types::u256::U256CastError"
             []
             []
@@ -600,8 +645,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256CastError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ type_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
               M.read (|
@@ -620,7 +670,10 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU8"
                           |) in
-                        M.alloc (| mk_str (| "u8" |) |)));
+                        M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          mk_str (| "u8" |)
+                        |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -629,6 +682,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU16"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u16" |) |) |)
                         |)));
                     fun γ =>
@@ -639,6 +693,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU32"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u32" |) |) |)
                         |)));
                     fun γ =>
@@ -649,6 +704,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU64"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u64" |) |) |)
                         |)));
                     fun γ =>
@@ -659,6 +715,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU128"
                           |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u128" |) |) |)
                         |)))
                   ]
@@ -695,6 +752,10 @@ Module u256.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array
                                         [
                                           mk_str (| "Cast failed. " |);
@@ -711,6 +772,10 @@ Module u256.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -768,6 +833,10 @@ Module u256.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -790,7 +859,13 @@ Module u256.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -800,6 +875,10 @@ Module u256.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -852,7 +931,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256FromStrError" ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -902,8 +985,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256FromStrError" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -924,7 +1012,16 @@ Module u256.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "" |) ]
+                        |)
+                      |)
                     |)
                   |);
                   M.borrow (|
@@ -933,6 +1030,10 @@ Module u256.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "core::fmt::rt::Argument" ],
                           Value.Array
                             [
                               M.call_closure (|
@@ -996,7 +1097,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -1024,8 +1129,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1048,6 +1158,7 @@ Module u256.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "primitive_types::U256" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -1094,8 +1205,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -1150,12 +1269,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1179,8 +1302,12 @@ Module u256.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -1241,8 +1368,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (|
@@ -1303,8 +1438,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (|
@@ -1408,8 +1551,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1460,8 +1608,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1517,8 +1670,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1577,7 +1735,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ s ] =>
         ltac:(M.monadic
-          (let s := M.alloc (| s |) in
+          (let s := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], s |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1627,7 +1785,7 @@ Module u256.
       match ε, τ, α with
       | [], [ D ], [ deserializer ] =>
         ltac:(M.monadic
-          (let deserializer := M.alloc (| deserializer |) in
+          (let deserializer := M.alloc (| D, deserializer |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -1639,6 +1797,13 @@ Module u256.
                 ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [
+                      Ty.path "move_core_types::u256::U256";
+                      Ty.associated_in_trait "serde::de::Deserializer" [] [] D "Error"
+                    ],
                   Value.StructTuple
                     "core::result::Result::Ok"
                     []
@@ -1667,6 +1832,27 @@ Module u256.
                                     [ Value.Integer IntegerKind.Usize 32 ]
                                     [ Ty.path "u8" ],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.associated_in_trait
+                                              "serde::de::Deserializer"
+                                              []
+                                              []
+                                              D
+                                              "Error"
+                                          ];
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 32 ]
+                                          [ Ty.path "u8" ]
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1755,8 +1941,27 @@ Module u256.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.associated_in_trait
+                                                  "serde::de::Deserializer"
+                                                  []
+                                                  []
+                                                  D
+                                                  "Error"
+                                              ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 32 ]
+                                            [ Ty.path "u8" ],
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -1820,7 +2025,14 @@ Module u256.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 32 ]
+                                              [ Ty.path "u8" ],
+                                            γ0_0
+                                          |) in
                                         val))
                                   ]
                                 |)
@@ -1860,8 +2072,12 @@ Module u256.
       match ε, τ, α with
       | [], [ _ as S ], [ self; serializer ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let serializer := M.alloc (| serializer |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let serializer := M.alloc (| S, serializer |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1883,6 +2099,10 @@ Module u256.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [ Ty.path "u8" ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "array")
@@ -1929,8 +2149,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "u32", rhs |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -1944,8 +2164,9 @@ Module u256.
                         "move_core_types::u256::U256",
                         0
                       |) in
-                    let lhs := M.copy (| γ0_0 |) in
+                    let lhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "move_core_types::u256::U256",
                       Value.StructTuple
                         "move_core_types::u256::U256"
                         []
@@ -1997,8 +2218,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "u8", rhs |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -2012,8 +2233,9 @@ Module u256.
                         "move_core_types::u256::U256",
                         0
                       |) in
-                    let lhs := M.copy (| γ0_0 |) in
+                    let lhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "move_core_types::u256::U256",
                       Value.StructTuple
                         "move_core_types::u256::U256"
                         []
@@ -2065,8 +2287,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "u8", rhs |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -2080,8 +2302,9 @@ Module u256.
                         "move_core_types::u256::U256",
                         0
                       |) in
-                    let lhs := M.copy (| γ0_0 |) in
+                    let lhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                     M.alloc (|
+                      Ty.path "move_core_types::u256::U256",
                       Value.StructTuple
                         "move_core_types::u256::U256"
                         []
@@ -2134,8 +2357,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -2149,7 +2372,7 @@ Module u256.
                         "move_core_types::u256::U256",
                         0
                       |) in
-                    let lhs := M.copy (| γ0_0 |) in
+                    let lhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                     M.match_operator (|
                       Ty.path "move_core_types::u256::U256",
                       rhs,
@@ -2162,8 +2385,9 @@ Module u256.
                                 "move_core_types::u256::U256",
                                 0
                               |) in
-                            let rhs := M.copy (| γ0_0 |) in
+                            let rhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                             M.alloc (|
+                              Ty.path "move_core_types::u256::U256",
                               Value.StructTuple
                                 "move_core_types::u256::U256"
                                 []
@@ -2219,8 +2443,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -2234,7 +2458,7 @@ Module u256.
                         "move_core_types::u256::U256",
                         0
                       |) in
-                    let lhs := M.copy (| γ0_0 |) in
+                    let lhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                     M.match_operator (|
                       Ty.path "move_core_types::u256::U256",
                       rhs,
@@ -2247,8 +2471,9 @@ Module u256.
                                 "move_core_types::u256::U256",
                                 0
                               |) in
-                            let rhs := M.copy (| γ0_0 |) in
+                            let rhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                             M.alloc (|
+                              Ty.path "move_core_types::u256::U256",
                               Value.StructTuple
                                 "move_core_types::u256::U256"
                                 []
@@ -2304,8 +2529,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::U256",
@@ -2319,7 +2544,7 @@ Module u256.
                         "move_core_types::u256::U256",
                         0
                       |) in
-                    let lhs := M.copy (| γ0_0 |) in
+                    let lhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                     M.match_operator (|
                       Ty.path "move_core_types::u256::U256",
                       rhs,
@@ -2332,8 +2557,9 @@ Module u256.
                                 "move_core_types::u256::U256",
                                 0
                               |) in
-                            let rhs := M.copy (| γ0_0 |) in
+                            let rhs := M.copy (| Ty.path "primitive_types::U256", γ0_0 |) in
                             M.alloc (|
+                              Ty.path "move_core_types::u256::U256",
                               Value.StructTuple
                                 "move_core_types::u256::U256"
                                 []
@@ -2384,8 +2610,12 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2404,7 +2634,7 @@ Module u256.
                   [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2433,8 +2663,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.path "move_core_types::u256::U256",
             M.get_associated_function (|
@@ -2469,8 +2699,12 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2489,7 +2723,7 @@ Module u256.
                   [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2518,8 +2752,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.path "move_core_types::u256::U256",
             M.get_associated_function (|
@@ -2554,8 +2788,12 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2574,7 +2812,7 @@ Module u256.
                   [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2603,8 +2841,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.path "move_core_types::u256::U256",
             M.get_associated_function (|
@@ -2639,8 +2877,12 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2659,7 +2901,7 @@ Module u256.
                   [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2688,8 +2930,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -2740,8 +2982,12 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2760,7 +3006,7 @@ Module u256.
                   [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2789,8 +3035,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -2841,8 +3087,12 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -2882,7 +3132,7 @@ Module u256.
                     |)
                   ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2997,8 +3247,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ src; radix ] =>
         ltac:(M.monadic
-          (let src := M.alloc (| src |) in
-          let radix := M.alloc (| radix |) in
+          (let src := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], src |) in
+          let radix := M.alloc (| Ty.path "u32", radix |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -3098,7 +3348,22 @@ Module u256.
       match ε, τ, α with
       | [], [], [ slice ] =>
         ltac:(M.monadic
-          (let slice := M.alloc (| slice |) in
+          (let slice :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "array")
+                    [
+                      M.unevaluated_const
+                        (mk_str (| "move_core_types_u256_from_le_bytes_discriminant" |))
+                    ]
+                    [ Ty.path "u8" ]
+                ],
+              slice
+            |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -3138,7 +3403,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
           M.read (|
             let~ bytes :
                 Ty.apply
@@ -3187,7 +3452,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "u32",
             M.get_associated_function (|
@@ -3224,7 +3493,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.cast
             (Ty.path "u8")
             (M.call_closure (|
@@ -3258,7 +3531,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.cast
             (Ty.path "u16")
             (M.call_closure (|
@@ -3292,7 +3569,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.cast
             (Ty.path "u32")
             (M.call_closure (|
@@ -3326,7 +3607,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.cast
             (Ty.path "u64")
             (M.call_closure (|
@@ -3360,7 +3645,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "u128",
             M.get_associated_function (| Ty.path "primitive_types::U256", "low_u128", [], [] |),
@@ -3392,8 +3681,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
@@ -3445,8 +3734,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
@@ -3498,8 +3787,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
@@ -3551,8 +3840,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
@@ -3604,8 +3893,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "move_core_types::u256::U256" ],
             M.get_associated_function (|
@@ -3660,8 +3949,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "u32", rhs |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3670,18 +3959,23 @@ Module u256.
                 [ Ty.path "move_core_types::u256::U256" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_core_types::u256::U256" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ge,
@@ -3704,6 +3998,7 @@ Module u256.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3716,11 +4011,15 @@ Module u256.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_core_types::u256::U256" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -3780,8 +4079,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "u32", rhs |) in
           M.read (|
             M.catch_return
               (Ty.apply
@@ -3790,18 +4089,23 @@ Module u256.
                 [ Ty.path "move_core_types::u256::U256" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.path "move_core_types::u256::U256" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.ge,
@@ -3824,6 +4128,7 @@ Module u256.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -3836,11 +4141,15 @@ Module u256.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::option::Option")
+                        []
+                        [ Ty.path "move_core_types::u256::U256" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []
@@ -3909,7 +4218,7 @@ Module u256.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
           M.read (|
             let~ type_size : Ty.path "usize" :=
               M.call_closure (|
@@ -3921,13 +4230,14 @@ Module u256.
               M.read (|
                 M.match_operator (|
                   Ty.path "u128",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 BinOp.lt,
@@ -3936,6 +4246,7 @@ Module u256.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.path "u128",
                           M.call_closure (|
                             Ty.path "u128",
                             BinOp.Wrap.sub,
@@ -3973,6 +4284,13 @@ Module u256.
             M.match_operator (|
               T,
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    T;
+                    Ty.associated_in_trait "core::convert::TryFrom" [] [ Ty.path "u128" ] T "Error"
+                  ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -4030,13 +4348,14 @@ Module u256.
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
-                    let w := M.copy (| γ0_0 |) in
+                    let w := M.copy (| T, γ0_0 |) in
                     w));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 :=
                       M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -4057,6 +4376,10 @@ Module u256.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array [ mk_str (| "Fatal! Downcast failed" |) ]
                                       |)
                                     |)
@@ -4088,8 +4411,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4098,6 +4421,7 @@ Module u256.
               M.read (|
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
+                    Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                     M.call_closure (|
                       Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                       M.get_associated_function (|
@@ -4145,8 +4469,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4155,6 +4479,7 @@ Module u256.
               M.read (|
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
+                    Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                     M.call_closure (|
                       Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                       M.get_associated_function (|
@@ -4202,8 +4527,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let rhs := M.alloc (| Ty.path "move_core_types::u256::U256", rhs |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4212,6 +4537,7 @@ Module u256.
               M.read (|
                 M.SubPointer.get_tuple_field (|
                   M.alloc (|
+                    Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                     M.call_closure (|
                       Ty.tuple [ Ty.path "primitive_types::U256"; Ty.path "bool" ],
                       M.get_associated_function (|
@@ -4276,8 +4602,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; b ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let b := M.alloc (| b |) in
+          (let self := M.alloc (| Ty.path "move_core_types::u256::U256", self |) in
+          let b := M.alloc (| Ty.path "move_core_types::u256::U256", b |) in
           M.read (|
             let~ half : Ty.path "u8" := Value.Integer IntegerKind.U8 128 in
             let~ value_LOWER_MASK : Ty.path "move_core_types::u256::U256" :=
@@ -4693,7 +5019,11 @@ Module u256.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [ M.read (| high |); M.read (| low |) ] |)
+            M.alloc (|
+              Ty.tuple
+                [ Ty.path "move_core_types::u256::U256"; Ty.path "move_core_types::u256::U256" ],
+              Value.Tuple [ M.read (| high |); M.read (| low |) ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4715,7 +5045,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "u8", n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4759,7 +5089,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "u16", n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4803,7 +5133,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "u32", n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4847,7 +5177,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "u64", n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4891,7 +5221,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "u128", n |) in
           Value.StructTuple
             "move_core_types::u256::U256"
             []
@@ -4935,7 +5265,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ], n |) in
           M.call_closure (|
             Ty.path "num_bigint::bigint::BigInt",
             M.get_associated_function (|
@@ -4954,6 +5285,10 @@ Module u256.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "array")
@@ -5002,7 +5337,8 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ], n |) in
           M.read (|
             let~ num_str : Ty.path "alloc::string::String" :=
               M.call_closure (|
@@ -5034,7 +5370,13 @@ Module u256.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "" |) ]
+                                    |)
                                   |)
                                 |)
                               |);
@@ -5044,6 +5386,10 @@ Module u256.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -5084,6 +5430,7 @@ Module u256.
                 ]
               |) in
             M.alloc (|
+              Ty.path "ethnum::uint::U256",
               M.call_closure (|
                 Ty.path "ethnum::uint::U256",
                 M.get_associated_function (|
@@ -5175,7 +5522,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "move_core_types::u256::U256", n |) in
           M.read (|
             let~ n : Ty.path "u64" :=
               M.call_closure (|
@@ -5193,13 +5540,14 @@ Module u256.
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.gt,
@@ -5215,6 +5563,10 @@ Module u256.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -5242,6 +5594,10 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u8"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5284,7 +5640,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "move_core_types::u256::U256", n |) in
           M.read (|
             let~ n : Ty.path "u64" :=
               M.call_closure (|
@@ -5302,13 +5658,14 @@ Module u256.
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.gt,
@@ -5324,6 +5681,10 @@ Module u256.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -5351,6 +5712,10 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u16"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5393,7 +5758,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "move_core_types::u256::U256", n |) in
           M.read (|
             let~ n : Ty.path "u64" :=
               M.call_closure (|
@@ -5411,13 +5776,14 @@ Module u256.
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.gt,
@@ -5433,6 +5799,10 @@ Module u256.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -5460,6 +5830,10 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u32"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5502,7 +5876,7 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "move_core_types::u256::U256", n |) in
           M.read (|
             let~ n : Ty.path "u128" :=
               M.call_closure (|
@@ -5520,13 +5894,14 @@ Module u256.
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.gt,
@@ -5542,6 +5917,10 @@ Module u256.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -5569,6 +5948,10 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u64"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5610,20 +5993,21 @@ Module u256.
       match ε, τ, α with
       | [], [], [ n ] =>
         ltac:(M.monadic
-          (let n := M.alloc (| n |) in
+          (let n := M.alloc (| Ty.path "move_core_types::u256::U256", n |) in
           M.read (|
             M.match_operator (|
               Ty.apply
                 (Ty.path "core::result::Result")
                 []
                 [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_trait_method (|
@@ -5640,6 +6024,7 @@ Module u256.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.path "move_core_types::u256::U256",
                                   M.call_closure (|
                                     Ty.path "move_core_types::u256::U256",
                                     M.get_trait_method (|
@@ -5668,6 +6053,10 @@ Module u256.
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Err"
                         []
@@ -5695,6 +6084,10 @@ Module u256.
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.path "u128"; Ty.path "move_core_types::u256::U256CastError" ],
                       Value.StructTuple
                         "core::result::Result::Ok"
                         []
@@ -5751,8 +6144,12 @@ Module u256.
       match ε, τ, α with
       | [], [ R ], [ self; rng ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rng := M.alloc (| rng |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "rand::distributions::Standard" ],
+              self
+            |) in
+          let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
           M.read (|
             let~ dest :
                 Ty.apply
@@ -5775,6 +6172,7 @@ Module u256.
                 ]
               |) in
             M.alloc (|
+              Ty.path "move_core_types::u256::U256",
               M.call_closure (|
                 Ty.path "move_core_types::u256::U256",
                 M.get_associated_function (|
@@ -5825,7 +6223,11 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::UniformU256" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "move_core_types::u256::UniformU256",
@@ -5865,8 +6267,13 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::UniformU256" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -5922,6 +6329,7 @@ Module u256.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::U256" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -5968,8 +6376,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::UniformU256" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::UniformU256" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -6090,12 +6506,16 @@ Module u256.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::UniformU256" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -6148,8 +6568,8 @@ Module u256.
       match ε, τ, α with
       | [], [ B1; B2 ], [ low; high ] =>
         ltac:(M.monadic
-          (let low := M.alloc (| low |) in
-          let high := M.alloc (| high |) in
+          (let low := M.alloc (| B1, low |) in
+          let high := M.alloc (| B2, high |) in
           M.read (|
             let~ low : Ty.path "move_core_types::u256::U256" :=
               M.read (|
@@ -6191,13 +6611,14 @@ Module u256.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -6219,6 +6640,7 @@ Module u256.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -6239,6 +6661,10 @@ Module u256.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array
                                               [
                                                 mk_str (|
@@ -6255,11 +6681,12 @@ Module u256.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.path "move_core_types::u256::UniformU256",
               M.call_closure (|
                 Ty.path "move_core_types::u256::UniformU256",
                 M.get_trait_method (|
@@ -6338,8 +6765,8 @@ Module u256.
       match ε, τ, α with
       | [], [ B1; B2 ], [ low; high ] =>
         ltac:(M.monadic
-          (let low := M.alloc (| low |) in
-          let high := M.alloc (| high |) in
+          (let low := M.alloc (| B1, low |) in
+          let high := M.alloc (| B2, high |) in
           M.read (|
             let~ low : Ty.path "move_core_types::u256::U256" :=
               M.read (|
@@ -6381,13 +6808,14 @@ Module u256.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -6409,6 +6837,7 @@ Module u256.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -6429,6 +6858,10 @@ Module u256.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array
                                               [
                                                 mk_str (|
@@ -6445,7 +6878,7 @@ Module u256.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
@@ -6496,13 +6929,14 @@ Module u256.
               M.read (|
                 M.match_operator (|
                   Ty.path "move_core_types::u256::U256",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               M.call_closure (|
                                 Ty.path "bool",
                                 M.get_trait_method (|
@@ -6519,6 +6953,7 @@ Module u256.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.path "move_core_types::u256::U256",
                                       M.call_closure (|
                                         Ty.path "move_core_types::u256::U256",
                                         M.get_associated_function (|
@@ -6536,6 +6971,7 @@ Module u256.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.path "move_core_types::u256::U256",
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
                             M.get_trait_method (|
@@ -6592,6 +7028,7 @@ Module u256.
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
+                          Ty.path "move_core_types::u256::U256",
                           M.call_closure (|
                             Ty.path "move_core_types::u256::U256",
                             M.get_associated_function (|
@@ -6607,7 +7044,8 @@ Module u256.
                 |)
               |) in
             M.alloc (|
-              Value.StructRecord
+              Ty.path "move_core_types::u256::UniformU256",
+              Value.mkStructRecord
                 "move_core_types::u256::UniformU256"
                 []
                 []
@@ -6644,8 +7082,12 @@ Module u256.
       match ε, τ, α with
       | [], [ R ], [ self; rng ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rng := M.alloc (| rng |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "move_core_types::u256::UniformU256" ],
+              self
+            |) in
+          let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
           M.read (|
             M.catch_return
               (Ty.associated_in_trait
@@ -6656,6 +7098,12 @@ Module u256.
                 "X") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.associated_in_trait
+                    "rand::distributions::uniform::UniformSampler"
+                    []
+                    []
+                    (Ty.path "move_core_types::u256::UniformU256")
+                    "X",
                   M.read (|
                     let~ range : Ty.path "move_core_types::u256::U256" :=
                       M.read (|
@@ -6667,13 +7115,14 @@ Module u256.
                       |) in
                     M.match_operator (|
                       Ty.path "move_core_types::u256::U256",
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     M.get_trait_method (|
@@ -6690,6 +7139,7 @@ Module u256.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.path "move_core_types::u256::U256",
                                           M.call_closure (|
                                             Ty.path "move_core_types::u256::U256",
                                             M.get_associated_function (|
@@ -6742,6 +7192,7 @@ Module u256.
                                 ]
                               |) in
                             M.alloc (|
+                              Ty.path "move_core_types::u256::U256",
                               M.never_to_any (|
                                 M.read (|
                                   M.loop (|
@@ -6769,6 +7220,11 @@ Module u256.
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.tuple
+                                            [
+                                              Ty.path "move_core_types::u256::U256";
+                                              Ty.path "move_core_types::u256::U256"
+                                            ],
                                           M.call_closure (|
                                             Ty.tuple
                                               [
@@ -6790,17 +7246,26 @@ Module u256.
                                               (let γ0_0 :=
                                                 M.SubPointer.get_tuple_field (| γ, 0 |) in
                                               let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                              let hi := M.copy (| γ0_0 |) in
-                                              let lo := M.copy (| γ0_1 |) in
+                                              let hi :=
+                                                M.copy (|
+                                                  Ty.path "move_core_types::u256::U256",
+                                                  γ0_0
+                                                |) in
+                                              let lo :=
+                                                M.copy (|
+                                                  Ty.path "move_core_types::u256::U256",
+                                                  γ0_1
+                                                |) in
                                               M.match_operator (|
                                                 Ty.tuple [],
-                                                M.alloc (| Value.Tuple [] |),
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                                 [
                                                   fun γ =>
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
+                                                            Ty.path "bool",
                                                             M.call_closure (|
                                                               Ty.path "bool",
                                                               M.get_trait_method (|
@@ -6831,6 +7296,7 @@ Module u256.
                                                           Value.Bool true
                                                         |) in
                                                       M.alloc (|
+                                                        Ty.tuple [],
                                                         M.never_to_any (|
                                                           M.read (|
                                                             M.return_ (|
@@ -6862,7 +7328,8 @@ Module u256.
                                                         |)
                                                       |)));
                                                   fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                    ltac:(M.monadic
+                                                      (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                                 ]
                                               |)))
                                         ]
@@ -6874,6 +7341,7 @@ Module u256.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.path "move_core_types::u256::U256",
                               M.call_closure (|
                                 Ty.path "move_core_types::u256::U256",
                                 M.get_trait_method (|
@@ -6914,9 +7382,9 @@ Module u256.
       match ε, τ, α with
       | [], [ R; B1; B2 ], [ low; high; rng ] =>
         ltac:(M.monadic
-          (let low := M.alloc (| low |) in
-          let high := M.alloc (| high |) in
-          let rng := M.alloc (| rng |) in
+          (let low := M.alloc (| B1, low |) in
+          let high := M.alloc (| B2, high |) in
+          let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
           M.read (|
             let~ low : Ty.path "move_core_types::u256::U256" :=
               M.read (|
@@ -6958,13 +7426,14 @@ Module u256.
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -6986,6 +7455,7 @@ Module u256.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -7006,6 +7476,10 @@ Module u256.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                             Value.Array
                                               [
                                                 mk_str (|
@@ -7022,11 +7496,12 @@ Module u256.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.path "move_core_types::u256::U256",
               M.call_closure (|
                 Ty.path "move_core_types::u256::U256",
                 M.get_trait_method (|
@@ -7113,9 +7588,9 @@ Module u256.
       match ε, τ, α with
       | [], [ R; B1; B2 ], [ low; high; rng ] =>
         ltac:(M.monadic
-          (let low := M.alloc (| low |) in
-          let high := M.alloc (| high |) in
-          let rng := M.alloc (| rng |) in
+          (let low := M.alloc (| B1, low |) in
+          let high := M.alloc (| B2, high |) in
+          let rng := M.alloc (| Ty.apply (Ty.path "&mut") [] [ R ], rng |) in
           M.read (|
             M.catch_return
               (Ty.associated_in_trait
@@ -7126,6 +7601,12 @@ Module u256.
                 "X") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.associated_in_trait
+                    "rand::distributions::uniform::UniformSampler"
+                    []
+                    []
+                    (Ty.path "move_core_types::u256::UniformU256")
+                    "X",
                   M.read (|
                     let~ low : Ty.path "move_core_types::u256::U256" :=
                       M.read (|
@@ -7167,13 +7648,14 @@ Module u256.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -7199,6 +7681,7 @@ Module u256.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.call_closure (|
                                       Ty.path "never",
@@ -7219,6 +7702,11 @@ Module u256.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 1 ]
+                                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                                      ],
                                                     Value.Array
                                                       [
                                                         mk_str (|
@@ -7235,7 +7723,7 @@ Module u256.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -7275,13 +7763,14 @@ Module u256.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_trait_method (|
@@ -7298,6 +7787,7 @@ Module u256.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              Ty.path "move_core_types::u256::U256",
                                               M.call_closure (|
                                                 Ty.path "move_core_types::u256::U256",
                                                 M.get_associated_function (|
@@ -7319,6 +7809,7 @@ Module u256.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -7344,7 +7835,7 @@ Module u256.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -7396,6 +7887,7 @@ Module u256.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.path "move_core_types::u256::U256",
                       M.never_to_any (|
                         M.read (|
                           M.loop (|
@@ -7423,6 +7915,11 @@ Module u256.
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.tuple
+                                    [
+                                      Ty.path "move_core_types::u256::U256";
+                                      Ty.path "move_core_types::u256::U256"
+                                    ],
                                   M.call_closure (|
                                     Ty.tuple
                                       [
@@ -7443,17 +7940,20 @@ Module u256.
                                     ltac:(M.monadic
                                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let hi := M.copy (| γ0_0 |) in
-                                      let lo := M.copy (| γ0_1 |) in
+                                      let hi :=
+                                        M.copy (| Ty.path "move_core_types::u256::U256", γ0_0 |) in
+                                      let lo :=
+                                        M.copy (| Ty.path "move_core_types::u256::U256", γ0_1 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
-                                        M.alloc (| Value.Tuple [] |),
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
+                                                    Ty.path "bool",
                                                     M.call_closure (|
                                                       Ty.path "bool",
                                                       M.get_trait_method (|
@@ -7477,6 +7977,7 @@ Module u256.
                                                   Value.Bool true
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (|
                                                     M.return_ (|
@@ -7494,7 +7995,9 @@ Module u256.
                                                   |)
                                                 |)
                                               |)));
-                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                         ]
                                       |)))
                                 ]

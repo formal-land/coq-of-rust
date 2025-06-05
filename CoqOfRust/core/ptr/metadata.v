@@ -17,7 +17,7 @@ Module ptr.
       match ε, τ, α with
       | [], [ T ], [ ptr ] =>
         ltac:(M.monadic
-          (let ptr := M.alloc (| ptr |) in
+          (let ptr := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], ptr |) in
           M.call_closure (|
             Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
             M.get_function (|
@@ -47,8 +47,13 @@ Module ptr.
       match ε, τ, α with
       | [], [ T; impl_Thin ], [ data_pointer; metadata ] =>
         ltac:(M.monadic
-          (let data_pointer := M.alloc (| data_pointer |) in
-          let metadata := M.alloc (| metadata |) in
+          (let data_pointer :=
+            M.alloc (| Ty.apply (Ty.path "*const") [] [ impl_Thin ], data_pointer |) in
+          let metadata :=
+            M.alloc (|
+              Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
+              metadata
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "*const") [] [ T ],
             M.get_function (|
@@ -82,8 +87,13 @@ Module ptr.
       match ε, τ, α with
       | [], [ T; impl_Thin ], [ data_pointer; metadata ] =>
         ltac:(M.monadic
-          (let data_pointer := M.alloc (| data_pointer |) in
-          let metadata := M.alloc (| metadata |) in
+          (let data_pointer :=
+            M.alloc (| Ty.apply (Ty.path "*mut") [] [ impl_Thin ], data_pointer |) in
+          let metadata :=
+            M.alloc (|
+              Ty.associated_in_trait "core::ptr::metadata::Pointee" [] [] T "Metadata",
+              metadata
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "*mut") [] [ T ],
             M.get_function (|
@@ -144,7 +154,11 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
               M.get_function (|
@@ -180,7 +194,11 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::intrinsics::vtable_size", [], [] |),
@@ -219,7 +237,11 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::intrinsics::vtable_align", [], [] |),
@@ -259,7 +281,11 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "core::alloc::layout::Layout",
               M.get_associated_function (|
@@ -343,8 +369,16 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -372,6 +406,7 @@ Module ptr.
                         M.borrow (|
                           Pointer.Kind.MutRef,
                           M.alloc (|
+                            Ty.path "core::fmt::builders::DebugTuple",
                             M.call_closure (|
                               Ty.path "core::fmt::builders::DebugTuple",
                               M.get_associated_function (|
@@ -398,6 +433,10 @@ Module ptr.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "*const")
+                                    []
+                                    [ Ty.path "core::ptr::metadata::VTable" ],
                                   M.call_closure (|
                                     Ty.apply
                                       (Ty.path "*const")
@@ -479,7 +518,14 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -522,8 +568,22 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_function (| "core::ptr::eq", [], [ Ty.path "core::ptr::metadata::VTable" ] |),
@@ -578,8 +638,22 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (|
@@ -598,6 +672,7 @@ Module ptr.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                         M.call_closure (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                           M.get_associated_function (|
@@ -618,6 +693,7 @@ Module ptr.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                         M.call_closure (|
                           Ty.apply (Ty.path "*const") [] [ Ty.path "core::ptr::metadata::VTable" ],
                           M.get_associated_function (|
@@ -666,8 +742,22 @@ Module ptr.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                other
+              |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -718,8 +808,15 @@ Module ptr.
         match ε, τ, α with
         | [], [ H ], [ self; hasher ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let hasher := M.alloc (| hasher |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ],
+                self
+              |) in
+            let hasher := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], hasher |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_function (|

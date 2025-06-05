@@ -8,7 +8,7 @@ Module sync.
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |))).
     
     Global Instance Instance_IsConstant_value_EMULATE_ATOMIC_BOOL :
       M.IsFunction.C "core::sync::atomic::EMULATE_ATOMIC_BOOL" value_EMULATE_ATOMIC_BOOL.
@@ -214,7 +214,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -236,8 +240,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -257,6 +266,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Relaxed" |) |) |)
                           |)));
                       fun γ =>
@@ -265,6 +275,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Release" |) |) |)
                           |)));
                       fun γ =>
@@ -273,6 +284,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Acquire" |) |) |)
                           |)));
                       fun γ =>
@@ -281,6 +293,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AcqRel" |) |) |)
                           |)));
                       fun γ =>
@@ -289,6 +302,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                           M.alloc (|
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                             M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SeqCst" |) |) |)
                           |)))
                     ]
@@ -320,7 +334,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -355,8 +373,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -379,6 +405,7 @@ Module sync.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   BinOp.eq,
@@ -406,8 +433,12 @@ Module sync.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::Ordering" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -420,6 +451,7 @@ Module sync.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -456,6 +488,7 @@ Module sync.
     Definition value_ATOMIC_BOOL_INIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "core::sync::atomic::AtomicBool",
           M.call_closure (|
             Ty.path "core::sync::atomic::AtomicBool",
             M.get_associated_function (| Ty.path "core::sync::atomic::AtomicBool", "new", [], [] |),
@@ -480,8 +513,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "bool", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicBool"
               []
               []
@@ -515,7 +548,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -554,7 +587,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -614,7 +651,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "bool" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -635,6 +672,7 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| v |) |)
@@ -667,7 +705,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicBool" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -688,6 +733,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicBool" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -721,7 +775,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -747,6 +805,10 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "bool" ] ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| v |) |)
@@ -778,7 +840,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicBool", self |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -823,8 +885,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -880,9 +946,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "bool", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -912,7 +982,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -935,13 +1005,17 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "bool", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -954,7 +1028,7 @@ Module sync.
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Ty.path "bool",
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
@@ -962,6 +1036,7 @@ Module sync.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_associated_function (|
@@ -983,6 +1058,7 @@ Module sync.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   M.get_associated_function (|
@@ -1006,6 +1082,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.ne,
@@ -1067,14 +1144,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "bool", current |) in
+            let new := M.alloc (| Ty.path "bool", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
                     M.get_associated_function (|
@@ -1109,7 +1191,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "bool", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -1119,7 +1201,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "bool", γ0_0 |) in
                       x))
                 ]
               |)
@@ -1180,15 +1262,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "bool", current |) in
+            let new := M.alloc (| Ty.path "bool", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -1204,6 +1290,11 @@ Module sync.
                           M.match_operator (|
                             Ty.path "core::sync::atomic::Ordering",
                             M.alloc (|
+                              Ty.tuple
+                                [
+                                  Ty.path "core::sync::atomic::Ordering";
+                                  Ty.path "core::sync::atomic::Ordering"
+                                ],
                               Value.Tuple [ M.read (| success |); M.read (| failure |) ]
                             |),
                             [
@@ -1217,6 +1308,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::SeqCst"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::SeqCst"
                                       []
@@ -1233,6 +1325,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::SeqCst"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::SeqCst"
                                       []
@@ -1249,6 +1342,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::AcqRel"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::AcqRel"
                                       []
@@ -1265,6 +1359,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::AcqRel"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     M.never_to_any (|
                                       M.call_closure (|
                                         Ty.path "never",
@@ -1285,6 +1380,15 @@ Module sync.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
                                                       Value.Array
                                                         [
                                                           mk_str (|
@@ -1316,6 +1420,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::Acquire"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::AcqRel"
                                       []
@@ -1332,6 +1437,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::Acquire"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::Acquire"
                                       []
@@ -1348,6 +1454,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::Acquire"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::Acquire"
                                       []
@@ -1369,6 +1476,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::Relaxed"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::Release"
                                       []
@@ -1385,6 +1493,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::Release"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     M.never_to_any (|
                                       M.call_closure (|
                                         Ty.path "never",
@@ -1405,6 +1514,15 @@ Module sync.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "&")
+                                                            []
+                                                            [ Ty.path "str" ]
+                                                        ],
                                                       Value.Array
                                                         [
                                                           mk_str (|
@@ -1436,6 +1554,7 @@ Module sync.
                                       "core::sync::atomic::Ordering::Relaxed"
                                     |) in
                                   M.alloc (|
+                                    Ty.path "core::sync::atomic::Ordering",
                                     Value.StructTuple
                                       "core::sync::atomic::Ordering::Relaxed"
                                       []
@@ -1449,13 +1568,14 @@ Module sync.
                         M.read (|
                           M.match_operator (|
                             Ty.path "bool",
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.eq,
@@ -1468,6 +1588,7 @@ Module sync.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_associated_function (|
@@ -1489,6 +1610,7 @@ Module sync.
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       M.get_associated_function (|
@@ -1515,13 +1637,14 @@ Module sync.
                           (Ty.path "core::result::Result")
                           []
                           [ Ty.path "bool"; Ty.path "bool" ],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -1531,6 +1654,10 @@ Module sync.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ],
                                 Value.StructTuple
                                   "core::result::Result::Ok"
                                   []
@@ -1540,6 +1667,10 @@ Module sync.
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ],
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   []
@@ -1556,6 +1687,10 @@ Module sync.
                           []
                           [ Ty.path "bool"; Ty.path "bool" ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "u8" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -1602,8 +1737,12 @@ Module sync.
                                   "core::result::Result::Ok",
                                   0
                                 |) in
-                              let x := M.copy (| γ0_0 |) in
+                              let x := M.copy (| Ty.path "u8", γ0_0 |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ],
                                 Value.StructTuple
                                   "core::result::Result::Ok"
                                   []
@@ -1624,8 +1763,12 @@ Module sync.
                                   "core::result::Result::Err",
                                   0
                                 |) in
-                              let x := M.copy (| γ0_0 |) in
+                              let x := M.copy (| Ty.path "u8", γ0_0 |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ],
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   []
@@ -1676,22 +1819,27 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "bool", current |) in
+            let new := M.alloc (| Ty.path "bool", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
@@ -1707,6 +1855,7 @@ Module sync.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -1736,7 +1885,7 @@ Module sync.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
@@ -1746,6 +1895,10 @@ Module sync.
                           []
                           [ Ty.path "bool"; Ty.path "bool" ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.path "u8"; Ty.path "u8" ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::result::Result")
@@ -1792,8 +1945,12 @@ Module sync.
                                   "core::result::Result::Ok",
                                   0
                                 |) in
-                              let x := M.copy (| γ0_0 |) in
+                              let x := M.copy (| Ty.path "u8", γ0_0 |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ],
                                 Value.StructTuple
                                   "core::result::Result::Ok"
                                   []
@@ -1814,8 +1971,12 @@ Module sync.
                                   "core::result::Result::Err",
                                   0
                                 |) in
-                              let x := M.copy (| γ0_0 |) in
+                              let x := M.copy (| Ty.path "u8", γ0_0 |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.path "bool"; Ty.path "bool" ],
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   []
@@ -1852,9 +2013,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "bool", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -1918,19 +2083,24 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "bool", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "bool",
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use val in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -1949,6 +2119,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -1985,9 +2156,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "bool", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2040,9 +2215,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "bool", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2094,8 +2273,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
@@ -2127,7 +2310,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "bool" ],
               M.get_associated_function (|
@@ -2189,15 +2376,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "bool"; Ty.path "bool" ],
                     M.read (|
                       let~ prev : Ty.path "bool" :=
                         M.call_closure (|
@@ -2220,12 +2412,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "bool" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -2252,10 +2448,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "bool", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "bool"; Ty.path "bool" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -2282,7 +2482,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "bool"; Ty.path "bool" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -2290,6 +2497,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -2302,8 +2510,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "bool", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -2311,11 +2520,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -2324,6 +2534,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "bool"; Ty.path "bool" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -2357,8 +2571,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ p ] =>
           ltac:(M.monadic
-            (let p := M.alloc (| p |) in
-            Value.StructRecord
+            (let p := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], p |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicPtr"
               []
               [ T ]
@@ -2401,7 +2615,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr :=
+              M.alloc (|
+                Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                ptr
+              |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2444,7 +2662,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2501,7 +2726,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2512,12 +2741,20 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -2540,6 +2777,10 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -2583,7 +2824,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "slice")
+                      []
+                      [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ]
+                  ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2609,6 +2862,20 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::sync::atomic::AtomicPtr")
+                                              []
+                                              [ T ]
+                                          ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -2651,7 +2918,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -2677,6 +2951,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.apply (Ty.path "*mut") [] [ T ] ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| v |) |)
@@ -2710,7 +2993,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ], self |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
@@ -2752,8 +3036,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_function (|
@@ -2811,9 +3102,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; ptr; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let ptr := M.alloc (| ptr |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], ptr |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -2850,7 +3148,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2872,9 +3170,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; ptr; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let ptr := M.alloc (| ptr |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], ptr |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_function (|
@@ -2936,14 +3241,25 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let current := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], current |) in
+            let new := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "*mut") [] [ T ],
                 M.alloc (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -2981,7 +3297,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -2991,7 +3307,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
                       x))
                 ]
               |)
@@ -3027,11 +3343,18 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let current := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], current |) in
+            let new := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3105,11 +3428,18 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let current := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], current |) in
+            let new := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -3188,10 +3518,17 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -3200,6 +3537,10 @@ Module sync.
                   [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ] ],
                     M.read (|
                       let~ prev : Ty.apply (Ty.path "*mut") [] [ T ] :=
                         M.call_closure (|
@@ -3222,12 +3563,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.apply (Ty.path "*mut") [] [ T ] ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -3254,10 +3599,18 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next :=
+                                        M.copy (| Ty.apply (Ty.path "*mut") [] [ T ], γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.apply (Ty.path "*mut") [] [ T ];
+                                              Ty.apply (Ty.path "*mut") [] [ T ]
+                                            ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -3290,7 +3643,17 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [
+                                                      Ty.apply (Ty.path "*mut") [] [ T ];
+                                                      Ty.apply (Ty.path "*mut") [] [ T ]
+                                                    ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -3298,6 +3661,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -3310,8 +3674,13 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev :=
+                                                M.copy (|
+                                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                                  γ0_0
+                                                |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -3319,11 +3688,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -3332,6 +3702,11 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.apply (Ty.path "*mut") [] [ T ]
+                          ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -3366,9 +3741,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
@@ -3418,9 +3800,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (|
@@ -3471,9 +3860,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
@@ -3543,9 +3939,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
@@ -3610,9 +4013,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
@@ -3677,9 +4087,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
@@ -3744,9 +4161,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ T ],
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "cast", [], [ T ] |),
@@ -3810,7 +4234,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
               M.get_associated_function (|
@@ -3855,7 +4286,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ b ] =>
           ltac:(M.monadic
-            (let b := M.alloc (| b |) in
+            (let b := M.alloc (| Ty.path "bool", b |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicBool",
               M.get_associated_function (|
@@ -3892,7 +4323,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ p ] =>
           ltac:(M.monadic
-            (let p := M.alloc (| p |) in
+            (let p := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], p |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ],
               M.get_associated_function (|
@@ -3975,7 +4406,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "i8", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicI8",
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicI8", "new", [], [] |),
@@ -4005,8 +4436,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -4020,6 +4456,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "i8",
                         M.call_closure (|
                           Ty.path "i8",
                           M.get_associated_function (|
@@ -4076,8 +4513,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "i8", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI8"
               []
               []
@@ -4111,7 +4548,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4149,7 +4586,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -4200,7 +4641,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -4208,12 +4649,17 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -4231,6 +4677,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -4267,7 +4714,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI8" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -4288,6 +4742,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicI8" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -4324,7 +4787,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -4335,12 +4802,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI8" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicI8" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -4363,6 +4843,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i8" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -4398,7 +4883,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicI8", self |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_associated_function (|
@@ -4435,8 +4920,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i8" ] |),
@@ -4482,9 +4971,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -4514,7 +5007,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4533,9 +5026,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i8" ] |),
@@ -4588,14 +5085,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i8", current |) in
+            let new := M.alloc (| Ty.path "i8", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "i8",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
                     M.get_associated_function (|
@@ -4630,7 +5132,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i8", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -4640,7 +5142,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i8", γ0_0 |) in
                       x))
                 ]
               |)
@@ -4667,11 +5169,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i8", current |) in
+            let new := M.alloc (| Ty.path "i8", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
               M.get_function (|
@@ -4729,11 +5235,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i8", current |) in
+            let new := M.alloc (| Ty.path "i8", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
               M.get_function (|
@@ -4785,9 +5295,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i8" ] |),
@@ -4833,9 +5347,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i8" ] |),
@@ -4881,9 +5399,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i8" ] |),
@@ -4929,9 +5451,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i8" ] |),
@@ -4977,9 +5503,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i8" ] |),
@@ -5025,9 +5555,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i8" ] |),
@@ -5083,15 +5617,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
                     M.read (|
                       let~ prev : Ty.path "i8" :=
                         M.call_closure (|
@@ -5114,12 +5653,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "i8" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -5146,10 +5689,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "i8", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "i8"; Ty.path "i8" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -5176,7 +5723,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "i8"; Ty.path "i8" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -5184,6 +5738,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -5196,8 +5751,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "i8", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -5205,11 +5761,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -5218,6 +5775,7 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i8"; Ty.path "i8" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -5246,9 +5804,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i8" ] |),
@@ -5294,9 +5856,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i8",
               M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i8" ] |),
@@ -5341,7 +5907,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "i8" ],
               M.get_associated_function (|
@@ -5428,7 +5998,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "u8", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicU8",
               M.get_associated_function (| Ty.path "core::sync::atomic::AtomicU8", "new", [], [] |),
@@ -5458,8 +6028,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -5473,6 +6048,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "u8",
                         M.call_closure (|
                           Ty.path "u8",
                           M.get_associated_function (|
@@ -5529,8 +6105,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "u8", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU8"
               []
               []
@@ -5564,7 +6140,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -5602,7 +6178,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5653,7 +6233,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5661,12 +6241,17 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -5684,6 +6269,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -5720,7 +6306,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU8" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5741,6 +6334,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicU8" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -5777,7 +6379,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -5788,12 +6394,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU8" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicU8" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -5816,6 +6435,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -5851,7 +6475,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicU8", self |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_associated_function (|
@@ -5888,8 +6512,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
@@ -5935,9 +6563,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -5967,7 +6599,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5986,9 +6618,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u8" ] |),
@@ -6041,14 +6677,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u8", current |) in
+            let new := M.alloc (| Ty.path "u8", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "u8",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
                     M.get_associated_function (|
@@ -6083,7 +6724,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u8", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -6093,7 +6734,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u8", γ0_0 |) in
                       x))
                 ]
               |)
@@ -6120,11 +6761,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u8", current |) in
+            let new := M.alloc (| Ty.path "u8", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
               M.get_function (|
@@ -6182,11 +6827,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u8", current |) in
+            let new := M.alloc (| Ty.path "u8", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
               M.get_function (|
@@ -6238,9 +6887,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u8" ] |),
@@ -6286,9 +6939,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u8" ] |),
@@ -6334,9 +6991,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u8" ] |),
@@ -6382,9 +7043,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u8" ] |),
@@ -6430,9 +7095,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u8" ] |),
@@ -6478,9 +7147,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u8" ] |),
@@ -6536,15 +7209,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
                     M.read (|
                       let~ prev : Ty.path "u8" :=
                         M.call_closure (|
@@ -6567,12 +7245,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u8" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -6599,10 +7281,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "u8", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "u8" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -6629,7 +7315,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "u8"; Ty.path "u8" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -6637,6 +7330,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -6649,8 +7343,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "u8", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -6658,11 +7353,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -6671,6 +7367,7 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u8"; Ty.path "u8" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -6699,9 +7396,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u8" ] |),
@@ -6747,9 +7448,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u8", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u8",
               M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u8" ] |),
@@ -6794,7 +7499,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
               M.get_associated_function (|
@@ -6886,7 +7595,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "i16", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicI16",
               M.get_associated_function (|
@@ -6921,8 +7630,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -6936,6 +7650,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "i16",
                         M.call_closure (|
                           Ty.path "i16",
                           M.get_associated_function (|
@@ -6992,8 +7707,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "i16", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI16"
               []
               []
@@ -7027,7 +7742,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -7065,7 +7780,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -7116,7 +7835,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -7124,12 +7843,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicI16" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -7147,6 +7874,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -7183,7 +7911,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI16" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -7204,6 +7939,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicI16" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -7240,7 +7984,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -7251,12 +7999,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI16" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicI16" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -7279,6 +8040,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i16" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -7314,7 +8080,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicI16", self |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_associated_function (|
@@ -7351,8 +8117,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i16" ] |),
@@ -7398,9 +8168,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -7430,7 +8204,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7449,9 +8223,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i16" ] |),
@@ -7504,14 +8282,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i16", current |) in
+            let new := M.alloc (| Ty.path "i16", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "i16",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
                     M.get_associated_function (|
@@ -7546,7 +8329,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i16", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -7556,7 +8339,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i16", γ0_0 |) in
                       x))
                 ]
               |)
@@ -7583,11 +8366,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i16", current |) in
+            let new := M.alloc (| Ty.path "i16", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
               M.get_function (|
@@ -7645,11 +8432,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i16", current |) in
+            let new := M.alloc (| Ty.path "i16", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
               M.get_function (|
@@ -7701,9 +8492,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i16" ] |),
@@ -7749,9 +8544,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i16" ] |),
@@ -7797,9 +8596,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i16" ] |),
@@ -7845,9 +8648,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i16" ] |),
@@ -7893,9 +8700,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i16" ] |),
@@ -7941,9 +8752,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i16" ] |),
@@ -7999,15 +8814,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i16"; Ty.path "i16" ],
                     M.read (|
                       let~ prev : Ty.path "i16" :=
                         M.call_closure (|
@@ -8030,12 +8850,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "i16" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -8062,10 +8886,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "i16", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "i16"; Ty.path "i16" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -8092,7 +8920,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "i16"; Ty.path "i16" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -8100,6 +8935,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -8112,8 +8948,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "i16", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -8121,11 +8958,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -8134,6 +8972,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i16"; Ty.path "i16" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -8162,9 +9004,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i16" ] |),
@@ -8210,9 +9056,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i16",
               M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i16" ] |),
@@ -8257,7 +9107,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "i16" ],
               M.get_associated_function (|
@@ -8349,7 +9203,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "u16", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicU16",
               M.get_associated_function (|
@@ -8384,8 +9238,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -8399,6 +9258,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "u16",
                         M.call_closure (|
                           Ty.path "u16",
                           M.get_associated_function (|
@@ -8455,8 +9315,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "u16", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU16"
               []
               []
@@ -8490,7 +9350,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -8528,7 +9388,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -8579,7 +9443,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -8587,12 +9451,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicU16" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -8610,6 +9482,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -8646,7 +9519,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU16" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -8667,6 +9547,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicU16" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -8703,7 +9592,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -8714,12 +9607,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU16" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicU16" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -8742,6 +9648,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -8777,7 +9688,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicU16", self |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_associated_function (|
@@ -8814,8 +9725,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u16" ] |),
@@ -8861,9 +9776,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -8893,7 +9812,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8912,9 +9831,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u16" ] |),
@@ -8967,14 +9890,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u16", current |) in
+            let new := M.alloc (| Ty.path "u16", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "u16",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
                     M.get_associated_function (|
@@ -9009,7 +9937,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u16", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -9019,7 +9947,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u16", γ0_0 |) in
                       x))
                 ]
               |)
@@ -9046,11 +9974,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u16", current |) in
+            let new := M.alloc (| Ty.path "u16", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
               M.get_function (|
@@ -9108,11 +10040,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u16", current |) in
+            let new := M.alloc (| Ty.path "u16", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
               M.get_function (|
@@ -9164,9 +10100,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u16" ] |),
@@ -9212,9 +10152,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u16" ] |),
@@ -9260,9 +10204,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u16" ] |),
@@ -9308,9 +10256,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u16" ] |),
@@ -9356,9 +10308,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u16" ] |),
@@ -9404,9 +10360,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u16" ] |),
@@ -9462,15 +10422,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u16"; Ty.path "u16" ],
                     M.read (|
                       let~ prev : Ty.path "u16" :=
                         M.call_closure (|
@@ -9493,12 +10458,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u16" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -9525,10 +10494,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "u16", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "u16"; Ty.path "u16" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -9555,7 +10528,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "u16"; Ty.path "u16" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -9563,6 +10543,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -9575,8 +10556,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "u16", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -9584,11 +10566,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -9597,6 +10580,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u16"; Ty.path "u16" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -9625,9 +10612,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u16" ] |),
@@ -9673,9 +10664,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u16", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u16",
               M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u16" ] |),
@@ -9720,7 +10715,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "u16" ],
               M.get_associated_function (|
@@ -9812,7 +10811,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "i32", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicI32",
               M.get_associated_function (|
@@ -9847,8 +10846,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -9862,6 +10866,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "i32",
                         M.call_closure (|
                           Ty.path "i32",
                           M.get_associated_function (|
@@ -9918,8 +10923,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "i32", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI32"
               []
               []
@@ -9953,7 +10958,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -9991,7 +10996,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -10042,7 +11051,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -10050,12 +11059,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicI32" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -10073,6 +11090,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -10109,7 +11127,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI32" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -10130,6 +11155,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicI32" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -10166,7 +11200,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -10177,12 +11215,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI32" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicI32" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -10205,6 +11256,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -10240,7 +11296,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicI32", self |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_associated_function (|
@@ -10277,8 +11333,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i32" ] |),
@@ -10324,9 +11384,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -10356,7 +11420,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10375,9 +11439,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i32" ] |),
@@ -10430,14 +11498,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i32", current |) in
+            let new := M.alloc (| Ty.path "i32", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "i32",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
                     M.get_associated_function (|
@@ -10472,7 +11545,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i32", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -10482,7 +11555,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i32", γ0_0 |) in
                       x))
                 ]
               |)
@@ -10509,11 +11582,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i32", current |) in
+            let new := M.alloc (| Ty.path "i32", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
               M.get_function (|
@@ -10571,11 +11648,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i32", current |) in
+            let new := M.alloc (| Ty.path "i32", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
               M.get_function (|
@@ -10627,9 +11708,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i32" ] |),
@@ -10675,9 +11760,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i32" ] |),
@@ -10723,9 +11812,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i32" ] |),
@@ -10771,9 +11864,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i32" ] |),
@@ -10819,9 +11916,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i32" ] |),
@@ -10867,9 +11968,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i32" ] |),
@@ -10925,15 +12030,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i32"; Ty.path "i32" ],
                     M.read (|
                       let~ prev : Ty.path "i32" :=
                         M.call_closure (|
@@ -10956,12 +12066,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "i32" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -10988,10 +12102,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "i32", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "i32"; Ty.path "i32" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -11018,7 +12136,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "i32"; Ty.path "i32" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -11026,6 +12151,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -11038,8 +12164,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "i32", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -11047,11 +12174,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -11060,6 +12188,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i32"; Ty.path "i32" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -11088,9 +12220,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i32" ] |),
@@ -11136,9 +12272,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i32",
               M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i32" ] |),
@@ -11183,7 +12323,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "i32" ],
               M.get_associated_function (|
@@ -11275,7 +12419,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "u32", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicU32",
               M.get_associated_function (|
@@ -11310,8 +12454,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -11325,6 +12474,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "u32",
                         M.call_closure (|
                           Ty.path "u32",
                           M.get_associated_function (|
@@ -11381,8 +12531,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "u32", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU32"
               []
               []
@@ -11416,7 +12566,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -11454,7 +12604,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -11505,7 +12659,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -11513,12 +12667,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicU32" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -11536,6 +12698,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -11572,7 +12735,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU32" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -11593,6 +12763,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicU32" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -11629,7 +12808,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -11640,12 +12823,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU32" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicU32" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -11668,6 +12864,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -11703,7 +12904,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicU32", self |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (|
@@ -11740,8 +12941,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u32" ] |),
@@ -11787,9 +12992,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -11819,7 +13028,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11838,9 +13047,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u32" ] |),
@@ -11893,14 +13106,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u32", current |) in
+            let new := M.alloc (| Ty.path "u32", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "u32",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
                     M.get_associated_function (|
@@ -11935,7 +13153,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u32", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -11945,7 +13163,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u32", γ0_0 |) in
                       x))
                 ]
               |)
@@ -11972,11 +13190,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u32", current |) in
+            let new := M.alloc (| Ty.path "u32", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
               M.get_function (|
@@ -12034,11 +13256,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u32", current |) in
+            let new := M.alloc (| Ty.path "u32", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
               M.get_function (|
@@ -12090,9 +13316,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u32" ] |),
@@ -12138,9 +13368,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u32" ] |),
@@ -12186,9 +13420,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u32" ] |),
@@ -12234,9 +13472,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u32" ] |),
@@ -12282,9 +13524,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u32" ] |),
@@ -12330,9 +13576,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u32" ] |),
@@ -12388,15 +13638,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u32"; Ty.path "u32" ],
                     M.read (|
                       let~ prev : Ty.path "u32" :=
                         M.call_closure (|
@@ -12419,12 +13674,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u32" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -12451,10 +13710,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "u32", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "u32"; Ty.path "u32" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -12481,7 +13744,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "u32"; Ty.path "u32" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -12489,6 +13759,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -12501,8 +13772,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "u32", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -12510,11 +13782,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -12523,6 +13796,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u32"; Ty.path "u32" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -12551,9 +13828,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u32" ] |),
@@ -12599,9 +13880,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u32", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u32" ] |),
@@ -12646,7 +13931,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "u32" ],
               M.get_associated_function (|
@@ -12738,7 +14027,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "i64", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicI64",
               M.get_associated_function (|
@@ -12773,8 +14062,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -12788,6 +14082,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "i64",
                         M.call_closure (|
                           Ty.path "i64",
                           M.get_associated_function (|
@@ -12844,8 +14139,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "i64", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicI64"
               []
               []
@@ -12879,7 +14174,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -12917,7 +14212,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -12968,7 +14267,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -12976,12 +14275,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicI64" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -12999,6 +14306,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -13035,7 +14343,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI64" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -13056,6 +14371,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicI64" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -13092,7 +14416,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -13103,12 +14431,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicI64" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicI64" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -13131,6 +14472,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "i64" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -13166,7 +14512,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicI64", self |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_associated_function (|
@@ -13203,8 +14549,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "i64" ] |),
@@ -13250,9 +14600,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -13282,7 +14636,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13301,9 +14655,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "i64" ] |),
@@ -13356,14 +14714,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i64", current |) in
+            let new := M.alloc (| Ty.path "i64", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "i64",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
                     M.get_associated_function (|
@@ -13398,7 +14761,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i64", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -13408,7 +14771,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "i64", γ0_0 |) in
                       x))
                 ]
               |)
@@ -13435,11 +14798,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i64", current |) in
+            let new := M.alloc (| Ty.path "i64", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
               M.get_function (|
@@ -13497,11 +14864,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "i64", current |) in
+            let new := M.alloc (| Ty.path "i64", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
               M.get_function (|
@@ -13553,9 +14924,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "i64" ] |),
@@ -13601,9 +14976,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "i64" ] |),
@@ -13649,9 +15028,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "i64" ] |),
@@ -13697,9 +15080,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "i64" ] |),
@@ -13745,9 +15132,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "i64" ] |),
@@ -13793,9 +15184,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "i64" ] |),
@@ -13851,15 +15246,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "i64"; Ty.path "i64" ],
                     M.read (|
                       let~ prev : Ty.path "i64" :=
                         M.call_closure (|
@@ -13882,12 +15282,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "i64" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -13914,10 +15318,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "i64", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "i64"; Ty.path "i64" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -13944,7 +15352,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "i64"; Ty.path "i64" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -13952,6 +15367,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -13964,8 +15380,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "i64", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -13973,11 +15390,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -13986,6 +15404,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "i64"; Ty.path "i64" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -14014,9 +15436,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "i64" ] |),
@@ -14062,9 +15488,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "i64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "i64",
               M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "i64" ] |),
@@ -14109,7 +15539,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicI64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "i64" ],
               M.get_associated_function (|
@@ -14201,7 +15635,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "u64", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicU64",
               M.get_associated_function (|
@@ -14236,8 +15670,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -14251,6 +15690,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "u64",
                         M.call_closure (|
                           Ty.path "u64",
                           M.get_associated_function (|
@@ -14307,8 +15747,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "u64", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicU64"
               []
               []
@@ -14342,7 +15782,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -14380,7 +15820,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -14431,7 +15875,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -14439,12 +15883,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicU64" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -14462,6 +15914,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -14498,7 +15951,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU64" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -14519,6 +15979,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicU64" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -14555,7 +16024,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -14566,12 +16039,25 @@ Module sync.
                       []
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicU64" ] ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicU64" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -14594,6 +16080,11 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -14629,7 +16120,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicU64", self |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_associated_function (|
@@ -14666,8 +16157,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u64" ] |),
@@ -14713,9 +16208,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -14745,7 +16244,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14764,9 +16263,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "u64" ] |),
@@ -14819,14 +16322,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u64", current |) in
+            let new := M.alloc (| Ty.path "u64", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "u64",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
                     M.get_associated_function (|
@@ -14861,7 +16369,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u64", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -14871,7 +16379,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "u64", γ0_0 |) in
                       x))
                 ]
               |)
@@ -14898,11 +16406,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u64", current |) in
+            let new := M.alloc (| Ty.path "u64", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
               M.get_function (|
@@ -14960,11 +16472,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "u64", current |) in
+            let new := M.alloc (| Ty.path "u64", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
               M.get_function (|
@@ -15016,9 +16532,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "u64" ] |),
@@ -15064,9 +16584,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "u64" ] |),
@@ -15112,9 +16636,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u64" ] |),
@@ -15160,9 +16688,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "u64" ] |),
@@ -15208,9 +16740,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u64" ] |),
@@ -15256,9 +16792,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u64" ] |),
@@ -15314,15 +16854,20 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "u64"; Ty.path "u64" ],
                     M.read (|
                       let~ prev : Ty.path "u64" :=
                         M.call_closure (|
@@ -15345,12 +16890,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "u64" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -15377,10 +16926,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "u64", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "u64"; Ty.path "u64" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -15407,7 +16960,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "u64"; Ty.path "u64" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -15415,6 +16975,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -15427,8 +16988,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "u64", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -15436,11 +16998,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -15449,6 +17012,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "u64"; Ty.path "u64" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -15477,9 +17044,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "u64" ] |),
@@ -15525,9 +17096,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "u64", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "u64" ] |),
@@ -15572,7 +17147,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicU64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "u64" ],
               M.get_associated_function (|
@@ -15664,7 +17243,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "isize", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicIsize",
               M.get_associated_function (|
@@ -15699,8 +17278,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -15714,6 +17298,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "isize",
                         M.call_closure (|
                           Ty.path "isize",
                           M.get_associated_function (|
@@ -15770,8 +17355,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "isize", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicIsize"
               []
               []
@@ -15805,7 +17390,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -15843,7 +17428,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -15894,7 +17483,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "isize" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -15902,12 +17491,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicIsize" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -15925,6 +17522,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -15961,7 +17559,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicIsize" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -15982,6 +17587,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicIsize" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -16018,7 +17632,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "isize" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -16030,12 +17648,25 @@ Module sync.
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicIsize" ]
                       ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicIsize" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -16058,6 +17689,15 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [ Ty.path "isize" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -16093,7 +17733,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicIsize", self |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_associated_function (|
@@ -16130,8 +17770,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "isize" ] |),
@@ -16177,9 +17821,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -16209,7 +17857,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16228,9 +17876,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "isize" ] |),
@@ -16283,14 +17935,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "isize", current |) in
+            let new := M.alloc (| Ty.path "isize", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "isize",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "isize"; Ty.path "isize" ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -16328,7 +17985,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "isize", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -16338,7 +17995,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "isize", γ0_0 |) in
                       x))
                 ]
               |)
@@ -16365,11 +18022,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "isize", current |) in
+            let new := M.alloc (| Ty.path "isize", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "isize"; Ty.path "isize" ],
               M.get_function (|
@@ -16427,11 +18088,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "isize", current |) in
+            let new := M.alloc (| Ty.path "isize", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "isize"; Ty.path "isize" ],
               M.get_function (|
@@ -16483,9 +18148,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "isize" ] |),
@@ -16531,9 +18200,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "isize" ] |),
@@ -16579,9 +18252,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "isize" ] |),
@@ -16627,9 +18304,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "isize" ] |),
@@ -16675,9 +18356,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "isize" ] |),
@@ -16723,9 +18408,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "isize" ] |),
@@ -16781,10 +18470,14 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -16793,6 +18486,10 @@ Module sync.
                   [ Ty.path "isize"; Ty.path "isize" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "isize"; Ty.path "isize" ],
                     M.read (|
                       let~ prev : Ty.path "isize" :=
                         M.call_closure (|
@@ -16815,12 +18512,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "isize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -16847,10 +18548,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "isize", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "isize"; Ty.path "isize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -16877,7 +18582,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "isize"; Ty.path "isize" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -16885,6 +18597,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -16897,8 +18610,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "isize", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -16906,11 +18620,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -16919,6 +18634,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "isize"; Ty.path "isize" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -16947,9 +18666,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_max", [], [ Ty.path "isize" ] |),
@@ -16995,9 +18718,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "isize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "isize",
               M.get_function (| "core::sync::atomic::atomic_min", [], [ Ty.path "isize" ] |),
@@ -17042,7 +18769,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicIsize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "isize" ],
               M.get_associated_function (|
@@ -17134,7 +18865,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.path "usize", v |) in
             M.call_closure (|
               Ty.path "core::sync::atomic::AtomicUsize",
               M.get_associated_function (|
@@ -17169,8 +18900,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -17184,6 +18920,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "usize",
                         M.call_closure (|
                           Ty.path "usize",
                           M.get_associated_function (|
@@ -17240,8 +18977,8 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let v := M.alloc (| Ty.path "usize", v |) in
+            Value.mkStructRecord
               "core::sync::atomic::AtomicUsize"
               []
               []
@@ -17275,7 +19012,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ ptr ] =>
           ltac:(M.monadic
-            (let ptr := M.alloc (| ptr |) in
+            (let ptr := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ], ptr |) in
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -17313,7 +19050,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -17364,7 +19105,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "usize" ], v |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -17372,12 +19113,20 @@ Module sync.
                   M.match_operator (|
                     Ty.apply (Ty.path "&mut") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [ Ty.path "core::sync::atomic::AtomicUsize" ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -17395,6 +19144,7 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -17431,7 +19181,14 @@ Module sync.
         match ε, τ, α with
         | [], [], [ this ] =>
           ltac:(M.monadic
-            (let this := M.alloc (| this |) in
+            (let this :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicUsize" ] ],
+                this
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -17452,6 +19209,15 @@ Module sync.
                               (M.read (|
                                 M.use
                                   (M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "core::sync::atomic::AtomicUsize" ]
+                                      ],
                                     M.borrow (|
                                       Pointer.Kind.MutPointer,
                                       M.deref (| M.read (| this |) |)
@@ -17488,7 +19254,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ v ] =>
           ltac:(M.monadic
-            (let v := M.alloc (| v |) in
+            (let v :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "usize" ] ],
+                v
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -17500,12 +19270,25 @@ Module sync.
                       [ Ty.apply (Ty.path "slice") [] [ Ty.path "core::sync::atomic::AtomicUsize" ]
                       ],
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 0 ]
+                        [ Ty.tuple [] ],
                       lib.repeat (| Value.Tuple [], Value.Integer IntegerKind.Usize 0 |)
                     |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [ Ty.path "core::sync::atomic::AtomicUsize" ]
+                              ],
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.deref (|
@@ -17528,6 +19311,15 @@ Module sync.
                                           (M.read (|
                                             M.use
                                               (M.alloc (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "slice")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ],
                                                 M.borrow (|
                                                   Pointer.Kind.MutPointer,
                                                   M.deref (| M.read (| v |) |)
@@ -17563,7 +19355,7 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.path "core::sync::atomic::AtomicUsize", self |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_associated_function (|
@@ -17600,8 +19392,12 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "usize" ] |),
@@ -17647,9 +19443,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -17679,7 +19479,7 @@ Module sync.
                     M.read (| order |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17698,9 +19498,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_swap", [], [ Ty.path "usize" ] |),
@@ -17753,14 +19557,19 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "usize", current |) in
+            let new := M.alloc (| Ty.path "usize", new |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.read (|
               M.match_operator (|
                 Ty.path "usize",
                 M.alloc (|
+                  Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "usize"; Ty.path "usize" ],
                   M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
@@ -17798,7 +19607,7 @@ Module sync.
                           "core::result::Result::Ok",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "usize", γ0_0 |) in
                       x));
                   fun γ =>
                     ltac:(M.monadic
@@ -17808,7 +19617,7 @@ Module sync.
                           "core::result::Result::Err",
                           0
                         |) in
-                      let x := M.copy (| γ0_0 |) in
+                      let x := M.copy (| Ty.path "usize", γ0_0 |) in
                       x))
                 ]
               |)
@@ -17835,11 +19644,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "usize", current |) in
+            let new := M.alloc (| Ty.path "usize", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "usize"; Ty.path "usize" ],
               M.get_function (|
@@ -17897,11 +19710,15 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; current; new; success; failure ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let current := M.alloc (| current |) in
-            let new := M.alloc (| new |) in
-            let success := M.alloc (| success |) in
-            let failure := M.alloc (| failure |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let current := M.alloc (| Ty.path "usize", current |) in
+            let new := M.alloc (| Ty.path "usize", new |) in
+            let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+            let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.path "usize"; Ty.path "usize" ],
               M.get_function (|
@@ -17953,9 +19770,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_add", [], [ Ty.path "usize" ] |),
@@ -18001,9 +19822,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_sub", [], [ Ty.path "usize" ] |),
@@ -18049,9 +19874,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "usize" ] |),
@@ -18097,9 +19926,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_nand", [], [ Ty.path "usize" ] |),
@@ -18145,9 +19978,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "usize" ] |),
@@ -18193,9 +20030,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "usize" ] |),
@@ -18251,10 +20092,14 @@ Module sync.
         match ε, τ, α with
         | [], [ F ], [ self; set_order; fetch_order; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let set_order := M.alloc (| set_order |) in
-            let fetch_order := M.alloc (| fetch_order |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let set_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", set_order |) in
+            let fetch_order := M.alloc (| Ty.path "core::sync::atomic::Ordering", fetch_order |) in
+            let f := M.alloc (| F, f |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -18263,6 +20108,10 @@ Module sync.
                   [ Ty.path "usize"; Ty.path "usize" ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "usize"; Ty.path "usize" ],
                     M.read (|
                       let~ prev : Ty.path "usize" :=
                         M.call_closure (|
@@ -18285,12 +20134,16 @@ Module sync.
                             ltac:(M.monadic
                               (M.match_operator (|
                                 Ty.tuple [],
-                                M.alloc (| Value.Tuple [] |),
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
+                                            []
+                                            [ Ty.path "usize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -18317,10 +20170,14 @@ Module sync.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let next := M.copy (| γ0_0 |) in
+                                      let next := M.copy (| Ty.path "usize", γ0_0 |) in
                                       M.match_operator (|
                                         Ty.tuple [],
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [ Ty.path "usize"; Ty.path "usize" ],
                                           M.call_closure (|
                                             Ty.apply
                                               (Ty.path "core::result::Result")
@@ -18347,7 +20204,14 @@ Module sync.
                                         [
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (let x := M.copy (| γ |) in
+                                              (let x :=
+                                                M.copy (|
+                                                  Ty.apply
+                                                    (Ty.path "core::result::Result")
+                                                    []
+                                                    [ Ty.path "usize"; Ty.path "usize" ],
+                                                  γ
+                                                |) in
                                               let γ1_0 :=
                                                 M.SubPointer.get_struct_tuple_field (|
                                                   γ,
@@ -18355,6 +20219,7 @@ Module sync.
                                                   0
                                                 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.never_to_any (|
                                                   M.read (| M.return_ (| M.read (| x |) |) |)
                                                 |)
@@ -18367,8 +20232,9 @@ Module sync.
                                                   "core::result::Result::Err",
                                                   0
                                                 |) in
-                                              let next_prev := M.copy (| γ0_0 |) in
+                                              let next_prev := M.copy (| Ty.path "usize", γ0_0 |) in
                                               M.alloc (|
+                                                Ty.tuple [],
                                                 M.write (| prev, M.read (| next_prev |) |)
                                               |)))
                                         ]
@@ -18376,11 +20242,12 @@ Module sync.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (|
                                           M.read (|
                                             let~ _ : Ty.tuple [] :=
                                               M.never_to_any (| M.read (| M.break (||) |) |) in
-                                            M.alloc (| Value.Tuple [] |)
+                                            M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                           |)
                                         |)
                                       |)))
@@ -18389,6 +20256,10 @@ Module sync.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.path "usize"; Ty.path "usize" ],
                         Value.StructTuple
                           "core::result::Result::Err"
                           []
@@ -18417,9 +20288,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_umax", [], [ Ty.path "usize" ] |),
@@ -18465,9 +20340,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; val; order ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let val := M.alloc (| val |) in
-            let order := M.alloc (| order |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
+            let val := M.alloc (| Ty.path "usize", val |) in
+            let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
             M.call_closure (|
               Ty.path "usize",
               M.get_function (| "core::sync::atomic::atomic_umin", [], [ Ty.path "usize" ] |),
@@ -18512,7 +20391,11 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicUsize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "*mut") [] [ Ty.path "usize" ],
               M.get_associated_function (|
@@ -18543,6 +20426,7 @@ Module sync.
     Definition value_ATOMIC_ISIZE_INIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "core::sync::atomic::AtomicIsize",
           M.call_closure (|
             Ty.path "core::sync::atomic::AtomicIsize",
             M.get_associated_function (|
@@ -18563,6 +20447,7 @@ Module sync.
     Definition value_ATOMIC_USIZE_INIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "core::sync::atomic::AtomicUsize",
           M.call_closure (|
             Ty.path "core::sync::atomic::AtomicUsize",
             M.get_associated_function (|
@@ -18599,7 +20484,7 @@ Module sync.
       match ε, τ, α with
       | [], [], [ order ] =>
         ltac:(M.monadic
-          (let order := M.alloc (| order |) in
+          (let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::sync::atomic::Ordering",
@@ -18609,30 +20494,35 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      Ty.path "core::sync::atomic::Ordering",
                       Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      Ty.path "core::sync::atomic::Ordering",
                       Value.StructTuple "core::sync::atomic::Ordering::Relaxed" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      Ty.path "core::sync::atomic::Ordering",
                       Value.StructTuple "core::sync::atomic::Ordering::SeqCst" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      Ty.path "core::sync::atomic::Ordering",
                       Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      Ty.path "core::sync::atomic::Ordering",
                       Value.StructTuple "core::sync::atomic::Ordering::Acquire" [] [] []
                     |)))
               ]
@@ -18664,9 +20554,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -18676,6 +20566,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_store_relaxed", [], [ T ] |),
@@ -18686,6 +20577,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_store_release", [], [ T ] |),
@@ -18696,6 +20588,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_store_seqcst", [], [ T ] |),
@@ -18706,6 +20599,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -18726,6 +20620,10 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (|
@@ -18746,6 +20644,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -18766,6 +20665,10 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (|
@@ -18811,8 +20714,8 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*const") [] [ T ], dst |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -18822,6 +20725,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_load_relaxed", [], [ T ] |),
@@ -18832,6 +20736,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_load_acquire", [], [ T ] |),
@@ -18842,6 +20747,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_load_seqcst", [], [ T ] |),
@@ -18852,6 +20758,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -18872,6 +20779,10 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "there is no such thing as a release load" |)
                                           ]
@@ -18889,6 +20800,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -18909,6 +20821,10 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (|
@@ -18954,9 +20870,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -18966,6 +20882,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xchg_relaxed", [], [ T ] |),
@@ -18976,6 +20893,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xchg_acquire", [], [ T ] |),
@@ -18986,6 +20904,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xchg_release", [], [ T ] |),
@@ -18996,6 +20915,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xchg_acqrel", [], [ T ] |),
@@ -19006,6 +20926,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xchg_seqcst", [], [ T ] |),
@@ -19041,9 +20962,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -19053,6 +20974,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xadd_relaxed", [], [ T ] |),
@@ -19063,6 +20985,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xadd_acquire", [], [ T ] |),
@@ -19073,6 +20996,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xadd_release", [], [ T ] |),
@@ -19083,6 +21007,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xadd_acqrel", [], [ T ] |),
@@ -19093,6 +21018,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xadd_seqcst", [], [ T ] |),
@@ -19128,9 +21054,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -19140,6 +21066,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xsub_relaxed", [], [ T ] |),
@@ -19150,6 +21077,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xsub_acquire", [], [ T ] |),
@@ -19160,6 +21088,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xsub_release", [], [ T ] |),
@@ -19170,6 +21099,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xsub_acqrel", [], [ T ] |),
@@ -19180,6 +21110,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xsub_seqcst", [], [ T ] |),
@@ -19234,17 +21165,22 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; old; new; success; failure ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let old := M.alloc (| old |) in
-          let new := M.alloc (| new |) in
-          let success := M.alloc (| success |) in
-          let failure := M.alloc (| failure |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let old := M.alloc (| T, old |) in
+          let new := M.alloc (| T, new |) in
+          let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+          let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
               M.match_operator (|
                 Ty.tuple [ T; Ty.path "bool" ],
-                M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [ Ty.path "core::sync::atomic::Ordering"; Ty.path "core::sync::atomic::Ordering"
+                    ],
+                  Value.Tuple [ M.read (| success |); M.read (| failure |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -19255,6 +21191,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19274,6 +21211,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19293,6 +21231,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19312,6 +21251,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19331,6 +21271,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19350,6 +21291,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19369,6 +21311,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19388,6 +21331,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19407,6 +21351,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19426,6 +21371,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19445,6 +21391,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19464,6 +21411,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19483,6 +21431,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19502,6 +21451,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19521,6 +21471,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19538,6 +21489,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::AcqRel" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -19558,6 +21510,10 @@ Module sync.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           Value.Array
                                             [
                                               mk_str (|
@@ -19581,6 +21537,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Release" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -19601,6 +21558,10 @@ Module sync.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           Value.Array
                                             [
                                               mk_str (|
@@ -19624,11 +21585,11 @@ Module sync.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let val := M.copy (| γ0_0 |) in
-                    let ok := M.copy (| γ0_1 |) in
+                    let val := M.copy (| T, γ0_0 |) in
+                    let ok := M.copy (| Ty.path "bool", γ0_1 |) in
                     M.match_operator (|
                       Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -19636,6 +21597,7 @@ Module sync.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
                               Value.StructTuple
                                 "core::result::Result::Ok"
                                 []
@@ -19645,6 +21607,7 @@ Module sync.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
                               Value.StructTuple
                                 "core::result::Result::Err"
                                 []
@@ -19705,17 +21668,22 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; old; new; success; failure ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let old := M.alloc (| old |) in
-          let new := M.alloc (| new |) in
-          let success := M.alloc (| success |) in
-          let failure := M.alloc (| failure |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let old := M.alloc (| T, old |) in
+          let new := M.alloc (| T, new |) in
+          let success := M.alloc (| Ty.path "core::sync::atomic::Ordering", success |) in
+          let failure := M.alloc (| Ty.path "core::sync::atomic::Ordering", failure |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
               M.match_operator (|
                 Ty.tuple [ T; Ty.path "bool" ],
-                M.alloc (| Value.Tuple [ M.read (| success |); M.read (| failure |) ] |),
+                M.alloc (|
+                  Ty.tuple
+                    [ Ty.path "core::sync::atomic::Ordering"; Ty.path "core::sync::atomic::Ordering"
+                    ],
+                  Value.Tuple [ M.read (| success |); M.read (| failure |) ]
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
@@ -19726,6 +21694,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19745,6 +21714,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19764,6 +21734,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19783,6 +21754,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19802,6 +21774,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19821,6 +21794,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19840,6 +21814,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19859,6 +21834,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19878,6 +21854,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19897,6 +21874,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19916,6 +21894,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19935,6 +21914,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19954,6 +21934,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Relaxed" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19973,6 +21954,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Acquire" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -19992,6 +21974,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::SeqCst" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.call_closure (|
                           Ty.tuple [ T; Ty.path "bool" ],
                           M.get_function (|
@@ -20009,6 +21992,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::AcqRel" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -20029,6 +22013,10 @@ Module sync.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           Value.Array
                                             [
                                               mk_str (|
@@ -20052,6 +22040,7 @@ Module sync.
                       let _ :=
                         M.is_struct_tuple (| γ0_1, "core::sync::atomic::Ordering::Release" |) in
                       M.alloc (|
+                        Ty.tuple [ T; Ty.path "bool" ],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -20072,6 +22061,10 @@ Module sync.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                           Value.Array
                                             [
                                               mk_str (|
@@ -20095,11 +22088,11 @@ Module sync.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let val := M.copy (| γ0_0 |) in
-                    let ok := M.copy (| γ0_1 |) in
+                    let val := M.copy (| T, γ0_0 |) in
+                    let ok := M.copy (| Ty.path "bool", γ0_1 |) in
                     M.match_operator (|
                       Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
@@ -20107,6 +22100,7 @@ Module sync.
                             let _ :=
                               is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
                               Value.StructTuple
                                 "core::result::Result::Ok"
                                 []
@@ -20116,6 +22110,7 @@ Module sync.
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
+                              Ty.apply (Ty.path "core::result::Result") [] [ T; T ],
                               Value.StructTuple
                                 "core::result::Result::Err"
                                 []
@@ -20155,9 +22150,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20167,6 +22162,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_and_relaxed", [], [ T ] |),
@@ -20177,6 +22173,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_and_acquire", [], [ T ] |),
@@ -20187,6 +22184,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_and_release", [], [ T ] |),
@@ -20197,6 +22195,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_and_acqrel", [], [ T ] |),
@@ -20207,6 +22206,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_and_seqcst", [], [ T ] |),
@@ -20242,9 +22242,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20254,6 +22254,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_nand_relaxed", [], [ T ] |),
@@ -20264,6 +22265,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_nand_acquire", [], [ T ] |),
@@ -20274,6 +22276,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_nand_release", [], [ T ] |),
@@ -20284,6 +22287,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_nand_acqrel", [], [ T ] |),
@@ -20294,6 +22298,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_nand_seqcst", [], [ T ] |),
@@ -20329,9 +22334,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20341,6 +22346,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_or_seqcst", [], [ T ] |),
@@ -20351,6 +22357,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_or_acquire", [], [ T ] |),
@@ -20361,6 +22368,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_or_release", [], [ T ] |),
@@ -20371,6 +22379,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_or_acqrel", [], [ T ] |),
@@ -20381,6 +22390,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_or_relaxed", [], [ T ] |),
@@ -20416,9 +22426,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20428,6 +22438,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xor_seqcst", [], [ T ] |),
@@ -20438,6 +22449,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xor_acquire", [], [ T ] |),
@@ -20448,6 +22460,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xor_release", [], [ T ] |),
@@ -20458,6 +22471,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xor_acqrel", [], [ T ] |),
@@ -20468,6 +22482,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_xor_relaxed", [], [ T ] |),
@@ -20503,9 +22518,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20515,6 +22530,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_max_relaxed", [], [ T ] |),
@@ -20525,6 +22541,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_max_acquire", [], [ T ] |),
@@ -20535,6 +22552,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_max_release", [], [ T ] |),
@@ -20545,6 +22563,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_max_acqrel", [], [ T ] |),
@@ -20555,6 +22574,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_max_seqcst", [], [ T ] |),
@@ -20590,9 +22610,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20602,6 +22622,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_min_relaxed", [], [ T ] |),
@@ -20612,6 +22633,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_min_acquire", [], [ T ] |),
@@ -20622,6 +22644,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_min_release", [], [ T ] |),
@@ -20632,6 +22655,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_min_acqrel", [], [ T ] |),
@@ -20642,6 +22666,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_min_seqcst", [], [ T ] |),
@@ -20677,9 +22702,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20689,6 +22714,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umax_relaxed", [], [ T ] |),
@@ -20699,6 +22725,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umax_acquire", [], [ T ] |),
@@ -20709,6 +22736,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umax_release", [], [ T ] |),
@@ -20719,6 +22747,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umax_acqrel", [], [ T ] |),
@@ -20729,6 +22758,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umax_seqcst", [], [ T ] |),
@@ -20764,9 +22794,9 @@ Module sync.
       match ε, τ, α with
       | [], [ T ], [ dst; val; order ] =>
         ltac:(M.monadic
-          (let dst := M.alloc (| dst |) in
-          let val := M.alloc (| val |) in
-          let order := M.alloc (| order |) in
+          (let dst := M.alloc (| Ty.apply (Ty.path "*mut") [] [ T ], dst |) in
+          let val := M.alloc (| T, val |) in
+          let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               T,
@@ -20776,6 +22806,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umin_relaxed", [], [ T ] |),
@@ -20786,6 +22817,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umin_acquire", [], [ T ] |),
@@ -20796,6 +22828,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umin_release", [], [ T ] |),
@@ -20806,6 +22839,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umin_acqrel", [], [ T ] |),
@@ -20816,6 +22850,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      T,
                       M.call_closure (|
                         T,
                         M.get_function (| "core::intrinsics::atomic_umin_seqcst", [], [ T ] |),
@@ -20851,7 +22886,7 @@ Module sync.
       match ε, τ, α with
       | [], [], [ order ] =>
         ltac:(M.monadic
-          (let order := M.alloc (| order |) in
+          (let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -20861,6 +22896,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_fence_acquire", [], [] |),
@@ -20871,6 +22907,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_fence_release", [], [] |),
@@ -20881,6 +22918,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_fence_acqrel", [], [] |),
@@ -20891,6 +22929,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "core::intrinsics::atomic_fence_seqcst", [], [] |),
@@ -20901,6 +22940,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -20921,6 +22961,10 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "there is no such thing as a relaxed fence" |)
                                           ]
@@ -20962,7 +23006,7 @@ Module sync.
       match ε, τ, α with
       | [], [], [ order ] =>
         ltac:(M.monadic
-          (let order := M.alloc (| order |) in
+          (let order := M.alloc (| Ty.path "core::sync::atomic::Ordering", order |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -20972,6 +23016,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (|
@@ -20986,6 +23031,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (|
@@ -21000,6 +23046,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (|
@@ -21014,6 +23061,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (|
@@ -21028,6 +23076,7 @@ Module sync.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -21048,6 +23097,10 @@ Module sync.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [
                                             mk_str (|
@@ -21087,8 +23140,13 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::sync::atomic::AtomicBool" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -21102,6 +23160,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -21148,8 +23207,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -21171,6 +23238,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
                         M.call_closure (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|
@@ -21218,8 +23286,16 @@ Module sync.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::sync::atomic::AtomicPtr") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -21241,6 +23317,7 @@ Module sync.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
                         M.call_closure (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
                           M.get_associated_function (|

@@ -11,7 +11,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   match ε, τ, α with
   | [], [ T ], [ t ] =>
     ltac:(M.monadic
-      (let t := M.alloc (| t |) in
+      (let t := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], t |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -34,8 +34,14 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "Debug: `" |); mk_str (| "`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "Debug: `" |); mk_str (| "`
+" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -45,6 +51,10 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -71,7 +81,7 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -95,6 +105,10 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Display: `" |); mk_str (| "`
 " |) ]
                             |)
@@ -107,6 +121,10 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -133,9 +151,9 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -155,8 +173,8 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   match ε, τ, α with
   | [], [ T; U ], [ t; u ] =>
     ltac:(M.monadic
-      (let t := M.alloc (| t |) in
-      let u := M.alloc (| u |) in
+      (let t := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], t |) in
+      let u := M.alloc (| Ty.apply (Ty.path "&") [] [ U ], u |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -179,8 +197,14 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "t: `" |); mk_str (| "`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "t: `" |); mk_str (| "`
+" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -190,6 +214,10 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -216,7 +244,7 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -239,8 +267,14 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "u: `" |); mk_str (| "`
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "u: `" |); mk_str (| "`
+" |) ]
+                            |)
                           |)
                         |)
                       |);
@@ -250,6 +284,10 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -276,9 +314,9 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -363,6 +401,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.path "i32" ],
                         Value.Array
                           [
                             Value.Integer IntegerKind.I32 1;
@@ -405,7 +447,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.borrow (| Pointer.Kind.Ref, vec |) |) |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

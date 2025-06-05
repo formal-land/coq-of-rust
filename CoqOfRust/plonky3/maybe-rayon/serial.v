@@ -26,7 +26,7 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| T, self |) in
           M.call_closure (|
             Ty.associated_in_trait "core::iter::traits::collect::IntoIterator" [] [] T "IntoIter",
             M.get_trait_method (|
@@ -92,7 +92,7 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ I ], self |) in
           M.call_closure (|
             Ty.associated_in_trait
               "p3_maybe_rayon::serial::IntoParallelIterator"
@@ -163,7 +163,7 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ I ], self |) in
           M.call_closure (|
             Ty.associated_in_trait
               "p3_maybe_rayon::serial::IntoParallelIterator"
@@ -211,8 +211,8 @@ Module serial.
       match ε, τ, α with
       | [], [ P ], [ self; separator ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let separator := M.alloc (| separator |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let separator := M.alloc (| P, separator |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::Split") [] [ T; P ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "split", [], [ P ] |),
@@ -253,8 +253,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; window_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let window_size := M.alloc (| window_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let window_size := M.alloc (| Ty.path "usize", window_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::Windows") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "windows", [], [] |),
@@ -295,8 +295,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::Chunks") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "chunks", [], [] |),
@@ -337,8 +337,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksExact") [] [ T ],
             M.get_associated_function (|
@@ -387,8 +387,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::RChunks") [] [ T ],
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "rchunks", [], [] |),
@@ -429,8 +429,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::RChunksExact") [] [ T ],
             M.get_associated_function (|
@@ -490,7 +490,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], self |) in
           M.read (| self |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -516,8 +517,8 @@ Module serial.
       match ε, τ, α with
       | [], [ P ], [ self; separator ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let separator := M.alloc (| separator |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let separator := M.alloc (| P, separator |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::SplitMut") [] [ T; P ],
             M.get_associated_function (|
@@ -566,8 +567,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksMut") [] [ T ],
             M.get_associated_function (|
@@ -616,8 +617,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::ChunksExactMut") [] [ T ],
             M.get_associated_function (|
@@ -666,8 +667,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::RChunksMut") [] [ T ],
             M.get_associated_function (|
@@ -716,8 +717,8 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self; chunk_size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let chunk_size := M.alloc (| chunk_size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let chunk_size := M.alloc (| Ty.path "usize", chunk_size |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::slice::iter::RChunksExactMut") [] [ T ],
             M.get_associated_function (|
@@ -777,7 +778,11 @@ Module serial.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
@@ -815,8 +820,8 @@ Module serial.
       match ε, τ, α with
       | [], [ P ], [ self; predicate ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let predicate := M.alloc (| predicate |) in
+          (let self := M.alloc (| T, self |) in
+          let predicate := M.alloc (| P, predicate |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -851,8 +856,8 @@ Module serial.
       match ε, τ, α with
       | [], [ U; F ], [ self; map_op ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let map_op := M.alloc (| map_op |) in
+          (let self := M.alloc (| T, self |) in
+          let map_op := M.alloc (| F, map_op |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::iter::adapters::flatten::FlatMap") [] [ T; U; F ],
             M.get_trait_method (|
@@ -898,8 +903,8 @@ Module serial.
     match ε, τ, α with
     | [], [ A; B; RA; RB ], [ oper_a; oper_b ] =>
       ltac:(M.monadic
-        (let oper_a := M.alloc (| oper_a |) in
-        let oper_b := M.alloc (| oper_b |) in
+        (let oper_a := M.alloc (| A, oper_a |) in
+        let oper_b := M.alloc (| B, oper_b |) in
         M.read (|
           let~ result_a : RA :=
             M.call_closure (|
@@ -929,7 +934,10 @@ Module serial.
               |),
               [ M.read (| oper_b |); Value.Tuple [] ]
             |) in
-          M.alloc (| Value.Tuple [ M.read (| result_a |); M.read (| result_b |) ] |)
+          M.alloc (|
+            Ty.tuple [ RA; RB ],
+            Value.Tuple [ M.read (| result_a |); M.read (| result_b |) ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -40,9 +40,16 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
     match ε, τ, α with
     | [], [], [ self; x; y ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&")
+              []
+              [ Ty.path "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers" ],
+            self
+          |) in
+        let x := M.alloc (| Ty.path "i32", x |) in
+        let y := M.alloc (| Ty.path "i32", y |) in
         M.read (|
           M.match_operator (|
             Ty.path "i32",
@@ -57,6 +64,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                       "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
                     |) in
                   M.alloc (|
+                    Ty.path "i32",
                     M.call_closure (|
                       Ty.path "i32",
                       BinOp.Wrap.add,
@@ -72,6 +80,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                       "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract"
                     |) in
                   M.alloc (|
+                    Ty.path "i32",
                     M.call_closure (|
                       Ty.path "i32",
                       BinOp.Wrap.sub,

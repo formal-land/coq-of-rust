@@ -35,8 +35,22 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
@@ -88,12 +102,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 Value.DeclaredButUndefined,
-                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -120,8 +141,22 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
@@ -178,8 +213,22 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
@@ -235,7 +284,14 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -332,8 +388,15 @@ Module num.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
@@ -381,8 +444,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -428,8 +499,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -475,8 +554,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -522,8 +609,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -569,8 +664,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -616,8 +719,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -666,8 +777,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -727,8 +842,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -747,7 +869,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -778,8 +900,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -839,8 +965,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -859,7 +992,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -890,8 +1023,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -954,8 +1091,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -974,7 +1118,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1005,8 +1149,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1069,8 +1217,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1089,7 +1244,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1120,8 +1275,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1184,8 +1343,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1204,7 +1370,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1235,8 +1401,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1299,8 +1469,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1319,7 +1496,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1350,8 +1527,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1414,8 +1595,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1434,7 +1622,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1465,8 +1653,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1529,8 +1721,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1549,7 +1748,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1580,8 +1779,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1644,8 +1847,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1664,7 +1874,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1695,8 +1905,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1759,8 +1973,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1779,7 +2000,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1810,8 +2031,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1874,8 +2099,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -1894,7 +2126,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1925,8 +2157,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -1989,8 +2225,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2009,7 +2252,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2040,8 +2283,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2101,8 +2348,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2121,7 +2375,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2152,8 +2406,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2213,8 +2471,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2233,7 +2498,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2264,8 +2529,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2328,8 +2597,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2348,7 +2624,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2379,8 +2655,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2443,8 +2723,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2463,7 +2750,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2494,8 +2781,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2558,8 +2849,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2578,7 +2876,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2609,8 +2907,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2673,8 +2975,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2693,7 +3002,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2724,8 +3033,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2788,8 +3101,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2808,7 +3128,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2839,8 +3159,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -2903,8 +3227,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -2923,7 +3254,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2954,8 +3285,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3018,8 +3353,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3038,7 +3380,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3069,8 +3411,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3133,8 +3479,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3153,7 +3506,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3184,8 +3537,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3248,8 +3605,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3268,7 +3632,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3299,8 +3663,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3363,8 +3731,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3383,7 +3758,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3414,8 +3789,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3469,8 +3852,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3489,7 +3883,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3517,8 +3911,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3544,7 +3945,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3575,8 +3976,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3630,8 +4039,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3650,7 +4070,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3678,8 +4098,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3705,7 +4132,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3736,8 +4163,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3791,8 +4226,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3811,7 +4257,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3839,8 +4285,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3866,7 +4319,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3897,8 +4350,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -3952,8 +4413,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -3972,7 +4444,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4000,8 +4472,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4027,7 +4506,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4058,8 +4537,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -4113,8 +4600,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4133,7 +4631,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4161,8 +4659,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4188,7 +4693,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4219,7 +4724,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -4265,8 +4774,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -4320,8 +4837,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4340,7 +4868,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4368,8 +4896,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4395,7 +4930,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4426,8 +4961,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -4481,8 +5024,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4501,7 +5055,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4529,8 +5083,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4556,7 +5117,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4587,8 +5148,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -4642,8 +5211,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4662,7 +5242,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4690,8 +5270,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "usize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4717,7 +5304,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4748,7 +5335,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
               M.get_trait_method (|
@@ -4799,8 +5390,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -4854,8 +5453,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4874,7 +5484,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4902,8 +5512,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -4929,7 +5546,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4960,8 +5577,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5015,8 +5640,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5035,7 +5671,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5063,8 +5699,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5090,7 +5733,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5121,8 +5764,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5176,8 +5827,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5196,7 +5858,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5224,8 +5886,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5251,7 +5920,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5282,8 +5951,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5337,8 +6014,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5357,7 +6045,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5385,8 +6073,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5412,7 +6107,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5443,8 +6138,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5498,8 +6201,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5518,7 +6232,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5546,8 +6260,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5573,7 +6294,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5604,7 +6325,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5650,8 +6375,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5705,8 +6438,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5725,7 +6469,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5753,8 +6497,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5780,7 +6531,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5811,8 +6562,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -5866,8 +6625,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5886,7 +6656,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5914,8 +6684,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -5941,7 +6718,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5972,8 +6749,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -6027,8 +6812,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6047,7 +6843,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6075,8 +6871,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6102,7 +6905,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6133,7 +6936,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
               M.get_trait_method (|
@@ -6184,8 +6991,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -6239,8 +7054,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6259,7 +7085,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6287,8 +7113,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6314,7 +7147,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6345,8 +7178,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -6400,8 +7241,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6420,7 +7272,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6448,8 +7300,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6475,7 +7334,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6506,8 +7365,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -6561,8 +7428,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6581,7 +7459,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6609,8 +7487,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6636,7 +7521,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6667,8 +7552,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -6722,8 +7615,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6742,7 +7646,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6770,8 +7674,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6797,7 +7708,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6828,8 +7739,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -6883,8 +7802,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6903,7 +7833,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6931,8 +7861,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -6958,7 +7895,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6989,7 +7926,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7035,8 +7976,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7090,8 +8039,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7110,7 +8070,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7138,8 +8098,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7165,7 +8132,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7196,8 +8163,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7251,8 +8226,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7271,7 +8257,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7299,8 +8285,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7326,7 +8319,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7357,8 +8350,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7412,8 +8413,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7432,7 +8444,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7460,8 +8472,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7487,7 +8506,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7518,7 +8537,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
               M.get_trait_method (|
@@ -7569,8 +8592,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7624,8 +8655,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7644,7 +8686,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7672,8 +8714,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7699,7 +8748,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7730,8 +8779,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7785,8 +8842,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7805,7 +8873,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7833,8 +8901,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7860,7 +8935,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7891,8 +8966,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -7946,8 +9029,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -7966,7 +9060,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7994,8 +9088,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8021,7 +9122,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8052,8 +9153,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -8107,8 +9216,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8127,7 +9247,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8155,8 +9275,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8182,7 +9309,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8213,8 +9340,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -8268,8 +9403,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8288,7 +9434,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8316,8 +9462,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8343,7 +9496,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8374,7 +9527,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -8420,8 +9577,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -8475,8 +9640,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8495,7 +9671,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8523,8 +9699,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8550,7 +9733,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8581,8 +9764,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -8636,8 +9827,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8656,7 +9858,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8684,8 +9886,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8711,7 +9920,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8742,8 +9951,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -8797,8 +10014,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8817,7 +10045,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8845,8 +10073,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -8872,7 +10107,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8903,7 +10138,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
               M.get_trait_method (|
@@ -8954,8 +10193,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9009,8 +10256,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9029,7 +10287,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9057,8 +10315,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9084,7 +10349,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9115,8 +10380,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9170,8 +10443,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9190,7 +10474,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9218,8 +10502,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9245,7 +10536,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9276,8 +10567,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9331,8 +10630,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9351,7 +10661,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9379,8 +10689,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9406,7 +10723,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9437,8 +10754,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9492,8 +10817,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9512,7 +10848,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9540,8 +10876,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9567,7 +10910,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9598,8 +10941,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9653,8 +11004,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9673,7 +11035,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9701,8 +11063,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9728,7 +11097,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9759,7 +11128,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9805,8 +11178,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -9860,8 +11241,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9880,7 +11272,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9908,8 +11300,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -9935,7 +11334,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9966,8 +11365,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -10021,8 +11428,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10041,7 +11459,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10069,8 +11487,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10096,7 +11521,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10127,8 +11552,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -10182,8 +11615,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10202,7 +11646,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10230,8 +11674,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10257,7 +11708,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10288,7 +11739,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
               M.get_trait_method (|
@@ -10339,8 +11794,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -10394,8 +11857,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10414,7 +11888,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10442,8 +11916,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10469,7 +11950,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10500,8 +11981,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -10555,8 +12044,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10575,7 +12075,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10603,8 +12103,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10630,7 +12137,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10661,8 +12168,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -10716,8 +12231,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10736,7 +12262,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10764,8 +12290,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10791,7 +12324,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10822,8 +12355,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -10877,8 +12418,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10897,7 +12449,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10925,8 +12477,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -10952,7 +12511,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10983,8 +12542,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11038,8 +12605,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11058,7 +12636,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11086,8 +12664,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11113,7 +12698,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11144,7 +12729,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11190,8 +12779,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11245,8 +12842,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11265,7 +12873,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11293,8 +12901,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11320,7 +12935,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11351,8 +12966,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11406,8 +13029,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11426,7 +13060,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11454,8 +13088,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11481,7 +13122,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11512,8 +13153,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11567,8 +13216,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11587,7 +13247,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11615,8 +13275,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "u128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11642,7 +13309,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11673,7 +13340,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
               M.get_trait_method (|
@@ -11724,8 +13395,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11779,8 +13458,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11799,7 +13489,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11827,8 +13517,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11854,7 +13551,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11885,8 +13582,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -11940,8 +13645,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -11960,7 +13676,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11988,8 +13704,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12015,7 +13738,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12046,8 +13769,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12101,8 +13832,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12121,7 +13863,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12149,8 +13891,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12176,7 +13925,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12207,8 +13956,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12262,8 +14019,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12282,7 +14050,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12310,8 +14078,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12337,7 +14112,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12368,8 +14143,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12423,8 +14206,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12443,7 +14237,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12471,8 +14265,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12498,7 +14299,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12529,7 +14330,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12575,8 +14380,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12630,8 +14443,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12650,7 +14474,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12678,8 +14502,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12705,7 +14536,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12736,8 +14567,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12791,8 +14630,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12811,7 +14661,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12839,8 +14689,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12866,7 +14723,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12897,8 +14754,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -12952,8 +14817,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -12972,7 +14848,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13000,8 +14876,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "isize", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13027,7 +14910,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13058,7 +14941,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
               M.get_trait_method (|
@@ -13109,8 +14996,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -13164,8 +15059,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13184,7 +15090,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13212,8 +15118,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13239,7 +15152,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13270,8 +15183,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -13325,8 +15246,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13345,7 +15277,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13373,8 +15305,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13400,7 +15339,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13431,8 +15370,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -13486,8 +15433,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13506,7 +15464,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13534,8 +15492,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13561,7 +15526,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13592,8 +15557,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -13647,8 +15620,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13667,7 +15651,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13695,8 +15679,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13722,7 +15713,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13753,8 +15744,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -13808,8 +15807,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13828,7 +15838,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13856,8 +15866,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -13883,7 +15900,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13914,7 +15931,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -13960,8 +15981,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -14015,8 +16044,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14035,7 +16075,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14063,8 +16103,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14090,7 +16137,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14121,8 +16168,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -14176,8 +16231,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14196,7 +16262,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14224,8 +16290,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14251,7 +16324,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14282,8 +16355,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -14337,8 +16418,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14357,7 +16449,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14385,8 +16477,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i8", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14412,7 +16511,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14443,7 +16542,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
               M.get_trait_method (|
@@ -14494,8 +16597,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -14549,8 +16660,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14569,7 +16691,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14597,8 +16719,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14624,7 +16753,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14655,8 +16784,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -14710,8 +16847,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14730,7 +16878,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14758,8 +16906,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14785,7 +16940,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14816,8 +16971,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -14871,8 +17034,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14891,7 +17065,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14919,8 +17093,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -14946,7 +17127,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14977,8 +17158,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15032,8 +17221,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15052,7 +17252,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15080,8 +17280,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15107,7 +17314,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15138,8 +17345,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15193,8 +17408,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15213,7 +17439,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15241,8 +17467,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15268,7 +17501,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15299,7 +17532,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15345,8 +17582,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15400,8 +17645,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15420,7 +17676,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15448,8 +17704,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15475,7 +17738,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15506,8 +17769,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15561,8 +17832,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15581,7 +17863,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15609,8 +17891,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15636,7 +17925,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15667,8 +17956,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15722,8 +18019,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15742,7 +18050,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15770,8 +18078,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i16", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15797,7 +18112,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15828,7 +18143,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
               M.get_trait_method (|
@@ -15879,8 +18198,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -15934,8 +18261,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -15954,7 +18292,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15982,8 +18320,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16009,7 +18354,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16040,8 +18385,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16095,8 +18448,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16115,7 +18479,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16143,8 +18507,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16170,7 +18541,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16201,8 +18572,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16256,8 +18635,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16276,7 +18666,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16304,8 +18694,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16331,7 +18728,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16362,8 +18759,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16417,8 +18822,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16437,7 +18853,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16465,8 +18881,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16492,7 +18915,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16523,8 +18946,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16578,8 +19009,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16598,7 +19040,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16626,8 +19068,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16653,7 +19102,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16684,7 +19133,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16730,8 +19183,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16785,8 +19246,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16805,7 +19277,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16833,8 +19305,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16860,7 +19339,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16891,8 +19370,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -16946,8 +19433,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -16966,7 +19464,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16994,8 +19492,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17021,7 +19526,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17052,8 +19557,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -17107,8 +19620,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17127,7 +19651,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17155,8 +19679,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i32", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17182,7 +19713,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17213,7 +19744,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
               M.get_trait_method (|
@@ -17264,8 +19799,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -17319,8 +19862,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17339,7 +19893,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17367,8 +19921,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17394,7 +19955,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17425,8 +19986,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -17480,8 +20049,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17500,7 +20080,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17528,8 +20108,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17555,7 +20142,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17586,8 +20173,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -17641,8 +20236,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17661,7 +20267,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17689,8 +20295,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17716,7 +20329,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17747,8 +20360,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -17802,8 +20423,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17822,7 +20454,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17850,8 +20482,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17877,7 +20516,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17908,8 +20547,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -17963,8 +20610,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -17983,7 +20641,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18011,8 +20669,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18038,7 +20703,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18069,7 +20734,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -18115,8 +20784,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -18170,8 +20847,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18190,7 +20878,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18218,8 +20906,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18245,7 +20940,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18276,8 +20971,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -18331,8 +21034,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18351,7 +21065,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18379,8 +21093,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18406,7 +21127,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18437,8 +21158,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -18492,8 +21221,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18512,7 +21252,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18540,8 +21280,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i64", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18567,7 +21314,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18598,7 +21345,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
               M.get_trait_method (|
@@ -18649,8 +21400,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -18704,8 +21463,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18724,7 +21494,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18752,8 +21522,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18779,7 +21556,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18810,8 +21587,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -18865,8 +21650,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18885,7 +21681,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18913,8 +21709,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -18940,7 +21743,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -18971,8 +21774,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19026,8 +21837,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19046,7 +21868,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19074,8 +21896,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19101,7 +21930,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19132,8 +21961,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19187,8 +22024,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19207,7 +22055,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19235,8 +22083,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19262,7 +22117,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19293,8 +22148,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19348,8 +22211,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19368,7 +22242,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19396,8 +22270,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19423,7 +22304,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19454,7 +22335,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19500,8 +22385,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19555,8 +22448,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19575,7 +22479,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19603,8 +22507,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19630,7 +22541,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19661,8 +22572,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19716,8 +22635,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19736,7 +22666,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19764,8 +22694,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19791,7 +22728,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19822,8 +22759,16 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -19877,8 +22822,19 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                other
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19897,7 +22853,7 @@ Module num.
                     [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19925,8 +22881,15 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                self
+              |) in
+            let other := M.alloc (| Ty.path "i128", other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -19952,7 +22915,7 @@ Module num.
                     ]
                   |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19983,7 +22946,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
               M.get_trait_method (|
@@ -20026,6 +22993,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20042,6 +23010,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20072,7 +23041,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "usize", "count_ones", [], [] |),
@@ -20099,7 +23072,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "usize", "count_zeros", [], [] |),
@@ -20126,7 +23103,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "usize", "trailing_zeros", [], [] |),
@@ -20153,8 +23134,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20192,8 +23177,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20231,7 +23220,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20268,7 +23261,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20305,7 +23302,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20341,7 +23342,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20377,7 +23382,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20413,7 +23422,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20449,8 +23462,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20486,7 +23503,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "usize", "leading_zeros", [], [] |),
@@ -20513,7 +23534,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "usize", "is_power_of_two", [], [] |),
@@ -20540,7 +23565,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20583,6 +23612,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20599,6 +23629,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20629,7 +23660,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u8", "count_ones", [], [] |),
@@ -20656,7 +23691,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u8", "count_zeros", [], [] |),
@@ -20683,7 +23722,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u8", "trailing_zeros", [], [] |),
@@ -20710,8 +23753,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20749,8 +23796,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20788,7 +23839,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20825,7 +23880,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20862,7 +23921,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20898,7 +23961,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20934,7 +24001,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -20970,7 +24041,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21006,8 +24081,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21043,7 +24122,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u8", "leading_zeros", [], [] |),
@@ -21070,7 +24153,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "u8", "is_power_of_two", [], [] |),
@@ -21097,7 +24184,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21140,6 +24231,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21156,6 +24248,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21186,7 +24279,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u16", "count_ones", [], [] |),
@@ -21213,7 +24310,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u16", "count_zeros", [], [] |),
@@ -21240,7 +24341,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u16", "trailing_zeros", [], [] |),
@@ -21267,8 +24372,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21306,8 +24415,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21345,7 +24458,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21382,7 +24499,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21419,7 +24540,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21455,7 +24580,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21491,7 +24620,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21527,7 +24660,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21563,8 +24700,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21600,7 +24741,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u16", "leading_zeros", [], [] |),
@@ -21627,7 +24772,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "u16", "is_power_of_two", [], [] |),
@@ -21654,7 +24803,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21697,6 +24850,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21713,6 +24867,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21743,7 +24898,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u32", "count_ones", [], [] |),
@@ -21770,7 +24929,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u32", "count_zeros", [], [] |),
@@ -21797,7 +24960,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u32", "trailing_zeros", [], [] |),
@@ -21824,8 +24991,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21863,8 +25034,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21902,7 +25077,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21939,7 +25118,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -21976,7 +25159,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22012,7 +25199,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22048,7 +25239,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22084,7 +25279,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22120,8 +25319,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22157,7 +25360,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u32", "leading_zeros", [], [] |),
@@ -22184,7 +25391,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "u32", "is_power_of_two", [], [] |),
@@ -22211,7 +25422,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22254,6 +25469,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22270,6 +25486,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22300,7 +25517,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u64", "count_ones", [], [] |),
@@ -22327,7 +25548,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u64", "count_zeros", [], [] |),
@@ -22354,7 +25579,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u64", "trailing_zeros", [], [] |),
@@ -22381,8 +25610,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22420,8 +25653,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22459,7 +25696,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22496,7 +25737,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22533,7 +25778,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22569,7 +25818,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22605,7 +25858,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22641,7 +25898,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22677,8 +25938,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22714,7 +25979,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u64", "leading_zeros", [], [] |),
@@ -22741,7 +26010,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "u64", "is_power_of_two", [], [] |),
@@ -22768,7 +26041,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22811,6 +26088,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22827,6 +26105,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22857,7 +26136,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u128", "count_ones", [], [] |),
@@ -22884,7 +26167,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u128", "count_zeros", [], [] |),
@@ -22911,7 +26198,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u128", "trailing_zeros", [], [] |),
@@ -22938,8 +26229,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -22977,8 +26272,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23016,7 +26315,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23053,7 +26356,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23090,7 +26397,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23126,7 +26437,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23162,7 +26477,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23198,7 +26517,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23234,8 +26557,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23271,7 +26598,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "u128", "leading_zeros", [], [] |),
@@ -23298,7 +26629,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "u128", "is_power_of_two", [], [] |),
@@ -23325,7 +26660,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23368,6 +26707,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23384,6 +26724,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23414,7 +26755,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "isize", "count_ones", [], [] |),
@@ -23441,7 +26786,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "isize", "count_zeros", [], [] |),
@@ -23468,7 +26817,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "isize", "trailing_zeros", [], [] |),
@@ -23495,8 +26848,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23534,8 +26891,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23573,7 +26934,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23610,7 +26975,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23647,7 +27016,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23683,7 +27056,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23719,7 +27096,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23755,7 +27136,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23791,8 +27176,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23828,7 +27217,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "isize", "leading_zeros", [], [] |),
@@ -23855,7 +27248,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23891,7 +27288,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23927,7 +27328,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "isize", "is_positive", [], [] |),
@@ -23954,7 +27359,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "isize", "is_negative", [], [] |),
@@ -23982,6 +27391,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -23998,6 +27408,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24028,7 +27439,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i8", "count_ones", [], [] |),
@@ -24055,7 +27470,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i8", "count_zeros", [], [] |),
@@ -24082,7 +27501,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i8", "trailing_zeros", [], [] |),
@@ -24109,8 +27532,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24148,8 +27575,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24187,7 +27618,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24224,7 +27659,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24261,7 +27700,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24297,7 +27740,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24333,7 +27780,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24369,7 +27820,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24405,8 +27860,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24442,7 +27901,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i8", "leading_zeros", [], [] |),
@@ -24469,7 +27932,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24505,7 +27972,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24541,7 +28012,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i8", "is_positive", [], [] |),
@@ -24568,7 +28043,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i8", "is_negative", [], [] |),
@@ -24596,6 +28075,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24612,6 +28092,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24642,7 +28123,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i16", "count_ones", [], [] |),
@@ -24669,7 +28154,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i16", "count_zeros", [], [] |),
@@ -24696,7 +28185,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i16", "trailing_zeros", [], [] |),
@@ -24723,8 +28216,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24762,8 +28259,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24801,7 +28302,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24838,7 +28343,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24875,7 +28384,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24911,7 +28424,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24947,7 +28464,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -24983,7 +28504,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25019,8 +28544,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25056,7 +28585,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i16", "leading_zeros", [], [] |),
@@ -25083,7 +28616,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25119,7 +28656,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25155,7 +28696,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i16", "is_positive", [], [] |),
@@ -25182,7 +28727,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i16", "is_negative", [], [] |),
@@ -25210,6 +28759,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25226,6 +28776,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25256,7 +28807,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i32", "count_ones", [], [] |),
@@ -25283,7 +28838,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i32", "count_zeros", [], [] |),
@@ -25310,7 +28869,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i32", "trailing_zeros", [], [] |),
@@ -25337,8 +28900,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25376,8 +28943,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25415,7 +28986,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25452,7 +29027,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25489,7 +29068,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25525,7 +29108,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25561,7 +29148,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25597,7 +29188,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25633,8 +29228,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25670,7 +29269,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i32", "leading_zeros", [], [] |),
@@ -25697,7 +29300,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25733,7 +29340,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25769,7 +29380,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i32", "is_positive", [], [] |),
@@ -25796,7 +29411,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i32", "is_negative", [], [] |),
@@ -25824,6 +29443,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25840,6 +29460,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25870,7 +29491,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i64", "count_ones", [], [] |),
@@ -25897,7 +29522,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i64", "count_zeros", [], [] |),
@@ -25924,7 +29553,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i64", "trailing_zeros", [], [] |),
@@ -25951,8 +29584,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -25990,8 +29627,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26029,7 +29670,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26066,7 +29711,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26103,7 +29752,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26139,7 +29792,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26175,7 +29832,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26211,7 +29872,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26247,8 +29912,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26284,7 +29953,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i64", "leading_zeros", [], [] |),
@@ -26311,7 +29984,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26347,7 +30024,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26383,7 +30064,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i64", "is_positive", [], [] |),
@@ -26410,7 +30095,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i64", "is_negative", [], [] |),
@@ -26438,6 +30127,7 @@ Module num.
       Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26454,6 +30144,7 @@ Module num.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26484,7 +30175,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i128", "count_ones", [], [] |),
@@ -26511,7 +30206,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i128", "count_zeros", [], [] |),
@@ -26538,7 +30237,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i128", "trailing_zeros", [], [] |),
@@ -26565,8 +30268,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26604,8 +30311,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let n := M.alloc (| n |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let n := M.alloc (| Ty.path "u32", n |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26643,7 +30354,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26680,7 +30395,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26717,7 +30436,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26753,7 +30476,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                x
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26789,7 +30516,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26825,7 +30556,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26861,8 +30596,12 @@ Module num.
         match ε, τ, α with
         | [], [], [ self; exp ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let exp := M.alloc (| exp |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
+            let exp := M.alloc (| Ty.path "u32", exp |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26898,7 +30637,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "u32",
               M.get_associated_function (| Ty.path "i128", "leading_zeros", [], [] |),
@@ -26925,7 +30668,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26961,7 +30708,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             Value.StructTuple
               "core::num::wrapping::Wrapping"
               []
@@ -26997,7 +30748,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i128", "is_positive", [], [] |),
@@ -27024,7 +30779,11 @@ Module num.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (| Ty.path "i128", "is_negative", [], [] |),
@@ -27079,6 +30838,7 @@ Module num.
       Definition i8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "u32",
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.sub,
@@ -27101,6 +30861,7 @@ Module num.
       Definition i16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "u32",
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.sub,
@@ -27123,6 +30884,7 @@ Module num.
       Definition i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "u32",
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.sub,
@@ -27145,6 +30907,7 @@ Module num.
       Definition i64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "u32",
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.sub,
@@ -27167,6 +30930,7 @@ Module num.
       Definition i128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "u32",
             M.call_closure (|
               Ty.path "u32",
               BinOp.Wrap.sub,

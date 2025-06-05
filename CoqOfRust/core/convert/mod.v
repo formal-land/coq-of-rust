@@ -11,7 +11,7 @@ Module convert.
     match ε, τ, α with
     | [], [ T ], [ x ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
+        (let x := M.alloc (| T, x |) in
         M.read (| x |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -51,7 +51,8 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ T ] ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -93,7 +94,8 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ], self |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -135,7 +137,11 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (|
@@ -182,7 +188,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| T, self |) in
           M.call_closure (|
             U,
             M.get_trait_method (| "core::convert::From", U, [], [ T ], "from", [], [] |),
@@ -214,7 +220,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ t ] =>
         ltac:(M.monadic
-          (let t := M.alloc (| t |) in
+          (let t := M.alloc (| T, t |) in
           M.read (| t |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -242,7 +248,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ t ] =>
         ltac:(M.monadic
-          (let t := M.alloc (| t |) in
+          (let t := M.alloc (| Ty.path "never", t |) in
           M.never_to_any (| M.read (| t |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -274,7 +280,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| T, self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -316,7 +322,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ value ] =>
         ltac:(M.monadic
-          (let value := M.alloc (| value |) in
+          (let value := M.alloc (| U, value |) in
           Value.StructTuple
             "core::result::Result::Ok"
             []
@@ -358,7 +364,8 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], self |) in
           M.read (| self |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -386,7 +393,11 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
@@ -416,7 +427,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], self |) in
           M.read (| self |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -442,7 +453,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ], self |) in
           M.borrow (|
             Pointer.Kind.MutRef,
             M.deref (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
@@ -493,7 +504,8 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
           M.never_to_any (|
             M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
@@ -521,8 +533,10 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
+          let β1 :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], β1 |) in
           M.match_operator (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -563,8 +577,10 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
+          let β1 :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], β1 |) in
           M.match_operator (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -605,7 +621,8 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
           M.never_to_any (|
             M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
@@ -633,8 +650,10 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
+          let β1 :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], β1 |) in
           M.match_operator (|
             Ty.path "bool",
             β1,
@@ -684,8 +703,13 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self; _other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _other := M.alloc (| _other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
+          let _other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ],
+              _other
+            |) in
           M.never_to_any (|
             M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
@@ -713,8 +737,13 @@ Module convert.
       match ε, τ, α with
       | [], [], [ self; _other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _other := M.alloc (| _other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
+          let _other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ],
+              _other
+            |) in
           M.never_to_any (|
             M.read (| M.match_operator (| Ty.path "never", M.deref (| M.read (| self |) |), [] |) |)
           |)))
@@ -742,7 +771,7 @@ Module convert.
       match ε, τ, α with
       | [], [], [ x ] =>
         ltac:(M.monadic
-          (let x := M.alloc (| x |) in
+          (let x := M.alloc (| Ty.path "never", x |) in
           M.never_to_any (| M.read (| x |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -768,8 +797,9 @@ Module convert.
       match ε, τ, α with
       | [], [ H ], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::convert::Infallible" ], self |) in
+          let β1 := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], β1 |) in
           M.match_operator (|
             Ty.tuple [],
             β1,

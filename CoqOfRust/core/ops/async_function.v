@@ -31,8 +31,9 @@ Module ops.
           match ε, τ, α with
           | [], [], [ self; args ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let args := M.alloc (| args |) in
+              (let self :=
+                M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ F ] ], self |) in
+              let args := M.alloc (| A, args |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
@@ -97,8 +98,12 @@ Module ops.
           match ε, τ, α with
           | [], [], [ self; args ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let args := M.alloc (| args |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&") [] [ F ] ],
+                  self
+                |) in
+              let args := M.alloc (| A, args |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
@@ -166,8 +171,8 @@ Module ops.
           match ε, τ, α with
           | [], [], [ self; args ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let args := M.alloc (| args |) in
+              (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ F ], self |) in
+              let args := M.alloc (| A, args |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
@@ -234,8 +239,12 @@ Module ops.
           match ε, τ, α with
           | [], [], [ self; args ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let args := M.alloc (| args |) in
+              (let self :=
+                M.alloc (|
+                  Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ F ] ],
+                  self
+                |) in
+              let args := M.alloc (| A, args |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"
@@ -303,8 +312,8 @@ Module ops.
           match ε, τ, α with
           | [], [], [ self; args ] =>
             ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let args := M.alloc (| args |) in
+              (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ F ], self |) in
+              let args := M.alloc (| A, args |) in
               M.call_closure (|
                 Ty.associated_in_trait
                   "core::ops::async_function::AsyncFnMut"

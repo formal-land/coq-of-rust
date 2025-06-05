@@ -33,8 +33,16 @@ Module Impl_core_cmp_PartialEq_hash_map_alternate_or_custom_key_types_Account_fo
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ],
+            self
+          |) in
+        let other :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ],
+            other
+          |) in
         LogicalOp.and (|
           M.call_closure (|
             Ty.path "bool",
@@ -122,7 +130,11 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
@@ -133,7 +145,7 @@ Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
                   (M.match_operator (|
                     Ty.tuple [],
                     Value.DeclaredButUndefined,
-                    [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                    [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                   |)))
             ]
           |)
@@ -159,8 +171,12 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
     match ε, τ, α with
     | [], [ __H ], [ self; state ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let state := M.alloc (| state |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ],
+            self
+          |) in
+        let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.call_closure (|
@@ -192,6 +208,7 @@ Module Impl_core_hash_Hash_for_hash_map_alternate_or_custom_key_types_Account.
               ]
             |) in
           M.alloc (|
+            Ty.tuple [],
             M.call_closure (|
               Ty.tuple [],
               M.get_trait_method (|
@@ -279,9 +296,25 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [ accounts; username; password ] =>
     ltac:(M.monadic
-      (let accounts := M.alloc (| accounts |) in
-      let username := M.alloc (| username |) in
-      let password := M.alloc (| password |) in
+      (let accounts :=
+        M.alloc (|
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "std::collections::hash::map::HashMap")
+                []
+                [
+                  Ty.path "hash_map_alternate_or_custom_key_types::Account";
+                  Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo";
+                  Ty.path "std::hash::random::RandomState"
+                ]
+            ],
+          accounts
+        |) in
+      let username := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], username |) in
+      let password := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], password |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -305,6 +338,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Username: " |); mk_str (| "
 " |) ]
                             |)
@@ -317,6 +354,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -343,7 +384,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -367,6 +408,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 2 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                               Value.Array [ mk_str (| "Password: " |); mk_str (| "
 " |) ]
                             |)
@@ -379,6 +424,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "core::fmt::rt::Argument" ],
                               Value.Array
                                 [
                                   M.call_closure (|
@@ -405,7 +454,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ _ : Ty.tuple [] :=
           M.read (|
@@ -428,8 +477,14 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ mk_str (| "Attempting logon...
-" |) ] |)
+                            M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              Value.Array [ mk_str (| "Attempting logon...
+" |) ]
+                            |)
                           |)
                         |)
                       |)
@@ -437,10 +492,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
         let~ logon : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash_map_alternate_or_custom_key_types::Account"
             []
             []
@@ -451,6 +506,15 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
         M.match_operator (|
           Ty.tuple [],
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ]
+              ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
@@ -488,7 +552,14 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               ltac:(M.monadic
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
-                let account_info := M.copy (| γ0_0 |) in
+                let account_info :=
+                  M.copy (|
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [ Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" ],
+                    γ0_0
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     let~ _ : Ty.tuple [] :=
@@ -510,8 +581,14 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ mk_str (| "Successful logon!
-" |) ] |)
+                                    M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                      Value.Array [ mk_str (| "Successful logon!
+" |) ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -519,7 +596,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
@@ -544,6 +621,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Name: " |); mk_str (| "
 " |) ]
                                     |)
@@ -556,6 +637,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -591,7 +676,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
@@ -616,6 +701,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                       Value.Array [ mk_str (| "Email: " |); mk_str (| "
 " |) ]
                                     |)
@@ -628,6 +717,10 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "core::fmt::rt::Argument" ],
                                       Value.Array
                                         [
                                           M.call_closure (|
@@ -663,9 +756,9 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           |)
                         ]
                       |) in
-                    M.alloc (| Value.Tuple [] |)
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)
                   |) in
-                M.alloc (| Value.Tuple [] |)));
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let~ _ : Ty.tuple [] :=
@@ -687,8 +780,14 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (| Value.Array [ mk_str (| "Login failed!
-" |) ] |)
+                                M.alloc (|
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  Value.Array [ mk_str (| "Login failed!
+" |) ]
+                                |)
                               |)
                             |)
                           |)
@@ -696,7 +795,7 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                       |)
                     ]
                   |) in
-                M.alloc (| Value.Tuple [] |)))
+                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
           ]
         |)
       |)))
@@ -768,7 +867,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             []
           |) in
         let~ account : Ty.path "hash_map_alternate_or_custom_key_types::Account" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash_map_alternate_or_custom_key_types::Account"
             []
             []
@@ -779,7 +878,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |))
             ] in
         let~ account_info : Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "hash_map_alternate_or_custom_key_types::AccountInfo"
             []
             []
@@ -843,7 +942,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

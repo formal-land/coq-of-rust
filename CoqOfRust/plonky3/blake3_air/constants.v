@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module constants.
   Definition value_BITS_PER_LIMB (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 16 |))).
   
   Global Instance Instance_IsConstant_value_BITS_PER_LIMB :
     M.IsFunction.C "p3_blake3_air::constants::BITS_PER_LIMB" value_BITS_PER_LIMB.
@@ -13,6 +13,7 @@ Module constants.
   Definition value_U32_LIMBS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "usize",
         M.call_closure (|
           Ty.path "usize",
           BinOp.Wrap.div,
@@ -33,6 +34,10 @@ Module constants.
   Definition value_IV (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "array")
+          [ Value.Integer IntegerKind.Usize 8 ]
+          [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ Ty.path "u16" ] ],
         Value.Array
           [
             Value.Array
@@ -60,6 +65,7 @@ Module constants.
   Definition value_MSG_PERMUTATION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "usize" ],
         Value.Array
           [
             Value.Integer IntegerKind.Usize 2;
@@ -99,7 +105,14 @@ Module constants.
     match ε, τ, α with
     | [], [ T ], [ m ] =>
       ltac:(M.monadic
-        (let m := M.alloc (| m |) in
+        (let m :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "&mut")
+              []
+              [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ] ],
+            m
+          |) in
         M.read (|
           let~ permuted : Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ] :=
             M.call_closure (|
@@ -121,6 +134,7 @@ Module constants.
                 (M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                     M.call_closure (|
                       Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
                       M.get_trait_method (|
@@ -133,7 +147,7 @@ Module constants.
                         []
                       |),
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "core::ops::range::Range"
                           []
                           [ Ty.path "usize" ]
@@ -147,7 +161,11 @@ Module constants.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
+                        (let iter :=
+                          M.copy (|
+                            Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                            γ
+                          |) in
                         M.loop (|
                           Ty.tuple [],
                           ltac:(M.monadic
@@ -156,6 +174,10 @@ Module constants.
                                 M.match_operator (|
                                   Ty.tuple [],
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -187,6 +209,7 @@ Module constants.
                                         (let _ :=
                                           M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (| M.read (| M.break (||) |) |)
                                         |)));
                                     fun γ =>
@@ -197,7 +220,7 @@ Module constants.
                                             "core::option::Option::Some",
                                             0
                                           |) in
-                                        let i := M.copy (| γ0_0 |) in
+                                        let i := M.copy (| Ty.path "usize", γ0_0 |) in
                                         let~ _ : Ty.tuple [] :=
                                           M.write (|
                                             M.SubPointer.get_array_field (|
@@ -237,18 +260,18 @@ Module constants.
                                               ]
                                             |)
                                           |) in
-                                        M.alloc (| Value.Tuple [] |)))
+                                        M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         |)))
                   ]
                 |))
             |) in
           let~ _ : Ty.tuple [] :=
             M.write (| M.deref (| M.read (| m |) |), M.read (| permuted |) |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

@@ -22,8 +22,8 @@ Module Range.
       Ty.apply (Ty.path "core::ops::range::Range") [] [ Φ Idx ];
     φ x :=
       Value.StructRecord "core::ops::range::Range" [] [ Φ Idx ] [
-        ("start", φ x.(start));
-        ("end", φ x.(end_))
+        ("end_", φ x.(end_));
+        ("start", φ x.(start))
       ];
   }.
 
@@ -37,6 +37,37 @@ Module Range.
     reflexivity.
   Defined.
   Smpl Add eapply of_ty : of_ty.
+
+  Lemma of_value_with {Idx : Set} `{Link Idx} Idx'
+      (start : Idx) start'
+      (end_ : Idx) end_' :
+    Idx' = Φ Idx ->
+    start' = φ start ->
+    end_' = φ end_ ->
+    Value.StructRecord "core::ops::range::Range" [] [Idx'] [
+      ("end_", end_');
+      ("start", start')
+    ] =
+    φ (Build_t Idx start end_).
+  Proof. now intros; subst. Qed.
+  Smpl Add eapply of_value_with : of_value.
+
+  Definition of_value Idx' start' end_'
+      (H_Idx : OfTy.t Idx')
+      (start end_ : OfTy.get_Set H_Idx) :
+    start' = φ start ->
+    end_' = φ end_ ->
+    OfValue.t (Value.StructRecord "core::ops::range::Range" [] [Idx'] [
+      ("end_", end_');
+      ("start", start')
+    ]).
+  Proof.
+    intros.
+    destruct H_Idx as [Idx].
+    eapply OfValue.Make with (A := t Idx) (value := Build_t Idx start end_).
+    now subst.
+  Defined.
+  Smpl Add unshelve eapply of_value : of_value.
 End Range.
 
 Module Impl_Clone_for_Range.

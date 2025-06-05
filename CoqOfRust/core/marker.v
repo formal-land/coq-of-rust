@@ -600,8 +600,12 @@ Module marker.
       match ε, τ, α with
       | [], [ H ], [ self; β1 ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let β1 := M.alloc (| β1 |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              self
+            |) in
+          let β1 := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], β1 |) in
           M.match_operator (| Ty.tuple [], β1, [ fun γ => ltac:(M.monadic (Value.Tuple [])) ] |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -629,8 +633,16 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; _other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _other := M.alloc (| _other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              self
+            |) in
+          let _other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              _other
+            |) in
           Value.Bool true))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -671,8 +683,16 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; _other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _other := M.alloc (| _other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              self
+            |) in
+          let _other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              _other
+            |) in
           Value.StructTuple
             "core::option::Option::Some"
             []
@@ -704,8 +724,16 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; _other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _other := M.alloc (| _other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              self
+            |) in
+          let _other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              _other
+            |) in
           Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -746,8 +774,12 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (| (* Expected a function name *) M.alloc (| Value.Tuple [] |) |)))
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ],
+              self
+            |) in
+          M.read (| (* Expected a function name *) M.alloc (| Ty.tuple [], Value.Tuple [] |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -773,7 +805,8 @@ Module marker.
       let Self : Ty.t := Self T in
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic (M.read (| (* Expected a function name *) M.alloc (| Value.Tuple [] |) |)))
+        ltac:(M.monadic
+          (M.read (| (* Expected a function name *) M.alloc (| Ty.tuple [], Value.Tuple [] |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -903,8 +936,13 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -967,7 +1005,11 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -993,7 +1035,11 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1028,8 +1074,16 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              other
+            |) in
           Value.Bool true))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1051,8 +1105,16 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              other
+            |) in
           Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1074,8 +1136,16 @@ Module marker.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              other
+            |) in
           Value.StructTuple
             "core::option::Option::Some"
             []
@@ -1101,8 +1171,12 @@ Module marker.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "core::marker::PhantomPinned" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

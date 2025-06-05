@@ -39,7 +39,11 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Placeholder" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::fmt::rt::Placeholder",
@@ -114,13 +118,13 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ position; fill; align; flags; precision; width ] =>
           ltac:(M.monadic
-            (let position := M.alloc (| position |) in
-            let fill := M.alloc (| fill |) in
-            let align := M.alloc (| align |) in
-            let flags := M.alloc (| flags |) in
-            let precision := M.alloc (| precision |) in
-            let width := M.alloc (| width |) in
-            Value.StructRecord
+            (let position := M.alloc (| Ty.path "usize", position |) in
+            let fill := M.alloc (| Ty.path "char", fill |) in
+            let align := M.alloc (| Ty.path "core::fmt::rt::Alignment", align |) in
+            let flags := M.alloc (| Ty.path "u32", flags |) in
+            let precision := M.alloc (| Ty.path "core::fmt::rt::Count", precision |) in
+            let width := M.alloc (| Ty.path "core::fmt::rt::Count", width |) in
+            Value.mkStructRecord
               "core::fmt::rt::Placeholder"
               []
               []
@@ -192,7 +196,11 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Alignment" ],
+                self
+              |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -226,8 +234,16 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Alignment" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Alignment" ],
+                other
+              |) in
             M.read (|
               let~ __self_discr : Ty.path "isize" :=
                 M.call_closure (|
@@ -250,6 +266,7 @@ Module fmt.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   BinOp.eq,
@@ -281,7 +298,11 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Alignment" ],
+                self
+              |) in
             Value.Tuple []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -343,7 +364,8 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Count" ], self |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::fmt::rt::Count",
@@ -428,7 +450,8 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Flag" ], self |) in
             M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -505,7 +528,11 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::ArgumentType" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::fmt::rt::ArgumentType",
@@ -580,7 +607,8 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ], self |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::fmt::rt::Argument",
@@ -621,15 +649,27 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x; f ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
-            let f := M.alloc (| f |) in
-            Value.StructRecord
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
+            let f :=
+              M.alloc (|
+                Ty.function
+                  [
+                    Ty.apply (Ty.path "&") [] [ T ];
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                  ]
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                f
+              |) in
+            Value.mkStructRecord
               "core::fmt::rt::Argument"
               []
               []
               [
                 ("ty",
-                  Value.StructRecord
+                  Value.mkStructRecord
                     "core::fmt::rt::ArgumentType::Placeholder"
                     []
                     []
@@ -723,7 +763,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -751,7 +791,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -779,7 +819,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -809,7 +849,7 @@ Module fmt.
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
-                              M.alloc (| α0 |),
+                              M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
@@ -829,7 +869,13 @@ Module fmt.
                                           (Ty.path "core::result::Result")
                                           []
                                           [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
-                                      M.alloc (| α1 |),
+                                      M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "&mut")
+                                          []
+                                          [ Ty.path "core::fmt::Formatter" ],
+                                        α1
+                                      |),
                                       [
                                         fun γ =>
                                           ltac:(M.monadic
@@ -863,7 +909,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -891,7 +937,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -919,7 +965,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -947,7 +993,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -975,7 +1021,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -1003,7 +1049,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -1031,7 +1077,7 @@ Module fmt.
         match ε, τ, α with
         | [], [ T ], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ T ], x |) in
             M.call_closure (|
               Ty.path "core::fmt::rt::Argument",
               M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [], [ T ] |),
@@ -1059,8 +1105,8 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ x ] =>
           ltac:(M.monadic
-            (let x := M.alloc (| x |) in
-            Value.StructRecord
+            (let x := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], x |) in
+            Value.mkStructRecord
               "core::fmt::rt::Argument"
               []
               []
@@ -1100,8 +1146,10 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ], self |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.read (|
               M.match_operator (|
                 Ty.apply
@@ -1128,9 +1176,29 @@ Module fmt.
                           "core::fmt::rt::ArgumentType::Placeholder",
                           "value"
                         |) in
-                      let formatter := M.copy (| γ0_0 |) in
-                      let value := M.copy (| γ0_1 |) in
+                      let formatter :=
+                        M.copy (|
+                          Ty.function
+                            [
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ];
+                              Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                            ]
+                            (Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                          γ0_0
+                        |) in
+                      let value :=
+                        M.copy (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
+                          γ0_1
+                        |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -1152,6 +1220,10 @@ Module fmt.
                           0
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [ Ty.tuple []; Ty.path "core::fmt::Error" ],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -1182,7 +1254,8 @@ Module fmt.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Argument" ], self |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
@@ -1200,8 +1273,9 @@ Module fmt.
                           "core::fmt::rt::ArgumentType::Count",
                           0
                         |) in
-                      let count := M.copy (| γ0_0 |) in
+                      let count := M.copy (| Ty.path "usize", γ0_0 |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -1213,6 +1287,7 @@ Module fmt.
                       (let _ :=
                         M.is_struct_tuple (| γ, "core::fmt::rt::ArgumentType::Placeholder" |) in
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                         Value.StructTuple "core::option::Option::None" [] [ Ty.path "usize" ] []
                       |)))
                 ]
@@ -1262,7 +1337,11 @@ Module fmt.
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
-            (Value.StructRecord "core::fmt::rt::UnsafeArg" [] [] [ ("_private", Value.Tuple []) ]))
+            (Value.mkStructRecord
+              "core::fmt::rt::UnsafeArg"
+              []
+              []
+              [ ("_private", Value.Tuple []) ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

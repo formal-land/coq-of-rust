@@ -20,9 +20,9 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self; offset; len ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let offset := M.alloc (| offset |) in
-          let len := M.alloc (| len |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let offset := M.alloc (| Ty.path "usize", offset |) in
+          let len := M.alloc (| Ty.path "usize", len |) in
           M.call_closure (|
             Ty.associated_in_trait
               "revm_interpreter::interpreter_types::MemoryTrait"
@@ -41,7 +41,7 @@ Module interpreter_types.
             |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-              Value.StructRecord
+              Value.mkStructRecord
                 "core::ops::range::Range"
                 []
                 [ Ty.path "usize" ]
@@ -72,7 +72,7 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.eq,
@@ -106,7 +106,7 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.eq,
@@ -136,8 +136,15 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self; value ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let value := M.alloc (| value |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let value :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
+              value
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (|
@@ -186,7 +193,7 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -384,13 +391,57 @@ Module interpreter_types.
                                   ]
                                   []
                               ]),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.tuple
+                              [
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 0 ]
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  ]
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let top := M.copy (| γ0_1 |) in
+                                let top :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "&mut")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ],
+                                    γ0_1
+                                  |) in
                                 M.read (| top |)))
                           ]
                         |)))
@@ -407,7 +458,7 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -523,12 +574,36 @@ Module interpreter_types.
                                 Value.Integer IntegerKind.Usize 4
                               ]
                               []),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 1 ]
+                              [
+                                Ty.apply
+                                  (Ty.path "ruint::Uint")
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
+                                  []
+                              ],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                                let value := M.copy (| γ0_0 |) in
+                                let value :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    γ0_0
+                                  |) in
                                 M.read (| value |)))
                           ]
                         |)))
@@ -550,7 +625,7 @@ Module interpreter_types.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -626,11 +701,30 @@ Module interpreter_types.
                                 ]
                             ]
                             (Ty.path "alloy_primitives::bits::address::Address"),
-                          M.alloc (| α0 |),
+                          M.alloc (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [],
+                            α0
+                          |),
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let value := M.copy (| γ |) in
+                                (let value :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    γ
+                                  |) in
                                 M.call_closure (|
                                   Ty.path "alloy_primitives::bits::address::Address",
                                   M.get_trait_method (|

@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM_ROUNDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 24 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 24 |))).
 
 Global Instance Instance_IsConstant_value_NUM_ROUNDS :
   M.IsFunction.C "p3_keccak_air::NUM_ROUNDS" value_NUM_ROUNDS.
@@ -10,7 +10,7 @@ Admitted.
 Global Typeclasses Opaque value_NUM_ROUNDS.
 
 Definition value_BITS_PER_LIMB (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 16 |))).
 
 Global Instance Instance_IsConstant_value_BITS_PER_LIMB :
   M.IsFunction.C "p3_keccak_air::BITS_PER_LIMB" value_BITS_PER_LIMB.
@@ -20,6 +20,7 @@ Global Typeclasses Opaque value_BITS_PER_LIMB.
 Definition value_U64_LIMBS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   ltac:(M.monadic
     (M.alloc (|
+      Ty.path "usize",
       M.call_closure (|
         Ty.path "usize",
         BinOp.Wrap.div,
@@ -36,7 +37,7 @@ Admitted.
 Global Typeclasses Opaque value_U64_LIMBS.
 
 Definition value_RATE_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-  ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1088 |))).
+  ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1088 |))).
 
 Global Instance Instance_IsConstant_value_RATE_BITS :
   M.IsFunction.C "p3_keccak_air::RATE_BITS" value_RATE_BITS.
@@ -46,6 +47,7 @@ Global Typeclasses Opaque value_RATE_BITS.
 Definition value_RATE_LIMBS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   ltac:(M.monadic
     (M.alloc (|
+      Ty.path "usize",
       M.call_closure (|
         Ty.path "usize",
         BinOp.Wrap.div,

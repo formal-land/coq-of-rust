@@ -24,7 +24,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::gas::Gas",
@@ -80,8 +84,13 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -153,6 +162,7 @@ Module gas.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -187,7 +197,7 @@ Module gas.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_interpreter::gas::Gas"
             []
             []
@@ -281,8 +291,16 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
@@ -406,7 +424,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -423,7 +445,10 @@ Module gas.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -451,8 +476,12 @@ Module gas.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -542,6 +571,7 @@ Module gas.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -601,8 +631,8 @@ Module gas.
       match ε, τ, α with
       | [], [], [ limit ] =>
         ltac:(M.monadic
-          (let limit := M.alloc (| limit |) in
-          Value.StructRecord
+          (let limit := M.alloc (| Ty.path "u64", limit |) in
+          Value.mkStructRecord
             "revm_interpreter::gas::Gas"
             []
             []
@@ -643,8 +673,8 @@ Module gas.
       match ε, τ, α with
       | [], [], [ limit ] =>
         ltac:(M.monadic
-          (let limit := M.alloc (| limit |) in
-          Value.StructRecord
+          (let limit := M.alloc (| Ty.path "u64", limit |) in
+          Value.mkStructRecord
             "revm_interpreter::gas::Gas"
             []
             []
@@ -681,7 +711,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -705,7 +739,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           Value.Integer IntegerKind.U64 0))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -723,7 +761,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -747,7 +789,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.sub,
@@ -784,7 +830,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               M.deref (| M.read (| self |) |),
@@ -809,7 +859,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.sub,
@@ -854,8 +908,12 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; returned ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let returned := M.alloc (| returned |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let returned := M.alloc (| Ty.path "u64", returned |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               let β :=
@@ -872,7 +930,7 @@ Module gas.
                   [ M.read (| β |); M.read (| returned |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -891,7 +949,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -902,7 +964,7 @@ Module gas.
                 |),
                 Value.Integer IntegerKind.U64 0
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -921,8 +983,12 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; refund ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let refund := M.alloc (| refund |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let refund := M.alloc (| Ty.path "i64", refund |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               let β :=
@@ -939,7 +1005,7 @@ Module gas.
                   [ M.read (| β |); M.read (| refund |) ]
                 |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -959,21 +1025,27 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; is_london ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let is_london := M.alloc (| is_london |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let is_london := M.alloc (| Ty.path "bool", is_london |) in
           M.read (|
             let~ max_refund_quotient : Ty.path "u64" :=
               M.read (|
                 M.match_operator (|
                   Ty.path "u64",
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use is_london in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (| Value.Integer IntegerKind.U64 5 |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |)))
+                        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 5 |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 2 |)))
                   ]
                 |)
               |) in
@@ -1022,7 +1094,7 @@ Module gas.
                     ]
                   |))
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1041,8 +1113,12 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; refund ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let refund := M.alloc (| refund |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let refund := M.alloc (| Ty.path "i64", refund |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.write (|
@@ -1053,7 +1129,7 @@ Module gas.
                 |),
                 M.read (| refund |)
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1077,12 +1153,17 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; cost ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let cost := M.alloc (| cost |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let cost := M.alloc (| Ty.path "u64", cost |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.tuple [ Ty.path "u64"; Ty.path "bool" ],
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "bool" ],
                   M.get_associated_function (| Ty.path "u64", "overflowing_sub", [], [] |),
@@ -1103,14 +1184,14 @@ Module gas.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let remaining := M.copy (| γ0_0 |) in
-                    let overflow := M.copy (| γ0_1 |) in
+                    let remaining := M.copy (| Ty.path "u64", γ0_0 |) in
+                    let overflow := M.copy (| Ty.path "bool", γ0_1 |) in
                     let~ success : Ty.path "bool" := UnOp.not (| M.read (| overflow |) |) in
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
@@ -1129,8 +1210,8 @@ Module gas.
                                     |),
                                     M.read (| remaining |)
                                   |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1163,16 +1244,22 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; new_len ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let new_len := M.alloc (| new_len |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::Gas" ],
+              self
+            |) in
+          let new_len := M.alloc (| Ty.path "usize", new_len |) in
           M.read (|
             M.catch_return (Ty.path "revm_interpreter::gas::MemoryExtensionResult") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "revm_interpreter::gas::MemoryExtensionResult",
                   M.read (|
                     M.match_operator (|
                       Ty.path "revm_interpreter::gas::MemoryExtensionResult",
                       M.alloc (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                         M.call_closure (|
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                           M.get_associated_function (|
@@ -1203,18 +1290,19 @@ Module gas.
                                 "core::option::Option::Some",
                                 0
                               |) in
-                            let additional_cost := M.copy (| γ0_0 |) in
+                            let additional_cost := M.copy (| Ty.path "u64", γ0_0 |) in
                             let~ _ : Ty.tuple [] :=
                               M.read (|
                                 M.match_operator (|
                                   Ty.tuple [],
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
+                                              Ty.path "bool",
                                               UnOp.not (|
                                                 M.call_closure (|
                                                   Ty.path "bool",
@@ -1240,6 +1328,7 @@ Module gas.
                                             Value.Bool true
                                           |) in
                                         M.alloc (|
+                                          Ty.tuple [],
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -1252,11 +1341,13 @@ Module gas.
                                             |)
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                   ]
                                 |)
                               |) in
                             M.alloc (|
+                              Ty.path "revm_interpreter::gas::MemoryExtensionResult",
                               Value.StructTuple
                                 "revm_interpreter::gas::MemoryExtensionResult::Extended"
                                 []
@@ -1324,7 +1415,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "revm_interpreter::gas::MemoryGas",
@@ -1372,7 +1467,7 @@ Module gas.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_interpreter::gas::MemoryGas"
             []
             []
@@ -1426,8 +1521,13 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1467,6 +1567,7 @@ Module gas.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1513,8 +1614,16 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              other
+            |) in
           LogicalOp.and (|
             M.call_closure (|
               Ty.path "bool",
@@ -1582,7 +1691,11 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -1593,7 +1706,7 @@ Module gas.
                     (M.match_operator (|
                       Ty.tuple [],
                       Value.DeclaredButUndefined,
-                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -1619,8 +1732,12 @@ Module gas.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1652,6 +1769,7 @@ Module gas.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -1709,7 +1827,7 @@ Module gas.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "revm_interpreter::gas::MemoryGas"
             []
             []
@@ -1741,24 +1859,30 @@ Module gas.
       match ε, τ, α with
       | [], [], [ self; new_num ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let new_num := M.alloc (| new_num |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "revm_interpreter::gas::MemoryGas" ],
+              self
+            |) in
+          let new_num := M.alloc (| Ty.path "usize", new_num |) in
           M.read (|
             M.catch_return (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ]) (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.le,
@@ -1780,6 +1904,7 @@ Module gas.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       M.return_ (|
@@ -1792,7 +1917,7 @@ Module gas.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
@@ -1836,6 +1961,7 @@ Module gas.
                         ]
                       |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                       Value.StructTuple
                         "core::option::Option::Some"
                         []

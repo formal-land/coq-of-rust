@@ -17,8 +17,9 @@ Module Impl_core_fmt_Debug_for_mutations_Numbers.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "mutations::Numbers" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
@@ -71,6 +72,7 @@ Module Impl_core_fmt_Debug_for_mutations_Numbers.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_record_field (|
@@ -106,7 +108,8 @@ Definition get_a_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [ numbers ] =>
     ltac:(M.monadic
-      (let numbers := M.alloc (| numbers |) in
+      (let numbers :=
+        M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "mutations::Numbers" ], numbers |) in
       M.borrow (|
         Pointer.Kind.Ref,
         M.deref (|
@@ -136,7 +139,8 @@ Definition get_b_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [ numbers ] =>
     ltac:(M.monadic
-      (let numbers := M.alloc (| numbers |) in
+      (let numbers :=
+        M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "mutations::Numbers" ], numbers |) in
       M.borrow (|
         Pointer.Kind.MutRef,
         M.deref (|
@@ -172,15 +176,15 @@ Definition duplicate (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [ a; b; c ] =>
     ltac:(M.monadic
-      (let a := M.alloc (| a |) in
-      let b := M.alloc (| b |) in
-      let c := M.alloc (| c |) in
+      (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], a |) in
+      let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], b |) in
+      let c := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], c |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.write (| M.deref (| M.read (| b |) |), M.read (| M.deref (| M.read (| a |) |) |) |) in
         let~ _ : Ty.tuple [] :=
           M.write (| M.deref (| M.read (| c |) |), M.read (| M.deref (| M.read (| a |) |) |) |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -198,7 +202,8 @@ Definition apply_duplicate (ε : list Value.t) (τ : list Ty.t) (α : list Value
   match ε, τ, α with
   | [], [], [ numbers ] =>
     ltac:(M.monadic
-      (let numbers := M.alloc (| numbers |) in
+      (let numbers :=
+        M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "mutations::Numbers" ], numbers |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.call_closure (|
@@ -254,7 +259,7 @@ Definition apply_duplicate (ε : list Value.t) (τ : list Ty.t) (α : list Value
               |)
             ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -279,7 +284,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ numbers : Ty.path "mutations::Numbers" :=
-          Value.StructRecord
+          Value.mkStructRecord
             "mutations::Numbers"
             []
             []
@@ -322,8 +327,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
-" |) ] |)
+                              M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ]
+                              |)
                             |)
                           |)
                         |));
@@ -335,6 +346,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -365,6 +380,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Placeholder" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -407,9 +426,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -428,8 +447,8 @@ Definition incr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ x; y ] =>
     ltac:(M.monadic
-      (let x := M.alloc (| x |) in
-      let y := M.alloc (| y |) in
+      (let x := M.alloc (| Ty.path "u64", x |) in
+      let y := M.alloc (| Ty.path "u64", y |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           let β := x in

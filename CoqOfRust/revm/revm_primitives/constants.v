@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module constants.
   Definition value_BLOCK_HASH_HISTORY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 256 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 256 |))).
   
   Global Instance Instance_IsConstant_value_BLOCK_HASH_HISTORY :
     M.IsFunction.C "revm_primitives::constants::BLOCK_HASH_HISTORY" value_BLOCK_HASH_HISTORY.
@@ -15,7 +15,7 @@ Module constants.
       (τ : list Ty.t)
       (α : list Value.t)
       : M :=
-    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8192 |))).
+    ltac:(M.monadic (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 8192 |))).
   
   Global Instance Instance_IsConstant_value_BLOCKHASH_SERVE_WINDOW :
     M.IsFunction.C
@@ -31,6 +31,7 @@ Module constants.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "alloy_primitives::bits::address::Address",
         M.call_closure (|
           Ty.path "alloy_primitives::bits::address::Address",
           M.get_associated_function (|
@@ -60,6 +61,7 @@ Module constants.
   Definition value_PRECOMPILE3 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.path "alloy_primitives::bits::address::Address",
         M.call_closure (|
           Ty.path "alloy_primitives::bits::address::Address",
           M.get_associated_function (|

@@ -28,32 +28,21 @@ Instance run_instruction_table
     (array.t (Instruction.t WIRE H WIRE_types) {| Integer.value := 256 |}).
 Proof.
   constructor.
-  run_symbolic.
+  run_symbolic; cbn.
+  { exact (Function2.of_run (run_unknown run_InterpreterTypes_for_WIRE)). }
+  { reflexivity. }
   { (* unknown *)
-    set (f := Function2.of_run (run_unknown run_InterpreterTypes_for_WIRE)).
-    change (Value.Closure _) with (φ f).
-    run_symbolic.
     eapply Run.Rewrite. {
       exact (array.repeat_φ_eq 256 _).
     }
     run_symbolic.
   }
-  { (* stop *)
-    set (f := Function2.of_run (run_stop run_InterpreterTypes_for_WIRE)).
-    change (Value.Closure _) with (φ f).
-    run_symbolic.
-  }
-  { (* add *)
-    set (f := Function2.of_run (run_add run_InterpreterTypes_for_WIRE)).
-    change (Value.Closure _) with (φ f).
-    run_symbolic.
-  }
-  { (* balance *)
-    set (f := Function2.of_run
-      (run_balance run_InterpreterTypes_for_WIRE run_Host_for_H)).
-    change (Value.Closure _) with (φ f).
-    run_symbolic.
-  }
+  { exact (Function2.of_run (run_stop run_InterpreterTypes_for_WIRE)). }
+  { reflexivity. }
+  { exact (Function2.of_run (run_add run_InterpreterTypes_for_WIRE)). }
+  { reflexivity. }
+  { exact (Function2.of_run (run_balance run_InterpreterTypes_for_WIRE run_Host_for_H)). }
+  { reflexivity. }
 Defined.
 
 (*

@@ -56,7 +56,8 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::AccountId" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "call_runtime::AccountId",
@@ -124,7 +125,7 @@ Module Impl_core_convert_From_call_runtime_AccountId_for_call_runtime_MultiAddre
     match ε, τ, α with
     | [], [], [ _value ] =>
       ltac:(M.monadic
-        (let _value := M.alloc (| _value |) in
+        (let _value := M.alloc (| Ty.path "call_runtime::AccountId", _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -242,8 +243,9 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::RuntimeError" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
@@ -284,8 +286,10 @@ Module Impl_core_cmp_PartialEq_call_runtime_RuntimeError_for_call_runtime_Runtim
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::RuntimeError" ], self |) in
+        let other :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::RuntimeError" ], other |) in
         Value.Bool true))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -311,7 +315,8 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::RuntimeError" ], self |) in
         Value.Tuple []))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -365,7 +370,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
     match ε, τ, α with
     | [], [], [ e ] =>
       ltac:(M.monadic
-        (let e := M.alloc (| e |) in
+        (let e := M.alloc (| Ty.path "call_runtime::EnvError", e |) in
         M.read (|
           M.match_operator (|
             Ty.path "call_runtime::RuntimeError",
@@ -376,11 +381,13 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
                   (let _ :=
                     M.is_struct_tuple (| γ, "call_runtime::EnvError::CallRuntimeFailed" |) in
                   M.alloc (|
+                    Ty.path "call_runtime::RuntimeError",
                     Value.StructTuple "call_runtime::RuntimeError::CallRuntimeFailed" [] [] []
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.path "call_runtime::RuntimeError",
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -420,8 +427,9 @@ Module Impl_call_runtime_Env.
     match ε, τ, α with
     | [], [ Call ], [ self; _call ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _call := M.alloc (| _call |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::Env" ], self |) in
+        let _call := M.alloc (| Ty.apply (Ty.path "&") [] [ Call ], _call |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -473,7 +481,8 @@ Module Impl_call_runtime_RuntimeCaller.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "call_runtime::RuntimeCaller" ], self |) in
         M.call_closure (|
           Ty.path "call_runtime::Env",
           M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [], [] |),
@@ -533,9 +542,13 @@ Module Impl_call_runtime_RuntimeCaller.
     match ε, τ, α with
     | [], [], [ self; receiver; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let receiver := M.alloc (| receiver |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "call_runtime::RuntimeCaller" ],
+            self
+          |) in
+        let receiver := M.alloc (| Ty.path "call_runtime::AccountId", receiver |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -571,6 +584,7 @@ Module Impl_call_runtime_RuntimeCaller.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "call_runtime::Env",
                     M.call_closure (|
                       Ty.path "call_runtime::Env",
                       M.get_associated_function (|
@@ -589,12 +603,13 @@ Module Impl_call_runtime_RuntimeCaller.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.path "call_runtime::RuntimeCall",
                         Value.StructTuple
                           "call_runtime::RuntimeCall::Balances"
                           []
                           []
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "call_runtime::BalancesCall::Transfer"
                               []
                               []
@@ -658,7 +673,11 @@ Module Impl_call_runtime_RuntimeCaller.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "call_runtime::RuntimeCaller" ],
+            self
+          |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "core::result::Result")
@@ -694,6 +713,7 @@ Module Impl_call_runtime_RuntimeCaller.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "call_runtime::Env",
                     M.call_closure (|
                       Ty.path "call_runtime::Env",
                       M.get_associated_function (|
@@ -708,7 +728,9 @@ Module Impl_call_runtime_RuntimeCaller.
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Tuple [] |) |) |)
+                  M.deref (|
+                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Ty.tuple [], Value.Tuple [] |) |)
+                  |)
                 |)
               ]
             |);

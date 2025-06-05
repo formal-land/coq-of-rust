@@ -8,8 +8,8 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Rhs ], other |) in
           UnOp.not (|
             M.call_closure (|
               Ty.path "bool",
@@ -39,7 +39,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -91,7 +91,8 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
           M.read (| M.deref (| M.read (| self |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -137,8 +138,10 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], other |) in
           M.read (|
             let~ __self_discr : Ty.path "i8" :=
               M.call_closure (|
@@ -161,6 +164,7 @@ Module cmp.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "bool",
               M.call_closure (|
                 Ty.path "bool",
                 BinOp.eq,
@@ -192,7 +196,8 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
           Value.Tuple []))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -215,8 +220,10 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], other |) in
           M.read (|
             let~ __self_discr : Ty.path "i8" :=
               M.call_closure (|
@@ -239,6 +246,7 @@ Module cmp.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.call_closure (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.get_trait_method (|
@@ -283,8 +291,10 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
+          let other :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], other |) in
           M.read (|
             let~ __self_discr : Ty.path "i8" :=
               M.call_closure (|
@@ -307,6 +317,7 @@ Module cmp.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], [], "cmp", [], [] |),
@@ -343,8 +354,10 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -363,6 +376,7 @@ Module cmp.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Less" |) |) |)
                         |)));
                     fun γ =>
@@ -370,6 +384,7 @@ Module cmp.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Equal" |) |) |)
                         |)));
                     fun γ =>
@@ -377,6 +392,7 @@ Module cmp.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
                         M.alloc (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                           M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Greater" |) |) |)
                         |)))
                   ]
@@ -404,8 +420,9 @@ Module cmp.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "core::cmp::Ordering" ], self |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.read (|
             let~ __self_discr : Ty.path "i8" :=
               M.call_closure (|
@@ -418,6 +435,7 @@ Module cmp.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -463,7 +481,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -472,8 +490,8 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -493,7 +511,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           UnOp.not (|
             M.read (|
               M.match_operator (|
@@ -503,8 +521,8 @@ Module cmp.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)
@@ -525,7 +543,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -534,8 +552,8 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -555,7 +573,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
@@ -564,8 +582,8 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -585,7 +603,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           UnOp.not (|
             M.read (|
               M.match_operator (|
@@ -595,8 +613,8 @@ Module cmp.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)
@@ -617,7 +635,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           UnOp.not (|
             M.read (|
               M.match_operator (|
@@ -627,8 +645,8 @@ Module cmp.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                      M.alloc (| Value.Bool true |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                      M.alloc (| Ty.path "bool", Value.Bool true |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
                 ]
               |)
             |)
@@ -653,7 +671,7 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
@@ -662,15 +680,24 @@ Module cmp.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] |)));
+                    M.alloc (|
+                      Ty.path "core::cmp::Ordering",
+                      Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)));
+                    M.alloc (|
+                      Ty.path "core::cmp::Ordering",
+                      Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] [] [] |)))
+                    M.alloc (|
+                      Ty.path "core::cmp::Ordering",
+                      Value.StructTuple "core::cmp::Ordering::Less" [] [] []
+                    |)))
               ]
             |)
           |)))
@@ -693,8 +720,8 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
+          let other := M.alloc (| Ty.path "core::cmp::Ordering", other |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
@@ -727,8 +754,8 @@ Module cmp.
       match ε, τ, α with
       | [], [ F ], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self := M.alloc (| Ty.path "core::cmp::Ordering", self |) in
+          let f := M.alloc (| F, f |) in
           M.read (|
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
@@ -738,6 +765,7 @@ Module cmp.
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                     M.alloc (|
+                      Ty.path "core::cmp::Ordering",
                       M.call_closure (|
                         Ty.path "core::cmp::Ordering",
                         M.get_trait_method (|
@@ -795,8 +823,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialEq", T, [], [ T ], "eq", [], [] |),
@@ -846,12 +882,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
               Value.DeclaredButUndefined,
-              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+              [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -877,8 +917,13 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -901,6 +946,7 @@ Module cmp.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ T ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_tuple_field (|
@@ -983,8 +1029,12 @@ Module cmp.
       match ε, τ, α with
       | [], [ __H ], [ self; state ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let state := M.alloc (| state |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (| "core::hash::Hash", T, [], [], "hash", [], [ __H ] |),
@@ -1031,8 +1081,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "partial_cmp", [], [] |),
@@ -1073,8 +1131,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "lt", [], [] |),
@@ -1110,8 +1176,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "le", [], [] |),
@@ -1147,8 +1221,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "gt", [], [] |),
@@ -1184,8 +1266,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_trait_method (| "core::cmp::PartialOrd", T, [], [ T ], "ge", [], [] |),
@@ -1241,8 +1331,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", T, [], [], "cmp", [], [] |),
@@ -1296,7 +1394,11 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
           Value.StructTuple
             "core::cmp::Reverse"
             []
@@ -1330,8 +1432,16 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; source ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let source := M.alloc (| source |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              self
+            |) in
+          let source :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::cmp::Reverse") [] [ T ] ],
+              source
+            |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (| "core::clone::Clone", T, [], [], "clone_from", [], [] |),
@@ -1382,8 +1492,8 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Self, self |) in
+          let other := M.alloc (| Self, other |) in
           M.call_closure (|
             Self,
             M.get_function (|
@@ -1410,8 +1520,8 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Self, self |) in
+          let other := M.alloc (| Self, other |) in
           M.call_closure (|
             Self,
             M.get_function (|
@@ -1438,21 +1548,22 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; min; max ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let min := M.alloc (| min |) in
-          let max := M.alloc (| max |) in
+          (let self := M.alloc (| Self, self |) in
+          let min := M.alloc (| Self, min |) in
+          let max := M.alloc (| Self, max |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
-                  M.alloc (| Value.Tuple [] |),
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |),
                   [
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
                           M.use
                             (M.alloc (|
+                              Ty.path "bool",
                               UnOp.not (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -1474,6 +1585,7 @@ Module cmp.
                             |)) in
                         let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
+                          Ty.tuple [],
                           M.never_to_any (|
                             M.call_closure (|
                               Ty.path "never",
@@ -1482,19 +1594,20 @@ Module cmp.
                             |)
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                   ]
                 |)
               |) in
             M.match_operator (|
               Self,
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             M.get_trait_method (|
@@ -1518,13 +1631,14 @@ Module cmp.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Self,
-                      M.alloc (| Value.Tuple [] |),
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |),
                       [
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
                               M.use
                                 (M.alloc (|
+                                  Ty.path "bool",
                                   M.call_closure (|
                                     Ty.path "bool",
                                     M.get_trait_method (|
@@ -1563,12 +1677,13 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Rhs ], other |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1596,8 +1711,8 @@ Module cmp.
                         0
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Less" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1611,12 +1726,13 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Rhs ], other |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1649,20 +1765,20 @@ Module cmp.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1676,12 +1792,13 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Rhs ], other |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1709,8 +1826,8 @@ Module cmp.
                         0
                       |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::cmp::Ordering::Greater" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1724,12 +1841,13 @@ Module cmp.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+          let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Rhs ], other |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.call_closure (|
                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                   M.get_trait_method (|
@@ -1762,20 +1880,20 @@ Module cmp.
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
-                            M.alloc (| Value.Tuple [] |)));
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                            M.alloc (| Value.Tuple [] |)))
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       ],
                       fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | [] => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool true |)))
                           | _ => M.impossible "wrong number of arguments"
                           end)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -1796,8 +1914,8 @@ Module cmp.
     match ε, τ, α with
     | [], [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
         M.call_closure (|
           T,
           M.get_trait_method (| "core::cmp::Ord", T, [], [], "min", [], [] |),
@@ -1822,13 +1940,14 @@ Module cmp.
     match ε, τ, α with
     | [], [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
-        let compare := M.alloc (| compare |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
+        let compare := M.alloc (| F, compare |) in
         M.read (|
           M.match_operator (|
             T,
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (|
@@ -1865,11 +1984,11 @@ Module cmp.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -1901,9 +2020,9 @@ Module cmp.
     match ε, τ, α with
     | [], [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
-        let f := M.alloc (| f |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
+        let f := M.alloc (| F, f |) in
         M.call_closure (|
           T,
           M.get_function (|
@@ -1932,11 +2051,11 @@ Module cmp.
                               [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                           ]
                           (Ty.path "core::cmp::Ordering"),
-                        M.alloc (| α0 |),
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let v1 := M.copy (| γ |) in
+                              (let v1 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                               M.match_operator (|
                                 Ty.function
                                   [
@@ -1947,11 +2066,11 @@ Module cmp.
                                       ]
                                   ]
                                   (Ty.path "core::cmp::Ordering"),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let v2 := M.copy (| γ |) in
+                                      (let v2 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                       M.call_closure (|
                                         Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
@@ -1967,6 +2086,7 @@ Module cmp.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              K,
                                               M.call_closure (|
                                                 K,
                                                 M.get_trait_method (|
@@ -1997,6 +2117,7 @@ Module cmp.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  K,
                                                   M.call_closure (|
                                                     K,
                                                     M.get_trait_method (|
@@ -2051,8 +2172,8 @@ Module cmp.
     match ε, τ, α with
     | [], [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
         M.call_closure (|
           T,
           M.get_trait_method (| "core::cmp::Ord", T, [], [], "max", [], [] |),
@@ -2077,13 +2198,14 @@ Module cmp.
     match ε, τ, α with
     | [], [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
-        let compare := M.alloc (| compare |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
+        let compare := M.alloc (| F, compare |) in
         M.read (|
           M.match_operator (|
             T,
             M.alloc (|
+              Ty.path "core::cmp::Ordering",
               M.call_closure (|
                 Ty.path "core::cmp::Ordering",
                 M.get_trait_method (|
@@ -2120,11 +2242,11 @@ Module cmp.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ],
                     fun γ =>
                       ltac:(M.monadic
@@ -2156,9 +2278,9 @@ Module cmp.
     match ε, τ, α with
     | [], [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
-        let f := M.alloc (| f |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
+        let f := M.alloc (| F, f |) in
         M.call_closure (|
           T,
           M.get_function (|
@@ -2187,11 +2309,11 @@ Module cmp.
                               [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                           ]
                           (Ty.path "core::cmp::Ordering"),
-                        M.alloc (| α0 |),
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let v1 := M.copy (| γ |) in
+                              (let v1 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                               M.match_operator (|
                                 Ty.function
                                   [
@@ -2202,11 +2324,11 @@ Module cmp.
                                       ]
                                   ]
                                   (Ty.path "core::cmp::Ordering"),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let v2 := M.copy (| γ |) in
+                                      (let v2 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                       M.call_closure (|
                                         Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
@@ -2222,6 +2344,7 @@ Module cmp.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              K,
                                               M.call_closure (|
                                                 K,
                                                 M.get_trait_method (|
@@ -2252,6 +2375,7 @@ Module cmp.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  K,
                                                   M.call_closure (|
                                                     K,
                                                     M.get_trait_method (|
@@ -2309,18 +2433,19 @@ Module cmp.
     match ε, τ, α with
     | [], [ T ], [ v1; v2 ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
         M.read (|
           M.match_operator (|
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_trait_method (|
@@ -2337,9 +2462,16 @@ Module cmp.
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Array [ M.read (| v1 |); M.read (| v2 |) ] |)));
+                  M.alloc (|
+                    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
+                    Value.Array [ M.read (| v1 |); M.read (| v2 |) ]
+                  |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.Array [ M.read (| v2 |); M.read (| v1 |) ] |)))
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
+                    Value.Array [ M.read (| v2 |); M.read (| v1 |) ]
+                  |)))
             ]
           |)
         |)))
@@ -2362,19 +2494,20 @@ Module cmp.
     match ε, τ, α with
     | [], [ T; F ], [ v1; v2; compare ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
-        let compare := M.alloc (| compare |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
+        let compare := M.alloc (| F, compare |) in
         M.read (|
           M.match_operator (|
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -2420,9 +2553,16 @@ Module cmp.
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| Value.Array [ M.read (| v1 |); M.read (| v2 |) ] |)));
+                  M.alloc (|
+                    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
+                    Value.Array [ M.read (| v1 |); M.read (| v2 |) ]
+                  |)));
               fun γ =>
-                ltac:(M.monadic (M.alloc (| Value.Array [ M.read (| v2 |); M.read (| v1 |) ] |)))
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
+                    Value.Array [ M.read (| v2 |); M.read (| v1 |) ]
+                  |)))
             ]
           |)
         |)))
@@ -2446,9 +2586,9 @@ Module cmp.
     match ε, τ, α with
     | [], [ T; F; K ], [ v1; v2; f ] =>
       ltac:(M.monadic
-        (let v1 := M.alloc (| v1 |) in
-        let v2 := M.alloc (| v2 |) in
-        let f := M.alloc (| f |) in
+        (let v1 := M.alloc (| T, v1 |) in
+        let v2 := M.alloc (| T, v2 |) in
+        let f := M.alloc (| F, f |) in
         M.call_closure (|
           Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ],
           M.get_function (|
@@ -2477,11 +2617,11 @@ Module cmp.
                               [ Ty.apply (Ty.path "&") [] [ T ]; Ty.apply (Ty.path "&") [] [ T ] ]
                           ]
                           (Ty.path "core::cmp::Ordering"),
-                        M.alloc (| α0 |),
+                        M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α0 |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let v1 := M.copy (| γ |) in
+                              (let v1 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                               M.match_operator (|
                                 Ty.function
                                   [
@@ -2492,11 +2632,11 @@ Module cmp.
                                       ]
                                   ]
                                   (Ty.path "core::cmp::Ordering"),
-                                M.alloc (| α1 |),
+                                M.alloc (| Ty.apply (Ty.path "&") [] [ T ], α1 |),
                                 [
                                   fun γ =>
                                     ltac:(M.monadic
-                                      (let v2 := M.copy (| γ |) in
+                                      (let v2 := M.copy (| Ty.apply (Ty.path "&") [] [ T ], γ |) in
                                       M.call_closure (|
                                         Ty.path "core::cmp::Ordering",
                                         M.get_trait_method (|
@@ -2512,6 +2652,7 @@ Module cmp.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
+                                              K,
                                               M.call_closure (|
                                                 K,
                                                 M.get_trait_method (|
@@ -2542,6 +2683,7 @@ Module cmp.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
+                                                  K,
                                                   M.call_closure (|
                                                     K,
                                                     M.get_trait_method (|
@@ -2600,8 +2742,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; _other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _other := M.alloc (| _other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], self |) in
+            let _other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], _other |) in
             Value.Bool true))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2615,8 +2757,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; _other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _other := M.alloc (| _other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], self |) in
+            let _other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], _other |) in
             Value.Bool false))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2638,8 +2780,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2656,8 +2798,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2686,8 +2828,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2704,8 +2846,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2734,8 +2876,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2752,8 +2894,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2782,8 +2924,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2800,8 +2942,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2830,8 +2972,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2848,8 +2990,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2878,8 +3020,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2896,8 +3038,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2926,8 +3068,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2944,8 +3086,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -2974,8 +3116,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -2992,8 +3134,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3022,8 +3164,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3040,8 +3182,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3070,8 +3212,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3088,8 +3230,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3118,8 +3260,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3136,8 +3278,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3166,8 +3308,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3184,8 +3326,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3214,8 +3356,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3232,8 +3374,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3262,8 +3404,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3280,8 +3422,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3310,8 +3452,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3328,8 +3470,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3358,8 +3500,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3376,8 +3518,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3406,8 +3548,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3424,8 +3566,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3454,8 +3596,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.eq,
@@ -3472,8 +3614,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -3686,8 +3828,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; β1 ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let β1 := M.alloc (| β1 |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], self |) in
+            let β1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], β1 |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               β1,
@@ -3725,8 +3867,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -3770,12 +3912,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.tuple [ Ty.path "bool"; Ty.path "bool" ],
                   Value.Tuple
                     [
                       M.call_closure (|
@@ -3806,6 +3949,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -3821,6 +3968,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -3836,6 +3987,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -3851,6 +4006,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -3868,8 +4027,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -3886,8 +4045,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -3904,8 +4063,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -3922,8 +4081,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -3968,12 +4127,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.tuple [ Ty.path "bool"; Ty.path "bool" ],
                   Value.Tuple
                     [
                       M.call_closure (|
@@ -4004,6 +4164,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -4019,6 +4183,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4034,6 +4202,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4049,6 +4221,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4066,8 +4242,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -4084,8 +4260,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -4102,8 +4278,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -4120,8 +4296,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -4166,12 +4342,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.tuple [ Ty.path "bool"; Ty.path "bool" ],
                   Value.Tuple
                     [
                       M.call_closure (|
@@ -4202,6 +4379,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -4217,6 +4398,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4232,6 +4417,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4247,6 +4436,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4264,8 +4457,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -4282,8 +4475,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -4300,8 +4493,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -4318,8 +4511,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -4364,12 +4557,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.read (|
               M.match_operator (|
                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
                 M.alloc (|
+                  Ty.tuple [ Ty.path "bool"; Ty.path "bool" ],
                   Value.Tuple
                     [
                       M.call_closure (|
@@ -4400,6 +4594,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -4415,6 +4613,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4430,6 +4632,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4445,6 +4651,10 @@ Module cmp.
                       let _ :=
                         is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "core::cmp::Ordering" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
@@ -4462,8 +4672,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -4480,8 +4690,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -4498,8 +4708,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -4516,8 +4726,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "f128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -4557,8 +4767,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; _other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _other := M.alloc (| _other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], self |) in
+            let _other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.tuple [] ], _other |) in
             Value.StructTuple "core::cmp::Ordering::Equal" [] [] []))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4593,12 +4803,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "bool" ], other |) in
             M.read (|
               M.match_operator (|
                 Ty.path "core::cmp::Ordering",
                 M.alloc (|
+                  Ty.path "i8",
                   M.call_closure (|
                     Ty.path "i8",
                     BinOp.Wrap.sub,
@@ -4616,7 +4827,10 @@ Module cmp.
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 (-1)
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] [] [] |)));
+                      M.alloc (|
+                        Ty.path "core::cmp::Ordering",
+                        Value.StructTuple "core::cmp::Ordering::Less" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
@@ -4624,7 +4838,10 @@ Module cmp.
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 0
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] [] [] |)));
+                      M.alloc (|
+                        Ty.path "core::cmp::Ordering",
+                        Value.StructTuple "core::cmp::Ordering::Equal" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
@@ -4632,10 +4849,14 @@ Module cmp.
                           M.read (| γ |),
                           Value.Integer IntegerKind.I8 1
                         |) in
-                      M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] [] [] |)));
+                      M.alloc (|
+                        Ty.path "core::cmp::Ordering",
+                        Value.StructTuple "core::cmp::Ordering::Greater" [] [] []
+                      |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.path "core::cmp::Ordering",
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -4659,8 +4880,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "bool", self |) in
+            let other := M.alloc (| Ty.path "bool", other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.Wrap.bit_and,
@@ -4678,8 +4899,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.path "bool", self |) in
+            let other := M.alloc (| Ty.path "bool", other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.Wrap.bit_or,
@@ -4698,21 +4919,22 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; min; max ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let min := M.alloc (| min |) in
-            let max := M.alloc (| max |) in
+            (let self := M.alloc (| Ty.path "bool", self |) in
+            let min := M.alloc (| Ty.path "bool", min |) in
+            let max := M.alloc (| Ty.path "bool", max |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 UnOp.not (|
                                   M.call_closure (|
                                     Ty.path "bool",
@@ -4724,6 +4946,7 @@ Module cmp.
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.call_closure (|
                                 Ty.path "never",
@@ -4732,11 +4955,12 @@ Module cmp.
                               |)
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                     ]
                   |)
                 |) in
               M.alloc (|
+                Ty.path "bool",
                 M.call_closure (|
                   Ty.path "bool",
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "bool", [], [], "min", [], [] |),
@@ -4789,8 +5013,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -4817,8 +5041,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -4835,8 +5059,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -4853,8 +5077,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -4871,8 +5095,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -4912,8 +5136,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "char" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "char" ] |),
@@ -4946,8 +5170,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -4974,8 +5198,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -4992,8 +5216,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5010,8 +5234,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5028,8 +5252,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5069,8 +5293,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "usize" ] |),
@@ -5103,8 +5327,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -5127,8 +5351,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -5145,8 +5369,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5163,8 +5387,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5181,8 +5405,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5222,8 +5446,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u8" ] |),
@@ -5256,8 +5480,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -5280,8 +5504,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -5298,8 +5522,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5316,8 +5540,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5334,8 +5558,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5375,8 +5599,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u16" ] |),
@@ -5409,8 +5633,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -5433,8 +5657,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -5451,8 +5675,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5469,8 +5693,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5487,8 +5711,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5528,8 +5752,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u32" ] |),
@@ -5562,8 +5786,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -5586,8 +5810,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -5604,8 +5828,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5622,8 +5846,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5640,8 +5864,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5681,8 +5905,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u64" ] |),
@@ -5715,8 +5939,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -5743,8 +5967,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -5761,8 +5985,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5779,8 +6003,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5797,8 +6021,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5838,8 +6062,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u128" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "u128" ] |),
@@ -5872,8 +6096,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -5900,8 +6124,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -5918,8 +6142,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -5936,8 +6160,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -5954,8 +6178,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -5995,8 +6219,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "isize" ] |),
@@ -6029,8 +6253,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -6053,8 +6277,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -6071,8 +6295,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -6089,8 +6313,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -6107,8 +6331,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -6148,8 +6372,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i8" ] |),
@@ -6182,8 +6406,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -6206,8 +6430,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -6224,8 +6448,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -6242,8 +6466,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -6260,8 +6484,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -6301,8 +6525,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i16" ] |),
@@ -6335,8 +6559,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -6359,8 +6583,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -6377,8 +6601,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -6395,8 +6619,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -6413,8 +6637,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -6454,8 +6678,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i32" ] |),
@@ -6488,8 +6712,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -6512,8 +6736,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -6530,8 +6754,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -6548,8 +6772,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -6566,8 +6790,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -6607,8 +6831,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i64" ] |),
@@ -6641,8 +6865,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             Value.StructTuple
               "core::option::Option::Some"
               []
@@ -6669,8 +6893,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.lt,
@@ -6687,8 +6911,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.le,
@@ -6705,8 +6929,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.ge,
@@ -6723,8 +6947,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "bool",
               BinOp.gt,
@@ -6764,8 +6988,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], self |) in
+            let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i128" ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_function (| "core::intrinsics::three_way_compare", [], [ Ty.path "i128" ] |),
@@ -6798,8 +7022,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; β1 ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let β1 := M.alloc (| β1 |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "never" ], self |) in
+            let β1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "never" ], β1 |) in
             M.match_operator (|
               Ty.path "bool",
               β1,
@@ -6845,8 +7069,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; β1 ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let β1 := M.alloc (| β1 |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "never" ], self |) in
+            let β1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "never" ], β1 |) in
             M.match_operator (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               β1,
@@ -6880,8 +7104,8 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; β1 ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let β1 := M.alloc (| β1 |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "never" ], self |) in
+            let β1 := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "never" ], β1 |) in
             M.match_operator (|
               Ty.path "core::cmp::Ordering",
               β1,
@@ -6916,8 +7140,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
@@ -6945,8 +7171,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
@@ -6993,8 +7221,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
@@ -7022,8 +7252,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
@@ -7051,8 +7283,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
@@ -7080,8 +7314,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
@@ -7109,8 +7345,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
@@ -7158,8 +7396,10 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], other |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
@@ -7213,8 +7453,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
@@ -7242,8 +7490,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
@@ -7290,8 +7546,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "partial_cmp", [], [] |),
@@ -7319,8 +7583,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "lt", [], [] |),
@@ -7348,8 +7620,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "le", [], [] |),
@@ -7377,8 +7657,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "gt", [], [] |),
@@ -7406,8 +7694,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialOrd", A, [], [ B ], "ge", [], [] |),
@@ -7455,8 +7751,16 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "core::cmp::Ordering",
               M.get_trait_method (| "core::cmp::Ord", A, [], [], "cmp", [], [] |),
@@ -7510,8 +7814,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
@@ -7539,8 +7848,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ A ] ], self |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ B ] ],
+                other
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),
@@ -7582,8 +7896,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "eq", [], [] |),
@@ -7611,8 +7930,13 @@ Module cmp.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ A ] ],
+                self
+              |) in
+            let other :=
+              M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ B ] ], other |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_trait_method (| "core::cmp::PartialEq", A, [], [ B ], "ne", [], [] |),

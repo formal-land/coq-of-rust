@@ -113,6 +113,10 @@ pub(crate) enum Expr {
         func: Rc<Expr>,
         ty: Rc<CoqType>,
     },
+    Alloc {
+        ty: Rc<CoqType>,
+        expr: Rc<Expr>,
+    },
     /// The logical operators are lazily evaluated, so the second
     /// parameter [rhs] must be in monadic form.
     LogicalOperator {
@@ -176,45 +180,25 @@ pub(crate) enum Expr {
     Return(Rc<Expr>),
     /// Useful for error messages or annotations
     Comment(String, Rc<Expr>),
+    Ty(Rc<CoqType>),
 }
 
 impl Expr {
     pub(crate) fn tt() -> Rc<Self> {
-        Rc::new(Expr::Tuple { elements: vec![] }).alloc()
+        Rc::new(Expr::Tuple { elements: vec![] }).alloc(CoqType::unit())
     }
 
     pub(crate) fn local_var(name: &str) -> Rc<Expr> {
         Rc::new(Expr::LocalVar(name.to_string()))
     }
 
-    pub(crate) fn match_simple_call(self: &Rc<Self>, name_in: &[&str]) -> Option<Rc<Expr>> {
-        if let Expr::Call {
-            func,
-            args,
-            kind: _,
-        } = self.as_ref()
-        {
-            if let Expr::LocalVar(func) = func.as_ref() {
-                if name_in.contains(&func.as_str()) && args.len() == 1 {
-                    return Some(args.first().unwrap().clone());
-                }
-            }
-        }
-
-        None
-    }
-
-    pub(crate) fn alloc(self: Rc<Self>) -> Rc<Self> {
-        Rc::new(Expr::Call {
-            func: Expr::local_var("M.alloc"),
-            args: vec![self],
-            kind: CallKind::Effectful,
-        })
+    pub(crate) fn alloc(self: Rc<Self>, ty: Rc<CoqType>) -> Rc<Self> {
+        Rc::new(Expr::Alloc { ty, expr: self })
     }
 
     pub(crate) fn read(self: &Rc<Self>) -> Rc<Self> {
         // If we read an allocated expression, we just return the expression.
-        if let Some(expr) = self.clone().match_simple_call(&["M.alloc"]) {
+        if let Expr::Alloc { ty: _, expr } = self.as_ref() {
             return expr.clone();
         }
 
@@ -225,14 +209,14 @@ impl Expr {
         })
     }
 
-    pub(crate) fn copy(self: Rc<Self>) -> Rc<Self> {
-        if self.match_simple_call(&["M.alloc"]).is_some() {
+    pub(crate) fn copy(self: Rc<Self>, ty: Rc<CoqType>) -> Rc<Self> {
+        if let Expr::Alloc { .. } = self.as_ref() {
             return self;
         }
 
         Rc::new(Expr::Call {
             func: Expr::local_var("M.copy"),
-            args: vec![self],
+            args: vec![Rc::new(Expr::Ty(ty)), self],
             kind: CallKind::Effectful,
         })
     }
@@ -282,6 +266,7 @@ impl Expr {
                 kind: _,
             } => func.has_return() || args.iter().any(|arg| arg.has_return()),
             Expr::CallTy { func, ty: _ } => func.has_return(),
+            Expr::Alloc { ty: _, expr } => expr.has_return(),
             Expr::LogicalOperator { name: _, lhs, rhs } => lhs.has_return() || rhs.has_return(),
             Expr::Cast {
                 target_ty: _,
@@ -333,6 +318,7 @@ impl Expr {
             Expr::InternalInteger(_) => false,
             Expr::Return(_) => true,
             Expr::Comment(_, expr) => expr.has_return(),
+            Expr::Ty(_) => false,
         }
     }
 }
@@ -412,13 +398,19 @@ fn string_pieces_to_coq(pieces: &[StringPiece]) -> Rc<coq::Expression> {
             if rest.is_empty() {
                 head
             } else {
-                coq::Expression::just_name("String.append")
+                coq::Expression::just_name("PrimString.cat")
                     .apply_many(&[head, string_pieces_to_coq(rest)])
             }
         }
-        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
+        [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("PrimString.cat")
             .apply_many(&[
-                Rc::new(coq::Expression::String(format!("{:03}", *c as u8))),
+                coq::Expression::just_name("PrimString.make").apply_many(&[
+                    Rc::new(coq::Expression::U128(1)),
+                    Rc::new(coq::Expression::InScope(
+                        Rc::new(coq::Expression::U128(*c as u128)),
+                        "int63".to_string(),
+                    )),
+                ]),
                 string_pieces_to_coq(rest),
             ]),
     }
@@ -614,6 +606,8 @@ impl Expr {
                     ]),
             },
             Expr::CallTy { func, ty } => func.to_coq().apply(ty.to_coq()),
+            Expr::Alloc { ty, expr } => coq::Expression::just_name("M.alloc")
+                .monadic_apply_many(&[ty.to_coq(), expr.to_coq()]),
             Expr::LogicalOperator { name, lhs, rhs } => coq::Expression::just_name(name.as_str())
                 .monadic_apply_many(&[lhs.to_coq(), coq::Expression::monadic(rhs.to_coq())]),
             Expr::Cast { target_ty, source } => coq::Expression::just_name("M.cast")
@@ -729,7 +723,7 @@ impl Expr {
                 fields,
                 base,
             } => match base {
-                None => coq::Expression::just_name("Value.StructRecord").apply_many(&[
+                None => coq::Expression::just_name("Value.mkStructRecord").apply_many(&[
                     Rc::new(coq::Expression::String(path.to_string())),
                     Rc::new(coq::Expression::List {
                         exprs: arg_consts
@@ -796,6 +790,7 @@ impl Expr {
             Expr::Comment(message, expr) => {
                 Rc::new(coq::Expression::Comment(message.to_owned(), expr.to_coq()))
             }
+            Expr::Ty(ty) => ty.to_coq(),
         }
     }
 

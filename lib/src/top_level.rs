@@ -357,13 +357,14 @@ fn compile_top_level_item_without_local_items<'a>(
                 return vec![];
             }
 
+            let ty = compile_type(env, &item.owner_id.def_id, ty);
             let value_without_alloc = if env.axiomatize {
                 None
             } else {
                 Some(compile_hir_id(env, body_id.hir_id))
             };
             let value = if let ItemKind::Static(_, _, _) = &item.kind {
-                value_without_alloc.map(|value_without_alloc| value_without_alloc.alloc())
+                value_without_alloc.map(|value_without_alloc| value_without_alloc.alloc(ty))
             } else {
                 value_without_alloc
             };
@@ -918,7 +919,7 @@ fn compile_function_body(
             }),
             args: vec![Rc::new(Expr::Lambda {
                 args: vec![],
-                body: body_without_bindings.alloc(),
+                body: body_without_bindings.alloc(ret_ty.clone()),
                 is_for_match: false,
                 form: LambdaForm::Function,
             })],
@@ -953,7 +954,7 @@ fn compile_function_body(
         Some(args) => crate::thir_expression::allocate_bindings(
             &args
                 .iter()
-                .map(|(name, _, _)| name.clone())
+                .map(|(name, ty, _)| (name.clone(), ty.clone()))
                 .collect::<Vec<_>>(),
             body_with_patterns,
         ),

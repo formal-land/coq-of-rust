@@ -29,7 +29,7 @@ Module Impl_core_clone_Clone_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.path "subtle::Choice",
@@ -57,8 +57,8 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], self |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
@@ -78,6 +78,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_tuple_field (|
@@ -116,7 +117,7 @@ Module Impl_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], self |) in
         M.read (|
           M.SubPointer.get_struct_tuple_field (|
             M.deref (| M.read (| self |) |),
@@ -146,29 +147,30 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
     match ε, τ, α with
     | [], [], [ source ] =>
       ltac:(M.monadic
-        (let source := M.alloc (| source |) in
+        (let source := M.alloc (| Ty.path "subtle::Choice", source |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                      (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         UnOp.not (|
                                           M.call_closure (|
                                             Ty.path "bool",
@@ -212,6 +214,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.call_closure (|
                                         Ty.path "never",
@@ -224,16 +227,17 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.alloc (|
+            Ty.path "bool",
             M.call_closure (|
               Ty.path "bool",
               BinOp.ne,
@@ -271,8 +275,8 @@ Module Impl_core_ops_bit_BitAnd_subtle_Choice_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self := M.alloc (| Ty.path "subtle::Choice", self |) in
+        let rhs := M.alloc (| Ty.path "subtle::Choice", rhs |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -320,8 +324,9 @@ Module Impl_core_ops_bit_BitAndAssign_subtle_Choice_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "subtle::Choice" ], self |) in
+        let rhs := M.alloc (| Ty.path "subtle::Choice", rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -340,7 +345,7 @@ Module Impl_core_ops_bit_BitAndAssign_subtle_Choice_for_subtle_Choice.
                 [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -369,8 +374,8 @@ Module Impl_core_ops_bit_BitOr_subtle_Choice_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self := M.alloc (| Ty.path "subtle::Choice", self |) in
+        let rhs := M.alloc (| Ty.path "subtle::Choice", rhs |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -418,8 +423,9 @@ Module Impl_core_ops_bit_BitOrAssign_subtle_Choice_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "subtle::Choice" ], self |) in
+        let rhs := M.alloc (| Ty.path "subtle::Choice", rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -438,7 +444,7 @@ Module Impl_core_ops_bit_BitOrAssign_subtle_Choice_for_subtle_Choice.
                 [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -467,8 +473,8 @@ Module Impl_core_ops_bit_BitXor_subtle_Choice_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self := M.alloc (| Ty.path "subtle::Choice", self |) in
+        let rhs := M.alloc (| Ty.path "subtle::Choice", rhs |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -516,8 +522,9 @@ Module Impl_core_ops_bit_BitXorAssign_subtle_Choice_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "subtle::Choice" ], self |) in
+        let rhs := M.alloc (| Ty.path "subtle::Choice", rhs |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -536,7 +543,7 @@ Module Impl_core_ops_bit_BitXorAssign_subtle_Choice_for_subtle_Choice.
                 [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -565,7 +572,7 @@ Module Impl_core_ops_bit_Not_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.path "subtle::Choice", self |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -623,29 +630,30 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   match ε, τ, α with
   | [], [], [ input ] =>
     ltac:(M.monadic
-      (let input := M.alloc (| input |) in
+      (let input := M.alloc (| Ty.path "u8", input |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ := M.use (M.alloc (| Ty.path "bool", Value.Bool true |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       UnOp.not (|
                                         M.call_closure (|
                                           Ty.path "bool",
@@ -671,6 +679,7 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.call_closure (|
                                       Ty.path "never",
@@ -683,16 +692,17 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
         M.alloc (|
+          Ty.path "u8",
           M.call_closure (|
             Ty.path "u8",
             M.get_function (| "core::ptr::read_volatile", [], [ Ty.path "u8" ] |),
@@ -700,6 +710,7 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               M.read (|
                 M.use
                   (M.alloc (|
+                    Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ],
                     M.borrow (|
                       Pointer.Kind.ConstPointer,
                       M.deref (| M.borrow (| Pointer.Kind.Ref, input |) |)
@@ -731,7 +742,7 @@ Module Impl_core_convert_From_u8_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ input ] =>
       ltac:(M.monadic
-        (let input := M.alloc (| input |) in
+        (let input := M.alloc (| Ty.path "u8", input |) in
         Value.StructTuple
           "subtle::Choice"
           []
@@ -761,8 +772,8 @@ Module ConstantTimeEq.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -820,12 +831,15 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
     match ε, τ, α with
     | [], [], [ self; _rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _rhs := M.alloc (| _rhs |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], self |) in
+        let _rhs :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ], _rhs |) in
         M.read (|
           M.catch_return (Ty.path "subtle::Choice") (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.path "subtle::Choice",
                 M.read (|
                   let~ len : Ty.path "usize" :=
                     M.call_closure (|
@@ -842,13 +856,14 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.ne,
@@ -875,6 +890,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -895,7 +911,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -906,6 +922,13 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                         (M.match_operator (|
                           Ty.tuple [],
                           M.alloc (|
+                            Ty.apply
+                              (Ty.path "core::iter::adapters::zip::Zip")
+                              []
+                              [
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
+                                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
+                              ],
                             M.call_closure (|
                               Ty.apply
                                 (Ty.path "core::iter::adapters::zip::Zip")
@@ -986,7 +1009,17 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let iter := M.copy (| γ |) in
+                                (let iter :=
+                                  M.copy (|
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::zip::Zip")
+                                      []
+                                      [
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ];
+                                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
+                                      ],
+                                    γ
+                                  |) in
                                 M.loop (|
                                   Ty.tuple [],
                                   ltac:(M.monadic
@@ -995,6 +1028,16 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                         M.match_operator (|
                                           Ty.tuple [],
                                           M.alloc (|
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [
+                                                Ty.tuple
+                                                  [
+                                                    Ty.apply (Ty.path "&") [] [ T ];
+                                                    Ty.apply (Ty.path "&") [] [ T ]
+                                                  ]
+                                              ],
                                             M.call_closure (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1046,6 +1089,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                     "core::option::Option::None"
                                                   |) in
                                                 M.alloc (|
+                                                  Ty.tuple [],
                                                   M.never_to_any (| M.read (| M.break (||) |) |)
                                                 |)));
                                             fun γ =>
@@ -1060,8 +1104,16 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                   M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                                 let γ1_1 :=
                                                   M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                                let ai := M.copy (| γ1_0 |) in
-                                                let bi := M.copy (| γ1_1 |) in
+                                                let ai :=
+                                                  M.copy (|
+                                                    Ty.apply (Ty.path "&") [] [ T ],
+                                                    γ1_0
+                                                  |) in
+                                                let bi :=
+                                                  M.copy (|
+                                                    Ty.apply (Ty.path "&") [] [ T ],
+                                                    γ1_1
+                                                  |) in
                                                 let~ _ : Ty.tuple [] :=
                                                   let β := x in
                                                   M.write (|
@@ -1083,6 +1135,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
+                                                                Ty.path "subtle::Choice",
                                                                 M.call_closure (|
                                                                   Ty.path "subtle::Choice",
                                                                   M.get_trait_method (|
@@ -1112,16 +1165,17 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_slice_T.
                                                       ]
                                                     |)
                                                   |) in
-                                                M.alloc (| Value.Tuple [] |)))
+                                                M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                           ]
                                         |)
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)))
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 |)))
                           ]
                         |))
                     |) in
                   M.alloc (|
+                    Ty.path "subtle::Choice",
                     M.call_closure (|
                       Ty.path "subtle::Choice",
                       M.get_trait_method (|
@@ -1165,8 +1219,8 @@ Module Impl_subtle_ConstantTimeEq_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], self |) in
+        let rhs := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], rhs |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -1229,8 +1283,8 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
         M.read (|
           let~ x : Ty.path "u8" :=
             M.call_closure (|
@@ -1271,6 +1325,7 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
               ]
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -1286,12 +1341,15 @@ Module Impl_subtle_ConstantTimeEq_for_u8.
                 M.read (|
                   M.use
                     (M.alloc (|
+                      Ty.path "u8",
                       M.call_closure (|
                         Ty.path "u8",
                         BinOp.Wrap.bit_xor,
                         [
                           M.read (| y |);
-                          M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U8 1 |)) |)
+                          M.read (|
+                            M.use (M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 1 |))
+                          |)
                         ]
                       |)
                     |))
@@ -1325,15 +1383,18 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u8", [], [], "ct_eq", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (|
+                Ty.path "u8",
+                M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| self |) |) |))
+              |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
@@ -1341,6 +1402,7 @@ Module Impl_subtle_ConstantTimeEq_for_i8.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "u8",
                     M.cast (Ty.path "u8") (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |)
@@ -1380,8 +1442,8 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
         M.read (|
           let~ x : Ty.path "u16" :=
             M.call_closure (|
@@ -1422,6 +1484,7 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
               ]
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -1441,7 +1504,9 @@ Module Impl_subtle_ConstantTimeEq_for_u16.
                     BinOp.Wrap.bit_xor,
                     [
                       M.read (| y |);
-                      M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U16 1 |)) |)
+                      M.read (|
+                        M.use (M.alloc (| Ty.path "u16", Value.Integer IntegerKind.U16 1 |))
+                      |)
                     ]
                   |))
               ]
@@ -1473,15 +1538,18 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u16", [], [], "ct_eq", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (|
+                Ty.path "u16",
+                M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| self |) |) |))
+              |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
@@ -1489,6 +1557,7 @@ Module Impl_subtle_ConstantTimeEq_for_i16.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "u16",
                     M.cast (Ty.path "u16") (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |)
@@ -1528,8 +1597,8 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
         M.read (|
           let~ x : Ty.path "u32" :=
             M.call_closure (|
@@ -1570,6 +1639,7 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
               ]
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -1589,7 +1659,9 @@ Module Impl_subtle_ConstantTimeEq_for_u32.
                     BinOp.Wrap.bit_xor,
                     [
                       M.read (| y |);
-                      M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 1 |)) |)
+                      M.read (|
+                        M.use (M.alloc (| Ty.path "u32", Value.Integer IntegerKind.U32 1 |))
+                      |)
                     ]
                   |))
               ]
@@ -1621,15 +1693,18 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u32", [], [], "ct_eq", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (|
+                Ty.path "u32",
+                M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| self |) |) |))
+              |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
@@ -1637,6 +1712,7 @@ Module Impl_subtle_ConstantTimeEq_for_i32.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "u32",
                     M.cast (Ty.path "u32") (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |)
@@ -1676,8 +1752,8 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
         M.read (|
           let~ x : Ty.path "u64" :=
             M.call_closure (|
@@ -1718,6 +1794,7 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
               ]
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -1737,7 +1814,9 @@ Module Impl_subtle_ConstantTimeEq_for_u64.
                     BinOp.Wrap.bit_xor,
                     [
                       M.read (| y |);
-                      M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 1 |)) |)
+                      M.read (|
+                        M.use (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))
+                      |)
                     ]
                   |))
               ]
@@ -1769,15 +1848,18 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (| "subtle::ConstantTimeEq", Ty.path "u64", [], [], "ct_eq", [], [] |),
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (|
+                Ty.path "u64",
+                M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| self |) |) |))
+              |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
@@ -1785,6 +1867,7 @@ Module Impl_subtle_ConstantTimeEq_for_i64.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "u64",
                     M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |)
@@ -1824,8 +1907,8 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "usize" ], other |) in
         M.read (|
           let~ x : Ty.path "usize" :=
             M.call_closure (|
@@ -1880,6 +1963,7 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
               ]
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -1899,7 +1983,9 @@ Module Impl_subtle_ConstantTimeEq_for_usize.
                     BinOp.Wrap.bit_xor,
                     [
                       M.read (| y |);
-                      M.read (| M.use (M.alloc (| Value.Integer IntegerKind.Usize 1 |)) |)
+                      M.read (|
+                        M.use (M.alloc (| Ty.path "usize", Value.Integer IntegerKind.Usize 1 |))
+                      |)
                     ]
                   |))
               ]
@@ -1931,8 +2017,8 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "isize" ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -1947,7 +2033,10 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
           [
             M.borrow (|
               Pointer.Kind.Ref,
-              M.alloc (| M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |)) |)
+              M.alloc (|
+                Ty.path "usize",
+                M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| self |) |) |))
+              |)
             |);
             M.borrow (|
               Pointer.Kind.Ref,
@@ -1955,6 +2044,7 @@ Module Impl_subtle_ConstantTimeEq_for_isize.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "usize",
                     M.cast (Ty.path "usize") (M.read (| M.deref (| M.read (| other |) |) |))
                   |)
                 |)
@@ -1985,9 +2075,9 @@ Module ConditionallySelectable.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.write (|
@@ -2010,7 +2100,7 @@ Module ConditionallySelectable.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2026,9 +2116,9 @@ Module ConditionallySelectable.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ t : Self := M.read (| M.deref (| M.read (| a |) |) |) in
           let~ _ : Ty.tuple [] :=
@@ -2070,7 +2160,7 @@ Module ConditionallySelectable.
                 M.read (| choice |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2094,9 +2184,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u8" :=
             M.cast
@@ -2111,6 +2201,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                   |))
               |)) in
           M.alloc (|
+            Ty.path "u8",
             M.call_closure (|
               Ty.path "u8",
               M.get_trait_method (|
@@ -2163,9 +2254,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u8" :=
             M.cast
@@ -2206,7 +2297,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2225,9 +2316,9 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u8" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u8" :=
             M.cast
@@ -2277,7 +2368,7 @@ Module Impl_subtle_ConditionallySelectable_for_u8.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2311,14 +2402,15 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i8" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i8",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i8")
@@ -2336,6 +2428,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                 |))
             |) in
           M.alloc (|
+            Ty.path "i8",
             M.call_closure (|
               Ty.path "i8",
               M.get_trait_method (|
@@ -2388,14 +2481,15 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i8" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i8" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i8",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i8")
@@ -2439,7 +2533,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2458,14 +2552,15 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i8" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i8" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i8",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i8")
@@ -2518,7 +2613,7 @@ Module Impl_subtle_ConditionallySelectable_for_i8.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2552,9 +2647,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u16" :=
             M.cast
@@ -2569,6 +2664,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                   |))
               |)) in
           M.alloc (|
+            Ty.path "u16",
             M.call_closure (|
               Ty.path "u16",
               M.get_trait_method (|
@@ -2621,9 +2717,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u16" :=
             M.cast
@@ -2664,7 +2760,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2683,9 +2779,9 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u16" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u16" :=
             M.cast
@@ -2735,7 +2831,7 @@ Module Impl_subtle_ConditionallySelectable_for_u16.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2769,14 +2865,15 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i16" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i16",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i16")
@@ -2794,6 +2891,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                 |))
             |) in
           M.alloc (|
+            Ty.path "i16",
             M.call_closure (|
               Ty.path "i16",
               M.get_trait_method (|
@@ -2846,14 +2944,15 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i16" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i16" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i16",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i16")
@@ -2897,7 +2996,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -2916,14 +3015,15 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i16" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i16" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i16",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i16")
@@ -2976,7 +3076,7 @@ Module Impl_subtle_ConditionallySelectable_for_i16.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3010,9 +3110,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u32" :=
             M.cast
@@ -3027,6 +3127,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                   |))
               |)) in
           M.alloc (|
+            Ty.path "u32",
             M.call_closure (|
               Ty.path "u32",
               M.get_trait_method (|
@@ -3079,9 +3180,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u32" :=
             M.cast
@@ -3122,7 +3223,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3141,9 +3242,9 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u32" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u32" :=
             M.cast
@@ -3193,7 +3294,7 @@ Module Impl_subtle_ConditionallySelectable_for_u32.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3227,14 +3328,15 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i32" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i32",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i32")
@@ -3252,6 +3354,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                 |))
             |) in
           M.alloc (|
+            Ty.path "i32",
             M.call_closure (|
               Ty.path "i32",
               M.get_trait_method (|
@@ -3304,14 +3407,15 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i32" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i32" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i32",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i32")
@@ -3355,7 +3459,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3374,14 +3478,15 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i32" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i32" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i32",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i32")
@@ -3434,7 +3539,7 @@ Module Impl_subtle_ConditionallySelectable_for_i32.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3468,9 +3573,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u64" :=
             M.cast
@@ -3485,6 +3590,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                   |))
               |)) in
           M.alloc (|
+            Ty.path "u64",
             M.call_closure (|
               Ty.path "u64",
               M.get_trait_method (|
@@ -3537,9 +3643,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u64" :=
             M.cast
@@ -3580,7 +3686,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3599,9 +3705,9 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "u64" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "u64" :=
             M.cast
@@ -3651,7 +3757,7 @@ Module Impl_subtle_ConditionallySelectable_for_u64.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3685,14 +3791,15 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i64" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i64",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i64")
@@ -3710,6 +3817,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                 |))
             |) in
           M.alloc (|
+            Ty.path "i64",
             M.call_closure (|
               Ty.path "i64",
               M.get_trait_method (|
@@ -3762,14 +3870,15 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
     match ε, τ, α with
     | [], [], [ self; other; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "i64" ], other |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i64" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i64",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i64")
@@ -3813,7 +3922,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3832,14 +3941,15 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "i64" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ mask : Ty.path "i64" :=
             M.read (|
               M.use
                 (M.alloc (|
+                  Ty.path "i64",
                   UnOp.neg (|
                     M.cast
                       (Ty.path "i64")
@@ -3892,7 +4002,7 @@ Module Impl_subtle_ConditionallySelectable_for_i64.
                 [ M.read (| β |); M.read (| t |) ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3923,9 +4033,9 @@ Module Impl_subtle_ConditionallySelectable_for_subtle_Choice.
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], a |) in
+        let b := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ], b |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         Value.StructTuple
           "subtle::Choice"
           []
@@ -4008,8 +4118,8 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
     match ε, τ, α with
     | [], [], [ self; choice ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let choice := M.alloc (| choice |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ T ], self |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.read (|
           let~ self_neg : T :=
             M.call_closure (|
@@ -4026,7 +4136,10 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
               [
                 M.read (|
                   M.use
-                    (M.alloc (| M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) |))
+                    (M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ T ],
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
+                    |))
                 |)
               ]
             |) in
@@ -4051,7 +4164,7 @@ Module Impl_subtle_ConditionallyNegatable_where_subtle_ConditionallySelectable_T
                 M.read (| choice |)
               ]
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -4083,8 +4196,12 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_T_for_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        Value.StructRecord
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            self
+          |) in
+        Value.mkStructRecord
           "subtle::CtOption"
           []
           [ T ]
@@ -4173,8 +4290,12 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            self
+          |) in
+        let f := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
         M.call_closure (|
           Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "core::fmt::Error" ],
           M.get_associated_function (|
@@ -4211,6 +4332,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply (Ty.path "&") [] [ Ty.path "subtle::Choice" ],
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.SubPointer.get_struct_record_field (|
@@ -4255,17 +4377,18 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
     match ε, τ, α with
     | [], [], [ source ] =>
       ltac:(M.monadic
-        (let source := M.alloc (| source |) in
+        (let source := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], source |) in
         M.read (|
           M.match_operator (|
             Ty.apply (Ty.path "core::option::Option") [] [ T ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.eq,
@@ -4282,6 +4405,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.path "subtle::Choice",
                                     M.call_closure (|
                                       Ty.path "subtle::Choice",
                                       M.get_associated_function (|
@@ -4302,6 +4426,7 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
                     Value.StructTuple
                       "core::option::Option::Some"
                       []
@@ -4318,7 +4443,10 @@ Module Impl_core_convert_From_subtle_CtOption_T_for_core_option_Option_T.
                   |)));
               fun γ =>
                 ltac:(M.monadic
-                  (M.alloc (| Value.StructTuple "core::option::Option::None" [] [ T ] [] |)))
+                  (M.alloc (|
+                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                    Value.StructTuple "core::option::Option::None" [] [ T ] []
+                  |)))
             ]
           |)
         |)))
@@ -4351,9 +4479,9 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ value; is_some ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
-        let is_some := M.alloc (| is_some |) in
-        Value.StructRecord
+        (let value := M.alloc (| T, value |) in
+        let is_some := M.alloc (| Ty.path "subtle::Choice", is_some |) in
+        Value.mkStructRecord
           "subtle::CtOption"
           []
           [ T ]
@@ -4379,19 +4507,25 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self; msg ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let msg := M.alloc (| msg |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
+        let msg := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], msg |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "u8",
                           M.call_closure (|
                             Ty.path "u8",
                             M.get_associated_function (|
@@ -4413,7 +4547,10 @@ Module Impl_subtle_CtOption_T.
                           |)
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U8 1 |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 1 |)
+                      |)
                     ]
                 |),
                 [
@@ -4421,17 +4558,20 @@ Module Impl_subtle_CtOption_T.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ0_1 |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -4446,6 +4586,7 @@ Module Impl_subtle_CtOption_T.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -4455,6 +4596,7 @@ Module Impl_subtle_CtOption_T.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -4505,6 +4647,15 @@ Module Impl_subtle_CtOption_T.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [ Ty.path "str" ]
+                                                            ],
                                                           Value.Array [ mk_str (| "" |) ]
                                                         |)
                                                       |)
@@ -4516,6 +4667,10 @@ Module Impl_subtle_CtOption_T.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
+                                                          Ty.apply
+                                                            (Ty.path "array")
+                                                            [ Value.Integer IntegerKind.Usize 1 ]
+                                                            [ Ty.path "core::fmt::rt::Argument" ],
                                                           Value.Array
                                                             [
                                                               M.call_closure (|
@@ -4557,7 +4712,7 @@ Module Impl_subtle_CtOption_T.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
@@ -4586,18 +4741,24 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u8" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.path "u8",
                           M.call_closure (|
                             Ty.path "u8",
                             M.get_associated_function (|
@@ -4619,7 +4780,10 @@ Module Impl_subtle_CtOption_T.
                           |)
                         |)
                       |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U8 1 |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Ty.path "u8", Value.Integer IntegerKind.U8 1 |)
+                      |)
                     ]
                 |),
                 [
@@ -4627,17 +4791,20 @@ Module Impl_subtle_CtOption_T.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], γ0_1 |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     UnOp.not (|
                                       M.call_closure (|
                                         Ty.path "bool",
@@ -4652,6 +4819,7 @@ Module Impl_subtle_CtOption_T.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -4661,6 +4829,7 @@ Module Impl_subtle_CtOption_T.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -4699,7 +4868,7 @@ Module Impl_subtle_CtOption_T.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
@@ -4729,8 +4898,8 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self; def ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let def := M.alloc (| def |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
+        let def := M.alloc (| T, def |) in
         M.call_closure (|
           T,
           M.get_trait_method (|
@@ -4781,8 +4950,8 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [ F ], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
+        let f := M.alloc (| F, f |) in
         M.call_closure (|
           T,
           M.get_trait_method (|
@@ -4801,6 +4970,7 @@ Module Impl_subtle_CtOption_T.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    T,
                     M.call_closure (|
                       T,
                       M.get_trait_method (|
@@ -4851,7 +5021,11 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            self
+          |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -4878,7 +5052,11 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            self
+          |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|
@@ -4930,8 +5108,8 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [ U; F ], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
+        let f := M.alloc (| F, f |) in
         M.call_closure (|
           Ty.apply (Ty.path "subtle::CtOption") [] [ U ],
           M.get_associated_function (|
@@ -4974,6 +5152,7 @@ Module Impl_subtle_CtOption_T.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                T,
                                 M.call_closure (|
                                   T,
                                   M.get_trait_method (|
@@ -5051,8 +5230,8 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [ U; F ], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
+        let f := M.alloc (| F, f |) in
         M.read (|
           let~ tmp : Ty.apply (Ty.path "subtle::CtOption") [] [ U ] :=
             M.call_closure (|
@@ -5088,6 +5267,7 @@ Module Impl_subtle_CtOption_T.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                T,
                                 M.call_closure (|
                                   T,
                                   M.get_trait_method (|
@@ -5180,8 +5360,8 @@ Module Impl_subtle_CtOption_T.
     match ε, τ, α with
     | [], [ F ], [ self; f ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let f := M.alloc (| f |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "subtle::CtOption") [] [ T ], self |) in
+        let f := M.alloc (| F, f |) in
         M.read (|
           let~ is_none : Ty.path "subtle::Choice" :=
             M.call_closure (|
@@ -5209,6 +5389,7 @@ Module Impl_subtle_CtOption_T.
               [ M.read (| f |); Value.Tuple [] ]
             |) in
           M.alloc (|
+            Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
             M.call_closure (|
               Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
               M.get_trait_method (|
@@ -5262,9 +5443,17 @@ Module Impl_subtle_ConditionallySelectable_where_subtle_ConditionallySelectable_
     match ε, τ, α with
     | [], [], [ a; b; choice ] =>
       ltac:(M.monadic
-        (let a := M.alloc (| a |) in
-        let b := M.alloc (| b |) in
-        let choice := M.alloc (| choice |) in
+        (let a :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            a
+          |) in
+        let b :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            b
+          |) in
+        let choice := M.alloc (| Ty.path "subtle::Choice", choice |) in
         M.call_closure (|
           Ty.apply (Ty.path "subtle::CtOption") [] [ T ],
           M.get_associated_function (|
@@ -5387,8 +5576,16 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
     match ε, τ, α with
     | [], [], [ self; rhs ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let rhs := M.alloc (| rhs |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            self
+          |) in
+        let rhs :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "subtle::CtOption") [] [ T ] ],
+            rhs
+          |) in
         M.read (|
           let~ a : Ty.path "subtle::Choice" :=
             M.call_closure (|
@@ -5413,6 +5610,7 @@ Module Impl_subtle_ConstantTimeEq_where_subtle_ConstantTimeEq_T_for_subtle_CtOpt
               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| rhs |) |) |) ]
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -5569,8 +5767,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u8" ], other |) in
         M.read (|
           let~ gtb : Ty.path "u8" :=
             M.call_closure (|
@@ -5638,13 +5836,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -5680,15 +5879,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -5710,13 +5910,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -5752,15 +5953,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -5769,6 +5971,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
               |)
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -5784,6 +5987,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u8.
                 M.read (|
                   M.use
                     (M.alloc (|
+                      Ty.path "u8",
                       M.call_closure (|
                         Ty.path "u8",
                         BinOp.Wrap.bit_and,
@@ -5837,8 +6041,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u16" ], other |) in
         M.read (|
           let~ gtb : Ty.path "u16" :=
             M.call_closure (|
@@ -5906,13 +6110,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -5948,15 +6153,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -5978,13 +6184,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -6020,15 +6227,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -6037,6 +6245,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u16.
               |)
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -6102,8 +6311,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u32" ], other |) in
         M.read (|
           let~ gtb : Ty.path "u32" :=
             M.call_closure (|
@@ -6171,13 +6380,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -6213,15 +6423,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -6243,13 +6454,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -6285,15 +6497,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -6302,6 +6515,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u32.
               |)
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -6367,8 +6581,8 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], other |) in
         M.read (|
           let~ gtb : Ty.path "u64" :=
             M.call_closure (|
@@ -6436,13 +6650,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -6478,15 +6693,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -6508,13 +6724,14 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                 ltac:(M.monadic
                   (M.match_operator (|
                     Ty.tuple [],
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.lt,
@@ -6550,15 +6767,16 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
                                 [ M.read (| β |); M.read (| pow |) ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)));
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
+                            Ty.tuple [],
                             M.never_to_any (|
                               M.read (|
                                 let~ _ : Ty.tuple [] :=
                                   M.never_to_any (| M.read (| M.break (||) |) |) in
-                                M.alloc (| Value.Tuple [] |)
+                                M.alloc (| Ty.tuple [], Value.Tuple [] |)
                               |)
                             |)
                           |)))
@@ -6567,6 +6785,7 @@ Module Impl_subtle_ConstantTimeGreater_for_u64.
               |)
             |) in
           M.alloc (|
+            Ty.path "subtle::Choice",
             M.call_closure (|
               Ty.path "subtle::Choice",
               M.get_trait_method (|
@@ -6608,8 +6827,8 @@ Module ConstantTimeLess.
     match ε, τ, α with
     | [], [], [ self; other ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let other := M.alloc (| other |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
+        let other := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], other |) in
         M.call_closure (|
           Ty.path "subtle::Choice",
           M.get_trait_method (|

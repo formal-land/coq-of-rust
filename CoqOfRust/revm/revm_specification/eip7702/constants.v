@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module eip7702.
   Module constants.
     Definition value_PER_AUTH_BASE_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2500 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 2500 |))).
     
     Global Instance Instance_IsConstant_value_PER_AUTH_BASE_COST :
       M.IsFunction.C
@@ -18,7 +18,7 @@ Module eip7702.
         (τ : list Ty.t)
         (α : list Value.t)
         : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 25000 |))).
     
     Global Instance Instance_IsConstant_value_PER_EMPTY_ACCOUNT_COST :
       M.IsFunction.C

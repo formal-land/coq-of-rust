@@ -85,8 +85,16 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.read (|
             let~ names :
                 Ty.apply
@@ -104,6 +112,10 @@ Module interpreter.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 9 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                       Value.Array
                         [
                           mk_str (| "bytecode" |);
@@ -141,6 +153,11 @@ Module interpreter.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 9 ]
+                          [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::fmt::Debug::Trait", []) ] ]
+                          ],
                         Value.Array
                           [
                             (* Unsize *)
@@ -271,6 +288,17 @@ Module interpreter.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.associated_in_trait
+                                            "revm_interpreter::interpreter_types::InterpreterTypes"
+                                            []
+                                            []
+                                            WIRE
+                                            "Extend"
+                                        ],
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.SubPointer.get_struct_record_field (|
@@ -289,6 +317,10 @@ Module interpreter.
                   |)
                 |)) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
@@ -334,8 +366,15 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ WIRE ] ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_interpreter::interpreter::Interpreter"
             []
             [ WIRE ]
@@ -737,17 +776,26 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ memory; bytecode; inputs; is_static; is_eof_init; spec_id; gas_limit ] =>
         ltac:(M.monadic
-          (let memory := M.alloc (| memory |) in
-          let bytecode := M.alloc (| bytecode |) in
-          let inputs := M.alloc (| inputs |) in
-          let is_static := M.alloc (| is_static |) in
-          let is_eof_init := M.alloc (| is_eof_init |) in
-          let spec_id := M.alloc (| spec_id |) in
-          let gas_limit := M.alloc (| gas_limit |) in
+          (let memory :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "alloc::rc::Rc")
+                []
+                [ Ty.apply (Ty.path "core::cell::RefCell") [] [ MG ]; Ty.path "alloc::alloc::Global"
+                ],
+              memory
+            |) in
+          let bytecode := M.alloc (| Ty.path "revm_bytecode::bytecode::Bytecode", bytecode |) in
+          let inputs :=
+            M.alloc (| Ty.path "revm_interpreter::interpreter::input::InputsImpl", inputs |) in
+          let is_static := M.alloc (| Ty.path "bool", is_static |) in
+          let is_eof_init := M.alloc (| Ty.path "bool", is_eof_init |) in
+          let spec_id := M.alloc (| Ty.path "revm_specification::hardfork::SpecId", spec_id |) in
+          let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
           M.read (|
             let~ runtime_flag :
                 Ty.path "revm_interpreter::interpreter::runtime_flags::RuntimeFlags" :=
-              Value.StructRecord
+              Value.mkStructRecord
                 "revm_interpreter::interpreter::runtime_flags::RuntimeFlags"
                 []
                 []
@@ -768,7 +816,12 @@ Module interpreter.
                   ("is_eof_init", M.read (| is_eof_init |))
                 ] in
             M.alloc (|
-              Value.StructRecord
+              Ty.apply
+                (Ty.path "revm_interpreter::interpreter::Interpreter")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::interpreter::EthInterpreter") [] [ EXT; MG ]
+                ],
+              Value.mkStructRecord
                 "revm_interpreter::interpreter::Interpreter"
                 []
                 [ Ty.apply (Ty.path "revm_interpreter::interpreter::EthInterpreter") [] [ EXT; MG ]
@@ -998,8 +1051,20 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::interpreter::EthInstructionProvider")
+                    []
+                    [ WIRE; HOST ]
+                ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_interpreter::interpreter::EthInstructionProvider"
             []
             [ WIRE; HOST ]
@@ -1111,8 +1176,25 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ _context ] =>
         ltac:(M.monadic
-          (let _context := M.alloc (| _context |) in
-          Value.StructRecord
+          (let _context :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.associated_in_trait
+                    "revm_interpreter::interpreter::InstructionProvider"
+                    []
+                    []
+                    (Ty.apply
+                      (Ty.path "revm_interpreter::interpreter::EthInstructionProvider")
+                      []
+                      [ WIRE; HOST ])
+                    "Host"
+                ],
+              _context
+            |) in
+          Value.mkStructRecord
             "revm_interpreter::interpreter::EthInstructionProvider"
             []
             [ WIRE; HOST ]
@@ -1218,7 +1300,19 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::interpreter::EthInstructionProvider")
+                    []
+                    [ WIRE; HOST ]
+                ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
@@ -1365,9 +1459,86 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self; interpreter; host ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let interpreter := M.alloc (| interpreter |) in
-          let host := M.alloc (| host |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ IW ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])
+                ],
+              self
+            |) in
+          let interpreter :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "revm_interpreter::interpreter::Interpreter")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_interpreter::table::CustomInstruction"
+                        []
+                        []
+                        (Ty.function
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                  []
+                                  [ IW ]
+                              ];
+                            Ty.apply (Ty.path "&mut") [] [ H ]
+                          ]
+                          (Ty.tuple []))
+                        "Wire"
+                    ]
+                ],
+              interpreter
+            |) in
+          let host :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [
+                  Ty.associated_in_trait
+                    "revm_interpreter::table::CustomInstruction"
+                    []
+                    []
+                    (Ty.function
+                      [
+                        Ty.apply
+                          (Ty.path "&mut")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "revm_interpreter::interpreter::Interpreter")
+                              []
+                              [ IW ]
+                          ];
+                        Ty.apply (Ty.path "&mut") [] [ H ]
+                      ]
+                      (Ty.tuple []))
+                    "Host"
+                ],
+              host
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1378,7 +1549,7 @@ Module interpreter.
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| host |) |) |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1393,7 +1564,67 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ instruction ] =>
         ltac:(M.monadic
-          (let instruction := M.alloc (| instruction |) in
+          (let instruction :=
+            M.alloc (|
+              Ty.function
+                [
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "revm_interpreter::interpreter::Interpreter")
+                        []
+                        [
+                          Ty.associated_in_trait
+                            "revm_interpreter::table::CustomInstruction"
+                            []
+                            []
+                            (Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                      []
+                                      [ IW ]
+                                  ];
+                                Ty.apply (Ty.path "&mut") [] [ H ]
+                              ]
+                              (Ty.tuple []))
+                            "Wire"
+                        ]
+                    ];
+                  Ty.apply
+                    (Ty.path "&mut")
+                    []
+                    [
+                      Ty.associated_in_trait
+                        "revm_interpreter::table::CustomInstruction"
+                        []
+                        []
+                        (Ty.function
+                          [
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "revm_interpreter::interpreter::Interpreter")
+                                  []
+                                  [ IW ]
+                              ];
+                            Ty.apply (Ty.path "&mut") [] [ H ]
+                          ]
+                          (Ty.tuple []))
+                        "Host"
+                    ]
+                ]
+                (Ty.tuple []),
+              instruction
+            |) in
           M.read (| instruction |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1440,9 +1671,23 @@ Module interpreter.
       match ε, τ, α with
       | [], [ FN; H ], [ self; instruction_table; host ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let instruction_table := M.alloc (| instruction_table |) in
-          let host := M.alloc (| host |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ IW ] ],
+              self
+            |) in
+          let instruction_table :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ FN ] ],
+              instruction_table
+            |) in
+          let host := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], host |) in
           M.read (|
             let~ opcode : Ty.path "u8" :=
               M.call_closure (|
@@ -1502,6 +1747,7 @@ Module interpreter.
                 ]
               |) in
             M.alloc (|
+              Ty.tuple [],
               M.call_closure (|
                 Ty.tuple [],
                 M.get_trait_method (|
@@ -1574,13 +1820,28 @@ Module interpreter.
       match ε, τ, α with
       | [], [ FN; H ], [ self; instruction_table; host ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let instruction_table := M.alloc (| instruction_table |) in
-          let host := M.alloc (| host |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "revm_interpreter::interpreter::Interpreter") [] [ IW ] ],
+              self
+            |) in
+          let instruction_table :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ FN ] ],
+              instruction_table
+            |) in
+          let host := M.alloc (| Ty.apply (Ty.path "&mut") [] [ H ], host |) in
           M.read (|
             M.catch_return (Ty.path "revm_interpreter::interpreter_action::InterpreterAction") (|
               ltac:(M.monadic
                 (M.alloc (|
+                  Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
                   M.read (|
                     let~ _ : Ty.tuple [] :=
                       M.call_closure (|
@@ -1627,13 +1888,14 @@ Module interpreter.
                           ltac:(M.monadic
                             (M.match_operator (|
                               Ty.tuple [],
-                              M.alloc (| Value.Tuple [] |),
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
+                                          Ty.path "bool",
                                           M.call_closure (|
                                             Ty.path "bool",
                                             M.get_associated_function (|
@@ -1707,15 +1969,16 @@ Module interpreter.
                                           |)
                                         ]
                                       |) in
-                                    M.alloc (| Value.Tuple [] |)));
+                                    M.alloc (| Ty.tuple [], Value.Tuple [] |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
+                                      Ty.tuple [],
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
                                             M.never_to_any (| M.read (| M.break (||) |) |) in
-                                          M.alloc (| Value.Tuple [] |)
+                                          M.alloc (| Ty.tuple [], Value.Tuple [] |)
                                         |)
                                       |)
                                     |)))
@@ -1756,13 +2019,14 @@ Module interpreter.
                       M.read (|
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         M.get_associated_function (|
@@ -1781,22 +2045,24 @@ Module interpreter.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (| M.return_ (| M.read (| action |) |) |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)
                       |) in
                     M.alloc (|
-                      Value.StructRecord
+                      Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
+                      Value.mkStructRecord
                         "revm_interpreter::interpreter_action::InterpreterAction::Return"
                         []
                         []
                         [
                           ("result",
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "revm_interpreter::interpreter::InterpreterResult"
                               []
                               []
@@ -1914,8 +2180,15 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
+          Value.mkStructRecord
             "revm_interpreter::interpreter::InterpreterResult"
             []
             []
@@ -2025,8 +2298,16 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2082,6 +2363,7 @@ Module interpreter.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -2128,8 +2410,22 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              other
+            |) in
           LogicalOp.and (|
             LogicalOp.and (|
               M.call_closure (|
@@ -2250,7 +2546,14 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
           M.read (|
             M.match_operator (|
               Ty.tuple [],
@@ -2267,7 +2570,10 @@ Module interpreter.
                             (M.match_operator (|
                               Ty.tuple [],
                               Value.DeclaredButUndefined,
-                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
+                              ]
                             |)))
                       ]
                     |)))
@@ -2303,10 +2609,14 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ result; output; gas ] =>
         ltac:(M.monadic
-          (let result := M.alloc (| result |) in
-          let output := M.alloc (| output |) in
-          let gas := M.alloc (| gas |) in
-          Value.StructRecord
+          (let result :=
+            M.alloc (|
+              Ty.path "revm_interpreter::instruction_result::InstructionResult",
+              result
+            |) in
+          let output := M.alloc (| Ty.path "alloy_primitives::bytes_::Bytes", output |) in
+          let gas := M.alloc (| Ty.path "revm_interpreter::gas::Gas", gas |) in
+          Value.mkStructRecord
             "revm_interpreter::interpreter::InterpreterResult"
             []
             []
@@ -2331,7 +2641,14 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -2366,7 +2683,14 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|
@@ -2402,7 +2726,14 @@ Module interpreter.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.path "revm_interpreter::interpreter::InterpreterResult" ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             M.get_associated_function (|

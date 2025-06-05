@@ -20,8 +20,16 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ] ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -44,6 +52,10 @@ Module future.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_tuple_field (|
@@ -80,7 +92,14 @@ Module future.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ] ],
+                self
+              |) in
             Value.StructTuple
               "core::future::ready::Ready"
               []
@@ -156,8 +175,24 @@ Module future.
         match ε, τ, α with
         | [], [], [ self; _cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let _cx := M.alloc (| _cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ] ]
+                  ],
+                self
+              |) in
+            let _cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                _cx
+              |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               []
@@ -250,7 +285,8 @@ Module future.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.apply (Ty.path "core::future::ready::Ready") [] [ T ], self |) in
             M.call_closure (|
               T,
               M.get_associated_function (|
@@ -288,7 +324,7 @@ Module future.
       match ε, τ, α with
       | [], [ T ], [ t ] =>
         ltac:(M.monadic
-          (let t := M.alloc (| t |) in
+          (let t := M.alloc (| T, t |) in
           Value.StructTuple
             "core::future::ready::Ready"
             []

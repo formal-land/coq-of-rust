@@ -304,3 +304,4 @@ Module Impl_InterpreterAction.
        general fix. *)
   Admitted.
 End Impl_InterpreterAction.
+Export Impl_InterpreterAction.

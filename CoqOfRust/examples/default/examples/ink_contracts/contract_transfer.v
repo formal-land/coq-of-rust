@@ -56,7 +56,11 @@ Module Impl_core_clone_Clone_for_contract_transfer_AccountId.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "contract_transfer::AccountId" ],
+            self
+          |) in
         M.read (|
           M.match_operator (|
             Ty.path "contract_transfer::AccountId",
@@ -110,7 +114,8 @@ Module Impl_contract_transfer_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_transfer::Env" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -134,7 +139,8 @@ Module Impl_contract_transfer_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_transfer::Env" ], self |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -158,9 +164,10 @@ Module Impl_contract_transfer_Env.
     match ε, τ, α with
     | [], [], [ self; _to; _value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let _to := M.alloc (| _to |) in
-        let _value := M.alloc (| _value |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "contract_transfer::Env" ], self |) in
+        let _to := M.alloc (| Ty.path "contract_transfer::AccountId", _to |) in
+        let _value := M.alloc (| Ty.path "u128", _value |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -184,7 +191,8 @@ Module Impl_contract_transfer_Env.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_transfer::Env" ], self |) in
         M.never_to_any (|
           M.call_closure (|
             Ty.path "never",
@@ -244,7 +252,8 @@ Module Impl_contract_transfer_GiveMe.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_transfer::GiveMe" ], self |) in
         M.call_closure (|
           Ty.path "contract_transfer::Env",
           M.get_associated_function (| Ty.path "contract_transfer::GiveMe", "init_env", [], [] |),
@@ -292,8 +301,12 @@ Module Impl_contract_transfer_GiveMe.
     match ε, τ, α with
     | [], [], [ self; value ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
-        let value := M.alloc (| value |) in
+        (let self :=
+          M.alloc (|
+            Ty.apply (Ty.path "&mut") [] [ Ty.path "contract_transfer::GiveMe" ],
+            self
+          |) in
+        let value := M.alloc (| Ty.path "u128", value |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -317,6 +330,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "requested value: " |); mk_str (| "
 " |) ]
                               |)
@@ -329,6 +346,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -355,7 +376,7 @@ Module Impl_contract_transfer_GiveMe.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -379,6 +400,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "contract balance: " |); mk_str (| "
 " |) ]
                               |)
@@ -391,6 +416,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -408,6 +437,7 @@ Module Impl_contract_transfer_GiveMe.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.path "u128",
                                                 M.call_closure (|
                                                   Ty.path "u128",
                                                   M.get_associated_function (|
@@ -420,6 +450,7 @@ Module Impl_contract_transfer_GiveMe.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.path "contract_transfer::Env",
                                                         M.call_closure (|
                                                           Ty.path "contract_transfer::Env",
                                                           M.get_associated_function (|
@@ -454,19 +485,20 @@ Module Impl_contract_transfer_GiveMe.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -485,6 +517,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.path "contract_transfer::Env",
                                           M.call_closure (|
                                             Ty.path "contract_transfer::Env",
                                             M.get_associated_function (|
@@ -510,6 +543,7 @@ Module Impl_contract_transfer_GiveMe.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -522,19 +556,20 @@ Module Impl_contract_transfer_GiveMe.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -550,6 +585,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.tuple [] ],
                                 M.call_closure (|
                                   Ty.apply
                                     (Ty.path "core::result::Result")
@@ -565,6 +604,7 @@ Module Impl_contract_transfer_GiveMe.
                                     M.borrow (|
                                       Pointer.Kind.MutRef,
                                       M.alloc (|
+                                        Ty.path "contract_transfer::Env",
                                         M.call_closure (|
                                           Ty.path "contract_transfer::Env",
                                           M.get_associated_function (|
@@ -594,6 +634,7 @@ Module Impl_contract_transfer_GiveMe.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.path "contract_transfer::Env",
                                             M.call_closure (|
                                               Ty.path "contract_transfer::Env",
                                               M.get_associated_function (|
@@ -623,6 +664,7 @@ Module Impl_contract_transfer_GiveMe.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
+                    Ty.tuple [],
                     M.never_to_any (|
                       M.call_closure (|
                         Ty.path "never",
@@ -639,7 +681,7 @@ Module Impl_contract_transfer_GiveMe.
                       |)
                     |)
                   |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -660,7 +702,8 @@ Module Impl_contract_transfer_GiveMe.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self :=
+          M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "contract_transfer::GiveMe" ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -684,6 +727,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array [ mk_str (| "received payment: " |); mk_str (| "
 " |) ]
                               |)
@@ -696,6 +743,10 @@ Module Impl_contract_transfer_GiveMe.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 1 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -713,6 +764,7 @@ Module Impl_contract_transfer_GiveMe.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.path "u128",
                                                 M.call_closure (|
                                                   Ty.path "u128",
                                                   M.get_associated_function (|
@@ -725,6 +777,7 @@ Module Impl_contract_transfer_GiveMe.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.path "contract_transfer::Env",
                                                         M.call_closure (|
                                                           Ty.path "contract_transfer::Env",
                                                           M.get_associated_function (|
@@ -759,19 +812,20 @@ Module Impl_contract_transfer_GiveMe.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             UnOp.not (|
                               M.call_closure (|
                                 Ty.path "bool",
@@ -789,6 +843,7 @@ Module Impl_contract_transfer_GiveMe.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.path "contract_transfer::Env",
                                           M.call_closure (|
                                             Ty.path "contract_transfer::Env",
                                             M.get_associated_function (|
@@ -815,6 +870,7 @@ Module Impl_contract_transfer_GiveMe.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.tuple [],
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
@@ -827,11 +883,11 @@ Module Impl_contract_transfer_GiveMe.
                           |)
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                 ]
               |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

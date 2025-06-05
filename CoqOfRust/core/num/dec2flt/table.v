@@ -9,7 +9,7 @@ Module num.
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
+        ltac:(M.monadic (M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 (-342) |))).
       
       Global Instance Instance_IsConstant_value_SMALLEST_POWER_OF_FIVE :
         M.IsFunction.C
@@ -23,7 +23,7 @@ Module num.
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
+        ltac:(M.monadic (M.alloc (| Ty.path "i32", Value.Integer IntegerKind.I32 308 |))).
       
       Global Instance Instance_IsConstant_value_LARGEST_POWER_OF_FIVE :
         M.IsFunction.C
@@ -35,6 +35,7 @@ Module num.
       Definition value_N_POWERS_OF_FIVE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.path "usize",
             M.cast
               (Ty.path "usize")
               (M.call_closure (|
@@ -76,7 +77,18 @@ Module num.
           : M :=
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "array")
+              [
+                M.unevaluated_const
+                  (mk_str (| "core_num_dec2flt_table_POWER_OF_FIVE_128_discriminant" |))
+              ]
+              [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
             M.alloc (|
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 651 ]
+                [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ],
               Value.Array
                 [
                   Value.Tuple

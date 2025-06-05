@@ -33,8 +33,8 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [ gas_limit ] =>
           ltac:(M.monadic
-            (let gas_limit := M.alloc (| gas_limit |) in
-            Value.StructRecord
+            (let gas_limit := M.alloc (| Ty.path "u64", gas_limit |) in
+            Value.mkStructRecord
               "revm_interpreter::interpreter::loop_control::LoopControl"
               []
               []
@@ -83,8 +83,19 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [ self; result ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let result := M.alloc (| result |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter::loop_control::LoopControl" ],
+                self
+              |) in
+            let result :=
+              M.alloc (|
+                Ty.path "revm_interpreter::instruction_result::InstructionResult",
+                result
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -95,7 +106,7 @@ Module interpreter.
                   |),
                   M.read (| result |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -110,9 +121,24 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [ self; action; result ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let action := M.alloc (| action |) in
-            let result := M.alloc (| result |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter::loop_control::LoopControl" ],
+                self
+              |) in
+            let action :=
+              M.alloc (|
+                Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
+                action
+              |) in
+            let result :=
+              M.alloc (|
+                Ty.path "revm_interpreter::instruction_result::InstructionResult",
+                result
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.write (|
@@ -132,7 +158,7 @@ Module interpreter.
                   |),
                   M.read (| result |)
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -146,7 +172,14 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter::loop_control::LoopControl" ],
+                self
+              |) in
             M.borrow (|
               Pointer.Kind.MutRef,
               M.deref (|
@@ -177,7 +210,14 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter::loop_control::LoopControl" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -197,7 +237,14 @@ Module interpreter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "revm_interpreter::interpreter::loop_control::LoopControl" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "revm_interpreter::interpreter_action::InterpreterAction",
               M.get_function (|

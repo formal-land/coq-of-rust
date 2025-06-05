@@ -10,8 +10,8 @@ Definition add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ a; b ] =>
     ltac:(M.monadic
-      (let a := M.alloc (| a |) in
-      let b := M.alloc (| b |) in
+      (let a := M.alloc (| Ty.path "i32", a |) in
+      let b := M.alloc (| Ty.path "i32", b |) in
       M.call_closure (| Ty.path "i32", BinOp.Wrap.add, [ M.read (| a |); M.read (| b |) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -33,20 +33,21 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [ a; b ] =>
     ltac:(M.monadic
-      (let a := M.alloc (| a |) in
-      let b := M.alloc (| b |) in
+      (let a := M.alloc (| Ty.path "i32", a |) in
+      let b := M.alloc (| Ty.path "i32", b |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
               Ty.tuple [],
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (| Ty.tuple [], Value.Tuple [] |),
               [
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
                       M.use
                         (M.alloc (|
+                          Ty.path "bool",
                           M.call_closure (|
                             Ty.path "bool",
                             BinOp.eq,
@@ -55,6 +56,7 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |)) in
                     let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
+                      Ty.tuple [],
                       M.never_to_any (|
                         M.call_closure (|
                           Ty.path "never",
@@ -67,11 +69,12 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         |)
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
               ]
             |)
           |) in
         M.alloc (|
+          Ty.path "i32",
           M.call_closure (| Ty.path "i32", BinOp.Wrap.div, [ M.read (| a |); M.read (| b |) ] |)
         |)
       |)))

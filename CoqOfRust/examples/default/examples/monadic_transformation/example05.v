@@ -21,7 +21,7 @@ Module Impl_example05_Foo.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.path "example05::Foo", self |) in
         M.call_closure (|
           Ty.path "u32",
           BinOp.Wrap.add,
@@ -57,7 +57,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.get_associated_function (| Ty.path "example05::Foo", "plus1", [], [] |),
             [ M.read (| foo |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

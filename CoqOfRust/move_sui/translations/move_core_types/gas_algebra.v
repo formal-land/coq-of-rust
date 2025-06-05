@@ -104,8 +104,15 @@ Module gas_algebra.
         match ε, τ, α with
         | [], [ __S ], [ self; __serializer ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let __serializer := M.alloc (| __serializer |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+                self
+              |) in
+            let __serializer := M.alloc (| __S, __serializer |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -117,6 +124,13 @@ Module gas_algebra.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                        Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                      ],
                     M.read (|
                       let~ __serde_state :
                           Ty.associated_in_trait
@@ -134,6 +148,18 @@ Module gas_algebra.
                               __S
                               "SerializeStruct",
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.associated_in_trait
+                                    "serde::ser::Serializer"
+                                    []
+                                    []
+                                    __S
+                                    "SerializeStruct";
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -191,7 +217,16 @@ Module gas_algebra.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "SerializeStruct",
+                                      γ0_0
+                                    |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -201,8 +236,23 @@ Module gas_algebra.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.associated_in_trait
+                                      "serde::ser::Serializer"
+                                      []
+                                      []
+                                      __S
+                                      "SerializeStruct",
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -236,6 +286,13 @@ Module gas_algebra.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -294,7 +351,7 @@ Module gas_algebra.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -304,8 +361,18 @@ Module gas_algebra.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -339,6 +406,13 @@ Module gas_algebra.
                           M.match_operator (|
                             Ty.tuple [],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
@@ -397,7 +471,7 @@ Module gas_algebra.
                                       "core::result::Result::Ok",
                                       0
                                     |) in
-                                  let __val := M.copy (| γ0_0 |) in
+                                  let __val := M.copy (| Ty.tuple [], γ0_0 |) in
                                   __val));
                               fun γ =>
                                 ltac:(M.monadic
@@ -407,8 +481,18 @@ Module gas_algebra.
                                       "core::result::Result::Err",
                                       0
                                     |) in
-                                  let __err := M.copy (| γ0_0 |) in
+                                  let __err :=
+                                    M.copy (|
+                                      Ty.associated_in_trait
+                                        "serde::ser::Serializer"
+                                        []
+                                        []
+                                        __S
+                                        "Error",
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -438,6 +522,13 @@ Module gas_algebra.
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Ok";
+                            Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -489,7 +580,7 @@ Module gas_algebra.
         match ε, τ, α with
         | [], [ __D ], [ __deserializer ] =>
           ltac:(M.monadic
-            (let __deserializer := M.alloc (| __deserializer |) in
+            (let __deserializer := M.alloc (| __D, __deserializer |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -529,7 +620,7 @@ Module gas_algebra.
                       ]
                   |)
                 |);
-                Value.StructRecord
+                Value.mkStructRecord
                   "move_core_types::gas_algebra::_'1::deserialize::__Visitor"
                   []
                   [ U ]
@@ -640,6 +731,10 @@ Module gas_algebra.
   Definition value_BOX_ABSTRACT_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+          []
+          [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
         M.call_closure (|
           Ty.apply
             (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -670,6 +765,10 @@ Module gas_algebra.
       : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+          []
+          [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
         M.call_closure (|
           Ty.apply
             (Ty.path "move_core_types::gas_algebra::GasQuantity")
@@ -712,8 +811,8 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ val ] =>
         ltac:(M.monadic
-          (let val := M.alloc (| val |) in
-          Value.StructRecord
+          (let val := M.alloc (| Ty.path "u64", val |) in
+          Value.mkStructRecord
             "move_core_types::gas_algebra::GasQuantity"
             []
             [ U ]
@@ -798,7 +897,14 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.path "bool",
             BinOp.eq,
@@ -831,8 +937,22 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], [], "cmp", [], [] |),
@@ -878,8 +998,16 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::option::Option")
@@ -949,8 +1077,16 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              other
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_trait_method (|
@@ -1008,13 +1144,22 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.read (|
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (|
@@ -1026,7 +1171,7 @@ Module gas_algebra.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Integer IntegerKind.U64 0 |)
+                          M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)
                         |)
                       ]
                   |),
@@ -1035,17 +1180,20 @@ Module gas_algebra.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.eq,
@@ -1061,6 +1209,7 @@ Module gas_algebra.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -1070,6 +1219,7 @@ Module gas_algebra.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -1108,13 +1258,14 @@ Module gas_algebra.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               M.call_closure (|
                 Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                 M.get_associated_function (|
@@ -1178,7 +1329,11 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
             M.get_associated_function (|
@@ -1242,7 +1397,11 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [ T ], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
             M.get_associated_function (|
@@ -1310,8 +1469,26 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [ T ], [ self; params ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let params := M.alloc (| params |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
+          let params :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.associated_in_trait
+                    "move_core_types::gas_algebra::ToUnitWithParams"
+                    []
+                    [ T ]
+                    U
+                    "Params"
+                ],
+              params
+            |) in
           M.read (|
             let~ multiplier : Ty.path "u64" :=
               M.call_closure (|
@@ -1332,12 +1509,17 @@ Module gas_algebra.
                 M.match_operator (|
                   Ty.tuple [],
                   M.alloc (|
+                    Ty.tuple
+                      [
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ];
+                        Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                      ],
                     Value.Tuple
                       [
                         M.borrow (| Pointer.Kind.Ref, multiplier |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Integer IntegerKind.U64 0 |)
+                          M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)
                         |)
                       ]
                   |),
@@ -1346,17 +1528,20 @@ Module gas_algebra.
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                        let left_val := M.copy (| γ0_0 |) in
-                        let right_val := M.copy (| γ0_1 |) in
+                        let left_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_0 |) in
+                        let right_val :=
+                          M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_1 |) in
                         M.match_operator (|
                           Ty.tuple [],
-                          M.alloc (| Value.Tuple [] |),
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |),
                           [
                             fun γ =>
                               ltac:(M.monadic
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
+                                      Ty.path "bool",
                                       M.call_closure (|
                                         Ty.path "bool",
                                         BinOp.eq,
@@ -1372,6 +1557,7 @@ Module gas_algebra.
                                     Value.Bool true
                                   |) in
                                 M.alloc (|
+                                  Ty.tuple [],
                                   M.never_to_any (|
                                     M.read (|
                                       let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -1381,6 +1567,7 @@ Module gas_algebra.
                                           []
                                           [] in
                                       M.alloc (|
+                                        Ty.path "never",
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (|
@@ -1419,13 +1606,14 @@ Module gas_algebra.
                                     |)
                                   |)
                                 |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                           ]
                         |)))
                   ]
                 |)
               |) in
             M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               M.call_closure (|
                 Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                 M.get_associated_function (|
@@ -1484,12 +1672,31 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [ T ], [ self; params ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let params := M.alloc (| params |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
+          let params :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.associated_in_trait
+                    "move_core_types::gas_algebra::ToUnitFractionalWithParams"
+                    []
+                    [ T ]
+                    U
+                    "Params"
+                ],
+              params
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               M.alloc (|
+                Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                   M.get_trait_method (|
@@ -1509,9 +1716,10 @@ Module gas_algebra.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let n := M.copy (| γ0_0 |) in
-                    let d := M.copy (| γ0_1 |) in
+                    let n := M.copy (| Ty.path "u64", γ0_0 |) in
+                    let d := M.copy (| Ty.path "u64", γ0_1 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                       M.call_closure (|
                         Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                         M.get_associated_function (|
@@ -1580,12 +1788,31 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [ T ], [ self; params ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let params := M.alloc (| params |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
+          let params :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.associated_in_trait
+                    "move_core_types::gas_algebra::ToUnitFractionalWithParams"
+                    []
+                    [ T ]
+                    U
+                    "Params"
+                ],
+              params
+            |) in
           M.read (|
             M.match_operator (|
               Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
               M.alloc (|
+                Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                 M.call_closure (|
                   Ty.tuple [ Ty.path "u64"; Ty.path "u64" ],
                   M.get_trait_method (|
@@ -1605,9 +1832,10 @@ Module gas_algebra.
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let n := M.copy (| γ0_0 |) in
-                    let d := M.copy (| γ0_1 |) in
+                    let n := M.copy (| Ty.path "u64", γ0_0 |) in
+                    let d := M.copy (| Ty.path "u64", γ0_1 |) in
                     M.alloc (|
+                      Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                       M.call_closure (|
                         Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ T ],
                         M.get_associated_function (|
@@ -1669,7 +1897,7 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ val ] =>
         ltac:(M.monadic
-          (let val := M.alloc (| val |) in
+          (let val := M.alloc (| Ty.path "u64", val |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
@@ -1706,7 +1934,11 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ gas ] =>
         ltac:(M.monadic
-          (let gas := M.alloc (| gas |) in
+          (let gas :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              gas
+            |) in
           M.read (|
             M.SubPointer.get_struct_record_field (|
               gas,
@@ -1742,7 +1974,14 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
@@ -1802,8 +2041,16 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1824,7 +2071,16 @@ Module gas_algebra.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                          Value.Array [ mk_str (| "" |) ]
+                        |)
+                      |)
                     |)
                   |);
                   M.borrow (|
@@ -1833,6 +2089,10 @@ Module gas_algebra.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 1 ]
+                            [ Ty.path "core::fmt::rt::Argument" ],
                           Value.Array
                             [
                               M.call_closure (|
@@ -1895,8 +2155,16 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1920,6 +2188,10 @@ Module gas_algebra.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                           Value.Array [ mk_str (| "" |); mk_str (| " (" |); mk_str (| ")" |) ]
                         |)
                       |)
@@ -1931,6 +2203,10 @@ Module gas_algebra.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 2 ]
+                            [ Ty.path "core::fmt::rt::Argument" ],
                           Value.Array
                             [
                               M.call_closure (|
@@ -1972,6 +2248,7 @@ Module gas_algebra.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
+                                          Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                           M.call_closure (|
                                             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                             M.get_function (| "core::any::type_name", [], [ U ] |),
@@ -2020,12 +2297,27 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              other
+            |) in
           M.read (|
             M.match_operator (|
               Ty.path "bool",
               M.alloc (|
+                Ty.path "core::cmp::Ordering",
                 M.call_closure (|
                   Ty.path "core::cmp::Ordering",
                   M.get_associated_function (|
@@ -2044,8 +2336,8 @@ Module gas_algebra.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Ty.path "bool", Value.Bool true |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Ty.path "bool", Value.Bool false |)))
               ]
             |)
           |)))
@@ -2091,8 +2383,22 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              other
+            |) in
           Value.StructTuple
             "core::option::Option::Some"
             []
@@ -2143,8 +2449,22 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let other :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              other
+            |) in
           M.call_closure (|
             Ty.path "core::cmp::Ordering",
             M.get_associated_function (|
@@ -2189,8 +2509,16 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              rhs
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
             M.get_associated_function (|
@@ -2251,8 +2579,19 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ] ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U ],
+              rhs
+            |) in
           M.write (|
             M.deref (| M.read (| self |) |),
             M.call_closure (|
@@ -2293,8 +2632,19 @@ Module gas_algebra.
     match ε, τ, α with
     | [], [ U1; U2 ], [ x; y ] =>
       ltac:(M.monadic
-        (let x := M.alloc (| x |) in
-        let y := M.alloc (| y |) in
+        (let x :=
+          M.alloc (|
+            Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U2 ],
+            x
+          |) in
+        let y :=
+          M.alloc (|
+            Ty.apply
+              (Ty.path "move_core_types::gas_algebra::GasQuantity")
+              []
+              [ Ty.apply (Ty.path "move_core_types::gas_algebra::UnitDiv") [] [ U1; U2 ] ],
+            y
+          |) in
         M.call_closure (|
           Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
           M.get_associated_function (|
@@ -2352,8 +2702,19 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U2 ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::UnitDiv") [] [ U1; U2 ] ],
+              rhs
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
             M.get_function (| "move_core_types::gas_algebra::mul_impl", [], [ U1; U2 ] |),
@@ -2400,8 +2761,19 @@ Module gas_algebra.
       match ε, τ, α with
       | [], [], [ self; rhs ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let rhs := M.alloc (| rhs |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                []
+                [ Ty.apply (Ty.path "move_core_types::gas_algebra::UnitDiv") [] [ U1; U2 ] ],
+              self
+            |) in
+          let rhs :=
+            M.alloc (|
+              Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U2 ],
+              rhs
+            |) in
           M.call_closure (|
             Ty.apply (Ty.path "move_core_types::gas_algebra::GasQuantity") [] [ U1 ],
             M.get_function (| "move_core_types::gas_algebra::mul_impl", [], [ U1; U2 ] |),
@@ -2439,19 +2811,27 @@ Module gas_algebra.
     match ε, τ, α with
     | [], [], [ val; nominator; denominator ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
-        let nominator := M.alloc (| nominator |) in
-        let denominator := M.alloc (| denominator |) in
+        (let val := M.alloc (| Ty.path "u64", val |) in
+        let nominator := M.alloc (| Ty.path "u64", nominator |) in
+        let denominator := M.alloc (| Ty.path "u64", denominator |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (| Pointer.Kind.Ref, nominator |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)
+                      |)
                     ]
                 |),
                 [
@@ -2459,17 +2839,20 @@ Module gas_algebra.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_1 |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -2482,6 +2865,7 @@ Module gas_algebra.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2491,6 +2875,7 @@ Module gas_algebra.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -2529,7 +2914,7 @@ Module gas_algebra.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
@@ -2540,10 +2925,18 @@ Module gas_algebra.
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (| Pointer.Kind.Ref, denominator |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)
+                      |)
                     ]
                 |),
                 [
@@ -2551,17 +2944,20 @@ Module gas_algebra.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_1 |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -2574,6 +2970,7 @@ Module gas_algebra.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2583,6 +2980,7 @@ Module gas_algebra.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -2621,7 +3019,7 @@ Module gas_algebra.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
@@ -2645,13 +3043,14 @@ Module gas_algebra.
             |) in
           M.match_operator (|
             Ty.path "u64",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.gt,
@@ -2667,7 +3066,9 @@ Module gas_algebra.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
-              fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
+              fun γ =>
+                ltac:(M.monadic
+                  (M.alloc (| Ty.path "u64", M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
         |)))
@@ -2699,19 +3100,27 @@ Module gas_algebra.
     match ε, τ, α with
     | [], [], [ val; nominator; denominator ] =>
       ltac:(M.monadic
-        (let val := M.alloc (| val |) in
-        let nominator := M.alloc (| nominator |) in
-        let denominator := M.alloc (| denominator |) in
+        (let val := M.alloc (| Ty.path "u64", val |) in
+        let nominator := M.alloc (| Ty.path "u64", nominator |) in
+        let denominator := M.alloc (| Ty.path "u64", denominator |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (| Pointer.Kind.Ref, nominator |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)
+                      |)
                     ]
                 |),
                 [
@@ -2719,17 +3128,20 @@ Module gas_algebra.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_1 |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -2742,6 +3154,7 @@ Module gas_algebra.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2751,6 +3164,7 @@ Module gas_algebra.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -2789,7 +3203,7 @@ Module gas_algebra.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
@@ -2800,10 +3214,18 @@ Module gas_algebra.
               M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ];
+                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                    ],
                   Value.Tuple
                     [
                       M.borrow (| Pointer.Kind.Ref, denominator |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 0 |)
+                      |)
                     ]
                 |),
                 [
@@ -2811,17 +3233,20 @@ Module gas_algebra.
                     ltac:(M.monadic
                       (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
+                      let left_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_0 |) in
+                      let right_val :=
+                        M.copy (| Ty.apply (Ty.path "&") [] [ Ty.path "u64" ], γ0_1 |) in
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.use
                                   (M.alloc (|
+                                    Ty.path "bool",
                                     M.call_closure (|
                                       Ty.path "bool",
                                       BinOp.eq,
@@ -2834,6 +3259,7 @@ Module gas_algebra.
                               let _ :=
                                 is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     let~ kind : Ty.path "core::panicking::AssertKind" :=
@@ -2843,6 +3269,7 @@ Module gas_algebra.
                                         []
                                         [] in
                                     M.alloc (|
+                                      Ty.path "never",
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (|
@@ -2881,7 +3308,7 @@ Module gas_algebra.
                                   |)
                                 |)
                               |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)))
                 ]
@@ -2910,13 +3337,14 @@ Module gas_algebra.
                 M.read (|
                   M.match_operator (|
                     Ty.path "u128",
-                    M.alloc (| Value.Tuple [] |),
+                    M.alloc (| Ty.tuple [], Value.Tuple [] |),
                     [
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
                             M.use
                               (M.alloc (|
+                                Ty.path "bool",
                                 M.call_closure (|
                                   Ty.path "bool",
                                   BinOp.eq,
@@ -2932,8 +3360,10 @@ Module gas_algebra.
                               |)) in
                           let _ :=
                             is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer IntegerKind.U128 0 |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |)))
+                          M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 0 |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (| Ty.path "u128", Value.Integer IntegerKind.U128 1 |)))
                     ]
                   |)
                 |)
@@ -2941,13 +3371,14 @@ Module gas_algebra.
             |) in
           M.match_operator (|
             Ty.path "u64",
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           BinOp.gt,
@@ -2963,7 +3394,9 @@ Module gas_algebra.
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
-              fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
+              fun γ =>
+                ltac:(M.monadic
+                  (M.alloc (| Ty.path "u64", M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
         |)))
@@ -2988,7 +3421,7 @@ Module gas_algebra.
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3007,6 +3440,7 @@ Module gas_algebra.
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.mul,
@@ -3031,6 +3465,7 @@ Module gas_algebra.
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.mul,
@@ -3060,7 +3495,7 @@ Module gas_algebra.
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3079,6 +3514,7 @@ Module gas_algebra.
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.mul,
@@ -3101,7 +3537,7 @@ Module gas_algebra.
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3118,12 +3554,12 @@ Module gas_algebra.
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
     Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3144,12 +3580,12 @@ Module gas_algebra.
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
     Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3170,13 +3606,14 @@ Module gas_algebra.
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
     Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.mul,
@@ -3203,12 +3640,12 @@ Module gas_algebra.
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
     Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3229,13 +3666,14 @@ Module gas_algebra.
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
     Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.mul,
@@ -3262,13 +3700,14 @@ Module gas_algebra.
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
     Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+      ltac:(M.monadic (M.alloc (| Ty.path "u64", Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024 * 1024; *)
     (* Ty.path "u64" *)
     Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.path "u64",
           M.call_closure (|
             Ty.path "u64",
             BinOp.Wrap.mul,

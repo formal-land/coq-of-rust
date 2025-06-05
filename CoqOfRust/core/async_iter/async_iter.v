@@ -14,7 +14,7 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
             Value.Tuple
               [
                 Value.Integer IntegerKind.Usize 0;
@@ -44,8 +44,19 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ] ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -138,7 +149,11 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&mut") [] [ S ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
@@ -199,8 +214,19 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self; cx ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let cx := M.alloc (| cx |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "core::pin::Pin")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ] ],
+                self
+              |) in
+            let cx :=
+              M.alloc (|
+                Ty.apply (Ty.path "&mut") [] [ Ty.path "core::task::wake::Context" ],
+                cx
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::task::poll::Poll")
@@ -262,7 +288,11 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ],
+                self
+              |) in
             M.call_closure (|
               Ty.tuple
                 [ Ty.path "usize"; Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
@@ -340,7 +370,7 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ t ] =>
           ltac:(M.monadic
-            (let t := M.alloc (| t |) in
+            (let t := M.alloc (| T, t |) in
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               []
@@ -369,6 +399,10 @@ Module async_iter.
         let Self : Ty.t := Self T in
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "core::task::poll::Poll")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
             Value.StructTuple
               "core::task::poll::Poll::Pending"
               []
@@ -396,6 +430,10 @@ Module async_iter.
         let Self : Ty.t := Self T in
         ltac:(M.monadic
           (M.alloc (|
+            Ty.apply
+              (Ty.path "core::task::poll::Poll")
+              []
+              [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ],
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               []
@@ -438,7 +476,7 @@ Module async_iter.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self := M.alloc (| I, self |) in
             M.read (| self |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

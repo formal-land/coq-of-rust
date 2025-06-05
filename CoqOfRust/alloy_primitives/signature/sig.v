@@ -6,6 +6,10 @@ Module signature.
     Definition value_SECP256K1N_ORDER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
+          Ty.apply
+            (Ty.path "ruint::Uint")
+            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+            [],
           M.call_closure (|
             Ty.apply
               (Ty.path "ruint::Uint")
@@ -66,7 +70,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.path "alloy_primitives::signature::sig::Signature",
@@ -114,8 +122,13 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; f ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let f := M.alloc (| f |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
+            let f :=
+              M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -171,6 +184,18 @@ Module signature.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "ruint::Uint")
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
+                                []
+                            ],
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.SubPointer.get_struct_record_field (|
@@ -205,8 +230,12 @@ Module signature.
         match ε, τ, α with
         | [], [ __H ], [ self; state ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let state := M.alloc (| state |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
+            let state := M.alloc (| Ty.apply (Ty.path "&mut") [] [ __H ], state |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -270,6 +299,7 @@ Module signature.
                   ]
                 |) in
               M.alloc (|
+                Ty.tuple [],
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_trait_method (|
@@ -335,8 +365,16 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
+            let other :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                other
+              |) in
             LogicalOp.and (|
               LogicalOp.and (|
                 M.call_closure (|
@@ -473,7 +511,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               M.match_operator (|
                 Ty.tuple [],
@@ -484,7 +526,7 @@ Module signature.
                       (M.match_operator (|
                         Ty.tuple [],
                         Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |))) ]
                       |)))
                 ]
               |)
@@ -520,7 +562,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ bytes ] =>
           ltac:(M.monadic
-            (let bytes := M.alloc (| bytes |) in
+            (let bytes :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                bytes
+              |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -538,18 +584,36 @@ Module signature.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "alloy_primitives::signature::sig::Signature";
+                        Ty.associated_in_trait
+                          "core::convert::TryFrom"
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                          ]
+                          (Ty.path "alloy_primitives::signature::sig::Signature")
+                          "Error"
+                      ],
                     M.read (|
                       let~ _ : Ty.tuple [] :=
                         M.read (|
                           M.match_operator (|
                             Ty.tuple [],
-                            M.alloc (| Value.Tuple [] |),
+                            M.alloc (| Ty.tuple [], Value.Tuple [] |),
                             [
                               fun γ =>
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
+                                        Ty.path "bool",
                                         M.call_closure (|
                                           Ty.path "bool",
                                           BinOp.ne,
@@ -579,6 +643,7 @@ Module signature.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
+                                    Ty.tuple [],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -601,11 +666,18 @@ Module signature.
                                       |)
                                     |)
                                   |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                             ]
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "alloy_primitives::signature::sig::Signature";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -654,7 +726,7 @@ Module signature.
                                           Pointer.Kind.Ref,
                                           M.deref (| M.read (| bytes |) |)
                                         |);
-                                        Value.StructRecord
+                                        Value.mkStructRecord
                                           "core::ops::range::RangeTo"
                                           []
                                           [ Ty.path "usize" ]
@@ -710,7 +782,7 @@ Module signature.
         match ε, τ, α with
         | [], [], [ s ] =>
           ltac:(M.monadic
-            (let s := M.alloc (| s |) in
+            (let s := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], s |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -727,6 +799,18 @@ Module signature.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "alloy_primitives::signature::sig::Signature";
+                        Ty.associated_in_trait
+                          "core::str::traits::FromStr"
+                          []
+                          []
+                          (Ty.path "alloy_primitives::signature::sig::Signature")
+                          "Err"
+                      ],
                     M.read (|
                       let~ bytes :
                           Ty.apply
@@ -740,6 +824,22 @@ Module signature.
                               []
                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "core::ops::control_flow::ControlFlow")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "const_hex::error::FromHexError"
+                                    ];
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::ops::control_flow::ControlFlow")
@@ -806,8 +906,22 @@ Module signature.
                                       "core::ops::control_flow::ControlFlow::Break",
                                       0
                                     |) in
-                                  let residual := M.copy (| γ0_0 |) in
+                                  let residual :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [
+                                          Ty.path "core::convert::Infallible";
+                                          Ty.path "const_hex::error::FromHexError"
+                                        ],
+                                      γ0_0
+                                    |) in
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "alloc::vec::Vec")
+                                      []
+                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
                                     M.never_to_any (|
                                       M.read (|
                                         M.return_ (|
@@ -860,12 +974,26 @@ Module signature.
                                       "core::ops::control_flow::ControlFlow::Continue",
                                       0
                                     |) in
-                                  let val := M.copy (| γ0_0 |) in
+                                  let val :=
+                                    M.copy (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                      γ0_0
+                                    |) in
                                   val))
                             ]
                           |)
                         |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.path "alloy_primitives::signature::sig::Signature";
+                            Ty.path "alloy_primitives::signature::error::SignatureError"
+                          ],
                         M.call_closure (|
                           Ty.apply
                             (Ty.path "core::result::Result")
@@ -949,7 +1077,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                value
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 65 ] [ Ty.path "u8" ],
               M.get_associated_function (|
@@ -986,7 +1118,8 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::signature::sig::Signature", value |) in
             M.call_closure (|
               Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 65 ] [ Ty.path "u8" ],
               M.get_associated_function (|
@@ -1022,7 +1155,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                value
+              |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -1040,6 +1177,10 @@ Module signature.
                   (M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 65 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -1083,7 +1224,8 @@ Module signature.
         match ε, τ, α with
         | [], [], [ value ] =>
           ltac:(M.monadic
-            (let value := M.alloc (| value |) in
+            (let value :=
+              M.alloc (| Ty.path "alloy_primitives::signature::sig::Signature", value |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "alloc::vec::Vec")
@@ -1101,6 +1243,10 @@ Module signature.
                   (M.borrow (|
                     Pointer.Kind.Ref,
                     M.alloc (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 65 ]
+                        [ Ty.path "u8" ],
                       M.call_closure (|
                         Ty.apply
                           (Ty.path "array")
@@ -1251,10 +1397,24 @@ Module signature.
         match ε, τ, α with
         | [], [], [ r; s; v ] =>
           ltac:(M.monadic
-            (let r := M.alloc (| r |) in
-            let s := M.alloc (| s |) in
-            let v := M.alloc (| v |) in
-            Value.StructRecord
+            (let r :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                r
+              |) in
+            let s :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                s
+              |) in
+            let v := M.alloc (| Ty.path "alloy_primitives::signature::parity::Parity", v |) in
+            Value.mkStructRecord
               "alloy_primitives::signature::sig::Signature"
               []
               []
@@ -1287,9 +1447,23 @@ Module signature.
         match ε, τ, α with
         | [], [ T; E ], [ r; s; parity ] =>
           ltac:(M.monadic
-            (let r := M.alloc (| r |) in
-            let s := M.alloc (| s |) in
-            let parity := M.alloc (| parity |) in
+            (let r :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                r
+              |) in
+            let s :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                  [ Value.Integer IntegerKind.Usize 32 ]
+                  [],
+                s
+              |) in
+            let parity := M.alloc (| T, parity |) in
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1413,7 +1587,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               let~ s :
                   Ty.apply
@@ -1438,13 +1616,14 @@ Module signature.
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.path "alloy_primitives::signature::sig::Signature" ],
-                M.alloc (| Value.Tuple [] |),
+                M.alloc (| Ty.tuple [], Value.Tuple [] |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
                         M.use
                           (M.alloc (|
+                            Ty.path "bool",
                             M.call_closure (|
                               Ty.path "bool",
                               M.get_trait_method (|
@@ -1475,6 +1654,13 @@ Module signature.
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
@@ -1521,12 +1707,16 @@ Module signature.
                           |)) in
                       let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::signature::sig::Signature" ],
                         Value.StructTuple
                           "core::option::Option::Some"
                           []
                           [ Ty.path "alloy_primitives::signature::sig::Signature" ]
                           [
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "alloy_primitives::signature::sig::Signature"
                               []
                               []
@@ -1613,6 +1803,10 @@ Module signature.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.path "alloy_primitives::signature::sig::Signature" ],
                         Value.StructTuple
                           "core::option::Option::None"
                           []
@@ -1644,8 +1838,12 @@ Module signature.
         match ε, τ, α with
         | [], [ T; E ], [ bytes; parity ] =>
           ltac:(M.monadic
-            (let bytes := M.alloc (| bytes |) in
-            let parity := M.alloc (| parity |) in
+            (let bytes :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                bytes
+              |) in
+            let parity := M.alloc (| T, parity |) in
             M.read (|
               let~ r :
                   Ty.apply
@@ -1694,7 +1892,7 @@ Module signature.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::RangeTo"
                                   []
                                   [ Ty.path "usize" ]
@@ -1754,7 +1952,7 @@ Module signature.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |);
-                                Value.StructRecord
+                                Value.mkStructRecord
                                   "core::ops::range::Range"
                                   []
                                   [ Ty.path "usize" ]
@@ -1771,6 +1969,13 @@ Module signature.
                   ]
                 |) in
               M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.path "alloy_primitives::signature::sig::Signature";
+                    Ty.path "alloy_primitives::signature::error::SignatureError"
+                  ],
                 M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
@@ -1810,9 +2015,23 @@ Module signature.
         match ε, τ, α with
         | [], [ T; E ], [ r; s; parity ] =>
           ltac:(M.monadic
-            (let r := M.alloc (| r |) in
-            let s := M.alloc (| s |) in
-            let parity := M.alloc (| parity |) in
+            (let r :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                r
+              |) in
+            let s :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
+                s
+              |) in
+            let parity := M.alloc (| T, parity |) in
             M.read (|
               M.catch_return
                 (Ty.apply
@@ -1824,6 +2043,13 @@ Module signature.
                   ]) (|
                 ltac:(M.monadic
                   (M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "alloy_primitives::signature::sig::Signature";
+                        Ty.path "alloy_primitives::signature::error::SignatureError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1832,7 +2058,7 @@ Module signature.
                         Ty.path "alloy_primitives::signature::error::SignatureError"
                       ]
                       [
-                        Value.StructRecord
+                        Value.mkStructRecord
                           "alloy_primitives::signature::sig::Signature"
                           []
                           []
@@ -1842,6 +2068,20 @@ Module signature.
                                 M.match_operator (|
                                   Ty.path "alloy_primitives::signature::parity::Parity",
                                   M.alloc (|
+                                    Ty.apply
+                                      (Ty.path "core::ops::control_flow::ControlFlow")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path
+                                              "alloy_primitives::signature::error::SignatureError"
+                                          ];
+                                        Ty.path "alloy_primitives::signature::parity::Parity"
+                                      ],
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1953,8 +2193,20 @@ Module signature.
                                             "core::ops::control_flow::ControlFlow::Break",
                                             0
                                           |) in
-                                        let residual := M.copy (| γ0_0 |) in
+                                        let residual :=
+                                          M.copy (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "core::convert::Infallible";
+                                                Ty.path
+                                                  "alloy_primitives::signature::error::SignatureError"
+                                              ],
+                                            γ0_0
+                                          |) in
                                         M.alloc (|
+                                          Ty.path "alloy_primitives::signature::parity::Parity",
                                           M.never_to_any (|
                                             M.read (|
                                               M.return_ (|
@@ -2008,7 +2260,11 @@ Module signature.
                                             "core::ops::control_flow::ControlFlow::Continue",
                                             0
                                           |) in
-                                        let val := M.copy (| γ0_0 |) in
+                                        let val :=
+                                          M.copy (|
+                                            Ty.path "alloy_primitives::signature::parity::Parity",
+                                            γ0_0
+                                          |) in
                                         val))
                                   ]
                                 |)
@@ -2037,8 +2293,9 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self; chain_id ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let chain_id := M.alloc (| chain_id |) in
+            (let self :=
+              M.alloc (| Ty.path "alloy_primitives::signature::sig::Signature", self |) in
+            let chain_id := M.alloc (| Ty.path "u64", chain_id |) in
             M.call_closure (|
               Ty.path "alloy_primitives::signature::sig::Signature",
               M.get_associated_function (|
@@ -2087,7 +2344,8 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (| Ty.path "alloy_primitives::signature::sig::Signature", self |) in
             M.call_closure (|
               Ty.path "alloy_primitives::signature::sig::Signature",
               M.get_associated_function (|
@@ -2135,7 +2393,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -2159,7 +2421,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -2183,7 +2449,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               M.SubPointer.get_struct_record_field (|
                 M.deref (| M.read (| self |) |),
@@ -2207,7 +2477,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.call_closure (|
               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
               M.get_associated_function (|
@@ -2244,7 +2518,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
@@ -2257,6 +2535,7 @@ Module signature.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.alloc (|
+                    Ty.path "alloy_primitives::signature::parity::Parity",
                     M.call_closure (|
                       Ty.path "alloy_primitives::signature::parity::Parity",
                       M.get_associated_function (|
@@ -2292,7 +2571,11 @@ Module signature.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::signature::sig::Signature" ],
+                self
+              |) in
             M.read (|
               let~ sig :
                   Ty.apply
@@ -2336,7 +2619,7 @@ Module signature.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, sig |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::RangeTo"
                               []
                               [ Ty.path "usize" ]
@@ -2353,6 +2636,10 @@ Module signature.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -2419,7 +2706,7 @@ Module signature.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, sig |);
-                            Value.StructRecord
+                            Value.mkStructRecord
                               "core::ops::range::Range"
                               []
                               [ Ty.path "usize" ]
@@ -2439,6 +2726,10 @@ Module signature.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ],
                               M.call_closure (|
                                 Ty.apply
                                   (Ty.path "array")
@@ -2545,9 +2836,10 @@ Module signature.
         match ε, τ, α with
         | [], [ T ], [ self; parity ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let parity := M.alloc (| parity |) in
-            Value.StructRecord
+            (let self :=
+              M.alloc (| Ty.path "alloy_primitives::signature::sig::Signature", self |) in
+            let parity := M.alloc (| T, parity |) in
+            Value.mkStructRecord
               "alloy_primitives::signature::sig::Signature"
               []
               []

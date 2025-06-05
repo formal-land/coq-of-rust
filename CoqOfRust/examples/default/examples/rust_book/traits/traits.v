@@ -15,7 +15,7 @@ Module Animal.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -39,6 +39,10 @@ Module Animal.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [ mk_str (| "" |); mk_str (| " says " |); mk_str (| "
 " |) ]
@@ -52,6 +56,10 @@ Module Animal.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -69,6 +77,7 @@ Module Animal.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.call_closure (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                   M.get_trait_method (|
@@ -108,6 +117,7 @@ Module Animal.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.call_closure (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                   M.get_trait_method (|
@@ -141,9 +151,9 @@ Module Animal.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -163,7 +173,7 @@ Module Impl_traits_Sheep.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "traits::Sheep" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -193,17 +203,18 @@ Module Impl_traits_Sheep.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "traits::Sheep" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.tuple [],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -241,6 +252,10 @@ Module Impl_traits_Sheep.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "" |); mk_str (| " is already naked...
 " |) ]
@@ -254,6 +269,10 @@ Module Impl_traits_Sheep.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -271,6 +290,7 @@ Module Impl_traits_Sheep.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
+                                                        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                         M.call_closure (|
                                                           Ty.apply
                                                             (Ty.path "&")
@@ -307,9 +327,9 @@ Module Impl_traits_Sheep.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
-                  M.alloc (| Value.Tuple [] |)));
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let~ _ : Ty.tuple [] :=
@@ -337,6 +357,10 @@ Module Impl_traits_Sheep.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 2 ]
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                         Value.Array
                                           [ mk_str (| "" |); mk_str (| " gets a haircut!
 " |) ]
@@ -350,6 +374,10 @@ Module Impl_traits_Sheep.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 1 ]
+                                          [ Ty.path "core::fmt::rt::Argument" ],
                                         Value.Array
                                           [
                                             M.call_closure (|
@@ -385,7 +413,7 @@ Module Impl_traits_Sheep.
                             |)
                           ]
                         |) in
-                      M.alloc (| Value.Tuple [] |)
+                      M.alloc (| Ty.tuple [], Value.Tuple [] |)
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.write (|
@@ -396,7 +424,7 @@ Module Impl_traits_Sheep.
                       |),
                       Value.Bool true
                     |) in
-                  M.alloc (| Value.Tuple [] |)))
+                  M.alloc (| Ty.tuple [], Value.Tuple [] |)))
             ]
           |)
         |)))
@@ -423,8 +451,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
     match ε, τ, α with
     | [], [], [ name ] =>
       ltac:(M.monadic
-        (let name := M.alloc (| name |) in
-        Value.StructRecord
+        (let name := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "str" ], name |) in
+        Value.mkStructRecord
           "traits::Sheep"
           []
           []
@@ -441,7 +469,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "traits::Sheep" ], self |) in
         M.read (|
           M.SubPointer.get_struct_record_field (|
             M.deref (| M.read (| self |) |),
@@ -465,17 +493,18 @@ Module Impl_traits_Animal_for_traits_Sheep.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "traits::Sheep" ], self |) in
         M.read (|
           M.match_operator (|
             Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-            M.alloc (| Value.Tuple [] |),
+            M.alloc (| Ty.tuple [], Value.Tuple [] |),
             [
               fun γ =>
                 ltac:(M.monadic
                   (let γ :=
                     M.use
                       (M.alloc (|
+                        Ty.path "bool",
                         M.call_closure (|
                           Ty.path "bool",
                           M.get_associated_function (|
@@ -488,8 +517,16 @@ Module Impl_traits_Animal_for_traits_Sheep.
                         |)
                       |)) in
                   let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (| mk_str (| "baaaaah?" |) |)));
-              fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "baaaaah!" |) |)))
+                  M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    mk_str (| "baaaaah?" |)
+                  |)));
+              fun γ =>
+                ltac:(M.monadic
+                  (M.alloc (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    mk_str (| "baaaaah!" |)
+                  |)))
             ]
           |)
         |)))
@@ -506,7 +543,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
-        (let self := M.alloc (| self |) in
+        (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Ty.path "traits::Sheep" ], self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
             M.read (|
@@ -530,6 +567,10 @@ Module Impl_traits_Animal_for_traits_Sheep.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
                                 Value.Array
                                   [
                                     mk_str (| "" |);
@@ -547,6 +588,10 @@ Module Impl_traits_Animal_for_traits_Sheep.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 2 ]
+                                  [ Ty.path "core::fmt::rt::Argument" ],
                                 Value.Array
                                   [
                                     M.call_closure (|
@@ -588,6 +633,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                 M.call_closure (|
                                                   Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
                                                   M.get_trait_method (|
@@ -621,9 +667,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                     |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |) in
-          M.alloc (| Value.Tuple [] |)
+          M.alloc (| Ty.tuple [], Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -708,7 +754,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |),
             [ M.borrow (| Pointer.Kind.Ref, dolly |) ]
           |) in
-        M.alloc (| Value.Tuple [] |)
+        M.alloc (| Ty.tuple [], Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

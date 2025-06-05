@@ -5,6 +5,10 @@ Module utils.
   Definition value_WEI_IN_ETHER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.alloc (|
+        Ty.apply
+          (Ty.path "ruint::Uint")
+          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+          [],
         M.call_closure (|
           Ty.apply
             (Ty.path "ruint::Uint")
@@ -37,8 +41,12 @@ Module utils.
     (Ty.path "alloy_primitives::utils::Units") = (Ty.path "alloy_primitives::utils::units::Unit").
   
   Definition value_EIP191_PREFIX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-    ltac:(M.monadic (M.alloc (| mk_str (| "Ethereum Signed Message:
-" |) |))).
+    ltac:(M.monadic
+      (M.alloc (|
+        Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+        mk_str (| "Ethereum Signed Message:
+" |)
+      |))).
   
   Global Instance Instance_IsConstant_value_EIP191_PREFIX :
     M.IsFunction.C "alloy_primitives::utils::EIP191_PREFIX" value_EIP191_PREFIX.
@@ -59,7 +67,7 @@ Module utils.
     match ε, τ, α with
     | [], [ T ], [ value ] =>
       ltac:(M.monadic
-        (let value := M.alloc (| value |) in
+        (let value := M.alloc (| T, value |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -71,6 +79,13 @@ Module utils.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ],
                 M.read (|
                   let~ boxed :
                       Ty.apply
@@ -90,6 +105,28 @@ Module utils.
                             Ty.path "alloc::alloc::Global"
                           ],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ];
+                                  Ty.path "alloc::alloc::Global"
+                                ]
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -174,8 +211,28 @@ Module utils.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.apply
+                                  (Ty.path "alloc::boxed::Box")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -230,7 +287,20 @@ Module utils.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  γ0_0
+                                |) in
                               val))
                         ]
                       |)
@@ -283,6 +353,16 @@ Module utils.
                       [ M.read (| boxed |) ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ];
+                        Ty.path "alloc::collections::TryReserveError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -381,6 +461,19 @@ Module utils.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                        Ty.path "alloc::alloc::Global"
+                      ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ],
                 M.read (|
                   let~ vec :
                       Ty.apply
@@ -417,6 +510,19 @@ Module utils.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -481,8 +587,19 @@ Module utils.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -549,7 +666,7 @@ Module utils.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -617,6 +734,19 @@ Module utils.
                       [ M.read (| vec |) ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ];
+                            Ty.path "alloc::alloc::Global"
+                          ];
+                        Ty.path "alloc::collections::TryReserveError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -752,7 +882,7 @@ Module utils.
     match ε, τ, α with
     | [], [ _ as I; T ], [ iter ] =>
       ltac:(M.monadic
-        (let iter := M.alloc (| iter |) in
+        (let iter := M.alloc (| I, iter |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -764,6 +894,13 @@ Module utils.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ],
                 M.read (|
                   let~ vec :
                       Ty.apply
@@ -787,13 +924,21 @@ Module utils.
                     M.read (|
                       M.match_operator (|
                         Ty.tuple [],
-                        M.alloc (| Value.Tuple [] |),
+                        M.alloc (| Ty.tuple [], Value.Tuple [] |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
                                 M.SubPointer.get_tuple_field (|
                                   M.alloc (|
+                                    Ty.tuple
+                                      [
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
                                     M.call_closure (|
                                       Ty.tuple
                                         [
@@ -823,12 +968,25 @@ Module utils.
                                   "core::option::Option::Some",
                                   0
                                 |) in
-                              let size_hint := M.copy (| γ0_0 |) in
+                              let size_hint := M.copy (| Ty.path "usize", γ0_0 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.read (|
                                   M.match_operator (|
                                     Ty.tuple [],
                                     M.alloc (|
+                                      Ty.apply
+                                        (Ty.path "core::ops::control_flow::ControlFlow")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "core::result::Result")
+                                            []
+                                            [
+                                              Ty.path "core::convert::Infallible";
+                                              Ty.path "alloc::collections::TryReserveError"
+                                            ];
+                                          Ty.tuple []
+                                        ],
                                       M.call_closure (|
                                         Ty.apply
                                           (Ty.path "core::ops::control_flow::ControlFlow")
@@ -908,8 +1066,19 @@ Module utils.
                                               "core::ops::control_flow::ControlFlow::Break",
                                               0
                                             |) in
-                                          let residual := M.copy (| γ0_0 |) in
+                                          let residual :=
+                                            M.copy (|
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "core::convert::Infallible";
+                                                  Ty.path "alloc::collections::TryReserveError"
+                                                ],
+                                              γ0_0
+                                            |) in
                                           M.alloc (|
+                                            Ty.tuple [],
                                             M.never_to_any (|
                                               M.read (|
                                                 M.return_ (|
@@ -967,13 +1136,13 @@ Module utils.
                                               "core::ops::control_flow::ControlFlow::Continue",
                                               0
                                             |) in
-                                          let val := M.copy (| γ0_0 |) in
+                                          let val := M.copy (| Ty.tuple [], γ0_0 |) in
                                           val))
                                     ]
                                   |)
                                 |) in
-                              M.alloc (| Value.Tuple [] |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              M.alloc (| Ty.tuple [], Value.Tuple [] |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                         ]
                       |)
                     |) in
@@ -995,6 +1164,16 @@ Module utils.
                       [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| iter |) ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ];
+                        Ty.path "alloc::collections::TryReserveError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1029,7 +1208,7 @@ Module utils.
     match ε, τ, α with
     | [], [ T ], [ capacity ] =>
       ltac:(M.monadic
-        (let capacity := M.alloc (| capacity |) in
+        (let capacity := M.alloc (| Ty.path "usize", capacity |) in
         M.read (|
           let~ vec :
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ] :=
@@ -1044,6 +1223,13 @@ Module utils.
               []
             |) in
           M.alloc (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
+              [
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ];
+                Ty.path "alloc::collections::TryReserveError"
+              ],
             M.call_closure (|
               Ty.apply
                 (Ty.path "core::result::Result")
@@ -1093,7 +1279,7 @@ Module utils.
                                 (Ty.path "alloc::vec::Vec")
                                 []
                                 [ T; Ty.path "alloc::alloc::Global" ]),
-                            M.alloc (| α0 |),
+                            M.alloc (| Ty.tuple [], α0 |),
                             [ fun γ => ltac:(M.monadic (M.read (| vec |))) ]
                           |)))
                       | _ => M.impossible "wrong number of arguments"
@@ -1122,8 +1308,8 @@ Module utils.
     match ε, τ, α with
     | [], [ T ], [ elem; n ] =>
       ltac:(M.monadic
-        (let elem := M.alloc (| elem |) in
-        let n := M.alloc (| n |) in
+        (let elem := M.alloc (| T, elem |) in
+        let n := M.alloc (| Ty.path "usize", n |) in
         M.read (|
           M.catch_return
             (Ty.apply
@@ -1135,6 +1321,13 @@ Module utils.
               ]) (|
             ltac:(M.monadic
               (M.alloc (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ];
+                    Ty.path "alloc::collections::TryReserveError"
+                  ],
                 M.read (|
                   let~ vec :
                       Ty.apply
@@ -1159,6 +1352,19 @@ Module utils.
                       M.match_operator (|
                         Ty.tuple [],
                         M.alloc (|
+                          Ty.apply
+                            (Ty.path "core::ops::control_flow::ControlFlow")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "core::convert::Infallible";
+                                  Ty.path "alloc::collections::TryReserveError"
+                                ];
+                              Ty.tuple []
+                            ],
                           M.call_closure (|
                             Ty.apply
                               (Ty.path "core::ops::control_flow::ControlFlow")
@@ -1214,8 +1420,19 @@ Module utils.
                                   "core::ops::control_flow::ControlFlow::Break",
                                   0
                                 |) in
-                              let residual := M.copy (| γ0_0 |) in
+                              let residual :=
+                                M.copy (|
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.path "core::convert::Infallible";
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ],
+                                  γ0_0
+                                |) in
                               M.alloc (|
+                                Ty.tuple [],
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
@@ -1270,7 +1487,7 @@ Module utils.
                                   "core::ops::control_flow::ControlFlow::Continue",
                                   0
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
+                              let val := M.copy (| Ty.tuple [], γ0_0 |) in
                               val))
                         ]
                       |)
@@ -1290,6 +1507,16 @@ Module utils.
                       [ M.borrow (| Pointer.Kind.MutRef, vec |); M.read (| n |); M.read (| elem |) ]
                     |) in
                   M.alloc (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ T; Ty.path "alloc::alloc::Global" ];
+                        Ty.path "alloc::collections::TryReserveError"
+                      ],
                     Value.StructTuple
                       "core::result::Result::Ok"
                       []
@@ -1323,7 +1550,7 @@ Module utils.
     match ε, τ, α with
     | [], [ T ], [ message ] =>
       ltac:(M.monadic
-        (let message := M.alloc (| message |) in
+        (let message := M.alloc (| T, message |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -1379,7 +1606,7 @@ Module utils.
     match ε, τ, α with
     | [], [ T ], [ message ] =>
       ltac:(M.monadic
-        (let message := M.alloc (| message |) in
+        (let message := M.alloc (| T, message |) in
         M.call_closure (|
           Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
           M.get_function (| "alloy_primitives::utils::eip191_message.eip191_message", [], [] |),
@@ -1430,7 +1657,11 @@ Module utils.
       match ε, τ, α with
       | [], [], [ message ] =>
         ltac:(M.monadic
-          (let message := M.alloc (| message |) in
+          (let message :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              message
+            |) in
           M.read (|
             let~ len : Ty.path "usize" :=
               M.call_closure (|
@@ -1664,7 +1895,7 @@ Module utils.
     match ε, τ, α with
     | [], [ T ], [ bytes ] =>
       ltac:(M.monadic
-        (let bytes := M.alloc (| bytes |) in
+        (let bytes := M.alloc (| T, bytes |) in
         M.call_closure (|
           Ty.apply
             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -1745,7 +1976,11 @@ Module utils.
       match ε, τ, α with
       | [], [], [ bytes ] =>
         ltac:(M.monadic
-          (let bytes := M.alloc (| bytes |) in
+          (let bytes :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              bytes
+            |) in
           M.read (|
             let~ output :
                 Ty.apply
@@ -1864,6 +2099,10 @@ Module utils.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -1913,7 +2152,14 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&")
+                  []
+                  [ Ty.path "alloy_primitives::utils::keccak256_state::State" ],
+                self
+              |) in
             Value.StructTuple
               "alloy_primitives::utils::keccak256_state::State"
               []
@@ -2003,8 +2249,21 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; output ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let output := M.alloc (| output |) in
+            (let self :=
+              M.alloc (| Ty.path "alloy_primitives::utils::keccak256_state::State", self |) in
+            let output :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "u8" ]
+                  ],
+                output
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -2031,7 +2290,7 @@ Module utils.
                       (M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| output |) |) |))
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2050,8 +2309,19 @@ Module utils.
         match ε, τ, α with
         | [], [], [ self; bytes ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let bytes := M.alloc (| bytes |) in
+            (let self :=
+              M.alloc (|
+                Ty.apply
+                  (Ty.path "&mut")
+                  []
+                  [ Ty.path "alloy_primitives::utils::keccak256_state::State" ],
+                self
+              |) in
+            let bytes :=
+              M.alloc (|
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                bytes
+              |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
                 M.call_closure (|
@@ -2077,7 +2347,7 @@ Module utils.
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytes |) |) |)
                   ]
                 |) in
-              M.alloc (| Value.Tuple [] |)
+              M.alloc (| Ty.tuple [], Value.Tuple [] |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2104,8 +2374,12 @@ Module utils.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          Value.StructRecord
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::Keccak256" ],
+              self
+            |) in
+          Value.mkStructRecord
             "alloy_primitives::utils::Keccak256"
             []
             []
@@ -2197,8 +2471,13 @@ Module utils.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::utils::Keccak256" ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -2214,6 +2493,7 @@ Module utils.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.alloc (|
+                  Ty.path "core::fmt::builders::DebugStruct",
                   M.call_closure (|
                     Ty.path "core::fmt::builders::DebugStruct",
                     M.get_associated_function (|
@@ -2255,7 +2535,7 @@ Module utils.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
+          (Value.mkStructRecord
             "alloy_primitives::utils::Keccak256"
             []
             []
@@ -2288,8 +2568,12 @@ Module utils.
       match ε, τ, α with
       | [], [ impl_AsRef__u8__ ], [ self; bytes ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let bytes := M.alloc (| bytes |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.path "alloy_primitives::utils::Keccak256" ],
+              self
+            |) in
+          let bytes := M.alloc (| impl_AsRef__u8__, bytes |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2332,7 +2616,7 @@ Module utils.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2354,7 +2638,7 @@ Module utils.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::utils::Keccak256", self |) in
           M.read (|
             let~ output :
                 Ty.apply
@@ -2451,6 +2735,10 @@ Module utils.
                 ]
               |) in
             M.alloc (|
+              Ty.apply
+                (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                [ Value.Integer IntegerKind.Usize 32 ]
+                [],
               M.call_closure (|
                 Ty.apply
                   (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
@@ -2490,8 +2778,12 @@ Module utils.
       match ε, τ, α with
       | [], [], [ self; output ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let output := M.alloc (| output |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::utils::Keccak256", self |) in
+          let output :=
+            M.alloc (|
+              Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+              output
+            |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_associated_function (|
@@ -2594,8 +2886,16 @@ Module utils.
       match ε, τ, α with
       | [], [], [ self; output ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let output := M.alloc (| output |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::utils::Keccak256", self |) in
+          let output :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]
+                ],
+              output
+            |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -2655,7 +2955,7 @@ Module utils.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2674,8 +2974,8 @@ Module utils.
       match ε, τ, α with
       | [], [], [ self; output ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let output := M.alloc (| output |) in
+          (let self := M.alloc (| Ty.path "alloy_primitives::utils::Keccak256", self |) in
+          let output := M.alloc (| Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ], output |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_associated_function (|

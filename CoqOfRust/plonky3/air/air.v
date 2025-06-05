@@ -13,7 +13,7 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           Value.StructTuple
             "core::option::Option::None"
             []
@@ -43,7 +43,7 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           Value.Integer IntegerKind.Usize 0))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -70,7 +70,7 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&") [] [ Self ], self |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr",
             M.get_trait_method (|
@@ -96,9 +96,9 @@ Module air.
       match ε, τ, α with
       | [], [ _ as I ], [ self; condition ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let condition := M.alloc (| condition |) in
-          Value.StructRecord
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let condition := M.alloc (| I, condition |) in
+          Value.mkStructRecord
             "p3_air::air::FilteredAirBuilder"
             []
             [ Self ]
@@ -127,9 +127,9 @@ Module air.
       match ε, τ, α with
       | [], [ I1; I2 ], [ self; x; y ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
-          let y := M.alloc (| y |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let x := M.alloc (| I1, x |) in
+          let y := M.alloc (| I2, y |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ Self ],
             M.get_trait_method (|
@@ -198,7 +198,7 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ Self ],
             M.get_trait_method (|
@@ -241,7 +241,7 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ Self ],
             M.get_trait_method (|
@@ -284,7 +284,7 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ Self ],
             M.get_trait_method (|
@@ -327,8 +327,8 @@ Module air.
       match ε, τ, α with
       | [], [], [ self; size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let size := M.alloc (| size |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let size := M.alloc (| Ty.path "usize", size |) in
           M.call_closure (|
             Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ Self ],
             M.get_trait_method (|
@@ -374,13 +374,14 @@ Module air.
       match ε, τ, α with
       | [ N ], [ _ as I ], [ self; array ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let array := M.alloc (| array |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let array := M.alloc (| Ty.apply (Ty.path "array") [ N ] [ I ], array |) in
           M.read (|
             M.use
               (M.match_operator (|
                 Ty.tuple [],
                 M.alloc (|
+                  Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ I ],
                   M.call_closure (|
                     Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ I ],
                     M.get_trait_method (|
@@ -398,7 +399,11 @@ Module air.
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let iter := M.copy (| γ |) in
+                      (let iter :=
+                        M.copy (|
+                          Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ I ],
+                          γ
+                        |) in
                       M.loop (|
                         Ty.tuple [],
                         ltac:(M.monadic
@@ -407,6 +412,7 @@ Module air.
                               M.match_operator (|
                                 Ty.tuple [],
                                 M.alloc (|
+                                  Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                   M.call_closure (|
                                     Ty.apply (Ty.path "core::option::Option") [] [ I ],
                                     M.get_trait_method (|
@@ -432,6 +438,7 @@ Module air.
                                       (let _ :=
                                         M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                                       M.alloc (|
+                                        Ty.tuple [],
                                         M.never_to_any (| M.read (| M.break (||) |) |)
                                       |)));
                                   fun γ =>
@@ -442,7 +449,7 @@ Module air.
                                           "core::option::Option::Some",
                                           0
                                         |) in
-                                      let elem := M.copy (| γ0_0 |) in
+                                      let elem := M.copy (| I, γ0_0 |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.call_closure (|
                                           Ty.tuple [],
@@ -463,11 +470,11 @@ Module air.
                                             M.read (| elem |)
                                           ]
                                         |) in
-                                      M.alloc (| Value.Tuple [] |)))
+                                      M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                                 ]
                               |)
                             |) in
-                          M.alloc (| Value.Tuple [] |)))
+                          M.alloc (| Ty.tuple [], Value.Tuple [] |)))
                       |)))
                 ]
               |))
@@ -486,8 +493,8 @@ Module air.
       match ε, τ, α with
       | [ N ], [ _ as I ], [ self; array ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let array := M.alloc (| array |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let array := M.alloc (| Ty.apply (Ty.path "array") [ N ] [ I ], array |) in
           M.read (|
             let~ zero_array :
                 Ty.apply
@@ -527,11 +534,11 @@ Module air.
                                   []
                                   Self
                                   "Expr"),
-                              M.alloc (| α0 |),
+                              M.alloc (| I, α0 |),
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let x := M.copy (| γ |) in
+                                    (let x := M.copy (| I, γ |) in
                                     M.call_closure (|
                                       Ty.associated_in_trait
                                         "p3_air::air::AirBuilder"
@@ -557,6 +564,12 @@ Module air.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
+                                            Ty.associated_in_trait
+                                              "p3_air::air::AirBuilder"
+                                              []
+                                              []
+                                              Self
+                                              "Expr",
                                             M.call_closure (|
                                               Ty.associated_in_trait
                                                 "p3_air::air::AirBuilder"
@@ -609,7 +622,7 @@ Module air.
                   M.read (| zero_array |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -620,8 +633,8 @@ Module air.
       match ε, τ, α with
       | [], [ _ as I ], [ self; x ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let x := M.alloc (| I, x |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -672,7 +685,7 @@ Module air.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -683,9 +696,9 @@ Module air.
       match ε, τ, α with
       | [], [ I1; I2 ], [ self; x; y ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
-          let y := M.alloc (| y |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let x := M.alloc (| I1, x |) in
+          let y := M.alloc (| I2, y |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -743,7 +756,7 @@ Module air.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -759,8 +772,8 @@ Module air.
       match ε, τ, α with
       | [], [ _ as I ], [ self; x ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let x := M.alloc (| I, x |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -791,6 +804,7 @@ Module air.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
+                          Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr",
                           M.call_closure (|
                             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] Self "Expr",
                             M.get_trait_method (|
@@ -811,7 +825,7 @@ Module air.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -837,9 +851,9 @@ Module air.
       match ε, τ, α with
       | [], [ I1; I2 ], [ self; x; y ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
-          let y := M.alloc (| y |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let x := M.alloc (| I1, x |) in
+          let y := M.alloc (| I2, y |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -912,7 +926,7 @@ Module air.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -928,8 +942,8 @@ Module air.
       match ε, τ, α with
       | [], [ _ as I ], [ self; x ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
+          (let self := M.alloc (| Ty.apply (Ty.path "&mut") [] [ Self ], self |) in
+          let x := M.alloc (| I, x |) in
           M.call_closure (|
             Ty.tuple [],
             M.get_trait_method (|
@@ -984,8 +998,16 @@ Module air.
       match ε, τ, α with
       | [], [], [ self; f ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let f := M.alloc (| f |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
+          let f :=
+            M.alloc (| Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ], f |) in
           M.call_closure (|
             Ty.apply
               (Ty.path "core::result::Result")
@@ -1025,6 +1047,10 @@ Module air.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr" ],
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.SubPointer.get_struct_record_field (|
@@ -1066,7 +1092,14 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
             M.get_trait_method (|
@@ -1129,7 +1162,14 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "M",
             M.get_trait_method (| "p3_air::air::AirBuilder", AB, [], [], "main", [], [] |),
@@ -1161,7 +1201,14 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
             M.get_trait_method (| "p3_air::air::AirBuilder", AB, [], [], "is_first_row", [], [] |),
@@ -1193,7 +1240,14 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
             M.get_trait_method (| "p3_air::air::AirBuilder", AB, [], [], "is_last_row", [], [] |),
@@ -1230,8 +1284,15 @@ Module air.
       match ε, τ, α with
       | [], [], [ self; size ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let size := M.alloc (| size |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
+          let size := M.alloc (| Ty.path "usize", size |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::AirBuilder" [] [] AB "Expr",
             M.get_trait_method (|
@@ -1272,8 +1333,15 @@ Module air.
       match ε, τ, α with
       | [], [ _ as I ], [ self; x ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
+          let x := M.alloc (| I, x |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1339,7 +1407,7 @@ Module air.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1399,8 +1467,15 @@ Module air.
       match ε, τ, α with
       | [], [ _ as I ], [ self; x ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let x := M.alloc (| x |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&mut")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
+          let x := M.alloc (| I, x |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
@@ -1467,7 +1542,7 @@ Module air.
                   |)
                 ]
               |) in
-            M.alloc (| Value.Tuple [] |)
+            M.alloc (| Ty.tuple [], Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1510,7 +1585,14 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
           M.call_closure (|
             Ty.associated_in_trait "p3_air::air::PermutationAirBuilder" [] [] AB "MP",
             M.get_trait_method (|
@@ -1555,7 +1637,14 @@ Module air.
       match ε, τ, α with
       | [], [], [ self ] =>
         ltac:(M.monadic
-          (let self := M.alloc (| self |) in
+          (let self :=
+            M.alloc (|
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "p3_air::air::FilteredAirBuilder") [] [ AB ] ],
+              self
+            |) in
           M.borrow (|
             Pointer.Kind.Ref,
             M.deref (|
