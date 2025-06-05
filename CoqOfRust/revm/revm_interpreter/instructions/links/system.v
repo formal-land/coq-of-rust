@@ -7,6 +7,7 @@ Require Import alloy_primitives.utils.links.mod.
 Require Import core.convert.links.mod.
 Require Import core.convert.links.num.
 Require Import core.links.cmp.
+Require Import core.links.panicking.
 Require Import core.links.result.
 Require Import core.num.links.mod.
 Require Import core.slice.links.mod.
@@ -43,10 +44,11 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_MemoryTrait_for_Memory.
+  destruct run_Deref_for_Synthetic1.
   destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
   destruct (Impl_AsRef_for_Slice.run U8.t).
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn address<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -195,7 +197,11 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_InputsTrait_for_Input.
   destruct Impl_TryFrom_u64_for_usize.run.
+  destruct (Impl_DerefMut_for_FixedBytes_N.run {| Integer.value := 32 |}).
+  destruct (Impl_Into_for_From_T.run Impl_From_FixedBytes_32_for_U256.run).
+  destruct Impl_Ord_for_usize.run.
   run_symbolic.
+  (* array cast *)
 Admitted.
 
 (*
@@ -314,7 +320,7 @@ Instance run_returndatacopy
     unit.
 Proof.
   constructor.
-  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_InterpreterTypes_for_WIRE eqn:?.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
@@ -322,7 +328,7 @@ Proof.
   destruct run_MemoryTrait_for_Memory.
   destruct Impl_TryFrom_u64_for_usize.run.
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn returndataload<WIRE: InterpreterTypes, H: Host + ?Sized>(

@@ -66,4 +66,4 @@ Proof.
   destruct Impl_From_U256_for_FixedBytes_32.run.
   destruct (TryFrom_Uint_for_u64.run {| Integer.value := 256 |} {| Integer.value := 4 |}).
   run_symbolic.
-Admitted.
+Defined.

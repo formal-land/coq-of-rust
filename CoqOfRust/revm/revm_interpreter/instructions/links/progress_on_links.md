@@ -59,7 +59,7 @@
 - [x] `retf`
 - [x] `jumpf`
 - [x] `pc`
-- [ ] `return_inner`
+- [x] `return_inner`
 - [x] `ret`
 - [x] `revert`
 - [x] `stop`
@@ -79,14 +79,14 @@
 - [x] `selfbalance`
 - [x] `extcodesize`
 - [x] `extcodehash`
-- [ ] `extcodecopy`
-- [ ] `blockhash`
+- [x] `extcodecopy`
+- [x] `blockhash`
 - [x] `sload`
-- [ ] `sstore`
+- [x] `sstore`
 - [x] `tstore`
 - [x] `tload`
-- [ ] `log`
-- [ ] `selfdestruct`
+- [x] `log`
+- [x] `selfdestruct`
 
 ## I256
 
@@ -123,7 +123,7 @@
 
 ## System
 
-- [ ] `keccak256`
+- [x] `keccak256`
 - [x] `address`
 - [x] `caller`
 - [x] `codesize`
@@ -134,7 +134,7 @@
 - [x] `callvalue`
 - [x] `calldatacopy`
 - [x] `returndatasize`
-- [ ] `returndatacopy`
+- [x] `returndatacopy`
 - [ ] `returndataload`
 - [x] `gas`
 
@@ -154,7 +154,7 @@
 
 ## Contract/Call_code
 
-- [ ] `call_code`
+- [x] `call_code`
 
 ## Contract/Create
 
@@ -162,7 +162,7 @@
 
 ## Contract/Delegate_call
 
-- [ ] `delegate_call`
+- [x] `delegate_call`
 
 ## Contract/Eofcreate
 
@@ -170,7 +170,7 @@
 
 ## Contract/Extcall
 
-- [ ] `extcall`
+- [x] `extcall`
 
 ## Contract/Extcall_gas_calc
 
@@ -182,11 +182,11 @@
 
 ## Contract/Extdelegatecall
 
-- [ ] `extdelegatecall`
+- [x] `extdelegatecall`
 
 ## Contract/Extstaticcall
 
-- [ ] `extstaticcall`
+- [x] `extstaticcall`
 
 ## Contract/Pop_extcall_target_address
 
@@ -198,11 +198,11 @@
 
 ## Contract/Static_call
 
-- [ ] `static_call`
+- [x] `static_call`
 
 ## Summary
 
 - Total: 120
-- Admitted: 23
-- Defined: 97
-- Percentage: 80.83%
+- Admitted: 9
+- Defined: 111
+- Percentage: 92.50%

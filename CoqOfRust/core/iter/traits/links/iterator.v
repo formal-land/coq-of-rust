@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import core.array.links.iter.
+Require Import core.array.links.iter_IntoIter.
+Require Import core.iter.adapters.links.map_Map.
 Require Import core.iter.traits.iterator.
 Require Import core.links.array.
 Require Import core.links.option.
@@ -94,9 +95,25 @@ Module Iterator.
     fn intersperse_with<G>(self, separator: G) -> IntersperseWith<Self, G> ⓘ
        where Self: Sized,
              G: FnMut() -> Self::Item { ... }
-    fn map<B, F>(self, f: F) -> Map<Self, F> ⓘ
-       where Self: Sized,
-             F: FnMut(Self::Item) -> B { ... }
+   *)
+
+    (*
+      fn map<B, F>(self, f: F) -> Map<Self, F> ⓘ
+         where Self: Sized,
+               F: FnMut(Self::Item) -> B { ... }
+   *)
+   Definition Run_map
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+    TraitMethod.C (trait Self) "map" (fun method =>
+      forall (B F : Set) `(Link B) `(Link F)
+        (self : Self)
+        (f : F),
+      Run.Trait method [] [Φ B; Φ F] [φ self; φ f] (Map.t Self F)
+    ).
+
+   (*
     fn for_each<F>(self, f: F)
        where Self: Sized,
              F: FnMut(Self::Item) { ... }
@@ -143,8 +160,22 @@ Module Iterator.
              F: FnMut(&Self::Item) { ... }
     fn by_ref(&mut self) -> &mut Self
        where Self: Sized { ... }
+    *)
+
+    (*
     fn collect<B: FromIterator<Self::Item>>(self) -> B
        where Self: Sized { ... }
+    *)
+    Definition Run_collect
+      (Self : Set) `{Link Self}
+      (Item : Set) `{Link Item} :
+      Set :=
+    TraitMethod.C (trait Self) "collect" (fun method =>
+      forall (B : Set) `(Link B) (self : Self),
+      Run.Trait method [] [Φ B] [φ self] B
+    ).
+
+    (*
     fn try_collect<B>(
         &mut self,
     ) -> <Self::Item::Residual as Residual<B>>::TryType
@@ -336,6 +367,8 @@ Module Iterator.
     count : Run_count Self;
     last : Run_last Self Item;
     advance_by : Run_advance_by Self;
+    map : Run_map Self Item;
+    collect : Run_collect Self Item;
     any : Run_any Self Item;
   }.
 End Iterator.

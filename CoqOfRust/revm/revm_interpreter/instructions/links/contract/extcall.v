@@ -66,4 +66,4 @@ Proof.
   destruct run_InputsTrait_for_Input.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-Admitted.
+Defined.

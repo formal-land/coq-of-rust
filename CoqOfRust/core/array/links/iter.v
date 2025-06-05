@@ -1,28 +1,47 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import core.array.iter.
-Require Import core.links.array.
-Require Import core.mem.links.maybe_uninit.
-Require Import core.ops.links.index_range.
+Require Import core.iter.traits.links.collect.
+Require Import core.iter.traits.links.iterator.
+
+Require Export core.array.links.iter_IntoIter.
 
 (*
-pub struct IntoIter<T, const N: usize> {
-    data: [MaybeUninit<T>; N],
-    alive: IndexRange,
-}
+impl<T, const N: usize> Iterator for IntoIter<T, N> {
+    type Item = T;
 *)
-Module IntoIter.
-  Record t {T : Set} {N : Usize.t} : Set := {
-    data : array.t (MaybeUninit.t T) N;
-    alive : IndexRange.t;
-  }.
-  Arguments t : clear implicits.
+Module Impl_Iterator_for_IntoIter.
+  Definition Self (T : Set) (N : Usize.t) : Set :=
+    IntoIter.t T N.
 
-  Global Instance IsLink {T : Set} `{Link T} {N : Usize.t} : Link (t T N) := {
-    Φ := Ty.apply (Ty.path "core::array::iter::IntoIter") [ φ N ] [ Φ T ];
-    φ x := Value.StructRecord "core::array::iter::IntoIter" [ φ N ] [ Φ T ] [
-      ("data", φ x.(data));
-      ("alive", φ x.(alive))
-    ];
-  }.
-End IntoIter.
+  Instance run (T : Set) (N : Usize.t) `{Link T} :
+    Iterator.Run (Self T N) T.
+  Admitted.
+End Impl_Iterator_for_IntoIter.
+Export Impl_Iterator_for_IntoIter.
+
+(*
+impl<T, const N: usize> IntoIterator for [T; N] {
+    type Item = T;
+    type IntoIter = IntoIter<T, N>;
+*)
+Module Impl_IntoIterator_for_Array.
+  Definition Self (T : Set) (N : Usize.t) : Set :=
+    array.t T N.
+
+  Definition types (T : Set) (N : Usize.t) : IntoIterator.Types.t :=
+    {|
+      IntoIterator.Types.Item := T;
+      IntoIterator.Types.IntoIter := IntoIter.t T N;
+    |}.
+
+  Instance types_AreLinks (T : Set) (N : Usize.t) `{Link T} :
+    IntoIterator.Types.AreLinks (types T N).
+  Proof.
+    constructor; typeclasses eauto.
+  Defined.
+
+  Instance run (T : Set) (N : Usize.t) `{Link T} :
+    IntoIterator.Run (Self T N) (types T N).
+  Admitted.
+End Impl_IntoIterator_for_Array.
+Export Impl_IntoIterator_for_Array.
