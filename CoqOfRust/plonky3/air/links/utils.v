@@ -2,10 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import plonky3.air.utils.
 
-(* TODO: refer to revm.revm_interpreter.gas.links.calc. 
-or revm.revm_interpreter.instructions.links.host.
-*)
-
 (* 
 pub fn pack_bits_le<R, Var, I>(iter: I) -> R
 where
