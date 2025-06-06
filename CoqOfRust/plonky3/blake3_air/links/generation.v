@@ -18,3 +18,5 @@ Instance run_generate_trace_rows
   Run.Trait
     air.generation.generate_trace_rows [] [ Φ F; ] [ φ inputs; φ extra_capacity_bits ]
     RowMajorMatrix.t F.
+Proof.
+Admitted.
