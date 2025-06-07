@@ -3,6 +3,8 @@ Require Import CoqOfRust.links.M.
 Require Import pinocchio.links.pubkey.
 Require Import pinocchio.account_info.
 
+Import account_info.Impl_pinocchio_account_info_AccountInfo.
+
 Module Account.
     Record t : Set := {
         borrow_state : U8.t;
@@ -95,6 +97,105 @@ Module Account.
       ]).
   Proof. econstructor; apply of_value_with; eassumption. Defined.
   Smpl Add apply of_value : of_value.
+
+  Module SubPointer.
+    Definition get_borrow_state : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "borrow_state") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(borrow_state);
+        SubPointer.Runner.injection x y := Some (x <| borrow_state := y |>);
+      |}.
+
+    Lemma get_borrow_state_is_valid :
+      SubPointer.Runner.Valid.t get_borrow_state.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_borrow_state_is_valid : run_sub_pointer.
+
+    Definition get_is_signer : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "is_signer") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(is_signer);
+        SubPointer.Runner.injection x y := Some (x <| is_signer := y |>);
+      |}.
+
+    Lemma get_is_signer_is_valid :
+      SubPointer.Runner.Valid.t get_is_signer.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_is_signer_is_valid : run_sub_pointer.
+
+    Definition get_is_writable : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "is_writable") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(is_writable);
+        SubPointer.Runner.injection x y := Some (x <| is_writable := y |>);
+      |}.
+
+    Lemma get_is_writable_is_valid :
+      SubPointer.Runner.Valid.t get_is_writable.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_is_writable_is_valid : run_sub_pointer.
+
+    Definition get_executable : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "executable") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(executable);
+        SubPointer.Runner.injection x y := Some (x <| executable := y |>);
+      |}.
+
+    Lemma get_executable_is_valid :
+      SubPointer.Runner.Valid.t get_executable.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_executable_is_valid : run_sub_pointer.
+
+    Definition get_key : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "key") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(key);
+        SubPointer.Runner.injection x y := Some (x <| key := y |>);
+      |}.
+
+    Lemma get_key_is_valid :
+      SubPointer.Runner.Valid.t get_key.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_key_is_valid : run_sub_pointer.
+
+    Definition get_owner : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "owner") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(owner);
+        SubPointer.Runner.injection x y := Some (x <| owner := y |>);
+      |}.
+
+    Lemma get_owner_is_valid :
+      SubPointer.Runner.Valid.t get_owner.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_owner_is_valid : run_sub_pointer.
+
+    Definition get_lamports : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "lamports") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(lamports);
+        SubPointer.Runner.injection x y := Some (x <| lamports := y |>);
+      |}.
+
+    Lemma get_lamports_is_valid :
+      SubPointer.Runner.Valid.t get_lamports.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_lamports_is_valid : run_sub_pointer.
+
+    Definition get_data_len : SubPointer.Runner.t t
+      (Pointer.Index.StructRecord "pinocchio::account_info::Account" "data_len") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(data_len);
+        SubPointer.Runner.injection x y := Some (x <| data_len := y |>);
+      |}.
+
+    Lemma get_data_len_is_valid :
+      SubPointer.Runner.Valid.t get_data_len.
+    Proof. now constructor. Qed.
+    Smpl Add apply get_data_len_is_valid : run_sub_pointer.
+
+  End SubPointer.
 End Account.
 
 Module AccountInfo.
@@ -130,5 +231,34 @@ Module AccountInfo.
         ]).
     Proof. econstructor; apply of_value_with. exact H. Defined.
     Smpl Add apply of_value : of_value.
+
+    Module SubPointer.
+      Definition get_raw : SubPointer.Runner.t t
+        (Pointer.Index.StructRecord "pinocchio::account_info::AccountInfo" "raw") :=
+      {|
+        SubPointer.Runner.projection x := Some x.(raw);
+        SubPointer.Runner.injection x y := Some (x <| raw := y |>);
+      |}.
+  
+      Lemma get_raw_is_valid :
+        SubPointer.Runner.Valid.t get_raw.
+      Proof. now constructor. Qed.
+      Smpl Add apply get_raw_is_valid : run_sub_pointer.
+    End SubPointer.
   End AccountInfo.
+
+  Module Impl_AccountInfo.
+    Definition Self : Set := AccountInfo.t.
+    Instance run_key 
+        (self : Ref.t Pointer.Kind.MutRef Self) :
+      Run.Trait
+        key [] [] [φ self]
+        (Ref.t Pointer.Kind.MutRef Pubkey.t).
+    Proof.
+      constructor.
+      run_symbolic.
+      - admit.
+      - admit.
+    Admitted.
+  End Impl_AccountInfo.
   
