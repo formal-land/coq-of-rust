@@ -96,3 +96,39 @@ Module Account.
   Proof. econstructor; apply of_value_with; eassumption. Defined.
   Smpl Add apply of_value : of_value.
 End Account.
+
+Module AccountInfo.
+    Record t : Set := {
+      raw : Ref.t Pointer.Kind.Ref Account.t;
+    }.
+  
+    Global Instance IsLink : Link t := {
+      Φ := Ty.path "pinocchio::account_info::AccountInfo";
+      φ x :=
+        Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
+          ("raw", φ x.(raw))
+        ];
+    }.
+  
+    Definition of_ty : OfTy.t (Ty.path "pinocchio::account_info::AccountInfo").
+    Proof. eapply OfTy.Make with (A := t); reflexivity. Defined.
+    Smpl Add apply of_ty : of_ty.
+  
+    Lemma of_value_with (raw : Ref.t Pointer.Kind.Ref Account.t) (raw' : Value.t) :
+      raw' = φ raw ->
+      Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
+        ("raw", raw')
+      ] = φ (Build_t raw).
+    Proof. intros; subst; reflexivity. Qed.
+    Smpl Add apply of_value_with : of_value.
+  
+    Definition of_value (raw : Ref.t Pointer.Kind.Ref Account.t) (raw' : Value.t) :
+      raw' = φ raw ->
+      OfValue.t (
+        Value.StructRecord "pinocchio::account_info::AccountInfo" [] [] [
+          ("raw", raw')
+        ]).
+    Proof. econstructor; apply of_value_with. exact H. Defined.
+    Smpl Add apply of_value : of_value.
+  End AccountInfo.
+  
